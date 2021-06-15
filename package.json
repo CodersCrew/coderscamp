@@ -1,0 +1,18 @@
+{
+  "name": "coderscamp",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "yarn": ">=2.4.0",
+    "node": ">=14.0.0"
+  },
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/CodersCrew/coderscamp#readme",
+  "bugs": "https://github.com/CodersCrew/coderscamp/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodersCrew/coderscamp.git"
+  }
+}
