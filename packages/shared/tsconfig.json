@@ -3,7 +3,8 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "lib": ["DOM"],
+    "jsx": "react",
+    "lib": ["ESNext", "DOM"],
     "module": "esnext",
     "noEmit": true,
     "rootDir": "./src",

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "jsx": "preserve",
-    "lib": ["DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "noEmit": true,
     "target": "es5"

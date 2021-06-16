@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "declaration": true,
     "incremental": true,
+    "lib": ["ESNext"],
     "module": "commonjs",
     "outDir": "./dist",
     "sourceMap": true,
