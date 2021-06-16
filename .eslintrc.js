@@ -1,6 +1,12 @@
 const TSCONFIG_PROJECTS = ['tsconfig.eslint.json', 'packages/**/tsconfig.json'];
 
-const FILES_WITH_DEV_DEPENDENCIES = ['**/*.test.*', '**/*.spec.*', '**/vite.config.ts'];
+const FILES_WITH_DEV_DEPENDENCIES = [
+  '**/*.test.*',
+  '**/*.spec.*',
+  '**/vite.config.ts',
+  '**/*.stories.tsx',
+  '**/setupTests.ts',
+];
 
 module.exports = {
   root: true,
@@ -131,8 +137,8 @@ module.exports = {
       rules: { '@typescript-eslint/no-var-requires': 0 },
     },
     {
-      // Files that have to contain a default export.
-      files: ['*.config.[tj]s', 'packages/website/pages/**/*.tsx'],
+      // Files that should to contain a default export.
+      files: ['*.config.[tj]s', 'packages/website/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
     },
   ],
