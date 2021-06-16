@@ -6,6 +6,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/vite.config.ts',
   '**/*.stories.tsx',
   '**/setupTests.ts',
+  'scripts/*.js',
 ];
 
 module.exports = {
