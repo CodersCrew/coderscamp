@@ -1,0 +1,21 @@
+{
+  "name": "@coderscamp/shared",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "module": "dist/shared.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "dev": "tsdx watch --transpileOnly",
+    "build": "tsdx build --transpileOnly",
+    "test": "tsdx test --passWithNoTests"
+  },
+  "devDependencies": {
+    "tsdx": "0.14.1",
+    "tslib": "2.3.0"
+  }
+}

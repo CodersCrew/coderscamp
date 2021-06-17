@@ -2,7 +2,7 @@
 const shell = require('shelljs');
 const { spawnSync } = require('child_process');
 
-const WORKSPACES = ['api', 'panel', 'ui', 'website'];
+const WORKSPACES = ['api', 'panel', 'ui', 'website', 'shared'];
 
 const getWorkspaceName = () => {
   const workspace = process.argv[2];
