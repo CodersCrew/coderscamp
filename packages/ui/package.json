@@ -9,7 +9,7 @@
     "src"
   ],
   "scripts": {
-    "dev": "tsdx watch",
+    "dev": "tsdx watch --transpileOnly",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "storybook": "start-storybook -p 6006",

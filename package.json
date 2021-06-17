@@ -16,10 +16,8 @@
     "url": "git+https://github.com/CodersCrew/coderscamp.git"
   },
   "scripts": {
-    "api": "yarn workspace @coderscamp/api",
-    "panel": "yarn workspace @coderscamp/panel",
-    "ui": "yarn workspace @coderscamp/ui",
-    "website": "yarn workspace @coderscamp/website",
+    "w": "scripty",
+    "bootstrap": "scripty",
     "clean": "scripty",
     "eslint": "eslint --ignore-path .gitignore --ext js,ts,tsx",
     "lint": "yarn eslint \"**/*.{js,ts,tsx}\"",
