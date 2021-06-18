@@ -1,14 +1,13 @@
 #!/usr/bin/env node
-const shell = require('shelljs');
+const { exec } = require('./_helpers');
 
 /**
- * Initializes the entire project and build shared dependencies.
+ * Initializes the entire project and creates generated files.
  * @tip Use this script every time you pull something from the origin.
  */
 const main = () => {
-  shell.exec('yarn');
-  shell.exec('yarn workspace @coderscamp/ui theme');
-  shell.exec('yarn workspace @coderscamp/ui build');
+  exec('yarn');
+  exec('concurrently "yarn workspace @coderscamp/ui theme" "yarn workspace @coderscamp/api generate"');
 };
 
 main();

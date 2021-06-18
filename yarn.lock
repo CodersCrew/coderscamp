@@ -7875,6 +7875,7 @@ __metadata:
     "@types/jest": 26.0.23
     "@typescript-eslint/eslint-plugin": 4.27.0
     "@typescript-eslint/parser": 4.27.0
+    concurrently: 6.2.0
     cross-env: 7.0.3
     eslint: 7.28.0
     eslint-config-airbnb-typescript: 12.3.1
@@ -8075,6 +8076,25 @@ __metadata:
     readable-stream: ^2.2.2
     typedarray: ^0.0.6
   checksum: 7a97b7a7d0938e36800bdb6f5caf938bac8c523a6ec15df1f2ac41d3785541be30a6671c9f4c0d1ac9609e6ab29dcab8f54d1c84035e3e3b7b24f9336da68ab0
+  languageName: node
+  linkType: hard
+
+"concurrently@npm:6.2.0":
+  version: 6.2.0
+  resolution: "concurrently@npm:6.2.0"
+  dependencies:
+    chalk: ^4.1.0
+    date-fns: ^2.16.1
+    lodash: ^4.17.21
+    read-pkg: ^5.2.0
+    rxjs: ^6.6.3
+    spawn-command: ^0.0.2-1
+    supports-color: ^8.1.0
+    tree-kill: ^1.2.2
+    yargs: ^16.2.0
+  bin:
+    concurrently: bin/concurrently.js
+  checksum: e75f311dc77ee1b486ebb65d513e1e719cc2b7589f08f2f6263b93d7d71c72609ce8c57ed3a0f791484be7e5b4435621c7d5e6d190d076c76d593bdcdb9aaf08
   languageName: node
   linkType: hard
 
@@ -8605,6 +8625,13 @@ __metadata:
     whatwg-mimetype: ^2.3.0
     whatwg-url: ^8.0.0
   checksum: 42239927c6a202e2d02b7f41c94ca53e3cea036898b97b8bf6120ed1b25e0dd11c48ec7aa5c84cf807c2cb9f3a637df9fb50f3ca25a52863186a4ac46254726b
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^2.16.1":
+  version: 2.22.1
+  resolution: "date-fns@npm:2.22.1"
+  checksum: a89dc6cdf3929b3f0d54d129a3c288df995fc3e6c8099dacc215e5404b4950fc8551d11a58968dfd3b8d576d0c5e637072f615e8f9c3e47d82c81e3952007d5b
   languageName: node
   linkType: hard
 
@@ -17110,7 +17137,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^6.6.0":
+"rxjs@npm:^6.6.0, rxjs@npm:^6.6.3":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
   dependencies:
@@ -17713,6 +17740,13 @@ resolve@^2.0.0-next.3:
   version: 1.1.5
   resolution: "space-separated-tokens@npm:1.1.5"
   checksum: 2b143776c39176e7faa020d9c96d41ecc33862139b8bc92d5551561e9ae7adbe537b3a51d381da563a953dbda82ea117cefaa7dec9075fb869596cb02d582abe
+  languageName: node
+  linkType: hard
+
+"spawn-command@npm:^0.0.2-1":
+  version: 0.0.2
+  resolution: "spawn-command@npm:0.0.2"
+  checksum: 961fb1551f2d5848509ec661f639c515e582034b010724fcaad6949148e21c50226e30889dd710a70dce25c4ba43437665aad621fc37c0f8a75fa9ec3e46a69f
   languageName: node
   linkType: hard
 
@@ -18329,7 +18363,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"supports-color@npm:^8.0.0":
+"supports-color@npm:^8.0.0, supports-color@npm:^8.1.0":
   version: 8.1.1
   resolution: "supports-color@npm:8.1.1"
   dependencies:
@@ -18728,7 +18762,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tree-kill@npm:1.2.2":
+"tree-kill@npm:1.2.2, tree-kill@npm:^1.2.2":
   version: 1.2.2
   resolution: "tree-kill@npm:1.2.2"
   bin:

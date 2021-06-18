@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-const shell = require('shelljs');
-const { spawnSync } = require('child_process');
+
+const { log, terminate, exec } = require('./_helpers');
 
 const WORKSPACES = ['api', 'panel', 'ui', 'website', 'shared'];
 
@@ -8,8 +8,7 @@ const getWorkspaceName = () => {
   const workspace = process.argv[2];
 
   if (!WORKSPACES.includes(workspace)) {
-    shell.echo(`Error: Unsupported workspace name "${workspace}". Supported workspaces are: ${WORKSPACES.join(', ')}`);
-    shell.exit(1);
+    terminate(`Error: Unsupported workspace name "${workspace}". Supported workspaces are: ${WORKSPACES.join(', ')}`);
   }
 
   return workspace;
@@ -19,8 +18,7 @@ const getWorkspaceScript = () => {
   const command = process.argv.slice(3).join(' ');
 
   if (!command) {
-    shell.echo(`Error: No workspace script to execute`);
-    shell.exit(1);
+    terminate(`Error: No workspace script to execute`);
   }
 
   return command;
@@ -33,8 +31,8 @@ const getWorkspaceScript = () => {
 const main = () => {
   const script = `yarn workspace @coderscamp/${getWorkspaceName()} ${getWorkspaceScript()}`;
 
-  shell.echo(`Running script: ${script}`);
-  spawnSync(script, { stdio: 'inherit', shell: true });
+  log(`Running script: ${script}`);
+  exec(script);
 };
 
 main();
