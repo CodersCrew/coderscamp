@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import type { GetAllUsersResponse } from '@coderscamp/shared';
+import { GetAllUsersResponse } from '@coderscamp/shared/models/user';
 
 import { UsersService } from './users.service';
 

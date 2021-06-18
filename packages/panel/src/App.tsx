@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button } from '@coderscamp/ui';
+import { Button } from '@coderscamp/ui/components/Button';
 
 import { useUsers } from '@/hooks/useUsers';
 

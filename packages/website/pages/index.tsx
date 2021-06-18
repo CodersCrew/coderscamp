@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
 
-import { Button } from '@coderscamp/ui';
+import { Button } from '@coderscamp/ui/components/Button';
 
 const Home = () => {
   const [count, setCount] = useState(0);

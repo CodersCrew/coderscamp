@@ -1,6 +1,6 @@
 import { useAsync } from 'react-use';
 
-import type { GetAllUsersResponse } from '@coderscamp/shared';
+import type { GetAllUsersResponse } from '@coderscamp/shared/models/user';
 
 export const useUsers = () => {
   const state = useAsync(async () => {

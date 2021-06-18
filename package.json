@@ -19,11 +19,13 @@
     "w": "scripty",
     "bootstrap": "scripty",
     "clean": "scripty",
+    "test": "yarn workspaces foreach -vpi run test",
     "eslint": "eslint --ignore-path .gitignore --ext js,ts,tsx",
     "lint": "yarn eslint \"**/*.{js,ts,tsx}\"",
     "lint:perf": "cross-env TIMING=50 yarn lint"
   },
   "devDependencies": {
+    "@types/jest": "26.0.23",
     "@typescript-eslint/eslint-plugin": "4.27.0",
     "@typescript-eslint/parser": "4.27.0",
     "cross-env": "7.0.3",
@@ -41,10 +43,12 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-testing-library": "4.6.0",
+    "jest": "27.0.4",
     "prettier": "2.3.1",
     "rimraf": "3.0.2",
     "scripty": "2.0.0",
     "shelljs": "0.8.4",
+    "ts-jest": "27.0.3",
     "typescript": "4.2.4"
   }
 }

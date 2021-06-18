@@ -2,17 +2,8 @@
   "name": "@coderscamp/ui",
   "version": "0.0.1",
   "private": true,
-  "main": "dist/index.js",
-  "module": "dist/ui.esm.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
   "scripts": {
-    "dev": "tsdx watch --transpileOnly",
-    "build": "tsdx build --transpileOnly",
-    "test": "tsdx test --passWithNoTests",
+    "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "theme": "chakra-cli tokens \"src/theme/overwrites/index.ts\""
@@ -38,8 +29,6 @@
     "@testing-library/react": "11.2.7",
     "@types/react": "17.0.11",
     "@types/react-dom": "17.0.7",
-    "react": "17.0.2",
-    "tsdx": "0.14.1",
-    "tslib": "2.3.0"
+    "react": "17.0.2"
   }
 }

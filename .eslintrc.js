@@ -4,6 +4,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/*.test.*',
   '**/*.spec.*',
   '**/vite.config.ts',
+  '**/next.config.js',
   '**/*.stories.tsx',
   '**/setupTests.ts',
   'scripts/*.js',

@@ -1,13 +1,17 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "declaration": true,
     "incremental": true,
     "lib": ["ESNext"],
     "module": "commonjs",
     "outDir": "./dist",
+    "paths": {
+      "@coderscamp/shared/*": ["../shared/src/*"]
+    },
     "sourceMap": true,
     "target": "es2017"
-  }
+  },
+  "include": ["src", "../shared/src"]
 }

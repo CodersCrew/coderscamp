@@ -9,10 +9,11 @@
     "module": "ESNext",
     "noEmit": true,
     "paths": {
+      "@coderscamp/shared/*": ["../shared/src/*"],
+      "@coderscamp/ui/*": ["../ui/src/*"],
       "@/hooks/*": ["src/hooks/*"]
     },
-    "skipLibCheck": false,
     "target": "ESNext"
   },
-  "include": ["./src"]
+  "include": ["src", "../shared/src", "../ui/src"]
 }
