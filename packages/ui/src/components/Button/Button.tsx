@@ -1,5 +1,10 @@
-import React, { ComponentPropsWithoutRef, forwardRef, ReactText } from 'react';
-import { Button as ChakraButton, ButtonProps as ChakraButtonProps } from '@chakra-ui/react';
+import React, { ReactText } from 'react';
+import {
+  Button as ChakraButton,
+  ButtonProps as ChakraButtonProps,
+  forwardRef,
+  HTMLChakraProps,
+} from '@chakra-ui/react';
 
 type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
 
@@ -7,7 +12,7 @@ type ButtonSize = 'lg' | 'md' | 'sm' | 'xs';
 
 type ButtonColor = 'default' | 'primary' | 'danger';
 
-export interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+export interface ButtonProps extends HTMLChakraProps<'button'> {
   children: ReactText | ReactText[];
   variant?: ButtonVariant;
   size?: ButtonSize;
@@ -23,7 +28,7 @@ const getSchemeFromColor = (color: ButtonColor): ChakraButtonProps['colorScheme'
   return 'gray';
 };
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<ButtonProps, 'button'>(
   ({ variant = 'solid', size = 'md', isLoading = false, color = 'default', disabled = false, ...props }, ref) => {
     return (
       <ChakraButton

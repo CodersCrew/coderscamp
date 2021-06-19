@@ -5,6 +5,7 @@ import { ThemeProvider } from '../src/theme';
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
+    exclude: /(^_|as)/,
     matchers: {
       color: /(background|color)$/i,
       date: /Date$/,
