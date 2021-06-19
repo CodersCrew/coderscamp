@@ -1,12 +1,24 @@
 import React from 'react';
+import { AddIcon, EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Meta, Story } from '@storybook/react';
 
 import { HStack } from '../Stack';
 import { Button, ButtonProps } from './Button';
 
+const icons = { Email: <EmailIcon />, Lock: <LockIcon />, Add: <AddIcon />, None: undefined };
+
 const meta: Meta = {
   title: 'Button',
   component: Button,
+  argTypes: {
+    icon: {
+      options: Object.keys(icons),
+      mapping: icons,
+      control: {
+        type: 'select',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -47,5 +59,13 @@ export const Colors = () => (
     <Button color="default">Default</Button>
     <Button color="brand">Brand</Button>
     <Button color="danger">Danger</Button>
+  </HStack>
+);
+
+export const OtherStates = () => (
+  <HStack>
+    <Button isLoading>Loading</Button>
+    <Button disabled>Disabled</Button>
+    <Button icon={<EmailIcon />}>With Icon</Button>
   </HStack>
 );

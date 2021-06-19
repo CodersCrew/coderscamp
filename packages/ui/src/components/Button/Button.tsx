@@ -1,4 +1,4 @@
-import React, { ReactText } from 'react';
+import React, { ReactElement, ReactText } from 'react';
 import {
   Button as ChakraButton,
   ButtonProps as ChakraButtonProps,
@@ -34,6 +34,10 @@ export interface ButtonProps extends HTMLChakraProps<'button'> {
    * If `true`, the button will be disabled
    */
   disabled?: boolean;
+  /**
+   * If added, the button will show an icon before the button's label
+   */
+  icon?: ReactElement;
   onClick?: ChakraButtonProps['onClick'];
   onFocus?: ChakraButtonProps['onFocus'];
   onBlur?: ChakraButtonProps['onBlur'];
@@ -47,7 +51,7 @@ const getSchemeFromColor = (color: ButtonColor): ChakraButtonProps['colorScheme'
 };
 
 export const Button = forwardRef<ButtonProps, 'button'>(
-  ({ variant = 'solid', size = 'md', isLoading = false, color = 'default', disabled = false, ...props }, ref) => {
+  ({ variant = 'solid', size = 'md', isLoading = false, color = 'default', disabled = false, icon, ...props }, ref) => {
     return (
       <ChakraButton
         variant={variant}
@@ -56,6 +60,7 @@ export const Button = forwardRef<ButtonProps, 'button'>(
         colorScheme={getSchemeFromColor(color)}
         ref={ref}
         isDisabled={disabled}
+        leftIcon={icon}
         {...props}
       />
     );
