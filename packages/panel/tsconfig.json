@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "esModuleInterop": false,
+    "jsx": "react",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "noEmit": true,
+    "paths": {
+      "@coderscamp/shared/*": ["../shared/src/*"],
+      "@coderscamp/ui/*": ["../ui/src/*"],
+      "@/hooks/*": ["src/hooks/*"]
+    },
+    "target": "ESNext"
+  },
+  "include": ["src", "../shared/src", "../ui/src"]
+}

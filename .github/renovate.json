@@ -1,0 +1,15 @@
+{
+  "groupName": "All dependencies",
+  "groupSlug": "all",
+  "packageRules": [
+    {
+      "groupName": "All dependencies",
+      "groupSlug": "all",
+      "paths": ["*"]
+    }
+  ],
+  "rangeStrategy": "pin",
+  "schedule": ["before 3am on Friday"],
+  "separateMajorMinor": false,
+  "updateLockFiles": true
+}
