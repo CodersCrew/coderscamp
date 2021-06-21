@@ -59,3 +59,11 @@ This project is organized in a monorepo structure and contains the following wor
 - Run `yarn bootstrap` to populate the project again.
 - Check StackOverflow and GitHub pasting the error message you got.
 - Write on a development channel on our Slack.
+
+## Unified scripts
+To increase project consistency, some standard scripts are unified across all workspaces.
+
+- **dev** - runs the package in a local development mode.
+- **build** - creates production build of the package.
+- **start** - runs previously built package locally.
+- **test** - runs tests for the package.

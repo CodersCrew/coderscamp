@@ -16,6 +16,7 @@ node_modules
 # Production
 dist
 build
+storybook-static
 
 # TypeScript
 *.tsbuildinfo
