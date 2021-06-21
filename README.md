@@ -11,9 +11,10 @@ Monorepo containing CodersCamp internal application and its website.
 ## How to set up the project?
 
 1. Clone the repository.
-2. Run `yarn bootstrap` command to install all dependencies and generate some necessary files.
-3. Run `docker-compose up -d` to start a database in the background.
-4. On Unix systems, run `chmod -R +x scripts ` to add execute permission to all scripts inside `scripts` directory.
+2. Run `yarn` to install all dependencies.
+3. On Unix systems, run `chmod -R +x scripts ` to add execute permission to all scripts inside `scripts` directory.
+4. Run `yarn bootstrap` command to generate some necessary files.
+5. Run `docker-compose up -d` to start a database in the background.
 
 ## Packages
 
@@ -54,6 +55,7 @@ This project is organized in a monorepo structure and contains the following wor
 
 #### have troubles when running some script
 - Run `yarn clean` to clean move the entire project to a clean state.
+- Run `yarn` to install dependencies.
 - Run `yarn bootstrap` to populate the project again.
 - Check StackOverflow and GitHub pasting the error message you got.
 - Write on a development channel on our Slack.
