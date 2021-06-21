@@ -1,5 +1,3 @@
-import './Inter.css';
-
 export const typography = {
   fonts: {
     heading: 'var(--main-font-family)',
