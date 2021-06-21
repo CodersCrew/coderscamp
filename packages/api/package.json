@@ -7,7 +7,7 @@
     "dev:debug": "nest start --debug --watch",
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "start": "node dist/api/src/main",
+    "start": "cross-env NODE_ENV=production node dist/api/src/main",
     "test": "jest",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
