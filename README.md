@@ -37,22 +37,22 @@ This project is organized in a monorepo structure and contains the following wor
 
 ## What should I do when I ...?
 
-#### want to work with the panel**
+#### want to work with the panel
 - Run `docker-compose up -d` to start the database.
 - Run `yarn w api dev` to start the server in development mode.
 - Run `yarn w api panel` to start the panel in development mode.
 
-#### want to work with the api**
+#### want to work with the api
 - Run `docker-compose up -d` to start the database.
 - Run `yarn w api dev` to start server in development mode.
 
-#### want to work with the website**
+#### want to work with the website
 - Run `yarn w website dev` to start the website in development mode.
 
-#### want to create new components**
+#### want to create new components
 - Run `yarn w ui storybook` to run the storybook and see all component stories.
 
-#### have troubles when running some script**
+#### have troubles when running some script
 - Run `yarn clean` to clean move the entire project to a clean state.
 - Run `yarn bootstrap` to populate the project again.
 - Check StackOverflow and GitHub pasting the error message you got.
