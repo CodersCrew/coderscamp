@@ -51,7 +51,7 @@ This project is organized in a monorepo structure and contains the following wor
 - Run `yarn w website dev` to start the website in development mode.
 
 #### want to create new components
-- Run `yarn w ui storybook` to run the storybook and see all component stories.
+- Run `yarn w ui dev` to run the storybook and see all component stories.
 
 #### have troubles when running some script
 - Run `yarn clean` to clean move the entire project to a clean state.
