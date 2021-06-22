@@ -1,3 +1,5 @@
+import './styles/Inter.css';
+
 import React from 'react';
 import { ChakraProvider, ChakraProviderProps, ColorModeScript } from '@chakra-ui/react';
 

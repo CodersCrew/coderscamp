@@ -7,15 +7,17 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+const productionImports = [
+  ServeStaticModule.forRoot({
+    rootPath: join(__dirname, '../../../../panel/dist'),
+    exclude: ['/api/*'],
+  }),
+];
+
 @Module({
-  imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'panel', 'dist'),
-      exclude: ['/api/*'],
-    }),
-    PrismaModule,
-    UsersModule,
-  ],
+  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })

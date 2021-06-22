@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "dev": "start-storybook -p 6006",
+    "build": "build-storybook",
+    "start": "serve storybook-static",
     "test": "jest",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
     "theme": "chakra-cli tokens \"src/theme/overwrites/index.ts\""
   },
   "peerDependencies": {
