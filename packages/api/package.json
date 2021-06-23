@@ -11,15 +11,21 @@
     "test": "jest",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "generate": "prisma generate"
+    "generate": "prisma migrate dev"
   },
   "dependencies": {
     "@coderscamp/shared": "0.0.1",
     "@nestjs/common": "7.6.18",
+    "@nestjs/config": "0.6.3",
     "@nestjs/core": "7.6.18",
+    "@nestjs/jwt": "7.2.0",
+    "@nestjs/passport": "7.1.5",
     "@nestjs/platform-express": "7.6.18",
     "@nestjs/serve-static": "2.1.4",
     "@prisma/client": "2.25.0",
+    "passport": "0.4.1",
+    "passport-github2": "0.1.12",
+    "passport-jwt": "4.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.1.0"
   },
@@ -29,6 +35,8 @@
     "@nestjs/testing": "7.6.18",
     "@types/express": "4.17.12",
     "@types/node": "15.12.2",
+    "@types/passport-github2": "1.2.4",
+    "@types/passport-jwt": "3.0.5",
     "@types/supertest": "2.0.11",
     "prisma": "2.25.0",
     "supertest": "6.1.3",
