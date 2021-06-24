@@ -1,0 +1,46 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno and run tests across stable and canary builds on Windows, Ubuntu and macOS.
+# For more information see: https://github.com/denoland/setup-deno
+
+name: CodersCampWorkflow
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn w api build
+      - run: yarn w website build
+      - run: yarn test --onlyChanged
+      
+  es-Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ESLint checker
+        # uses: ninosaurus/eslint-check@30ce7263e3f4b0bebc3cc06897bdf4ab8524a424
+        uses: ninosaurus/eslint-check@v5.3.1
+  type-script-error-reporter:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [13.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Typecheck
+        uses: andoshin11/typescript-error-reporter-action@v1.0.2
