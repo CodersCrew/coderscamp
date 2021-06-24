@@ -27,14 +27,13 @@ jobs:
   es-Lint:
     runs-on: ubuntu-latest
     steps:
-      - name: ESLint checker
-        # uses: ninosaurus/eslint-check@30ce7263e3f4b0bebc3cc06897bdf4ab8524a424
-        uses: ninosaurus/eslint-check@v5.3.1
+      - name: Run ESLint
+        run: yarn eslint --cache
   type-script-error-reporter:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [13.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
