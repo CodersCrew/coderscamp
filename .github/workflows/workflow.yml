@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: yarn install --immutable
       - run: yarn w api build
       - run: yarn w website build
       - run: yarn test --onlyChanged
@@ -41,6 +42,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Typecheck
         uses: andoshin11/typescript-error-reporter-action@v1.0.2
