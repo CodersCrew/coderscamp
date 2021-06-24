@@ -19,14 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn install --immutable
-      - run: yarn w api build
-      - run: yarn w website build
-      - run: yarn test --onlyChanged
+      - name: install dependencies 
+        run: yarn install --immutable
+      - name: build api
+        run: yarn w api build
+      - name: build client
+        run: yarn w website build
+      - name: run affected tests 
+        run: yarn test --onlyChanged
       
   es-Lint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Run ESLint
         run: yarn eslint --cache
   type-script-error-reporter:
@@ -35,7 +40,7 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
