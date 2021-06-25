@@ -48,4 +48,4 @@ jobs:
     - name: install dependencies
       run: yarn install
     - name: tsc
-      uses: icrawl/action-tsc@v2
+      uses: icrawl/action-tsc@v1
