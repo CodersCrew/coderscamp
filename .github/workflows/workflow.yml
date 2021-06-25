@@ -48,4 +48,6 @@ jobs:
     - name: install dependencies
       run: yarn install
     - name: tsc compile
-      uses: icrawl/action-tsc@v1
+      uses: iCrawl/action-tsc@v1
+      with:
+        project: packages/website
