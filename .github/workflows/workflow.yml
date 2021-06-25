@@ -51,5 +51,19 @@ jobs:
       uses: iCrawl/action-tsc@v1
       with:
         project: packages/website
+    - name: tsc compile api
+      uses: iCrawl/action-tsc@v1
       with:
         project: packages/api
+    - name: tsc compile panel
+      uses: iCrawl/action-tsc@v1
+      with:
+        project: packages/panel
+    - name: tsc compile shared
+      uses: iCrawl/action-tsc@v1
+      with:
+        project: packages/shared
+    - name: tsc compile ui
+      uses: iCrawl/action-tsc@v1
+      with:
+        project: packages/ui
