@@ -47,7 +47,9 @@ jobs:
         node-version: 14
     - name: install dependencies
       run: yarn install
-    - name: tsc compile
+    - name: tsc compile webside
       uses: iCrawl/action-tsc@v1
       with:
         project: packages/website
+      with:
+        project: packages/api
