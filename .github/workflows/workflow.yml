@@ -36,18 +36,16 @@ jobs:
         run: yarn install --immutable
       - name: Run ESLint
         run: yarn eslint --cache
-  type-script-error-reporter:
+  Typescript-compiler:
+    name: tsc
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [13.x]
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: yarn install --immutable
-      - name: Typecheck
-        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+    - uses: actions/checkout@v2
+    - name: install node v14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: install dependencies
+      run: yarn install
+    - name: tsc
+      uses: icrawl/action-tsc@v2
