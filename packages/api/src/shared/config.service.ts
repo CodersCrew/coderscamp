@@ -5,6 +5,7 @@ interface GithubOAuthConfig {
   clientID: string;
   clientSecret: string;
   callbackUrl: string;
+  scope: string[];
 }
 
 @Injectable()
@@ -17,8 +18,9 @@ export class ConfigService {
     const clientID = process.env.GITHUB_CLIENT_ID || '';
     const clientSecret = process.env.GITHUB_CLIENT_SECRET || '';
     const callbackUrl = process.env.GITHUB_CALLBACK_URL || '';
+    const scope = ['read:user'];
 
-    return { clientID, clientSecret, callbackUrl };
+    return { clientID, clientSecret, callbackUrl, scope };
   }
 
   get jwtConfig(): JwtModuleOptions {

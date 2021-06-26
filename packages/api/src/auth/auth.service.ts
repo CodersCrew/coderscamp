@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
 
 import { User } from '@coderscamp/shared/models/user';
 
+import { UsersService } from '../users/users.service';
 import { GithubUserData } from './auth.model';
 
 @Injectable()
@@ -11,8 +11,8 @@ export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
   login(user: User) {
-    const payload = { username: user.firstName, sub: user.id };
-    return this.jwtService.sign(payload);
+    const { id, ...profile } = user;
+    return this.jwtService.sign({ profile, sub: id });
   }
 
   async githubAuth(user: GithubUserData) {

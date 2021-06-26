@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { GithubUserData } from 'src/auth/auth.model';
 
 import { User } from '@coderscamp/shared/models/user';
 
+import { GithubUserData } from '../auth/auth.model';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()

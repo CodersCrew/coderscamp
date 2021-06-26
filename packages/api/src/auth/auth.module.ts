@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigService } from 'src/shared/config.service';
-import { SharedModule } from 'src/shared/shared.module';
-import { UsersModule } from 'src/users/users.module';
-import { UsersService } from 'src/users/users.service';
 
+import { ConfigService } from '../shared/config.service';
+import { SharedModule } from '../shared/shared.module';
+import { UsersModule } from '../users/users.module';
+import { UsersService } from '../users/users.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GithubClient } from './strategies/github.client';
