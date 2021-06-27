@@ -40,7 +40,6 @@ module.exports = {
     'plugin:jest/recommended',
     'plugin:jest-dom/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:testing-library/react',
   ],
   rules: {
     // Prevents from writing functions that are too complex (in terms of cyclomatic complexity).
@@ -142,6 +141,11 @@ module.exports = {
       // Files that should to contain a default export.
       files: ['*.config.[tj]s', 'packages/website/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
+    },
+    {
+      // Enable eslint-plugin-testing-library rules only for testing files
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      extends: ['plugin:testing-library/react'],
     },
   ],
   settings: {

@@ -4928,9 +4928,9 @@ __metadata:
   linkType: hard
 
 "@tsconfig/node12@npm:^1.0.7":
-  version: 1.0.8
-  resolution: "@tsconfig/node12@npm:1.0.8"
-  checksum: cd625813b6299b2431cadc4cc0afe8a44388ea9045e8e1d6fe13a9f22080ac7b390dc7a684190298c9a78f48691e05babe0dc00af991ccf8f4924c8c0be7a4fe
+  version: 1.0.9
+  resolution: "@tsconfig/node12@npm:1.0.9"
+  checksum: 5532bfb5df47ed3a507da533c731a2fb80ee2e886edadbf20e664dcd3172d5c159577a281d15733b8d0c30bfa4e6b48496bef0704192c085520bc76bb9938068
   languageName: node
   linkType: hard
 
