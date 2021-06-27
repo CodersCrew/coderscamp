@@ -143,7 +143,7 @@ module.exports = {
       rules: { 'import/no-default-export': 0 },
     },
     {
-      // Enable eslint-plugin-testing-library rules only for testing files
+      // Enable eslint-plugin-testing-library rules only for test files
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
       extends: ['plugin:testing-library/react'],
     },
