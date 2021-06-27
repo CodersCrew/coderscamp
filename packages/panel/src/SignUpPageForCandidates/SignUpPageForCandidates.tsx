@@ -5,7 +5,7 @@ import { Flex, Text, Link, Button, Image } from '@chakra-ui/react';
 
 //TODO: BUTTON is at ui/component directory
 
-function SignUpPageForCandidates() {
+const SignUpPageForCandidates = () => {
   const buttonSize = useBreakpointValue(['sm', 'xl']);
 
   return (
@@ -13,9 +13,9 @@ function SignUpPageForCandidates() {
       direction="column"
       align="center"
       h={{
-        base: '100%', // 0-48em
-        md: '50%', // 48em-80em,
-        xl: '90vh', // 80em+
+        base: '100%',
+        md: '50%',
+        xl: '90vh',
       }}
       mt={['2rem', '-1rem', '3rem', '5rem']}
     >
@@ -63,6 +63,6 @@ function SignUpPageForCandidates() {
       </Flex>
     </Flex>
   );
-}
+};
 
 export default SignUpPageForCandidates;
