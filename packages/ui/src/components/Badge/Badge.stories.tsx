@@ -23,12 +23,8 @@ Playground.args = {
 
 export const Sizes = () => (
   <HStack>
-    <Badge size="small" color="red">
-      Small
-    </Badge>
-    <Badge size="large" color="red">
-      Large
-    </Badge>
+    <Badge size="small">Small</Badge>
+    <Badge size="large">Large</Badge>
   </HStack>
 );
 

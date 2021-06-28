@@ -32,13 +32,14 @@ export const largeStyleProps = {
 };
 
 export const Badge = forwardRef<BadgeProps, 'div'>(({ size = 'small', color = 'default', children, ...props }, ref) => {
-  const sizeProps = size === 'small' ? { ...smallStyleProps } : { ...largeStyleProps };
+  const sizeProps = size === 'small' ? smallStyleProps : largeStyleProps;
+  const colorScheme = color === 'default' ? 'gray' : color;
 
   return (
     <ChakraBadge
       textTransform="none"
       size={size}
-      colorScheme={color}
+      colorScheme={colorScheme}
       ref={ref}
       fontWeight={500}
       {...sizeProps}

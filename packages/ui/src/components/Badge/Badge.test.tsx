@@ -12,7 +12,7 @@ describe('Badge', () => {
     const badge = screen.getByText(text);
 
     expect(badge).toHaveStyle(largeStyleProps);
-    expect(badge).toBeVisible();
+    expect(badge).toBeInTheDocument();
   });
 
   it('renders correctly in small size', () => {
