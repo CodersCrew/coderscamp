@@ -17,7 +17,6 @@ export const Playground = Template.bind({});
 
 Playground.args = {
   children: 'Badge text',
-  variant: 'subtle',
   size: 'large',
   color: 'brand',
 };
@@ -41,17 +40,5 @@ export const Colors = () => (
     <Badge color="green">Green</Badge>
     <Badge color="orange">Orange</Badge>
     <Badge color="red">Red</Badge>
-  </HStack>
-);
-
-export const Variants = () => (
-  <HStack>
-    <Badge color="blue">Default</Badge>
-    <Badge variant="solid" color="blue">
-      Solid
-    </Badge>
-    <Badge variant="outline" color="blue">
-      Outline
-    </Badge>
   </HStack>
 );

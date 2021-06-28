@@ -1,7 +1,5 @@
 import React, { ReactText } from 'react';
-import { Badge as ChakraBadge, BadgeProps as ChakraBadgeProps, forwardRef, HTMLChakraProps } from '@chakra-ui/react';
-
-type BadgeVariant = 'solid' | 'outline' | 'subtle';
+import { Badge as ChakraBadge, forwardRef, HTMLChakraProps } from '@chakra-ui/react';
 
 type BadgeSize = 'small' | 'large';
 
@@ -10,10 +8,6 @@ type BadgeColor = 'default' | 'brand' | 'blue' | 'green' | 'orange' | 'red';
 export interface BadgeProps extends HTMLChakraProps<'div'> {
   children: ReactText | ReactText[];
   /**
-   * Style variant of the badge
-   */
-  variant?: BadgeVariant;
-  /**
    * Color variant of the badge
    */
   color?: BadgeColor;
@@ -21,7 +15,6 @@ export interface BadgeProps extends HTMLChakraProps<'div'> {
    * Determines badge's paddings, font size, line height and border radius.
    */
   size?: BadgeSize;
-  onClick?: ChakraBadgeProps['onClick'];
 }
 
 export const smallStyleProps = {
@@ -38,20 +31,17 @@ export const largeStyleProps = {
   fontSize: '14px',
 };
 
-export const Badge = forwardRef<BadgeProps, 'div'>(
-  ({ variant = 'subtle', size = 'small', color = 'default', children, ...props }, ref) => {
-    return (
-      <ChakraBadge
-        variant={variant}
-        size={size}
-        colorScheme={color}
-        ref={ref}
-        fontWeight={500}
-        {...(size === 'small' ? { ...smallStyleProps } : { ...largeStyleProps })}
-        {...props}
-      >
-        {children}
-      </ChakraBadge>
-    );
-  },
-);
+export const Badge = forwardRef<BadgeProps, 'div'>(({ size = 'small', color = 'default', children, ...props }, ref) => {
+  return (
+    <ChakraBadge
+      size={size}
+      colorScheme={color}
+      ref={ref}
+      fontWeight={500}
+      {...(size === 'small' ? { ...smallStyleProps } : { ...largeStyleProps })}
+      {...props}
+    >
+      {children}
+    </ChakraBadge>
+  );
+});
