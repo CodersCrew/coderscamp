@@ -7,28 +7,20 @@ describe('Badge', () => {
   it('renders correctly in large size', () => {
     const text = 'Badge Text';
 
-    render(
-      <Badge data-testid="badge" size="large">
-        {text}
-      </Badge>,
-    );
+    render(<Badge size="large">{text}</Badge>);
 
-    const badge = screen.getByTestId('badge');
+    const badge = screen.getByText(text);
 
     expect(badge).toHaveStyle(largeStyleProps);
-    expect(screen.getByText(text)).toBeVisible();
+    expect(badge).toBeVisible();
   });
 
   it('renders correctly in small size', () => {
     const text = 'Badge Text';
 
-    render(
-      <Badge data-testid="badge" size="small">
-        {text}
-      </Badge>,
-    );
+    render(<Badge size="small">{text}</Badge>);
 
-    const badge = screen.getByTestId('badge');
+    const badge = screen.getByText(text);
 
     expect(badge).toHaveStyle(smallStyleProps);
   });
