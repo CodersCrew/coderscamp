@@ -27,6 +27,7 @@ jobs:
             ci
             docs
             feat
+            fix
             perf
             refactor
             style
