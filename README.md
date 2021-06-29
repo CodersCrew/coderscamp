@@ -89,7 +89,7 @@ The PR title has a special format that includes a **type**, a **scope** and a **
 <type>(<scope>): <subject>
 ```
 
-The **header** is mandatory and the **scope** of the header is optional.
+The **type** and **subject** is mandatory but the **scope** is optional.
 
 Samples:
 
