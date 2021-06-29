@@ -1,4 +1,4 @@
-name: "Conventional PR"
+name: "Semantic Pull Request"
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
     types: [assigned, opened, synchronize, reopened, edited]
 
 jobs:
-  build:
+  test-semantic-pr:
     runs-on: ubuntu-latest
 
     steps:
