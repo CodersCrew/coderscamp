@@ -1,28 +1,19 @@
 name: "Conventional PR"
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
     branches:
       - main
-     types: [assigned, opened, synchronize, reopened, edited]
+    types: [assigned, opened, synchronize, reopened, edited]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Please look up the latest version from
-      # https://github.com/amannn/action-semantic-pull-request/releases
       - uses: actions/checkout@v2
       - uses: amannn/action-semantic-pull-request@v3.4.0
         with:
-          #Types from: https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines
           types: |
             build
             ci
@@ -33,10 +24,13 @@ jobs:
             refactor
             style
             test
-          # When using "Squash and merge" on a PR with only one commit, GitHub
-          # will suggest using that commit message instead of the PR title for the
-          # merge commit, and it's easy to commit this by mistake. Enable this option
-          # to also validate the commit message for one commit PRs.
+          scopes: |
+            api
+            panel
+            website
+            ui
+            core
+          requireScope: false
           validateSingleCommit: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
