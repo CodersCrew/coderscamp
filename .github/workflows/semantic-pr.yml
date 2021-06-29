@@ -7,7 +7,7 @@ on:
     types: [assigned, opened, synchronize, reopened, edited]
 
 jobs:
-  test-semantic-pr:
+  main:
     runs-on: ubuntu-latest
 
     steps:
