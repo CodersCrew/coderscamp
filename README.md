@@ -41,7 +41,7 @@ This project is organized in a monorepo structure and contains the following wor
 #### want to work with the panel
 - Run `docker-compose up -d` to start the database.
 - Run `yarn w api dev` to start the server in development mode.
-- Run `yarn w api panel` to start the panel in development mode.
+- Run `yarn w panel dev` to start the panel in development mode.
 
 #### want to work with the api
 - Run `docker-compose up -d` to start the database.
