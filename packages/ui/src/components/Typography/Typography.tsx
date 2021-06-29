@@ -10,14 +10,14 @@ type TypographyFontWeight = 'regular' | 'medium';
 export interface BoxProps extends HTMLChakraProps<'div'> {
   children: ReactText | ReactText[] | ReactNode | ReactNode[];
   as?: TypographyVariant;
-  fontSize?: TypographyFontSize;
-  fontWeight?: TypographyFontWeight;
+  size?: TypographyFontSize;
+  weight?: TypographyFontWeight;
 }
 
 export const Typography = forwardRef<BoxProps, 'div'>(
-  ({ as = 'div', fontSize = 'md', fontWeight = 'regular', children, ...props }, ref) => {
+  ({ as = 'div', size = 'md', weight = 'regular', children, ...props }, ref) => {
     return (
-      <Box as={as} fontSize={fontSize} ref={ref} fontWeight={fontWeight} {...props}>
+      <Box as={as} fontSize={size} ref={ref} fontWeight={weight} {...props}>
         {children}
       </Box>
     );
