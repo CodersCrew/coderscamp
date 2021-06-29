@@ -1,6 +1,10 @@
 import React from 'react';
 import { Flex, Text, Heading, Button } from '@chakra-ui/react';
 
+//TODO: Change Button to Button component from ui package
+//TODO: formExpirationDate propably will be not string type, need to change
+
+
 type GoToFormPageProps = { formExpirationDate: string };
 
 const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate = 'FORMAT DATY' }) => {

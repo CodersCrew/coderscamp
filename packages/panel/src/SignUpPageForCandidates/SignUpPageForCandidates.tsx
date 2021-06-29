@@ -3,7 +3,9 @@ import { SiGithub } from 'react-icons/si';
 import { useBreakpointValue } from '@chakra-ui/react';
 import { Flex, Text, Link, Button, Image } from '@chakra-ui/react';
 
-//TODO: BUTTON is at ui/component directory
+//TODO: Change Button to Button component from ui package
+//TODO: Change Image to Logo Component from ui package
+//TODO: An icon package is currently installed, when it's not needed, remove it
 
 const SignUpPageForCandidates = () => {
   const buttonSize = useBreakpointValue(['sm', 'xl']);
