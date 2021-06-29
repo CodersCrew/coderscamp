@@ -19,6 +19,7 @@ jobs:
     steps:
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases
+      - uses: actions/checkout@v2
       - uses: amannn/action-semantic-pull-request@v3.4.0
         with:
           #Types from: https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines
