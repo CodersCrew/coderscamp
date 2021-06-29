@@ -1,4 +1,4 @@
-name: CodersCampWorkflow
+name: CodersCamp Workflow
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build-and-run-tests:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
         run: yarn install --immutable
       - name: Run ESLint
         run: yarn eslint --cache
-  Typescript-compiler:
+  typescript-compiler:
     name: typecheck
     runs-on: ubuntu-latest
     steps:
