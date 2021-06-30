@@ -1,7 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { Typography, BoxProps } from './Typography';
+import { Typography, TypographyProps } from './Typography';
+
 const meta: Meta = {
   title: 'Typography',
   component: Typography,
@@ -9,7 +10,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<BoxProps> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
+const Template: Story<TypographyProps> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
 
 export const Playground = Template.bind({});
 
@@ -71,7 +72,7 @@ export const Variants = () => (
     </Typography>
     <Typography size="md" as="span">
       Span
-    </Typography>{' '}
+    </Typography>
     <Typography size="md" as="span">
       Span
     </Typography>
