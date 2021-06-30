@@ -80,7 +80,7 @@ export const Variants = () => (
 
 export const FontWeights = () => (
   <>
-    <Typography size="lg" as="p" weight='medium'>
+    <Typography size="lg" as="p" weight="medium">
       Medium Weight
     </Typography>{' '}
     <Typography size="lg" as="p">
