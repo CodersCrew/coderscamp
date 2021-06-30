@@ -1,13 +1,12 @@
 import React from 'react';
-import { Flex, Text, Heading, Button } from '@chakra-ui/react';
+import { Button, Flex, Heading, Text } from '@chakra-ui/react';
 
-//TODO: Change Button to Button component from ui package
-//TODO: formExpirationDate propably will be not string type, need to change
-
+// TODO: Change Button to Button component from ui package
+// TODO: formExpirationDate propably will be not string type, need to change
 
 type GoToFormPageProps = { formExpirationDate: string };
 
-const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate = 'FORMAT DATY' }) => {
+export const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate = 'FORMAT DATY' }) => {
   return (
     <Flex w="100vw" h="100vh" align="center" justify="center" bg="#E5E5E5">
       <Flex
@@ -40,5 +39,3 @@ const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate = 'FORMA
     </Flex>
   );
 };
-
-export default GoToFormPage;
