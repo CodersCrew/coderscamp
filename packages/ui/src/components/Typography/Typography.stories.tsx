@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { HStack } from '../Stack';
-import { AsAnchor, Typography } from './index';
+import { IsAnchor, Typography } from './index';
 
 const meta: Meta = {
   title: 'Typography',
@@ -11,7 +11,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<AsAnchor> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
+const Template: Story<IsAnchor> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
 
 export const Playground = Template.bind({});
 

@@ -1,2 +1,2 @@
 export { Typography } from './Typography';
-export type { AsAnchor } from './Typography';
+export type { IsAnchor } from './Typography';

@@ -7,15 +7,14 @@ type TypographyFontSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4x
 
 type TypographyFontWeight = 'regular' | 'medium';
 
-type RemoveCommonValues<T, TOmit> = {
-  [P in keyof T]: TOmit extends Record<P, infer U> ? Exclude<T[P], U> : T[P];
+type RemoveCommonValues<Type, TOmit> = {
+  [Property in keyof Type]: TOmit extends Record<Property, infer U> ? Exclude<Type[Property], U> : Type[Property];
 };
 
-type Omit<T, K extends PropertyKey> = Pick<T, Exclude<keyof T, K>>; // not needed in 3.5
-type Id<T> = {} & { [P in keyof T]: T[P] };
-type ConditionalProps<T, TKey extends keyof TCase, TCase extends Partial<T>> =
-  | Id<Omit<T, keyof TCase> & TCase>
-  | Id<RemoveCommonValues<T, Pick<TCase, TKey>>>;
+type Id<Type> = Record<string, unknown> & { [P in keyof Type]: Type[P] };
+type ConditionalProps<Type, TKey extends keyof TCase, TCase extends Partial<Type>> =
+  | Id<Omit<Type, keyof TCase> & TCase>
+  | Id<RemoveCommonValues<Type, Pick<TCase, TKey>>>;
 
 export interface TypographyProps extends HTMLChakraProps<'div'> {
   children: ReactText | ReactText[] | ReactNode | ReactNode[];
@@ -23,15 +22,12 @@ export interface TypographyProps extends HTMLChakraProps<'div'> {
   size?: TypographyFontSize;
   weight?: TypographyFontWeight;
 }
-export interface TypographyPropsForAnchor extends HTMLChakraProps<'div'> {
-  children: ReactText | ReactText[] | ReactNode | ReactNode[];
+export interface TypographyPropsForAnchor extends TypographyProps {
   href: string;
   as: 'a';
-  size?: TypographyFontSize;
-  weight?: TypographyFontWeight;
 }
 
-export type AsAnchor = ConditionalProps<TypographyProps, 'as', TypographyPropsForAnchor>;
+export type IsAnchor = ConditionalProps<TypographyProps, 'as', TypographyPropsForAnchor>;
 
 const anchorStyle = {
   color: 'brand.500',
@@ -40,11 +36,11 @@ const anchorStyle = {
   _active: { color: 'brand.700' },
 };
 
-export const Typography: React.FC<AsAnchor> = forwardRef(
+export const Typography: React.FC<IsAnchor> = forwardRef(
   ({ as = 'div', size = 'md', weight = 'regular', children, ...props }, ref) => {
-    const isAnchor = as === 'a' && anchorStyle;
+    const stylesForLink = as === 'a' && anchorStyle;
     return (
-      <Box as={as} fontSize={size} ref={ref} fontWeight={weight} {...props} {...isAnchor}>
+      <Box as={as} fontSize={size} ref={ref} fontWeight={weight} {...props} {...stylesForLink}>
         {children}
       </Box>
     );
