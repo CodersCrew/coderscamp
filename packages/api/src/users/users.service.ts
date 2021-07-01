@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@coderscamp/shared/models/user';
+import type { User } from '@coderscamp/shared/models/user';
 
-import { GithubUserData } from '../auth/auth.model';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -13,8 +12,8 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  async create(userData: GithubUserData) {
-    return this.prisma.user.create({ data: { ...userData, firstName: null, lastName: null } });
+  async create(userData: Omit<User, 'id'>) {
+    return this.prisma.user.create({ data: userData });
   }
 
   async update(id: number, data: User) {

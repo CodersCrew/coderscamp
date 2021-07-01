@@ -37,8 +37,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest-dom/recommended',
     'plugin:react-hooks/recommended',
   ],
   rules: {
@@ -143,9 +141,9 @@ module.exports = {
       rules: { 'import/no-default-export': 0 },
     },
     {
-      // Enable eslint-plugin-testing-library rules only for test files
-      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-      extends: ['plugin:testing-library/react'],
+      // Enable plugins rules only for test files
+      files: ['**/?(*.)+(spec|test).ts?(x)'],
+      extends: ['plugin:testing-library/react', 'plugin:jest-dom/recommended', 'plugin:jest/recommended'],
     },
   ],
   settings: {

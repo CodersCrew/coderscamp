@@ -1,23 +1,23 @@
 import { Controller, Get, InternalServerErrorException, Req, UseGuards } from '@nestjs/common';
 
-import { GithubUserData } from './auth.model';
-import { AuthService } from './auth.service';
-import { GithubGuard } from './guards/github.gurad';
+import { GithubClient } from './github.client';
+import { GithubGuard } from './github.gurad';
+import { GithubUserData } from './github.model';
 
-@Controller('auth')
-export class AuthController {
-  constructor(private authService: AuthService) {}
+@Controller('auth/github')
+export class GithubController {
+  constructor(private githubClient: GithubClient) {}
 
-  @Get('github/login')
+  @Get('login')
   @UseGuards(GithubGuard)
   async githubOAuth() {
     // Redirects to github login page
   }
 
-  @Get('github/callback')
+  @Get('callback')
   @UseGuards(GithubGuard)
   async githubOAuthCallback(@Req() req: Request & { user: GithubUserData }) {
-    const result = this.authService.githubAuth(req.user);
+    const result = this.githubClient.githubAuth(req.user);
     if (result) return result;
     throw new InternalServerErrorException();
   }

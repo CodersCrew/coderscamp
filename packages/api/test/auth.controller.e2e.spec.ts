@@ -1,16 +1,11 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import supertest from 'supertest';
 
-import { AuthController } from '../src/auth/auth.controller';
 import { AuthModule } from '../src/auth/auth.module';
-import { AuthService } from '../src/auth/auth.service';
-import { GithubClient } from '../src/auth/strategies/github.client';
 import { PrismaModule } from '../src/prisma/prisma.module';
-import { ConfigService } from '../src/shared/config.service';
-import { SharedModule } from '../src/shared/shared.module';
-import { UsersService } from '../src/users/users.service';
+import { UsersModule } from '../src/users/users.module';
 
 describe('AuthController', () => {
   let app: INestApplication;
@@ -18,20 +13,7 @@ describe('AuthController', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [
-        SharedModule,
-        JwtModule.registerAsync({
-          imports: [SharedModule],
-          inject: [ConfigService],
-          useFactory: async (config: ConfigService) => {
-            return config.jwtConfig;
-          },
-        }),
-        PrismaModule,
-        AuthModule,
-      ],
-      controllers: [AuthController],
-      providers: [ConfigService, UsersService, AuthService, GithubClient],
+      imports: [ConfigModule, PrismaModule, AuthModule, UsersModule],
     }).compile();
 
     app = module.createNestApplication();
@@ -49,7 +31,9 @@ describe('AuthController', () => {
       const response = await test.get('/auth/github/login');
 
       expect(response.headers.location).toEqual(
-        `https://github.com/login/oauth/authorize?response_type=code&scope=read%3Auser&client_id=${configService.githubClientConfig.clientID}`,
+        `https://github.com/login/oauth/authorize?response_type=code&scope=read%3Auser&client_id=${configService.get(
+          'GITHUB_CLIENT_ID',
+        )}`,
       );
       expect(response.statusCode).toEqual(HttpStatus.FOUND);
     });
