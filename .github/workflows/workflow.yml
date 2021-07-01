@@ -16,13 +16,13 @@ jobs:
       - name: run affected tests 
         run: yarn test --onlyChanged
       
-  es-Lint:
+  es-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: install dependencies 
         run: yarn install --immutable
-      - name: Run ESLint
+      - name: Run esLint
         run: yarn eslint --cache
   typescript-compiler:
     name: typecheck
