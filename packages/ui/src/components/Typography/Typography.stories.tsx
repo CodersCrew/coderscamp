@@ -4,9 +4,19 @@ import { Meta, Story } from '@storybook/react';
 import { HStack } from '../Stack';
 import { IsAnchor, Typography } from './index';
 
+const tags = { h1: 'h1', a: 'a' };
 const meta: Meta = {
   title: 'Typography',
   component: Typography,
+  argTypes: {
+    as: {
+      options: Object.keys(tags),
+      mapping: tags,
+      control: {
+        type: 'select',
+      },
+    },
+  },
 };
 
 export default meta;
