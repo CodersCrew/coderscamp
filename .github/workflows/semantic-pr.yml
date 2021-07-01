@@ -2,8 +2,7 @@ name: "Semantic Pull Request"
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
     types: [assigned, opened, synchronize, reopened, edited]
 
 jobs:
@@ -31,6 +30,12 @@ jobs:
             ui
             core
           requireScope: false
+          subjectPattern: (^[A-Z]\w+)(.*\s)(\(#\d+\))
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            start with a capital character and ends with issue id in parentheses after a space.
+            E.g: Add something (#1)
           validateSingleCommit: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
