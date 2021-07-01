@@ -1,7 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { Typography, TypographyProps } from './Typography';
+import { HStack } from '../Stack';
+import { AsAnchor, Typography } from './index';
 
 const meta: Meta = {
   title: 'Typography',
@@ -10,7 +11,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<TypographyProps> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
+const Template: Story<AsAnchor> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
 
 export const Playground = Template.bind({});
 
@@ -60,30 +61,24 @@ export const Sizes = () => (
 );
 
 export const Variants = () => (
-  <>
-    <Typography size="md" as="p">
-      Paragraph
+  <HStack>
+    <Typography size="md" as="span">
+      Span
     </Typography>
     <Typography size="md" as="a" href="#">
       Link
     </Typography>
-    <Typography size="md" as="div">
-      Div
+    <Typography size="md" as="p">
+      Paragraph
     </Typography>
-    <Typography size="md" as="span">
-      Span
-    </Typography>
-    <Typography size="md" as="span">
-      Span
-    </Typography>
-  </>
+  </HStack>
 );
 
 export const FontWeights = () => (
   <>
     <Typography size="lg" as="p" weight="medium">
       Medium Weight
-    </Typography>{' '}
+    </Typography>
     <Typography size="lg" as="p">
       Regular Weight
     </Typography>
