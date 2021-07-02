@@ -86,42 +86,44 @@ The PR title has a special format that includes a **type**, a **scope** and a **
 <type>(<scope>): <subject>
 ```
 
-The **type** and **subject** is mandatory but the **scope** is optional.
+- The **type** and **subject** is mandatory but the **scope** is optional.
+- The **type** and **scope** must be written in lowercase.
+- The **subject** must start with a capital letter and ends with issue id in parentheses, after a space.
 
 Samples:
 
 ```
-feat(ui): Add Icon component.
+feat(ui): Add Icon component. (#1)
 ```
 
 ```
-fix: Correct minor typos in code
+fix: Correct minor typos in code (#314)
 ```
 
 ```
-docs: Fix reference to Conventional Commits
+docs: Fix reference to Conventional Commits (#15)
 ```
 
 ### Type
 
 Must be one of the following:
 
-- **build**: Changes that affect the build system or external dependencies
-- **ci**: Changes to our CI configuration files and scripts
-- **docs**: Documentation only changes
-- **feat**: A new feature
-- **fix**: A bug fix
-- **perf**: A code change that improves performance
-- **refactor**: A code change that neither fixes a bug nor adds a feature
-- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-- **test**: Adding missing tests or correcting existing tests
+- **build** - Changes that affect the build system or external dependencies
+- **ci** - Changes to our CI configuration files and scripts
+- **docs** - Documentation only changes
+- **feat** - A new feature
+- **fix** - A bug fix
+- **perf** - A code change that improves performance
+- **refactor** - A code change that neither fixes a bug nor adds a feature
+- **style** - Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **test** - Adding missing tests or correcting existing tests
 
 ### Scopes
 
-- **core** - Changes in the root directory
-- **api**
-- **panel**
-- **website**
-- **ui**
+- **core** - Changes made only in the root directory.
+- **api** - Changes made only in the api and/or shared directory.
+- **panel** - Changes made only in the panel and/or shared directory.
+- **website** - Changes made only in the website and/or shared directory.
+- **ui** - Changes made only in the ui and/or shared directory.
 
 See [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#specification) for more.
