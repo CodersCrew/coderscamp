@@ -6,5 +6,5 @@ interface IconsTableProps {
 };
 
 export const IconsTable = ({ children }: IconsTableProps): ReactElement => (
-    <Grid templateColumns="repeat(5, 1fr)" gap={32} my={32}>{children}</Grid>
+    <Grid templateColumns="repeat(6, 1fr)" gap={8} my={8}>{children}</Grid>
 );

@@ -23,6 +23,13 @@ const addRef = (jsx, types) => (inputPropName, outputPropName) => {
     ),
   );
 };
+
+const removeProp = (jsx) => (propName) => {
+  jsx.openingElement.attributes = jsx.openingElement.attributes.filter(
+    (attribute) => attribute.type !== 'JSXAttribute' || attribute.name.name !== propName,
+  );
+};
+
 /* eslint-enable no-param-reassign */
 
 const templateFunction = ({ template, types }, opts, { componentName, props, jsx }) => {
@@ -33,6 +40,10 @@ const templateFunction = ({ template, types }, opts, { componentName, props, jsx
   setElementName(jsx)('Icon');
   addComponentProp(jsx, types, props)('props', "Omit<IconProps, 'css'>");
   addRef(jsx, types)('svgRef', 'ref');
+  removeProp(jsx)('width');
+  removeProp(jsx)('height');
+  removeProp(jsx)('xmlns');
+  removeProp(jsx)('fill');
 
   const newLine = '\n\n';
 

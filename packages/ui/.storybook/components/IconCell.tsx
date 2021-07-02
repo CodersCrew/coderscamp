@@ -1,13 +1,15 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { VStack, Text } from '@chakra-ui/react';
+import { VStack, Text, IconProps } from '@chakra-ui/react';
 
 interface IconCellProps {
-    icon: FunctionComponent;
+    icon: FunctionComponent<IconProps>;
 };
 
+const getIconName = (fullIconName: string) => fullIconName.replaceAll(/(Outlined|Solid|Icon)/g, '');
+
 export const IconCell = ({ icon: Icon }: IconCellProps): ReactElement => (
-    <VStack spacing={8}>
-        <Icon />
-        <Text>{Icon.displayName}</Text>
+    <VStack spacing={2}>
+        <Icon boxSize={6} />
+        <Text fontSize="sm">{getIconName(Icon.displayName)}</Text>
     </VStack>
 );
