@@ -46,3 +46,6 @@ out
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# Generated
+packages/ui/src/icons
