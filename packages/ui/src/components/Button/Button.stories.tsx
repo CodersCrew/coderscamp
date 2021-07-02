@@ -8,7 +8,7 @@ import { Button, ButtonProps } from './Button';
 const icons = { Email: <EmailIcon />, Lock: <LockIcon />, Add: <AddIcon />, None: undefined };
 
 const meta: Meta = {
-  title: 'Button',
+  title: 'Components / Button',
   component: Button,
   argTypes: {
     icon: {

@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs';
+
+import { IconsTable } from '../components/IconsTable';
+import { IconCell } from '../components/IconCell';
+import * as icons from '../../src/icons';
+
+<Meta title="Design System / Icons" />
+
+# Outlined icons
+
+<IconsTable>
+  {Object.values(icons)
+    .filter(({ displayName }) => displayName.includes('Outlined'))
+    .map((icon) => (
+      <IconCell key={icon.displayName} icon={icon} />
+    ))}
+</IconsTable>
+
+# Solid icons
+
+<IconsTable>
+  {Object.values(icons)
+    .filter(({ displayName }) => displayName.includes('Solid'))
+    .map((icon) => (
+      <IconCell key={icon.displayName} icon={icon} />
+    ))}
+</IconsTable>
