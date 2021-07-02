@@ -13,8 +13,9 @@ Monorepo containing CodersCamp internal application and its website.
 1. Clone the repository.
 2. Run `yarn` to install all dependencies.
 3. On Unix systems, run `chmod -R +x scripts` to add execute permission to all scripts inside `scripts` directory.
-4. Run `yarn bootstrap` command to generate some necessary files.
-5. Run `docker-compose up -d` to start a database in the background.
+4. Copy `.env.example` file in `packages/api` directory and rename it to `.env`.
+5. Run `yarn bootstrap` command to generate some necessary files.
+6. Run `docker-compose up -d` to start a database in the background.
 
 ## Packages
 

@@ -2501,6 +2501,7 @@ __metadata:
   resolution: "@coderscamp/api@workspace:packages/api"
   dependencies:
     "@coderscamp/shared": 0.0.1
+    "@hapi/joi": 17.1.1
     "@nestjs/cli": 7.6.0
     "@nestjs/common": 7.6.18
     "@nestjs/config": 0.6.3
@@ -2512,14 +2513,14 @@ __metadata:
     "@nestjs/serve-static": 2.1.4
     "@nestjs/testing": 7.6.18
     "@prisma/client": 2.25.0
+    "@types/dotenv": 8.2.0
     "@types/express": 4.17.12
+    "@types/hapi__joi": 17.1.6
     "@types/node": 15.12.2
     "@types/passport-github2": 1.2.4
     "@types/passport-jwt": 3.0.5
     "@types/supertest": 2.0.11
-    passport: 0.4.1
-    passport-github2: 0.1.12
-    passport-jwt: 4.0.0
+    dotenv: 10.0.0
     prisma: 2.25.0
     reflect-metadata: 0.1.13
     rxjs: 7.1.0
@@ -2888,6 +2889,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hapi/address@npm:^4.0.1":
+  version: 4.1.0
+  resolution: "@hapi/address@npm:4.1.0"
+  dependencies:
+    "@hapi/hoek": ^9.0.0
+  checksum: 2844aceeb993bb767ae2c34e75767e7eff1b0cf811c4655c6500206d8d06a7deacdf4cf4172901e3bcafcbd7e8892b5ff786d0469071b9ba5ec14d0896034497
+  languageName: node
+  linkType: hard
+
 "@hapi/boom@npm:9.x.x":
   version: 9.1.2
   resolution: "@hapi/boom@npm:9.1.2"
@@ -2897,10 +2907,46 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hapi/hoek@npm:9.x.x":
+"@hapi/formula@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@hapi/formula@npm:2.0.0"
+  checksum: 02d14257149799b478e21f2620639470efb152f09dd2083fb9a6f247f29760de4af6ceb938b2337ecdf2a0514c2edd5beca6df5415d5c2cea909977fb0da4eaf
+  languageName: node
+  linkType: hard
+
+"@hapi/hoek@npm:9.x.x, @hapi/hoek@npm:^9.0.0":
   version: 9.2.0
   resolution: "@hapi/hoek@npm:9.2.0"
   checksum: c68d43f3fa7de4d53362c38ed5927e7872394bd80cd8d500a8b6c705da92ad9d37106df72d97a63417270fb186e2ad0b147bc31d61b9cdba614987bf8f1ba1ae
+  languageName: node
+  linkType: hard
+
+"@hapi/joi@npm:17.1.1":
+  version: 17.1.1
+  resolution: "@hapi/joi@npm:17.1.1"
+  dependencies:
+    "@hapi/address": ^4.0.1
+    "@hapi/formula": ^2.0.0
+    "@hapi/hoek": ^9.0.0
+    "@hapi/pinpoint": ^2.0.0
+    "@hapi/topo": ^5.0.0
+  checksum: 7547ccf2a8168e4f68f630069ab069f94d0689bd18a034a6dea40cc9c7e88776665670316f65bdd29068dccde111f3d7164504cfaf6db183110b64f36c5643dd
+  languageName: node
+  linkType: hard
+
+"@hapi/pinpoint@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@hapi/pinpoint@npm:2.0.0"
+  checksum: 445ca018999145dccff58ca1be71fa533c3124a1d0f256b8c3daf88067992a20aebfbdee49664741cfac160d924c76d24bd3e8eeb521af721e6f606f4bd64634
+  languageName: node
+  linkType: hard
+
+"@hapi/topo@npm:^5.0.0":
+  version: 5.1.0
+  resolution: "@hapi/topo@npm:5.1.0"
+  dependencies:
+    "@hapi/hoek": ^9.0.0
+  checksum: e37ce579b9d2f5ee86db584b7e4f1376b0f7c4fa5883a8f269e8077b02407eddfe709954a51beb9f5075696980c0da4565cc34b2eac97370ecf48859f26b654e
   languageName: node
   linkType: hard
 
@@ -5045,6 +5091,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dotenv@npm:8.2.0":
+  version: 8.2.0
+  resolution: "@types/dotenv@npm:8.2.0"
+  dependencies:
+    dotenv: "*"
+  checksum: 8b4d00f8849c550a6888b8f426f85f14171bf1bab53f6b2683bd71a25869a93cb4b960f4fa8de592f2b4c43366240fc9c50d89e6cc1cffffafbb843879c6fdd6
+  languageName: node
+  linkType: hard
+
 "@types/eslint-scope@npm:^3.7.0":
   version: 3.7.0
   resolution: "@types/eslint-scope@npm:3.7.0"
@@ -5125,6 +5180,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: ab79ec306d51775542b94bd768162e85fe2a0d47bd2f6033e2aad65bfcae399614ee7662a1370091fc508a8b639e3de0abf6b7232c9fb52047f207ba114ff390
+  languageName: node
+  linkType: hard
+
+"@types/hapi__joi@npm:17.1.6":
+  version: 17.1.6
+  resolution: "@types/hapi__joi@npm:17.1.6"
+  checksum: 177258c8e24da331077d6e031060cbbfc625abf5978bf9a4f14254a43b34d5982d6459ad37bdc34ce25ecc3587c24a8eab258ecd90cb7eca0111aa3a89ee66b0
   languageName: node
   linkType: hard
 
@@ -9348,10 +9410,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:8.2.0":
-  version: 8.2.0
-  resolution: "dotenv@npm:8.2.0"
-  checksum: 16cb89cbd7b98b053899b8aba8c5044c8fb61a2db8a81fe70360b75035fce5fed53bd7a34d772be717d0880c0321122a4c09423f518025e1b52d96791521b1a7
+"dotenv@npm:*, dotenv@npm:10.0.0":
+  version: 10.0.0
+  resolution: "dotenv@npm:10.0.0"
+  checksum: 9c45712e213de63bdb646b8e5344749b7566e25a67bbd3f03711d54e40eff10066c1f23eff0081d0949fda7c8efcc6e9e8bf18d0f023a8274f55f5d5f97bb6db
   languageName: node
   linkType: hard
 

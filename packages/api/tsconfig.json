@@ -8,7 +8,8 @@
     "module": "commonjs",
     "outDir": "./dist",
     "paths": {
-      "@coderscamp/shared/*": ["../shared/src/*"]
+      "@coderscamp/shared/*": ["../shared/src/*"],
+      "@/common/*": ["src/common/*"]
     },
     "sourceMap": true,
     "target": "es2017"
