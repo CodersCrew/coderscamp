@@ -1,5 +1,5 @@
 import React, { FocusEventHandler, MouseEventHandler, ReactElement } from 'react';
-import { forwardRef, IconButton as ChakraIconButton, IconButtonProps as ChakraIconButtonProps } from '@chakra-ui/react';
+import { forwardRef, IconButton as ChakraIconButton } from '@chakra-ui/react';
 
 type IconButtonSize = 'sm' | 'md' | 'lg' | 'xs';
 
@@ -21,55 +21,37 @@ export interface IconButtonProps {
    * Style variant of the icon button
    */
   variant?: IconButtonVariant;
+  /**
+   * Accessible name that describes a component's purpose
+   */
+  'aria-label': string;
   onClick?: MouseEventHandler;
   onFocus?: FocusEventHandler;
   onBlur?: FocusEventHandler;
-  'aria-label'?: string;
 }
 
-const getColorScheme = (color: IconButtonColor): ChakraIconButtonProps['colorScheme'] => {
-  if (color === 'danger') {
-    return 'red';
-  }
-
-  if (color === 'brand') {
-    return 'brand';
-  }
-
-  return 'gray';
+const fontSizes = {
+  xs: 16,
+  sm: 20,
+  md: 24,
+  lg: 28,
 };
 
-const getFontSize = (size: IconButtonSize): ChakraIconButtonProps['fontSize'] => {
-  if (size === 'sm') {
-    return 16;
-  }
-
-  if (size === 'md') {
-    return 20;
-  }
-
-  if (size === 'lg') {
-    return 23;
-  }
-
-  return 13;
+const colors = {
+  danger: 'red',
+  brand: 'brand',
+  default: 'gray',
 };
 
-export const IconButton = forwardRef<IconButtonProps, 'button'>(
-  ({ icon, size = 'sm', color = 'default', ...props }, ref) => {
-    const ariaLabel = props['aria-label'] || 'Icon Button';
-
-    return (
-      <ChakraIconButton
-        ref={ref}
-        size={size}
-        colorScheme={getColorScheme(color)}
-        fontSize={getFontSize(size)}
-        icon={icon}
-        borderRadius={6}
-        aria-label={ariaLabel}
-        {...props}
-      />
-    );
-  },
-);
+export const IconButton = forwardRef<IconButtonProps, 'button'>(({ size = 'sm', color = 'default', ...props }, ref) => {
+  return (
+    <ChakraIconButton
+      ref={ref}
+      size={size}
+      colorScheme={colors[color]}
+      fontSize={fontSizes[size]}
+      borderRadius={6}
+      {...props}
+    />
+  );
+});

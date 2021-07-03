@@ -29,30 +29,31 @@ export const Playground = Template.bind({});
 
 Playground.args = {
   icon: <ChatIcon />,
+  'aria-label': 'Icon Button',
 };
 
 export const Sizes = () => (
   <HStack>
-    <IconButton icon={<ChatIcon />} size="xs" />
-    <IconButton icon={<ChatIcon />} size="sm" />
-    <IconButton icon={<ChatIcon />} size="md" />
-    <IconButton icon={<ChatIcon />} size="lg" />
+    <IconButton icon={<ChatIcon />} size="xs" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} size="sm" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} size="md" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} size="lg" aria-label="Chat Icon Button" />
   </HStack>
 );
 
 export const Variants = () => (
   <HStack>
-    <IconButton icon={<ChatIcon />} variant="solid" />
-    <IconButton icon={<ChatIcon />} variant="outline" />
-    <IconButton icon={<ChatIcon />} variant="ghost" />
-    <IconButton icon={<ChatIcon />} variant="link" />
+    <IconButton icon={<ChatIcon />} variant="solid" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} variant="outline" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} variant="ghost" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} variant="link" aria-label="Chat Icon Button" />
   </HStack>
 );
 
 export const Colors = () => (
   <HStack>
-    <IconButton icon={<ChatIcon />} color="default" />
-    <IconButton icon={<ChatIcon />} color="brand" />
-    <IconButton icon={<ChatIcon />} color="danger" />
+    <IconButton icon={<ChatIcon />} color="default" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} color="brand" aria-label="Chat Icon Button" />
+    <IconButton icon={<ChatIcon />} color="danger" aria-label="Chat Icon Button" />
   </HStack>
 );
