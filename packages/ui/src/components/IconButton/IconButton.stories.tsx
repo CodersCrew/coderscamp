@@ -1,13 +1,24 @@
 import React from 'react';
-import { ChatIcon } from '@chakra-ui/icons';
+import { AddIcon, ChatIcon, LockIcon } from '@chakra-ui/icons';
 import { Meta, Story } from '@storybook/react';
 
 import { HStack } from '../Stack';
 import { IconButton, IconButtonProps } from './IconButton';
 
+const icons = { Chat: <ChatIcon />, Lock: <LockIcon />, Add: <AddIcon /> };
+
 const meta: Meta = {
   title: 'IconButton',
   component: IconButton,
+  argTypes: {
+    icon: {
+      options: Object.keys(icons),
+      mapping: icons,
+      control: {
+        type: 'select',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -17,9 +28,6 @@ const Template: Story<IconButtonProps> = (args) => <IconButton {...args} />;
 export const Playground = Template.bind({});
 
 Playground.args = {
-  variant: 'solid',
-  size: 'md',
-  color: 'default',
   icon: <ChatIcon />,
 };
 
