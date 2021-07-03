@@ -8,26 +8,29 @@
     "start": "serve storybook-static",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "theme": "chakra-cli tokens \"src/theme/overwrites/index.ts\""
+    "generate:theme": "chakra-cli tokens \"src/theme/overwrites/index.ts\"",
+    "generate:icons": "svgr -d src/icons icons && rimraf \"src/icons/solid/index.tsx\" \"src/icons/outlined/index.tsx\"",
+    "generate": "concurrently \"yarn generate:theme\" \"yarn generate:icons\""
   },
   "peerDependencies": {
     "react": "17.0.2"
   },
   "dependencies": {
     "@chakra-ui/icons": "1.0.13",
-    "@chakra-ui/react": "1.6.3",
+    "@chakra-ui/react": "1.6.4",
     "@chakra-ui/theme-tools": "1.1.7",
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",
     "framer-motion": "4.1.17"
   },
   "devDependencies": {
-    "@chakra-ui/cli": "1.3.1",
+    "@chakra-ui/cli": "1.4.0",
     "@storybook/addon-actions": "6.3.0-rc.10",
     "@storybook/addon-docs": "6.3.0-rc.10",
     "@storybook/addon-essentials": "6.3.0-rc.10",
     "@storybook/addon-links": "6.3.0-rc.10",
     "@storybook/react": "6.3.0-rc.10",
+    "@svgr/cli": "5.5.0",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "11.2.7",
     "@types/react": "17.0.11",

@@ -5,7 +5,7 @@ import { HStack } from '../Stack';
 import { Badge, BadgeProps } from './Badge';
 
 const meta: Meta = {
-  title: 'Badge',
+  title: 'Components / Badge',
   component: Badge,
 };
 
