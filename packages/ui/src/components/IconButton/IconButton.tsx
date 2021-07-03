@@ -24,7 +24,7 @@ export interface IconButtonProps {
   onClick?: MouseEventHandler;
   onFocus?: FocusEventHandler;
   onBlur?: FocusEventHandler;
-  ariaLabel?: string;
+  'aria-label'?: string;
 }
 
 const getColorScheme = (color: IconButtonColor): ChakraIconButtonProps['colorScheme'] => {
@@ -39,7 +39,7 @@ const getColorScheme = (color: IconButtonColor): ChakraIconButtonProps['colorSch
   return 'gray';
 };
 
-const getFontSize = (size: IconButtonSize) => {
+const getFontSize = (size: IconButtonSize): ChakraIconButtonProps['fontSize'] => {
   if (size === 'sm') {
     return 16;
   }
@@ -56,7 +56,9 @@ const getFontSize = (size: IconButtonSize) => {
 };
 
 export const IconButton = forwardRef<IconButtonProps, 'button'>(
-  ({ icon, size = 'sm', color = 'default', ariaLabel = 'Icon Button', ...props }, ref) => {
+  ({ icon, size = 'sm', color = 'default', ...props }, ref) => {
+    const ariaLabel = props['aria-label'] || 'Icon Button';
+
     return (
       <ChakraIconButton
         ref={ref}
@@ -64,6 +66,7 @@ export const IconButton = forwardRef<IconButtonProps, 'button'>(
         colorScheme={getColorScheme(color)}
         fontSize={getFontSize(size)}
         icon={icon}
+        borderRadius={6}
         aria-label={ariaLabel}
         {...props}
       />
