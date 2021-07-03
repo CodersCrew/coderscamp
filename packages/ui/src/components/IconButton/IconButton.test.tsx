@@ -6,9 +6,9 @@ import { IconButton } from './IconButton';
 
 describe('IconButton', () => {
   it('renders correctly', () => {
-    render(<IconButton data-testid="icon-btn" icon={<ChatIcon />} />);
+    render(<IconButton aria-label="icon-btn" icon={<ChatIcon />} />);
 
-    const iconButton = screen.getByTestId('icon-btn');
+    const iconButton = screen.getByLabelText('icon-btn');
 
     expect(iconButton).toBeInTheDocument();
   });
