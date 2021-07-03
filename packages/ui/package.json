@@ -6,6 +6,7 @@
     "dev": "start-storybook -p 6006",
     "build": "build-storybook",
     "start": "serve storybook-static",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
     "theme": "chakra-cli tokens \"src/theme/overwrites/index.ts\""
   },
