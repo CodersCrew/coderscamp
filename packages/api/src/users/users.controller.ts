@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { UsersMapper } from './users.mapper';
-import { UserDTO } from './users.model';
+import type { UserDTO } from './users.model';
 import { UsersRepository } from './users.repository';
 
 @Controller('users')

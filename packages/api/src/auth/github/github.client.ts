@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy as GithubStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { VerifiedCallback } from 'passport-jwt';
+import type { UserDTO } from 'src/users/users.model';
 
 import { UsersMapper } from '../../users/users.mapper';
 import { UsersRepository } from '../../users/users.repository';
@@ -28,7 +29,7 @@ export class GithubClient extends GithubStrategy(Strategy) {
     done(null, UsersMapper.fromGithubInputToDomain(profile));
   }
 
-  async githubAuth(user: GithubUserData) {
+  async githubAuth(user: GithubUserData): Promise<{ accessToken: string; profile: UserDTO } | null> {
     let userFromDatabase = await this.usersRepository.getByGithubId(user.githubId);
     if (!userFromDatabase) userFromDatabase = await this.usersRepository.create(user);
     return userFromDatabase

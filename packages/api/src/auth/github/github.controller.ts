@@ -2,7 +2,7 @@ import { Controller, Get, InternalServerErrorException, Req, UseGuards } from '@
 
 import { GithubClient } from './github.client';
 import { GithubGuard } from './github.guard';
-import { GithubUserData } from './github.model';
+import type { GithubUserData } from './github.model';
 
 @Controller('auth/github')
 export class GithubController {
