@@ -19,6 +19,7 @@
     "w": "scripty",
     "bootstrap": "scripty",
     "clean": "scripty",
+    "typecheck": "yarn workspaces foreach -vpi run typecheck",
     "test": "yarn workspaces foreach -vpi run test",
     "eslint": "eslint --ignore-path .gitignore --ext js,ts,tsx",
     "lint": "yarn eslint \"**/*.{js,ts,tsx}\"",
