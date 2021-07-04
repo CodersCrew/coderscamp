@@ -25,10 +25,10 @@
     "@nestjs/platform-express": "7.6.18",
     "@nestjs/serve-static": "2.1.4",
     "@prisma/client": "2.25.0",
+    "dotenv": "10.0.0",
     "passport": "0.4.1",
     "passport-github2": "0.1.12",
     "passport-jwt": "4.0.0",
-    "dotenv": "10.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.1.0"
   },

@@ -10,25 +10,11 @@ import { UsersModule } from '../src/users/users.module';
 describe('AuthController', () => {
   let app: INestApplication;
   let configService: ConfigService;
-
-  beforeAll(async () => {
-    const module = await Test.createTestingModule({
-      imports: [ConfigModule, PrismaModule, AuthModule, UsersModule],
-    }).compile();
-
-    app = module.createNestApplication();
-    configService = module.get<ConfigService>('ConfigService');
-    await app.init();
-  });
-
-  afterAll(async () => {
-    await app.close();
-  });
+  let request: supertest.SuperTest<supertest.Test>;
 
   describe('auth/github/login', () => {
     it('Should redirect user to github login page.', async () => {
-      const test = supertest(app.getHttpServer());
-      const response = await test.get('/auth/github/login');
+      const response = await request.get('/auth/github/login');
 
       expect(response.headers.location).toEqual(
         `https://github.com/login/oauth/authorize?response_type=code&scope=read%3Auser&client_id=${configService.get(
@@ -37,5 +23,24 @@ describe('AuthController', () => {
       );
       expect(response.statusCode).toEqual(HttpStatus.FOUND);
     });
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  async function setup() {
+    const module = await Test.createTestingModule({
+      imports: [ConfigModule, PrismaModule, AuthModule, UsersModule],
+    }).compile();
+
+    app = module.createNestApplication();
+    configService = module.get<ConfigService>('ConfigService');
+    request = supertest(app.getHttpServer());
+    await app.init();
+  }
+
+  beforeEach(() => {
+    setup();
   });
 });

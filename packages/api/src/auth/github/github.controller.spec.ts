@@ -1,9 +1,9 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, InternalServerErrorException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
 import type { User } from '../../../../shared/src/models/user';
 import { PrismaService } from '../../prisma/prisma.service';
-import { UsersService } from '../../users/users.service';
+import { UsersRepository } from '../../users/users.repository';
 import { JWTModule } from '../jwtStrategy/jwt.module';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import { GithubClient } from './github.client';
@@ -38,33 +38,8 @@ describe('Github controller', () => {
   let jwtStrategy: JwtStrategy;
   let prismaService: PrismaService & typeof mockPrismaService;
 
-  beforeAll(async () => {
-    const module = await Test.createTestingModule({
-      imports: [JWTModule],
-      controllers: [GithubController],
-      providers: [
-        {
-          provide: PrismaService,
-          useValue: mockPrismaService,
-        },
-        UsersService,
-        GithubClient,
-        JwtStrategy,
-      ],
-    }).compile();
-
-    app = module.createNestApplication();
-    githubController = module.get<GithubController>('GithubController');
-    prismaService = module.get<PrismaService & typeof mockPrismaService>('PrismaService');
-    jwtStrategy = module.get<JwtStrategy>('JwtStrategy');
-    await app.init();
-  });
-
-  afterAll(async () => {
-    await app.close();
-  });
-  describe('auth/github/callback', () => {
-    it('Should create user in database and return token with user data.', async () => {
+  describe('githubOAuthCallback', () => {
+    it('Should return token with user data.', async () => {
       prismaService.user.findUnique = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
       await expect(
         githubController.githubOAuthCallback({
@@ -81,5 +56,46 @@ describe('Github controller', () => {
         } as Request & { user: GithubUserData }),
       ).resolves.toEqual({ accessToken: jwtStrategy.generateToken(profile), profile });
     });
+
+    it('Should throw internal server error if user do not exist and can not be created', async () => {
+      prismaService.user.findUnique = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
+      prismaService.user.create = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
+
+      await expect(
+        githubController.githubOAuthCallback({
+          user: githubUserData,
+        } as Request & { user: GithubUserData }),
+      ).rejects.toThrow(InternalServerErrorException);
+    });
+  });
+
+  async function setup() {
+    const module = await Test.createTestingModule({
+      imports: [JWTModule],
+      controllers: [GithubController],
+      providers: [
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService,
+        },
+        UsersRepository,
+        GithubClient,
+        JwtStrategy,
+      ],
+    }).compile();
+
+    app = module.createNestApplication();
+    githubController = module.get<GithubController>('GithubController');
+    prismaService = module.get<PrismaService & typeof mockPrismaService>('PrismaService');
+    jwtStrategy = module.get<JwtStrategy>('JwtStrategy');
+    await app.init();
+  }
+
+  beforeAll(async () => {
+    await setup();
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });

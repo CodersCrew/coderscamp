@@ -1,7 +1,7 @@
 import { Controller, Get, InternalServerErrorException, Req, UseGuards } from '@nestjs/common';
 
 import { GithubClient } from './github.client';
-import { GithubGuard } from './github.gurad';
+import { GithubGuard } from './github.guard';
 import { GithubUserData } from './github.model';
 
 @Controller('auth/github')
@@ -17,7 +17,8 @@ export class GithubController {
   @Get('callback')
   @UseGuards(GithubGuard)
   async githubOAuthCallback(@Req() req: Request & { user: GithubUserData }) {
-    const result = this.githubClient.githubAuth(req.user);
+    const result = await this.githubClient.githubAuth(req.user);
+
     if (result) return result;
     throw new InternalServerErrorException();
   }

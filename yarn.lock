@@ -2521,6 +2521,9 @@ __metadata:
     "@types/passport-jwt": 3.0.5
     "@types/supertest": 2.0.11
     dotenv: 10.0.0
+    passport: 0.4.1
+    passport-github2: 0.1.12
+    passport-jwt: 4.0.0
     prisma: 2.25.0
     reflect-metadata: 0.1.13
     rxjs: 7.1.0
@@ -9414,6 +9417,13 @@ __metadata:
   version: 10.0.0
   resolution: "dotenv@npm:10.0.0"
   checksum: 9c45712e213de63bdb646b8e5344749b7566e25a67bbd3f03711d54e40eff10066c1f23eff0081d0949fda7c8efcc6e9e8bf18d0f023a8274f55f5d5f97bb6db
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:8.2.0":
+  version: 8.2.0
+  resolution: "dotenv@npm:8.2.0"
+  checksum: 16cb89cbd7b98b053899b8aba8c5044c8fb61a2db8a81fe70360b75035fce5fed53bd7a34d772be717d0880c0321122a4c09423f518025e1b52d96791521b1a7
   languageName: node
   linkType: hard
 

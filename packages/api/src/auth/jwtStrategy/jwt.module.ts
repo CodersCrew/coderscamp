@@ -9,8 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET') || '',
-        signOptions: { expiresIn: configService.get<number>('TOKEN_EXPIRATION_TIME') || 3600 },
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: configService.get<number>('TOKEN_EXPIRATION_TIME') },
       }),
       inject: [ConfigService],
     }),
