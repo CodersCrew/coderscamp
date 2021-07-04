@@ -1,15 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
 
+import type { UserDTO } from '@coderscamp/shared/models/user';
+
 import { UsersMapper } from './users.mapper';
-import type { UserDTO } from './users.model';
-import { UsersRepository } from './users.repository';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get('/')
   async getAll(): Promise<UserDTO[]> {
-    return UsersMapper.toPlainMany(await this.usersRepository.getAll());
+    return UsersMapper.toPlainMany(await this.usersService.getAll());
   }
 }

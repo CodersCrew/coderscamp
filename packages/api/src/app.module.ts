@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -19,12 +18,6 @@ const productionImports = [
 ];
 
 @Module({
-  imports: [
-    ...(isProduction ? productionImports : []),
-    ConfigModule.forRoot({ isGlobal: true }),
-    PrismaModule,
-    UsersModule,
-    AuthModule,
-  ],
+  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule, AuthModule],
 })
 export class AppModule {}

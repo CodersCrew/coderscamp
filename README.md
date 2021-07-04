@@ -75,6 +75,11 @@ To increase project consistency, some standard scripts are unified across all wo
 - **start** - runs previously built package locally.
 - **test** - runs tests for the package.
 
+## Working with prisma locally
+
+When prototyping use `yarn synchronize` to generate new prisma client and modify database without creating migration.
+After finishing changing database schema use `yarn migrate` to create migration.
+
 ## PR naming rules
 
 We have very precise rules over how our PR title can be formatted. This leads to more readable messages that are easy to follow when looking through the project history.

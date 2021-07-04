@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 
 import type { User } from '../../../../shared/src/models/user';
 import { PrismaService } from '../../prisma/prisma.service';
-import { UsersRepository } from '../../users/users.repository';
+import { UsersService } from '../../users/users.service';
 import { JWTModule } from '../jwtStrategy/jwt.module';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import { GithubClient } from './github.client';
@@ -78,7 +78,7 @@ describe('Github controller', () => {
           provide: PrismaService,
           useValue: mockPrismaService,
         },
-        UsersRepository,
+        UsersService,
         GithubClient,
         JwtStrategy,
       ],

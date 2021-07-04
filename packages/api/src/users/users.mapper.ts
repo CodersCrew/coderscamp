@@ -1,15 +1,14 @@
-import type { User } from '@coderscamp/shared/models/user';
+import type { User, UserDTO } from '@coderscamp/shared/models/user';
 
 import type { GithubDTO } from '../auth/github/github.model';
-import type { UserDTO } from './users.model';
 
 export class UsersMapper {
   static toDomain(value: UserDTO): User {
-    return value as User;
+    return value;
   }
 
   static toDomainMany(values: UserDTO[]): User[] {
-    return values as User[];
+    return values;
   }
 
   static fromGithubInputToDomain(value: GithubDTO): Omit<User, 'id'> {
@@ -23,10 +22,10 @@ export class UsersMapper {
   }
 
   static toPlain(value: User): UserDTO {
-    return value as UserDTO;
+    return value;
   }
 
   static toPlainMany(values: User[]): UserDTO[] {
-    return values as UserDTO[];
+    return values;
   }
 }
