@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
 
+import { Button } from '@coderscamp/ui/components/Button';
+import { Flex } from '@coderscamp/ui/components/Flex';
 // TODO: Change Button to Button component from ui package
 // TODO: formExpirationDate propably will be not string type, need to change
 

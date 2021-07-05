@@ -1,13 +1,15 @@
 import React from 'react';
 import { SiGithub } from 'react-icons/si';
-import { Button, Flex, Image, Link, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Image, Link, Text, useBreakpointValue } from '@chakra-ui/react';
 
-// TODO: Change Button to Button component from ui package
+import { Button } from '@coderscamp/ui/components/Button';
+import { Flex } from '@coderscamp/ui/components/Flex';
+
 // TODO: Change Image to Logo Component from ui package
 // TODO: An icon package is currently installed, when it's not needed, remove it
 
 export const SignUpPageForCandidates = () => {
-  const buttonSize = useBreakpointValue(['sm', 'xl']);
+  // const buttonSize = useBreakpointValue(['sm', 'xl']);
 
   return (
     <Flex
@@ -53,11 +55,12 @@ export const SignUpPageForCandidates = () => {
             whiteSpace: 'normal',
             wordWrap: 'break-word',
           }}
-          size={buttonSize}
-          colorScheme="GitHub"
-          leftIcon={<SiGithub />}
+          icon={<SiGithub />}
+          size="lg"
+          colorScheme="github"
           borderRadius="6px"
           p="1.25rem"
+          aria-label="GitHub login Button"
         >
           Zapisz mnie na CodersCamp używając konta GitHub
         </Button>
