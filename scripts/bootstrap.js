@@ -7,7 +7,7 @@ const { exec } = require('./_helpers');
  */
 const main = () => {
   exec('yarn');
-  exec('concurrently "yarn workspace @coderscamp/ui theme" "yarn workspace @coderscamp/api generate"');
+  exec('concurrently "yarn workspace @coderscamp/ui generate" "yarn workspace @coderscamp/api generate"');
 };
 
 main();
