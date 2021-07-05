@@ -21,7 +21,7 @@ const anchorStyle = {
   _active: { color: 'brand.700' },
 };
 
-export const Typography: React.FC<TypographyProps> = forwardRef(
+export const Typography = forwardRef<TypographyProps, 'div'>(
   ({ as = 'div', size = 'md', weight = 'regular', children, ...props }, ref) => {
     const stylesForLink = as === 'a' && anchorStyle;
     return (

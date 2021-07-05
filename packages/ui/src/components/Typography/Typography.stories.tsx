@@ -6,7 +6,7 @@ import { Typography, TypographyProps } from './Typography';
 
 const tags = { h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6', a: 'a', span: 'span', p: 'p', div: 'div' };
 const meta: Meta = {
-  title: 'Typography',
+  title: 'Components / Typography',
   component: Typography,
   argTypes: {
     as: {

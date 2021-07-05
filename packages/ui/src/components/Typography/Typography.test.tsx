@@ -10,4 +10,17 @@ describe('Typography', () => {
     const typography = screen.getByText(text);
     expect(typography).toBeInTheDocument();
   });
+  it('should have styles "textDecoration=underline "and "color=brand.500" when receive "as" props equal to "a"', () => {
+    const text = 'Lorem ipsum';
+    render(
+      <Typography size="xl" as="a" href="#">
+        {text}
+      </Typography>,
+    );
+    const typography = screen.getByText(text);
+    expect(typography).toHaveStyle({
+      textDecoration: 'underline',
+      color: 'brand.500',
+    });
+  });
 });
