@@ -2,9 +2,9 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { HStack } from '../Stack';
-import { IsAnchor, Typography } from './index';
+import { Typography, TypographyProps } from './Typography';
 
-const tags = { h1: 'h1', a: 'a' };
+const tags = { h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6', a: 'a', span: 'span', p: 'p', div: 'div' };
 const meta: Meta = {
   title: 'Typography',
   component: Typography,
@@ -21,52 +21,30 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<IsAnchor> = (args) => <Typography size="2xl" as="h1" weight="regular" {...args} />;
+const Template: Story<TypographyProps> = (args) => <Typography as="h1" size="md" weight="regular" {...args} />;
 
 export const Playground = Template.bind({});
 
 Playground.args = {
   children: 'lorem ipsum dolor sit amet',
   as: 'h1',
-  size: '2xl',
+  size: 'md',
   weight: 'regular',
 };
 
 export const Sizes = () => (
   <>
-    <Typography size="xs" as="h1">
-      Extra small (xs)
-    </Typography>
-    <Typography size="sm" as="h1">
-      Small (sm)
-    </Typography>
-    <Typography size="md" as="h1">
-      Medium (md)
-    </Typography>
-    <Typography size="lg" as="h1">
-      Large (lg)
-    </Typography>
-    <Typography size="xl" as="h1">
-      Extra Large (xl)
-    </Typography>
-    <Typography size="2xl" as="h1">
-      Extra Large (2xl)
-    </Typography>
-    <Typography fontSize="3xl" as="h1">
-      Extra Large (3xl)
-    </Typography>
-    <Typography size="4xl" as="h1">
-      Extra Large (4xl)
-    </Typography>
-    <Typography size="5xl" as="h1">
-      Extra Large (5xl)
-    </Typography>
-    <Typography size="6xl" as="h1">
-      Extra Large (6xl)
-    </Typography>
-    <Typography size="7xl" as="h1">
-      Extra Large (7xl)
-    </Typography>
+    <Typography size="xs">Extra small (xs)</Typography>
+    <Typography size="sm">Small (sm)</Typography>
+    <Typography size="md">Medium (md)</Typography>
+    <Typography size="lg">Large (lg)</Typography>
+    <Typography size="xl">Extra Large (xl)</Typography>
+    <Typography size="2xl">Extra Large (2xl)</Typography>
+    <Typography size="3xl">Extra Large (3xl)</Typography>
+    <Typography size="4xl">Extra Large (4xl)</Typography>
+    <Typography size="5xl">Extra Large (5xl)</Typography>
+    <Typography size="6xl">Extra Large (6xl)</Typography>
+    <Typography size="7xl">Extra Large (7xl)</Typography>
   </>
 );
 
@@ -75,7 +53,7 @@ export const Variants = () => (
     <Typography size="md" as="span">
       Span
     </Typography>
-    <Typography size="md" as="a" href="#">
+    <Typography size="xl" as="a" href="#">
       Link
     </Typography>
     <Typography size="md" as="p">
