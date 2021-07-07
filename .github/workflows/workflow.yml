@@ -19,14 +19,14 @@ jobs:
         run: yarn test --onlyChanged
 
   es-lint:
-    needs: run-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: install dependencies
+        run: yarn install --immutable
       - name: Run esLint
         run: yarn eslint --cache
   typescript-compiler:
-    needs: run-tests
     name: typecheck
     runs-on: ubuntu-latest
     steps:
@@ -35,5 +35,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
+      - name: install dependencies
+        run: yarn install --immutable
       - name: tsc compile webside
         run: yarn typecheck
