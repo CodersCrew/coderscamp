@@ -1,8 +1,8 @@
 import React from 'react';
-import { forwardRef, HTMLChakraProps, Radio as ChakraRadio, RadioProps as ChakraRadioProps } from '@chakra-ui/react';
+import { forwardRef, HTMLChakraProps, Radio as ChakraRadio } from '@chakra-ui/react';
 
-type RadioSize = 'md' | 'lg';
-type RadioColor = 'default' | 'brand';
+export type RadioSize = 'md' | 'lg';
+export type RadioColor = 'default' | 'brand';
 
 export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'defaultChecked'> {
   /**
@@ -21,11 +21,10 @@ export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'd
    * Color variant of the radio
    */
   color?: RadioColor;
-  value?: string | number | undefined;
-  onChange?: ChakraRadioProps['onChange'];
+  value?: string | number;
 }
 
-export const Radio = forwardRef<RadioProps, 'button'>(
+export const Radio = forwardRef<RadioProps, 'div'>(
   ({ color = 'default', value, children = '', checked = false, disabled = false, size = 'md', ...props }, ref) => {
     const colorScheme = color === 'default' ? 'grey' : color;
 

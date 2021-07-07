@@ -20,6 +20,7 @@ Playground.args = {
   size: 'md',
   disabled: false,
   color: 'default',
+  checked: false,
 };
 
 export const Sizes = () => (
