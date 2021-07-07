@@ -24,6 +24,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: install dependencies
         run: yarn install --immutable
+      - name: generate workspaces
+        run: yarn generate
       - name: Run esLint
         run: yarn eslint --cache
   typescript-compiler:
@@ -37,5 +39,7 @@ jobs:
           node-version: 14
       - name: install dependencies
         run: yarn install --immutable
+      - name: generate workspaces
+        run: yarn generate
       - name: tsc compile webside
         run: yarn typecheck
