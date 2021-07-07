@@ -1,5 +1,5 @@
 import React from 'react';
-import { forwardRef, HTMLChakraProps, Radio as ChakraRadio } from '@chakra-ui/react';
+import { forwardRef, HTMLChakraProps, Radio as ChakraRadio, RadioProps as ChakraRadioProps } from '@chakra-ui/react';
 
 type RadioSize = 'md' | 'lg';
 type RadioColor = 'default' | 'brand';
@@ -22,6 +22,7 @@ export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'd
    */
   color?: RadioColor;
   value?: string | number | undefined;
+  onChange?: ChakraRadioProps['onChange'];
 }
 
 export const Radio = forwardRef<RadioProps, 'button'>(
