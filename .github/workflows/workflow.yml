@@ -11,29 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: install dependencies 
+      - name: install dependencies
         run: yarn install --immutable
-      - name: run affected tests 
+      - name: generate workspaces
+        run: yarn generate
+      - name: run affected tests
         run: yarn test --onlyChanged
-      
+
   es-lint:
+    needs: run-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: install dependencies 
-        run: yarn install --immutable
       - name: Run esLint
         run: yarn eslint --cache
   typescript-compiler:
+    needs: run-tests
     name: typecheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: install node v14
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14
-    - name: install dependencies
-      run: yarn install --immutable
-    - name: tsc compile webside
-      run: yarn typecheck
+      - uses: actions/checkout@v2
+      - name: install node v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: tsc compile webside
+        run: yarn typecheck
