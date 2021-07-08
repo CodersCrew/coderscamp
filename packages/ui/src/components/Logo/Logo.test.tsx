@@ -11,41 +11,40 @@ describe('Logo', () => {
   it('renders default', () => {
     render(<Logo />);
 
-    const logo = screen.getByAltText('Logo CodersCamp');
-
-    expect(logo.src).toContain(whiteHorizontalLogo);
-    expect(logo).toBeInTheDocument();
+    const logo = screen.getByRole('img');
+    expect(logo).toHaveAttribute('src', whiteHorizontalLogo);
+    expect(logo).toHaveAttribute('alt', 'Logo CodersCamp');
   });
 
   it('renders correctly square black version', () => {
     render(<Logo color="black" layout="square" />);
 
-    const logo = screen.getByAltText('Logo CodersCamp');
-
-    expect(logo.src).toContain(blackSquareLogo);
+    const logo = screen.getByRole('img');
+    expect(logo).toHaveAttribute('src', blackSquareLogo);
+    expect(logo).toHaveAttribute('alt', 'Logo CodersCamp');
   });
 
   it('renders correctly square white version', () => {
     render(<Logo color="white" layout="square" />);
 
-    const logo = screen.getByAltText('Logo CodersCamp');
-
-    expect(logo.src).toContain(whiteSquareLogo);
+    const logo = screen.getByRole('img');
+    expect(logo).toHaveAttribute('src', whiteSquareLogo);
+    expect(logo).toHaveAttribute('alt', 'Logo CodersCamp');
   });
 
   it('renders correctly horizontal black version', () => {
     render(<Logo color="black" layout="horizontal" />);
 
-    const logo = screen.getByAltText('Logo CodersCamp');
-
-    expect(logo.src).toContain(blackHorizontalLogo);
+    const logo = screen.getByRole('img');
+    expect(logo).toHaveAttribute('src', blackHorizontalLogo);
+    expect(logo).toHaveAttribute('alt', 'Logo CodersCamp');
   });
 
   it('renders correctly horizontal white version', () => {
     render(<Logo color="white" layout="horizontal" />);
 
-    const logo = screen.getByAltText('Logo CodersCamp');
-
-    expect(logo.src).toContain(whiteHorizontalLogo);
+    const logo = screen.getByRole('img');
+    expect(logo).toHaveAttribute('src', whiteHorizontalLogo);
+    expect(logo).toHaveAttribute('alt', 'Logo CodersCamp');
   });
 });

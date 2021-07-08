@@ -20,7 +20,7 @@ Playground.args = {
   color: 'black',
 };
 
-export const LayoutVariants = () => (
+export const Layouts = () => (
   <HStack>
     <Logo layout="horizontal" />
     <Logo layout="square" />

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import { forwardRef, HTMLChakraProps, Image as ChakraImage } from '@chakra-ui/react';
 
 import blackHorizontalLogo from '../../../images/LogoBlackHorizontal.svg';
@@ -6,30 +6,25 @@ import blackSquareLogo from '../../../images/LogoBlackSquare.svg';
 import whiteHorizontalLogo from '../../../images/LogoWhiteHorizontal.svg';
 import whiteSquareLogo from '../../../images/LogoWhiteSquare.svg';
 
-type LayoutVariant = 'horizontal' | 'square';
+type Layout = 'horizontal' | 'square';
 
 type LogoColor = 'white' | 'black';
 
 export interface LogoProps extends HTMLChakraProps<'img'> {
-  layout?: LayoutVariant;
+  layout?: Layout;
   color?: LogoColor;
-  onClick?: MouseEventHandler;
 }
 
-const getSrcFromProps = (color: LogoColor, layout: LayoutVariant): string => {
-  if (color === 'white' && layout === 'horizontal') return whiteHorizontalLogo;
-  if (color === 'white' && layout === 'square') return whiteSquareLogo;
-  if (color === 'black' && layout === 'horizontal') return blackHorizontalLogo;
-  if (color === 'black' && layout === 'square') return blackSquareLogo;
-
-  return './LogoWhiteHorizontal';
+const logosMap = {
+  white: { horizontal: whiteHorizontalLogo, square: whiteSquareLogo },
+  black: { horizontal: blackHorizontalLogo, square: blackSquareLogo },
 };
 
 export const Logo = forwardRef<LogoProps, 'img'>(({ layout = 'horizontal', color = 'white', ...props }, ref) => {
   return (
     <ChakraImage
       alt="Logo CodersCamp"
-      src={getSrcFromProps(color, layout)}
+      src={logosMap[color][layout] as unknown as string}
       layout={layout}
       color={color}
       ref={ref}
