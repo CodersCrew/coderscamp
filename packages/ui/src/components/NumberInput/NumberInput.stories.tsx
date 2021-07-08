@@ -18,36 +18,35 @@ export const Playground = Template.bind({});
 Playground.args = {
   size: 'sm',
   inputMode: 'decimal',
-  disabled: false
+  disabled: false,
 };
 
 export const Sizes = () => (
   <HStack>
-    <NumberInput size="sm" inputMode='decimal' disabled={false}/>
-    <NumberInput size="md" inputMode='decimal' disabled={false}/>
-    <NumberInput size="lg" inputMode='decimal' disabled={false}/>
+    <NumberInput size="sm" inputMode="decimal" disabled={false} />
+    <NumberInput size="md" inputMode="decimal" disabled={false} />
+    <NumberInput size="lg" inputMode="decimal" disabled={false} />
   </HStack>
 );
 
 export const InputModes = () => (
   <HStack>
-    <NumberInput size="md" inputMode='decimal' disabled={false}/>
-    <NumberInput size="md" inputMode='numeric' disabled={false}/>
-	</HStack>
+    <NumberInput size="md" inputMode="decimal" disabled={false} />
+    <NumberInput size="md" inputMode="numeric" disabled={false} />
+  </HStack>
 );
 
-
 export const Disabled = () => (
-	<HStack>
-	  <NumberInput size="md" inputMode='decimal' disabled={true}/>
-	  <NumberInput size="md" inputMode='numeric' disabled={false}/>
-	  </HStack>
-  );
+  <HStack>
+    <NumberInput size="md" inputMode="decimal" disabled />
+    <NumberInput size="md" inputMode="numeric" disabled={false} />
+  </HStack>
+);
 
-  export const Pseudoclasses = () => (
-	<HStack>
-	  <NumberInput size="md" inputMode='decimal' disabled={false} />
-	  <NumberInput size="md" inputMode='numeric' disabled={false} value={1} max={0}/>
-	  <NumberInput size="md" inputMode='numeric' disabled={false} isFocus={true}/>
-	  </HStack>
-  );
+export const Pseudoclasses = () => (
+  <HStack>
+    <NumberInput size="md" inputMode="decimal" disabled={false} />
+    <NumberInput size="md" inputMode="numeric" disabled={false} value={1} max={0} />
+    <NumberInput size="md" inputMode="numeric" disabled={false} isFocus />
+  </HStack>
+);
