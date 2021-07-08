@@ -6,7 +6,7 @@ export type RadioColor = 'default' | 'brand';
 
 export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'defaultChecked'> {
   /**
-   * Determines radio's paddings and text size.
+   * Determines radio's and text size.
    */
   size?: RadioSize;
   /**
@@ -14,32 +14,24 @@ export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'd
    */
   checked?: boolean;
   /**
-   * If `true`, the radio will be disabled
+   * Determines if input is disabled.
    */
   disabled?: boolean;
-  /**
-   * Color variant of the radio
-   */
-  color?: RadioColor;
-  value?: string | number;
+  value: string | number;
 }
 
-export const Radio = forwardRef<RadioProps, 'div'>(
-  ({ color = 'default', value, children = '', checked = false, disabled = false, size = 'md', ...props }, ref) => {
-    const colorScheme = color === 'default' ? 'grey' : color;
-
+export const Radio = forwardRef<RadioProps, 'input'>(
+  ({ value, checked = false, disabled = false, size = 'md', ...props }, ref) => {
     return (
       <ChakraRadio
-        colorScheme={colorScheme}
+        colorScheme="brand"
         ref={ref}
         value={value}
         isChecked={checked}
         isDisabled={disabled}
         size={size}
         {...props}
-      >
-        {children}
-      </ChakraRadio>
+      />
     );
   },
 );

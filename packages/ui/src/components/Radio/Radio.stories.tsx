@@ -19,39 +19,34 @@ Playground.args = {
   children: 'Radio label',
   size: 'md',
   disabled: false,
-  color: 'default',
   checked: false,
 };
 
 export const Sizes = () => (
   <HStack>
-    <Radio size="md">Medium (md)</Radio>
-    <Radio size="lg">Large (lg)</Radio>
-  </HStack>
-);
-
-export const Colors = () => (
-  <HStack>
-    <Radio checked color="brand">
-      Brand
+    <Radio size="md" value="">
+      Medium (md)
     </Radio>
-    <Radio checked>Default</Radio>
+    <Radio size="lg" value="">
+      Large (lg)
+    </Radio>
   </HStack>
 );
 
-// Uses different color than default because grey is not visible
 export const Checked = () => (
   <HStack>
-    <Radio checked color="brand">
+    <Radio checked value="">
       Checked
     </Radio>
-    <Radio color="brand">Not checked</Radio>
+    <Radio value="">Not checked</Radio>
   </HStack>
 );
 
 export const Disabled = () => (
   <HStack>
-    <Radio disabled>Disabled</Radio>
-    <Radio>Not disabled</Radio>
+    <Radio disabled value="">
+      Disabled
+    </Radio>
+    <Radio value="">Not disabled</Radio>
   </HStack>
 );
