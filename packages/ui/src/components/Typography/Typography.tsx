@@ -17,7 +17,9 @@ export interface TypographyProps extends HTMLChakraProps<'div'> {
 const anchorStyle = {
   color: 'brand.500',
   textDecoration: 'underline',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   _hover: { color: 'brand.600' },
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   _active: { color: 'brand.700' },
 };
 
