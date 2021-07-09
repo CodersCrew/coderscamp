@@ -53,7 +53,7 @@ export const Variants = () => (
     <Typography size="md" as="span">
       Span
     </Typography>
-    <Typography size="xl" as="a" href="#">
+    <Typography size="md" as="a" href="#">
       Link
     </Typography>
     <Typography size="md" as="p">
