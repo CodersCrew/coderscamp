@@ -19,7 +19,7 @@
     "w": "node scripts/w.js",
     "bootstrap": "node scripts/bootstrap.js",
     "clean": "node scripts/clean.js",
-    "generate": "yarn workspaces foreach -vpi run generate",
+    "generate": "concurrently \"yarn w api generate\" \"yarn w ui generate\"",
     "typecheck": "yarn workspaces foreach -vpi run typecheck",
     "test": "yarn workspaces foreach -vpi run test",
     "eslint": "eslint --ignore-path .gitignore --ext js,ts,tsx",
