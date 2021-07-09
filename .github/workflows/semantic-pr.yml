@@ -1,4 +1,4 @@
-name: "Semantic Pull Request"
+name: Semantic Pull Request
 
 on:
   pull_request:
@@ -39,4 +39,3 @@ jobs:
           validateSingleCommit: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
