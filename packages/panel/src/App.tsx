@@ -7,6 +7,7 @@ import { useUsers } from '@/hooks/useUsers';
 export const App = () => {
   const [count, setCount] = useState(0);
   const users = useUsers();
+  // eslint-disable-next-line no-console
   console.log(users);
 
   const handleClick = () => setCount((prev) => prev + 1);

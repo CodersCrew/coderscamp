@@ -1,10 +1,10 @@
 import React from 'react';
 import { forwardRef, HTMLChakraProps, Image as ChakraImage } from '@chakra-ui/react';
 
-import blackHorizontalLogo from '../../../images/LogoBlackHorizontal.svg';
-import blackSquareLogo from '../../../images/LogoBlackSquare.svg';
-import whiteHorizontalLogo from '../../../images/LogoWhiteHorizontal.svg';
-import whiteSquareLogo from '../../../images/LogoWhiteSquare.svg';
+import blackHorizontalLogo from '../../images/LogoBlackHorizontal.svg';
+import blackSquareLogo from '../../images/LogoBlackSquare.svg';
+import whiteHorizontalLogo from '../../images/LogoWhiteHorizontal.svg';
+import whiteSquareLogo from '../../images/LogoWhiteSquare.svg';
 
 type Layout = 'horizontal' | 'square';
 
