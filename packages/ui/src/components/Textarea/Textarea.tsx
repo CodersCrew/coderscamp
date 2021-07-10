@@ -30,9 +30,8 @@ export const Textarea = forwardRef<TextareaProps, 'textarea'>(({ disabled = fals
     {...props}
     ref={ref}
     size={size}
-    errorBorderColor="red.500"
     _focus={focusedStyles}
     _disabled={disableStyles}
-    _hover={!disabled && hoverStyles}
+    _hover={!disabled ? hoverStyles : {}}
   />
 ));
