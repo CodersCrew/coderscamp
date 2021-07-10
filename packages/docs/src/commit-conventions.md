@@ -66,11 +66,13 @@ Part of the project affected by the changes.
 
 - **ui** - Changes made only in the `ui` and/or `shared` directory.
 
+- **deps** - Use with the `chore` type to name commits that updates project's dependencies.
+
 If your changes aren't related to those parts of the project (or are related to many of them), you can leave the scope empty. We don't specify a `docs` scope as for documentation changes, you can simply use the `docs` type.
 
 ### description (required)
 
-Succinct description of the change. This is the easiest part, as you should just copy the name of an issue your PR is related to. Remember to put `(#ISSUE_ID)` at the end and not put a dot there.
+Succinct description of the change. This is the easiest part, as you should just copy the name of an issue your PR is related to and change its first letter to be lowercase. Remember to put `(#ISSUE_ID)` at the end and not put a dot there.
 
 ### body (optional)
 
