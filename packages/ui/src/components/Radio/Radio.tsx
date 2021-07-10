@@ -15,14 +15,6 @@ export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'd
 
 export const Radio = forwardRef<RadioProps, 'input'>(
   ({ value, checked = false, disabled = false, size = 'md', ...props }, ref) => (
-    <ChakraRadio
-      colorScheme="brand"
-      ref={ref}
-      value={value}
-      isChecked={checked}
-      isDisabled={disabled}
-      size={size}
-      {...props}
-    />
+    <ChakraRadio ref={ref} value={value} isChecked={checked} isDisabled={disabled} size={size} {...props} />
   ),
 );
