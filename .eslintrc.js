@@ -70,7 +70,7 @@ module.exports = {
     // Enforces some naming conventions across the codebase.
     '@typescript-eslint/naming-convention': [
       2,
-      { selector: 'default', format: ['camelCase', 'UPPER_CASE', 'PascalCase'] },
+      { selector: 'default', format: ['camelCase', 'UPPER_CASE', 'PascalCase', '_lowerCamelCase'] },
       { selector: 'function', format: ['camelCase', 'PascalCase'] },
       { selector: 'parameter', format: ['camelCase'], leadingUnderscore: 'allow' },
       { selector: 'typeLike', format: ['PascalCase'] },
