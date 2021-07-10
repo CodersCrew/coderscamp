@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  check-name:
+  check:
     name: "Check PR name"
     runs-on: ubuntu-latest
     steps:
