@@ -12,7 +12,7 @@ export interface LabelProps extends HTMLChakraProps<'label'> {
 export const Label = forwardRef<LabelProps, 'label'>(({ size = 'sm', required, children, ...props }, ref) => {
   return (
     <FormLabel ref={ref} color="gray.700" fontSize={size} required={required} {...props}>
-      {children}{' '}
+      {children}
       {required ? (
         <Box as="span" color="red.600">
           *
