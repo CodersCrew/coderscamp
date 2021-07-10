@@ -17,6 +17,6 @@ describe('Label', () => {
       </Label>,
     );
 
-    expect(screen.getByText(/Label/)).toHaveTextContent(/\*+$/);
+    expect(screen.getByText(text)).toHaveTextContent(/\*+$/);
   });
 });

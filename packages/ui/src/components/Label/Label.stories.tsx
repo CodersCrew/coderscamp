@@ -40,9 +40,7 @@ export const Sizes = () => (
 
 export const Variants = () => (
   <>
-    <Label size="lg">No required</Label>
-    <Label size="lg" required>
-      Required
-    </Label>
+    <Label>No required</Label>
+    <Label required>Required</Label>
   </>
 );
