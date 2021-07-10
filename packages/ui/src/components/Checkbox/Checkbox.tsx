@@ -1,12 +1,10 @@
 import React, { ChangeEvent, ReactText } from 'react';
-import {
-  Checkbox as ChakraCheckbox,
-  forwardRef,
-  HTMLChakraProps,
-  UseCheckboxProps as ChakraCheckboxProps,
-} from '@chakra-ui/react';
+import { Checkbox as ChakraCheckbox, forwardRef, HTMLChakraProps, UseCheckboxProps } from '@chakra-ui/react';
 
-export interface CheckboxProps extends Omit<HTMLChakraProps<'div'>, keyof ChakraCheckboxProps> {
+// We need to explicitly overwrite aria-invalid as forwardRef tries to put there values that Chakra doesn't support
+type Overwrites = Pick<UseCheckboxProps, 'aria-invalid'>;
+
+export interface CheckboxProps extends Omit<HTMLChakraProps<'div'>, keyof UseCheckboxProps>, Overwrites {
   children?: ReactText | ReactText[];
   value?: string | number;
   onChange: (value: ChangeEvent<HTMLInputElement>) => void;
@@ -18,8 +16,6 @@ export interface CheckboxProps extends Omit<HTMLChakraProps<'div'>, keyof Chakra
 
 export const Checkbox = forwardRef<CheckboxProps, 'input'>(
   ({ checked, disabled = false, size = 'md', ...props }, ref) => {
-    const { 'aria-invalid': aria, ...restProps } = props;
-
     return (
       <ChakraCheckbox
         ref={ref}
@@ -28,7 +24,7 @@ export const Checkbox = forwardRef<CheckboxProps, 'input'>(
         isChecked={checked}
         colorScheme="brand"
         isDisabled={disabled}
-        {...restProps}
+        {...props}
       />
     );
   },

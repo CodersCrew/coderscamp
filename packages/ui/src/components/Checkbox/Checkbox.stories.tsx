@@ -25,8 +25,10 @@ export const Playground = Template.bind({});
 Playground.args = {
   children: 'Checkbox text',
   size: 'md',
-  color: 'black',
   disabled: false,
+  checked: false,
+  name: 'terms',
+  value: 'agree',
 };
 
 export const Checkboxes = () => (
