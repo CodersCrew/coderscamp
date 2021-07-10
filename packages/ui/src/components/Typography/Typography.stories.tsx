@@ -50,25 +50,17 @@ export const Sizes = () => (
 
 export const Variants = () => (
   <HStack>
-    <Typography size="md" as="span">
-      Span
-    </Typography>
-    <Typography size="md" as="a" href="#">
+    <Typography as="span">Span</Typography>
+    <Typography as="a" href="#">
       Link
     </Typography>
-    <Typography size="md" as="p">
-      Paragraph
-    </Typography>
+    <Typography as="p">Paragraph</Typography>
   </HStack>
 );
 
 export const FontWeights = () => (
   <>
-    <Typography size="lg" as="p" weight="medium">
-      Medium Weight
-    </Typography>
-    <Typography size="lg" as="p">
-      Regular Weight
-    </Typography>
+    <Typography weight="medium">Medium Weight</Typography>
+    <Typography>Regular Weight</Typography>
   </>
 );
