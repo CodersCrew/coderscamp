@@ -9,16 +9,14 @@ export interface LabelProps extends HTMLChakraProps<'label'> {
   required?: boolean;
 }
 
-export const Label = forwardRef<LabelProps, 'label'>(({ size = 'sm', required, children, ...props }, ref) => {
+export const Label = forwardRef<LabelProps, 'label'>(({ size = 'sm', required = false, children, ...props }, ref) => {
   return (
     <FormLabel ref={ref} color="gray.700" fontSize={size} required={required} {...props}>
       {children}
-      {required ? (
+      {required && (
         <Box as="span" color="red.600">
           *
         </Box>
-      ) : (
-        ''
       )}
     </FormLabel>
   );
