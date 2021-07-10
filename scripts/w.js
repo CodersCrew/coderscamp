@@ -2,7 +2,7 @@
 
 const { log, terminate, exec } = require('./_helpers');
 
-const WORKSPACES = ['api', 'panel', 'ui', 'website', 'shared'];
+const WORKSPACES = ['api', 'docs', 'panel', 'ui', 'website', 'shared'];
 
 const getWorkspaceName = () => {
   const workspace = process.argv[2];
