@@ -20,6 +20,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
     project: TSCONFIG_PROJECTS,
+    tsconfigRootDir: __dirname,
   },
   plugins: [
     '@typescript-eslint',
@@ -145,6 +146,9 @@ module.exports = {
     },
   ],
   settings: {
+    jest: {
+      version: 'detect',
+    },
     react: { version: 'detect' },
     'import/resolver': {
       node: {
