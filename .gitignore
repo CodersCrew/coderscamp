@@ -17,6 +17,7 @@ node_modules
 dist
 build
 storybook-static
+.docusaurus
 
 # TypeScript
 *.tsbuildinfo
@@ -49,3 +50,4 @@ out
 
 # Generated
 packages/ui/src/icons
+.cache-loader
