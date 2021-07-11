@@ -32,5 +32,6 @@ export const Sizes = () => (
 export const OtherStates = () => (
   <HStack>
     <Input isInvalid="true" placeholder="Invalid!" size="md" />
+    <Input disabled placeholder="Disabled" size="md" />
   </HStack>
 );
