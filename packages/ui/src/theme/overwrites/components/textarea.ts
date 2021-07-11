@@ -1,6 +1,14 @@
 export const Textarea = {
   baseStyle: {
-    control: {
+    width: '12.5rem',
+    height: '5rem',
+  },
+  variants: {
+    outline: {
+      borderRadius: '0.375rem',
+      _focus: {
+        boxShadow: 'outline',
+      },
       _disabled: {
         opacity: '0.4',
       },
@@ -8,8 +16,6 @@ export const Textarea = {
         borderColor: 'gray.400',
       },
     },
-    width: '12.5rem',
-    height: '5rem',
   },
   sizes: {
     sm: {
