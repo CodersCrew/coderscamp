@@ -16,7 +16,7 @@ describe('Textarea', () => {
     expect(getTextarea()).toBeInTheDocument();
   });
   it('Renders correctly in invalid state', () => {
-    render(<Textarea isInvalid />);
+    render(<Textarea invalid />);
     expect(getTextarea()).toBeInvalid();
   });
 });

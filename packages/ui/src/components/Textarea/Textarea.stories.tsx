@@ -30,6 +30,7 @@ export const Sizes = () => (
 export const States = () => (
   <HStack>
     <Textarea placeholder="Disabled" disabled />
-    <Textarea placeholder="Danger" isInvalid value="Invalid" />
+    <Textarea placeholder="Danger" invalid value="Invalid" />
+    <Textarea placeholder="Filled" value="Filled" />
   </HStack>
 );
