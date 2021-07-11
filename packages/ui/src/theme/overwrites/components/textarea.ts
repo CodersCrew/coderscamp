@@ -1,5 +1,16 @@
 export const Textarea = {
   baseStyle: {
+    control: {
+      _focus: {
+        boxShadow: 'outline',
+      },
+      _disabled: {
+        opacity: '0.4',
+      },
+      _hover: {
+        borderColor: 'gray.400',
+      },
+    },
     width: '12.5rem',
     height: '5rem',
   },
