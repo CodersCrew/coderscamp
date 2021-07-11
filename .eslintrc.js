@@ -20,6 +20,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
     project: TSCONFIG_PROJECTS,
+    tsconfigRootDir: __dirname,
   },
   plugins: [
     '@typescript-eslint',
@@ -67,14 +68,7 @@ module.exports = {
     // Enforces some naming conventions across the codebase.
     '@typescript-eslint/naming-convention': [
       2,
-      {
-        selector: 'default',
-        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-        filter: {
-          regex: '^(avatar_url|_json)$',
-          match: false,
-        },
-      },
+      { selector: 'default', leadingUnderscore: 'allow', format: ['camelCase', 'UPPER_CASE', 'PascalCase'] },
       { selector: 'function', format: ['camelCase', 'PascalCase'] },
       { selector: 'parameter', format: ['camelCase'], leadingUnderscore: 'allow' },
       { selector: 'typeLike', format: ['PascalCase'] },
@@ -154,6 +148,9 @@ module.exports = {
     },
   ],
   settings: {
+    jest: {
+      version: 'detect',
+    },
     react: { version: 'detect' },
     'import/resolver': {
       node: {

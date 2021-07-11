@@ -16,15 +16,16 @@
     "url": "git+https://github.com/CodersCrew/coderscamp.git"
   },
   "scripts": {
-    "w": "scripty",
-    "bootstrap": "scripty",
-    "clean": "scripty",
+    "w": "node scripts/w.js",
+    "bootstrap": "node scripts/bootstrap.js",
+    "clean": "node scripts/clean.js",
+    "generate": "concurrently \"yarn w api generate\" \"yarn w ui generate\"",
     "typecheck": "yarn workspaces foreach -vpi run typecheck",
     "test": "yarn workspaces foreach -vpi run test",
     "eslint": "eslint --ignore-path .gitignore --ext js,ts,tsx",
     "lint": "yarn eslint \"**/*.{js,ts,tsx}\"",
     "lint:perf": "cross-env TIMING=50 yarn lint",
-    "heroku-postbuild": "yarn bootstrap && concurrently \"yarn w api build\" \"yarn w panel build\""
+    "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
@@ -47,9 +48,9 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-plugin-testing-library": "4.6.0",
     "jest": "27.0.4",
+    "jest-transform-stub": "2.0.0",
     "prettier": "2.3.1",
     "rimraf": "3.0.2",
-    "scripty": "2.0.0",
     "serve": "12.0.0",
     "shelljs": "0.8.4",
     "ts-jest": "27.0.3",

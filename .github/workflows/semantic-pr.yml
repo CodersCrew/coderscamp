@@ -1,4 +1,4 @@
-name: "Semantic Pull Request"
+name: Semantic Pull Request
 
 on:
   pull_request:
@@ -15,12 +15,14 @@ jobs:
         with:
           types: |
             build
+            chore
             ci
             docs
             feat
             fix
             perf
             refactor
+            revert
             style
             test
           scopes: |
@@ -39,4 +41,3 @@ jobs:
           validateSingleCommit: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

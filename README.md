@@ -29,7 +29,9 @@ This project is organized in a monorepo structure and contains the following wor
 
 ## Scripts
 
-- **w** - core script that allows you to run all workspace scripts from the root folder. To use it you need to follow this script with the workspace name and the script you want to run inside it. For example, running `yarn w website dev` will run the `dev` script inside the `website` workspace.
+- **w** - core script that allows you to run all workspace scripts from the root folder. To use it you need to follow
+  this script with the workspace name and the script you want to run inside it. For example, running
+  `yarn w website dev` will run the `dev` script inside the `website` workspace.
 - **bootstrap** - installs all dependencies and generates all necessary files.
 - **clean** - removes all production output files, node_modules and clears Yarn cache
 - **test** - run tests across all workspaces in parallel.
@@ -82,7 +84,8 @@ After finishing changing database schema use `yarn migrate` to create migration.
 
 ## PR naming rules
 
-We have very precise rules over how our PR title can be formatted. This leads to more readable messages that are easy to follow when looking through the project history.
+We have very precise rules over how our PR title can be formatted. This leads to more readable messages that are easy to
+follow when looking through the project history.
 
 ### PR Title Format
 
@@ -132,4 +135,7 @@ Must be one of the following:
 - **website** - Changes made only in the website and/or shared directory.
 - **ui** - Changes made only in the ui and/or shared directory.
 
-See [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#specification) for more.
+## Documentation
+
+You can find documentation for this project on
+[https://coderscamp-docs.vercel.app/](https://coderscamp-docs.vercel.app/)

@@ -1,11 +1,16 @@
 import React from 'react';
-import { AddIcon, EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Meta, Story } from '@storybook/react';
 
+import { OutlinedCalendarIcon, SolidChecklistIcon, SolidGitHubIcon } from '../../icons';
 import { HStack } from '../Stack';
 import { Button, ButtonProps } from './Button';
 
-const icons = { Email: <EmailIcon />, Lock: <LockIcon />, Add: <AddIcon />, None: undefined };
+const icons = {
+  Calendar: <OutlinedCalendarIcon />,
+  GitHub: <SolidGitHubIcon />,
+  Checklist: <SolidChecklistIcon />,
+  None: undefined,
+};
 
 const meta: Meta = {
   title: 'Components / Button',
@@ -66,6 +71,6 @@ export const OtherStates = () => (
   <HStack>
     <Button isLoading>Loading</Button>
     <Button disabled>Disabled</Button>
-    <Button icon={<EmailIcon />}>With Icon</Button>
+    <Button icon={<SolidGitHubIcon />}>With Icon</Button>
   </HStack>
 );
