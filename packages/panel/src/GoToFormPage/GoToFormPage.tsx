@@ -1,9 +1,9 @@
 import React from 'react';
-import { Heading, Text } from '@chakra-ui/react';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
-// TODO: Change Button to Button component from ui package
+import { Typography } from '@coderscamp/ui/components/Typography';
+
 // TODO: formExpirationDate propably will be not string type, need to change
 
 type GoToFormPageProps = { formExpirationDate: string };
@@ -15,7 +15,7 @@ export const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate =
         direction="column"
         align="center"
         justify="space-evenly"
-        w={['90vw', '95vw', null, '90vw', '35%']}
+        w={['90vw', '95vw', null, '90vw', '40%']}
         h={['90vh', '40vw', null, '40%']}
         p="32px 24px"
         textAlign="center"
@@ -23,17 +23,17 @@ export const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate =
         bg="#fff"
         boxShadow="0px 1px 2px 0px #0000000F, 0px 1px 3px 0px #0000001A"
       >
-        <Heading fontSize={['lg', 'xl']} fontWeight="500" lineHeight="116%" letterSpacing="-1.7%">
+        <Typography as="h1" size="2xl" fontWeight="500" lineHeight="116%" letterSpacing="-1.7%">
           Właśnie założyłeś konto na platformie kursu CodersCamp 🎉
-        </Heading>
-        <Text lineHeight="124%" letterSpacing="-1.1%">
+        </Typography>
+        <Typography as="p" size="md" lineHeight="124%" letterSpacing="-1.1%">
           Zanim uzyskasz pełen dostęp do platrofmy chcielibyśmy trochę lepiej Cię poznać. Poniżej znajdziesz 3-etapowy
           formularz, którego wypełnienie powinno zająć Ci od 15 do 30 minut.
-        </Text>
-        <Text lineHeight="124%" letterSpacing="-1.1%">
+        </Typography>
+        <Typography lineHeight="124%" letterSpacing="-1.1%">
           Jeśli obecnie nie masz tyle czasu nie przejmuj się. Możesz zapisać sobie adres URL tej strony i wrócić na nią
           później. Pamiętaj jednak, aby wysłać formularz nie później niż {formExpirationDate}
-        </Text>
+        </Typography>
         <Button colorScheme="brand" p="8px 16px">
           Przejdź do formularza
         </Button>

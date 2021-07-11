@@ -1,16 +1,13 @@
 import React from 'react';
-import { SiGithub } from 'react-icons/si';
-import { Image, Link, Text, useBreakpointValue } from '@chakra-ui/react';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
+import { Logo } from '@coderscamp/ui/components/Logo';
+import { Typography } from '@coderscamp/ui/components/Typography';
 
-// TODO: Change Image to Logo Component from ui package
-// TODO: An icon package is currently installed, when it's not needed, remove it
+import { SolidGitHubIcon } from '../../../ui/src/icons/SolidGitHub';
 
 export const SignUpPageForCandidates = () => {
-  // const buttonSize = useBreakpointValue(['sm', 'xl']);
-
   return (
     <Flex
       direction="column"
@@ -29,25 +26,49 @@ export const SignUpPageForCandidates = () => {
         w={['85%', '85%', '100%', '90vw', '70%']}
         h={['80vh', '200vh', '80vh']}
       >
-        <Text fontSize={['2xl', '4xl', null, '5xl', '4xl']} color="gray.900" lineHeight="92%" letterSpacing="-2.2%">
+        <Typography
+          as="p"
+          // fontSize={['2xl', '4xl', null, '5xl', '4xl']}
+          size="5xl"
+          color="gray.900"
+          lineHeight="92%"
+          letterSpacing="-2.2%"
+        >
           Zapisz się na
-        </Text>
-
-        <Image src="../../assets/CodersCampLogo/CodersCampLogo.png" alt="Logo CodersCamp" />
+        </Typography>
+        <Logo color="black" w="60%" />
 
         <Flex direction="column" w={['100%', '100%', '62%']}>
-          <Text fontSize={['md', 'lg', 'xl', '2xl', 'xl']} lineHeight="116%" textAlign="center">
+          <Typography
+            as="p"
+            // fontSize={['md', 'lg', 'xl', '2xl', 'xl']}
+            size="xl"
+            lineHeight="116%"
+            textAlign="center"
+          >
             Podczas CodersCamp będzie Ci potrzebne konto na portalu GitHub - najpopularniejszym spośród narzędzi
             umożliwiających udostępnianie kodu innym oraz współpracę przy projektach programistycznych.
-          </Text>
+          </Typography>
 
-          <Text fontSize={['md', 'lg', 'xl', '2xl', 'xl']} lineHeight="116%" textAlign="center" mt="3rem">
+          <Typography
+            as="p"
+            // fontSize={['md', 'lg', 'xl', '2xl', 'xl']}
+            size="xl"
+            lineHeight="116%"
+            textAlign="center"
+            mt="3rem"
+          >
             Jeśli nie posiadasz konta na tej platformie{' '}
-            <Link href="https://github.com/signup" color="orange.400" isExternal textDecoration="underline">
+            <Typography
+              as="a"
+              // fontSize={['md', 'lg', 'xl', '2xl', 'xl']}
+              size="xl"
+              href="https://github.com/signup"
+            >
               kliknij ten link
-            </Link>
+            </Typography>
             , aby je założyć. Następnie wróć tutaj i kliknij przycisk poniżej.
-          </Text>
+          </Typography>
         </Flex>
 
         <Button
@@ -55,7 +76,7 @@ export const SignUpPageForCandidates = () => {
             whiteSpace: 'normal',
             wordWrap: 'break-word',
           }}
-          icon={<SiGithub />}
+          icon={<SolidGitHubIcon />}
           size="lg"
           colorScheme="github"
           borderRadius="6px"
