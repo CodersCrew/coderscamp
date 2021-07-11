@@ -3,28 +3,30 @@ export const Input = {
     sm: {
       field: {
         padding: '6px 12px',
-        borderRadius: '6px',
       },
     },
     md: {
       field: {
         padding: '8px 16px',
-        borderRadius: '6px',
       },
     },
     lg: {
       field: {
         padding: '10px 16px',
-        borderRadius: '6px',
       },
     },
   },
   variants: {
     outline: {
       field: {
+        borderColor: 'gray.300',
+        borderRadius: '6px',
         _focus: {
-          background: '#FFF',
+          background: 'white',
           boxShadow: 'outline',
+        },
+        _hover: {
+          borderColor: 'gray.400',
         },
       },
     },

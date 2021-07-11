@@ -24,14 +24,14 @@ Playground.args = {
 export const Sizes = () => (
   <HStack>
     <Input placeholder="Small (sm)" size="sm" />
-    <Input placeholder="Medium (md)" size="md" />
+    <Input placeholder="Medium (md)" />
     <Input placeholder="Large (lg)" size="lg" />
   </HStack>
 );
 
 export const OtherStates = () => (
   <HStack>
-    <Input isInvalid="true" placeholder="Invalid!" size="md" />
-    <Input disabled placeholder="Disabled" size="md" />
+    <Input isInvalid="true" placeholder="Invalid!" />
+    <Input disabled placeholder="Disabled" />
   </HStack>
 );

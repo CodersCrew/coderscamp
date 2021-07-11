@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { Input } from './index';
+import { Input } from './Input';
 
 const getInput = () => screen.getByRole('input');
 
