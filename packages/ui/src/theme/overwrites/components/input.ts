@@ -2,20 +2,20 @@ export const Input = {
   sizes: {
     sm: {
       field: {
-        padding: '0.375rem 0.75rem',
-        borderRadius: '0.375rem',
+        padding: '6px 12px',
+        borderRadius: '6px',
       },
     },
     md: {
       field: {
-        padding: '0.5rem 1rem',
-        borderRadius: '0.375rem',
+        padding: '8px 16px',
+        borderRadius: '6px',
       },
     },
     lg: {
       field: {
-        padding: '0.625rem 1rem',
-        borderRadius: '0.375rem',
+        padding: '10px 16px',
+        borderRadius: '6px',
       },
     },
   },
