@@ -28,12 +28,12 @@
     "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
-    "@types/jest": "26.0.23",
-    "@typescript-eslint/eslint-plugin": "4.27.0",
-    "@typescript-eslint/parser": "4.27.0",
+    "@types/jest": "26.0.24",
+    "@typescript-eslint/eslint-plugin": "4.28.2",
+    "@typescript-eslint/parser": "4.28.2",
     "concurrently": "6.2.0",
     "cross-env": "7.0.3",
-    "eslint": "7.28.0",
+    "eslint": "7.30.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-react": "1.1.7",
@@ -46,14 +46,14 @@
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
-    "eslint-plugin-testing-library": "4.6.0",
-    "jest": "27.0.4",
+    "eslint-plugin-testing-library": "4.9.0",
+    "jest": "27.0.6",
     "jest-transform-stub": "2.0.0",
-    "prettier": "2.3.1",
+    "prettier": "2.3.2",
     "rimraf": "3.0.2",
     "serve": "12.0.0",
     "shelljs": "0.8.4",
     "ts-jest": "27.0.3",
-    "typescript": "4.2.4"
+    "typescript": "4.3.5"
   }
 }
