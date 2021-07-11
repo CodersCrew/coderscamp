@@ -13,8 +13,12 @@ export interface TextareaProps extends Omit<HTMLChakraProps<'textarea'>, 'readon
   invalid?: boolean;
 }
 
+const focusedStyles = {
+  boxShadow: 'outline',
+};
+
 export const Textarea = forwardRef<TextareaProps, 'textarea'>(
   ({ disabled = false, invalid = false, ...props }, ref) => (
-    <ChakraTextarea isDisabled={disabled} {...props} ref={ref} isInvalid={invalid} />
+    <ChakraTextarea isDisabled={disabled} {...props} ref={ref} isInvalid={invalid} _focus={focusedStyles} />
   ),
 );

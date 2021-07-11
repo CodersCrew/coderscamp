@@ -1,9 +1,6 @@
 export const Textarea = {
   baseStyle: {
     control: {
-      _focus: {
-        boxShadow: 'outline',
-      },
       _disabled: {
         opacity: '0.4',
       },
