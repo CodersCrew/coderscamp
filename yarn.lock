@@ -2963,6 +2963,7 @@ __metadata:
     "@types/react": 17.0.14
     next: 11.0.1
     next-compose-plugins: 2.2.1
+    next-images: 1.8.1
     next-transpile-modules: 8.0.0
     react: 17.0.2
     react-dom: 17.0.2
@@ -9414,6 +9415,7 @@ __metadata:
     eslint-plugin-simple-import-sort: 7.0.0
     eslint-plugin-testing-library: 4.9.0
     jest: 27.0.6
+    jest-transform-stub: 2.0.0
     prettier: 2.3.2
     rimraf: 3.0.2
     serve: 12.0.0
@@ -15532,6 +15534,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jest-transform-stub@npm:2.0.0":
+  version: 2.0.0
+  resolution: "jest-transform-stub@npm:2.0.0"
+  checksum: 093082f6e854030693e5e714e6301f741d8c7d5607cd2227e16922940f2cbe9afb3915fc5e32f456dc7fec8b2f5b59428dadc8e51d46cb38cb58f581a5703ac5
+  languageName: node
+  linkType: hard
+
 "jest-util@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-util@npm:26.6.2"
@@ -17190,6 +17199,18 @@ fsevents@^1.2.7:
   version: 2.2.1
   resolution: "next-compose-plugins@npm:2.2.1"
   checksum: bb1376aad78e7a8d6514ebe01842ff4285871ac85b1cf475bee03ddc682426a462ba38659d84de0f9db2b53de1c884aa74969740c5b999adc43654b1371d6e78
+  languageName: node
+  linkType: hard
+
+"next-images@npm:1.8.1":
+  version: 1.8.1
+  resolution: "next-images@npm:1.8.1"
+  dependencies:
+    file-loader: ^6.2.0
+    url-loader: ^4.1.0
+  peerDependencies:
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: e1291fe934c5cb364913c8e7087c7e958181cf6c6022276ef26e742311be515f7072614419a73a1368715e9ab9b4b630bbe8f5c590f1bf33a537de7573e03075
   languageName: node
   linkType: hard
 
@@ -23394,7 +23415,7 @@ typescript@4.3.5:
   languageName: node
   linkType: hard
 
-"url-loader@npm:4.1.1, url-loader@npm:^4.1.1":
+"url-loader@npm:4.1.1, url-loader@npm:^4.1.0, url-loader@npm:^4.1.1":
   version: 4.1.1
   resolution: "url-loader@npm:4.1.1"
   dependencies:
