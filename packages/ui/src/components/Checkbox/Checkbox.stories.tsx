@@ -4,13 +4,6 @@ import { Meta, Story } from '@storybook/react';
 import { HStack, VStack } from '../Stack';
 import { Checkbox, CheckboxProps } from '.';
 
-const UnCheckedCb = (props: Omit<CheckboxProps, 'onChange' | 'checked'>) => (
-  <Checkbox {...props} onChange={() => {}} checked={false} />
-);
-const CheckedCb = (props: Omit<CheckboxProps, 'onChange' | 'checked'>) => (
-  <Checkbox {...props} onChange={() => {}} checked />
-);
-
 const meta: Meta = {
   title: 'Components / Checkbox',
   component: Checkbox,
@@ -31,36 +24,31 @@ Playground.args = {
   value: 'agree',
 };
 
-export const Checkboxes = () => (
-  <VStack align="left">
-    <p>Not disabled: </p>
-    <HStack>
-      <UnCheckedCb />
-      <CheckedCb />
-    </HStack>
-    <p>Disabled: </p>
-    <HStack>
-      <UnCheckedCb disabled />
-      <CheckedCb disabled />
-    </HStack>
-    <p>With labels: </p>
-    <HStack>
-      <VStack align="left">
-        <UnCheckedCb> unchecked label </UnCheckedCb>
-        <UnCheckedCb disabled> unchecked disabled label </UnCheckedCb>
-        <UnCheckedCb size="lg"> unchecked LG label </UnCheckedCb>
-        <UnCheckedCb size="lg" disabled>
-          unchecked disabled LG label
-        </UnCheckedCb>
-      </VStack>
-      <VStack align="left">
-        <CheckedCb> checked label </CheckedCb>
-        <CheckedCb disabled> checked disabled label </CheckedCb>
-        <CheckedCb size="lg"> checked LG label </CheckedCb>
-        <CheckedCb size="lg" disabled>
-          checked disabled LG label
-        </CheckedCb>
-      </VStack>
-    </HStack>
-  </VStack>
+export const Sizes = () => (
+  <HStack>
+    <Checkbox>Medium (md)</Checkbox>
+    <Checkbox size="lg"> Large (lg)</Checkbox>
+  </HStack>
+);
+
+export const Checked = () => (
+  <HStack>
+    <Checkbox checked>Checked</Checkbox>
+    <Checkbox> Unchecked</Checkbox>
+  </HStack>
+);
+
+export const Disabled = () => (
+  <HStack>
+    <VStack>
+      <Checkbox disabled>Disabled</Checkbox>
+      <Checkbox checked disabled>
+        Disabled
+      </Checkbox>
+    </VStack>
+    <VStack>
+      <Checkbox>Not disabled</Checkbox>
+      <Checkbox checked>Not disabled</Checkbox>
+    </VStack>
+  </HStack>
 );

@@ -1,42 +1,42 @@
-import { mode } from '@chakra-ui/theme-tools';
-
-const parts = ['container', 'control', 'label', 'icon'];
-
-function baseStyleControl(props: Record<string, any>) {
+function baseStyleControl(props: Record<string, unknown>) {
   const { colorScheme: c } = props;
   const disabledCbColorLight = 'gray.100';
 
   return {
     _checked: {
       _active: {
-        bg: mode(`${c}.700`, `${c}.200`)(props),
-        borderColor: mode(`${c}.700`, `${c}.200`)(props),
+        bg: `${c}.700`,
+        borderColor: `${c}.700`,
       },
       _disabled: {
-        bg: mode(disabledCbColorLight, 'transparent')(props),
-        borderColor: mode(disabledCbColorLight, 'transparent')(props),
+        bg: disabledCbColorLight,
+        borderColor: disabledCbColorLight,
       },
     },
     _hover: {
-      borderColor: mode(`gray.400`, `gray.300`)(props),
+      borderColor: `gray.400`,
     },
     _active: {
-      borderColor: mode(`gray.500`, `gray.200`)(props),
+      borderColor: `gray.500`,
     },
     _disabled: {
       _hover: {
-        borderColor: mode(disabledCbColorLight, `gray.300`)(props),
+        borderColor: disabledCbColorLight,
       },
       _active: {
-        borderColor: mode(disabledCbColorLight, `gray.300`)(props),
+        bg: disabledCbColorLight,
+        borderColor: disabledCbColorLight,
       },
     },
   };
 }
 
-const baseStyle = (props: Record<string, any>) => ({
+const baseStyle = (props: Record<string, unknown>) => ({
   control: baseStyleControl(props),
 });
+const defaultProps = {
+  colorScheme: 'brand',
+  borderRadius: 2,
+};
 
-// eslint-disable-next-line import/no-default-export
-export default { parts, baseStyle };
+export const Checkbox = { baseStyle, defaultProps };

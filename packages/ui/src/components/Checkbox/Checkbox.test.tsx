@@ -19,14 +19,14 @@ describe('Checkbox component', () => {
     expect(checkbox).toBeChecked();
   });
   it('checks checkbox displays correct labels', () => {
-    const CbLabel = 'checkbox name';
+    const label = 'checkbox name';
     render(
       <Checkbox value="test" onChange={() => {}} checked>
-        {CbLabel}
+        {label}
       </Checkbox>,
     );
 
-    const checkbox = screen.getByLabelText(CbLabel);
+    const checkbox = screen.getByLabelText(label);
 
     expect(checkbox).toBeInTheDocument();
   });
