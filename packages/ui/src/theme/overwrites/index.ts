@@ -7,6 +7,7 @@ import { styles } from './styles';
 export const theme = extendTheme({
   ...foundations,
   styles,
+  components,
   config: {
     initialColorMode: 'light',
     useSystemColorMode: false,

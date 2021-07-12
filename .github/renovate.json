@@ -1,6 +1,7 @@
 {
   "groupName": "All dependencies",
   "groupSlug": "all",
+  "labels": ["dependencies"],
   "packageRules": [
     {
       "groupName": "All dependencies",
@@ -10,6 +11,7 @@
   ],
   "rangeStrategy": "pin",
   "schedule": ["before 3am on Friday"],
+  "semanticCommits": "enabled",
   "separateMajorMinor": false,
   "updateLockFiles": true
 }
