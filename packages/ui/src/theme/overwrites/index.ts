@@ -12,5 +12,4 @@ export const theme = extendTheme({
     initialColorMode: 'light',
     useSystemColorMode: false,
   },
-  components,
 });
