@@ -2,6 +2,7 @@ export interface GithubDTO {
   id: number;
   name: string;
   email: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   avatar_url: string;
 }
 

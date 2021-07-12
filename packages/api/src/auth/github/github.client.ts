@@ -6,13 +6,13 @@ import { VerifiedCallback } from 'passport-jwt';
 import type { UserDTO } from '@coderscamp/shared/models/user';
 
 import { UsersMapper } from '../../users/users.mapper';
-import { UsersService } from '../../users/users.service';
+import { UsersRepository } from '../../users/users.repository';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import type { GithubResponse, GithubUserData } from './github.model';
 
 @Injectable()
 export class GithubClient extends GithubStrategy(Strategy) {
-  constructor(private usersService: UsersService, private jwtStrategy: JwtStrategy) {
+  constructor(private usersRepository: UsersRepository, private jwtStrategy: JwtStrategy) {
     super({
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -31,9 +31,9 @@ export class GithubClient extends GithubStrategy(Strategy) {
   }
 
   async githubAuth(user: GithubUserData): Promise<{ accessToken: string; profile: UserDTO } | null> {
-    let userFromDatabase = await this.usersService.getByGithubId(user.githubId);
+    let userFromDatabase = await this.usersRepository.getByGithubId(user.githubId);
     if (!userFromDatabase) {
-      userFromDatabase = await this.usersService.create(user);
+      userFromDatabase = await this.usersRepository.create(user);
     }
     return userFromDatabase
       ? {

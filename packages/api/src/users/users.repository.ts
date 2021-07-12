@@ -5,7 +5,7 @@ import type { User } from '@coderscamp/shared/models/user';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
-export class UsersService {
+export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAll(): Promise<User[]> {
