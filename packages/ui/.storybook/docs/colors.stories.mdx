@@ -1,0 +1,65 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+
+import { colors } from '../../src/theme/overwrites/foundations/colors.ts';
+
+<Meta title="Design System / Colors" />
+
+export const printAllVariantsByColorName = (object, colorName) => {
+  const selectedColor = object[colorName];
+  return Object.keys(selectedColor).map((value) => (
+    <ColorItem title={`${colorName}.${value}`} subtitle={selectedColor[value]} colors={[selectedColor[value]]} />
+  ));
+};
+
+export const printAllColorsInOneItem = (color, title) => {
+  return <ColorItem title={title} subtitle="" colors={Object.values(colors[color])} />;
+};
+
+# Brand
+
+<ColorPalette>
+  <ColorItem title="" subtitle="" colors={Object.values(colors.brand)} />
+  {printAllVariantsByColorName(colors, 'brand')}
+</ColorPalette>
+
+# Gray
+
+<ColorPalette>
+  {printAllColorsInOneItem('gray')}
+  {printAllVariantsByColorName(colors, 'gray')}
+</ColorPalette>
+
+# Blue
+
+<ColorPalette>
+  {printAllColorsInOneItem('blue')}
+  {printAllVariantsByColorName(colors, 'blue')}
+</ColorPalette>
+
+# Green
+
+<ColorPalette>
+  {printAllColorsInOneItem('green')}
+  {printAllVariantsByColorName(colors, 'green')}
+</ColorPalette>
+
+# Orange
+
+<ColorPalette>
+  {printAllColorsInOneItem('orange')}
+  {printAllVariantsByColorName(colors, 'orange')}
+</ColorPalette>
+
+# Red
+
+<ColorPalette>
+  {printAllColorsInOneItem('red')}
+  {printAllVariantsByColorName(colors, 'red')}
+</ColorPalette>
+
+# Github
+
+<ColorPalette>
+  {printAllColorsInOneItem('github')}
+  {printAllVariantsByColorName(colors, 'github')}
+</ColorPalette>
