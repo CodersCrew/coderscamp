@@ -16,23 +16,45 @@ type NumberInputMode = 'numeric' | 'decimal';
 
 export interface NumberInputProps extends Omit<HTMLChakraProps<'div'>, keyof UseNumberInputProps> {
   /**
-   * Determines number input's paddings and height.
+   * Determines number input's paddings and height
    */
   size: NumberInputSize;
   /**
-   * Determines type of data that might be entered by the user (numeric or decimal).
+   * Determines type of data that might be entered by the user (numeric or decimal)
    */
   inputMode?: NumberInputMode;
   /**
-   * Determines if number input is disabled or not .
+   * Determines if number input is disabled or not
    */
   disabled?: boolean;
+  /**
+   * Determines number input value
+   */
   value?: number;
+  /**
+   * The callback fired when the value changes
+   */
   onChange?: (stringValue: string, numberValue: number) => void;
+  /**
+   * Determines the maximum value of the counter
+   */
   max?: number;
+  /**
+   * Determines the minimum value of the counter
+   */
   min?: number;
+  /**
+   * Determines the number of decimal points used to round the value
+   */
   precision?: number;
+  /**
+   * Determines the step used to increment or decrement the value
+   */
   step?: number;
+  /**
+   * Determines the initial value of the counter
+   */
+  defaultValue?: string | number;
 }
 
 export const NumberInput = forwardRef<NumberInputProps, 'input'>(
