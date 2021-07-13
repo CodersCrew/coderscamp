@@ -24,13 +24,14 @@ export const NumberInput = {
       field: {
         borderRadius: '6px',
         _focus: {
-          boxShadow: '0px 0px 0px 3px rgba(56, 189, 248, 0.6)',
+          boxShadow: 'outline',
         },
         _hover: {
-          border: '1px solid #9CA3AF',
+          borderColor: 'gray.400',
         },
         _invalid: {
-          border: '2px solid #EF4444',
+          borderWidth: '2px',
+          borderColor: 'red.500',
         },
       },
     },

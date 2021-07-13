@@ -31,7 +31,7 @@ export const Sizes = () => (
 
 export const InputModes = () => (
   <HStack>
-    <NumberInput size="md" inputMode="decimal" />
+    <NumberInput size="md" />
     <NumberInput size="md" inputMode="numeric" />
   </HStack>
 );
@@ -45,8 +45,8 @@ export const Disabled = () => (
 
 export const Pseudoclasses = () => (
   <HStack>
-    <NumberInput size="md" inputMode="decimal" disabled={false} />
-    <NumberInput size="md" inputMode="numeric" disabled={false} value={1} max={0} />
-    <NumberInput size="md" inputMode="numeric" disabled={false} isFocus />
+    <NumberInput size="md" />
+    <NumberInput size="md" value={1} max={0} />
+    <NumberInput size="md" isFocus />
   </HStack>
 );
