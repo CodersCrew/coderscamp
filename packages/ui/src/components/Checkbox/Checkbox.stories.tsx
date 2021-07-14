@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { HStack, VStack } from '../Stack';
-import { Checkbox, CheckboxProps } from '.';
+import { Checkbox, CheckboxProps } from './Checkbox';
 
 const meta: Meta = {
   title: 'Components / Checkbox',

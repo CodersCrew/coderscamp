@@ -1,12 +1,11 @@
-function baseStyleControl(props: Record<string, unknown>) {
-  const { colorScheme: c } = props;
+function baseStyleControl() {
   const disabledCbColorLight = 'gray.100';
 
   return {
     _checked: {
       _active: {
-        bg: `${c}.700`,
-        borderColor: `${c}.700`,
+        bg: `brand.700`,
+        borderColor: `brand.700`,
       },
       _disabled: {
         bg: disabledCbColorLight,
@@ -31,8 +30,8 @@ function baseStyleControl(props: Record<string, unknown>) {
   };
 }
 
-const baseStyle = (props: Record<string, unknown>) => ({
-  control: baseStyleControl(props),
+const baseStyle = () => ({
+  control: baseStyleControl(),
 });
 const defaultProps = {
   colorScheme: 'brand',
