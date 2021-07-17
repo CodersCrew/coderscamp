@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { Radio } from '../Radio';
 import { RadioGroup } from './RadioGroup';
 
-describe('Radio', () => {
+describe('RadioGroup', () => {
   const textOne = 'One';
   const textTwo = 'Two';
 

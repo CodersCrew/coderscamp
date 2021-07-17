@@ -1,12 +1,11 @@
 import React from 'react';
 import { RadioGroup as ChakraRadioGroup, RadioGroupProps as ChakraRadioGroupProps } from '@chakra-ui/react';
 
+import { RadioSize } from '../Radio';
 import { Stack, StackProps } from '../Stack';
 
-type RadioGroupSize = 'md' | 'lg';
-
 export interface RadioGroupProps extends Omit<StackProps, 'onChange'> {
-  size?: RadioGroupSize;
+  size?: RadioSize;
   name: ChakraRadioGroupProps['name'];
   value: ChakraRadioGroupProps['value'];
   onChange: ChakraRadioGroupProps['onChange'];

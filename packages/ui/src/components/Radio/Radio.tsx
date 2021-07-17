@@ -1,7 +1,7 @@
 import React from 'react';
 import { forwardRef, HTMLChakraProps, Radio as ChakraRadio } from '@chakra-ui/react';
 
-type RadioSize = 'md' | 'lg';
+export type RadioSize = 'md' | 'lg';
 
 export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'defaultChecked'> {
   /**
