@@ -13,8 +13,6 @@ export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'd
   value: string | number;
 }
 
-export const Radio = forwardRef<RadioProps, 'input'>(
-  ({ value, checked = false, disabled = false, size = 'md', ...props }, ref) => (
-    <ChakraRadio ref={ref} value={value} isChecked={checked} isDisabled={disabled} size={size} {...props} />
-  ),
-);
+export const Radio = forwardRef<RadioProps, 'input'>(({ value, checked = false, disabled = false, ...props }, ref) => (
+  <ChakraRadio ref={ref} value={value} isChecked={checked} isDisabled={disabled} {...props} />
+));
