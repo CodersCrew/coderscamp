@@ -3,14 +3,14 @@ export const Textarea = {
     borderColor: 'gray.300',
   },
   variants: {
+    borderColor: 'gray.300',
     outline: {
-      borderRadius: '0.375rem',
+      borderRadius: '6px',
       _focus: {
         boxShadow: 'outline',
       },
       _disabled: {
-        opacity: '0.4',
-        pointerEvents: 'none',
+        borderColor: 'gray.300',
       },
       _hover: {
         borderColor: 'gray.400',
@@ -19,19 +19,16 @@ export const Textarea = {
   },
   sizes: {
     sm: {
-      px: '0.75rem',
-      py: '0.375rem',
+      px: '12px',
+      py: '6px',
     },
     md: {
-      px: '1rem',
-      py: '0.5rem',
+      px: '16px',
+      py: '8px',
     },
     lg: {
-      px: '1rem',
-      py: '0.625rem',
-    },
-    defaultProps: {
-      size: 'md',
+      px: '16px',
+      py: '10px',
     },
   },
 };

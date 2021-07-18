@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { HStack } from '../Stack';
-import { Textarea, TextareaProps } from './index';
+import { Textarea, TextareaProps } from './Textarea';
 
 const meta: Meta = {
   title: 'Components / Textarea',
@@ -17,6 +17,11 @@ export const Playground = Template.bind({});
 
 Playground.args = {
   placeholder: 'Default textarea',
+  size: 'md',
+  disabled: false,
+  invalid: false,
+  name: 'Default',
+  value: 'Playground textarea',
 };
 
 export const Sizes = () => (
