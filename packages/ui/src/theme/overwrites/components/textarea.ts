@@ -5,17 +5,18 @@ export const Textarea = {
     },
   },
   variants: {
-    borderColor: 'gray.300',
     outline: {
       borderRadius: '6px',
       _focus: {
         boxShadow: 'outline',
       },
-      _disabled: {
-        borderColor: 'gray.300',
-      },
-      _hover: {
-        borderColor: 'gray.400',
+      field: {
+        _hover: {
+          borderColor: 'gray.400',
+        },
+        _disabled: {
+          borderColor: 'gray.300',
+        },
       },
     },
   },
