@@ -1,6 +1,8 @@
 export const Textarea = {
   baseStyle: {
-    borderColor: 'gray.300',
+    filed: {
+      borderColor: 'gray.300',
+    },
   },
   variants: {
     borderColor: 'gray.300',
