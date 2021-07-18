@@ -1,7 +1,6 @@
 export const Textarea = {
   baseStyle: {
-    width: '12.5rem',
-    height: '5rem',
+    borderColor: 'gray.300',
   },
   variants: {
     outline: {
@@ -11,6 +10,7 @@ export const Textarea = {
       },
       _disabled: {
         opacity: '0.4',
+        pointerEvents: 'none',
       },
       _hover: {
         borderColor: 'gray.400',

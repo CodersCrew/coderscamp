@@ -1,4 +1,4 @@
-name: PR Check
+name: Pull Request
 
 on:
   pull_request:
@@ -6,11 +6,12 @@ on:
 
 jobs:
   test:
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Install dependencies
@@ -21,11 +22,12 @@ jobs:
         run: yarn test --onlyChanged
 
   lint:
+    name: Run ESlint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Install dependencies
@@ -36,11 +38,12 @@ jobs:
         run: yarn lint
 
   typecheck:
+    name: Check TypeScript types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Install dependencies
@@ -49,3 +52,22 @@ jobs:
         run: yarn generate
       - name: Run TypeScript types check
         run: yarn typecheck
+
+  check-name:
+    name: Check PR name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: amannn/action-semantic-pull-request@v3.4.0
+        with:
+          scopes: |
+            api
+            panel
+            website
+            ui
+            core
+            deps
+          requireScope: false
+          validateSingleCommit: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

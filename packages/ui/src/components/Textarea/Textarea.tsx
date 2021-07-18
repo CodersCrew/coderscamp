@@ -6,7 +6,7 @@ type TextareaSize = 'sm' | 'md' | 'lg';
 export interface TextareaProps extends Omit<HTMLChakraProps<'textarea'>, 'readonly'> {
   size?: TextareaSize;
   disabled?: boolean;
-  onChange?: ChangeEventHandler<HTMLTextAreaElement> | undefined;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   placeholder?: string;
   value?: string;
   name?: string;
