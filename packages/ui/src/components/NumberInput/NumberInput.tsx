@@ -18,7 +18,7 @@ export interface NumberInputProps extends Omit<HTMLChakraProps<'div'>, keyof Use
   /**
    * Determines number input's paddings and height
    */
-  size: NumberInputSize;
+  size?: NumberInputSize;
   /**
    * Determines type of data that might be entered by the user (numeric or decimal)
    */
@@ -60,7 +60,7 @@ export interface NumberInputProps extends Omit<HTMLChakraProps<'div'>, keyof Use
 export const NumberInput = forwardRef<NumberInputProps, 'input'>(
   (
     {
-      size,
+      size = 'md',
       inputMode = 'decimal',
       disabled = false,
       'aria-describedby': ariaDescribedby,

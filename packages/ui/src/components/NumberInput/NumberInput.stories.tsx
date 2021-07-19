@@ -24,29 +24,29 @@ Playground.args = {
 export const Sizes = () => (
   <HStack>
     <NumberInput size="sm" />
-    <NumberInput size="md" />
+    <NumberInput />
     <NumberInput size="lg" />
   </HStack>
 );
 
 export const InputModes = () => (
   <HStack>
-    <NumberInput size="md" />
-    <NumberInput size="md" inputMode="numeric" />
+    <NumberInput />
+    <NumberInput inputMode="numeric" />
   </HStack>
 );
 
 export const Disabled = () => (
   <HStack>
-    <NumberInput size="md" disabled />
-    <NumberInput size="md" />
+    <NumberInput disabled />
+    <NumberInput />
   </HStack>
 );
 
 export const Pseudoclasses = () => (
   <HStack>
-    <NumberInput size="md" />
-    <NumberInput size="md" value={1} max={0} />
-    <NumberInput size="md" isFocus />
+    <NumberInput />
+    <NumberInput value={1} max={0} />
+    <NumberInput isFocus />
   </HStack>
 );
