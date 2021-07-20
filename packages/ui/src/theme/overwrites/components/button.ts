@@ -3,8 +3,8 @@ export const Button = {
     xs: {
       py: '4px',
       svg: {
-        height: '13px',
-        width: '13.33px',
+        height: '16px',
+        width: '16px',
       },
     },
     sm: {
