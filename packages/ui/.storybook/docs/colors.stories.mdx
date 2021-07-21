@@ -1,65 +1,33 @@
 import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
 
-import { colors } from '../../src/theme/overwrites/foundations/colors.ts';
+import { SelectedColorPalette } from '../components/SelectedColorPalette';
 
 <Meta title="Design System / Colors" />
 
-export const printAllVariantsByColorName = (object, colorName) => {
-  const selectedColor = object[colorName];
-  return Object.keys(selectedColor).map((value) => (
-    <ColorItem title={`${colorName}.${value}`} subtitle={selectedColor[value]} colors={[selectedColor[value]]} />
-  ));
-};
-
-export const printAllColorsInOneItem = (color, title) => {
-  return <ColorItem title={title} subtitle="" colors={Object.values(colors[color])} />;
-};
-
 # Brand
 
-<ColorPalette>
-  {printAllColorsInOneItem('brand')}
-  {printAllVariantsByColorName(colors, 'brand')}
-</ColorPalette>
+<SelectedColorPalette color="brand" />
 
 # Gray
 
-<ColorPalette>
-  {printAllColorsInOneItem('gray')}
-  {printAllVariantsByColorName(colors, 'gray')}
-</ColorPalette>
+<SelectedColorPalette color="gray" />
 
 # Blue
 
-<ColorPalette>
-  {printAllColorsInOneItem('blue')}
-  {printAllVariantsByColorName(colors, 'blue')}
-</ColorPalette>
+<SelectedColorPalette color="blue" />
 
 # Green
 
-<ColorPalette>
-  {printAllColorsInOneItem('green')}
-  {printAllVariantsByColorName(colors, 'green')}
-</ColorPalette>
+<SelectedColorPalette color="green" />
 
 # Orange
 
-<ColorPalette>
-  {printAllColorsInOneItem('orange')}
-  {printAllVariantsByColorName(colors, 'orange')}
-</ColorPalette>
+<SelectedColorPalette color="orange" />
 
 # Red
 
-<ColorPalette>
-  {printAllColorsInOneItem('red')}
-  {printAllVariantsByColorName(colors, 'red')}
-</ColorPalette>
+<SelectedColorPalette color="red" />
 
 # Github
 
-<ColorPalette>
-  {printAllColorsInOneItem('github')}
-  {printAllVariantsByColorName(colors, 'github')}
-</ColorPalette>
+<SelectedColorPalette color="github" />
