@@ -4,7 +4,7 @@ import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-type GoToFormPageProps = { formExpirationDate: string };
+type GoToFormPageProps = { formExpirationDate?: string };
 
 export const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate = '21.10.2021' }) => {
   return (
@@ -13,15 +13,15 @@ export const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate =
         direction="column"
         align="center"
         justify="space-evenly"
-        w={['90vw', '95vw', null, '90vw', '40%']}
-        h={['90vh', '40vw', null, '40%']}
+        w={['100vw', null, null, '90vw', '51vw']}
+        h={['100vh', null, null, '60vh']}
         p="32px 24px"
         textAlign="center"
         borderRadius="8px"
         bg="#fff"
         boxShadow="base"
       >
-        <Typography as="h1" size="2xl" fontWeight="500" lineHeight="2xl" letterSpacing="sm">
+        <Typography as="h1" size="2xl" fontWeight="400" lineHeight="2xl" letterSpacing="sm">
           Właśnie założyłeś konto na platformie kursu CodersCamp 🎉
         </Typography>
         <Typography as="p" size="md" lineHeight="md" letterSpacing="xs">

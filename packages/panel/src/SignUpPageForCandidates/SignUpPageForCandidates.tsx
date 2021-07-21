@@ -14,13 +14,13 @@ export const SignUpPageForCandidates = () => {
         direction="column"
         align="center"
         justify="space-evenly"
-        w={['93%', '85%', '90%', '90vw', '70%']}
-        h={['130vh', '160vh', '80vh']}
+        w={['90%', '85%', '90%', '90%', '70%']}
+        h={['130vh', '150vh', '100vh', '80vh']}
       >
-        <Typography as="p" size="5xl" color="gray.900" lineHeight="5xl">
+        <Typography as="p" size="5xl" color="gray.900" lineHeight="5xl" textAlign="center">
           Zapisz się na
         </Typography>
-        <Logo color="black" w={[null, '85%', '100%', '90vw', '60%']} />
+        <Logo color="black" w={[null, '85%', '100%', '90%', '60%']} />
 
         <Flex direction="column" w={['100%', '100%', '62%']}>
           <Typography as="p" size="xl" lineHeight="md" letterSpacing="sm" textAlign="center">
