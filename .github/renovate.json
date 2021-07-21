@@ -1,15 +1,11 @@
 {
   "groupName": "All dependencies",
   "groupSlug": "all",
-  "packageRules": [
-    {
-      "groupName": "All dependencies",
-      "groupSlug": "all",
-      "paths": ["*"]
-    }
-  ],
+  "labels": ["dependencies"],
+  "packageRules": [{ "packageNames": ["node"], "enabled": false }],
   "rangeStrategy": "pin",
   "schedule": ["before 3am on Friday"],
+  "semanticCommits": "enabled",
   "separateMajorMinor": false,
   "updateLockFiles": true
 }
