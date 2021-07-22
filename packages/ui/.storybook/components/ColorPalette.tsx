@@ -1,31 +1,40 @@
 import React from 'react'
+import { useTheme } from "@chakra-ui/react";
 import { ColorPalette as StorybookCollorPalette, ColorItem } from '@storybook/addon-docs/blocks';
-import { colors } from '../../src/theme/overwrites/foundations/colors';
+import { ThemeProvider } from '../../src/theme';
 
 interface ColorPaletteProps {
   color: string;
 }
 
 export const AllVariants = ({color}: ColorPaletteProps) => {
+  const theme = useTheme();
+  
   return (
-    <ColorItem title='' subtitle='' colors={Object.values(colors[color])} />
+    <>
+      <ColorItem title={`${color}`} subtitle='' colors={theme.colors[color]} />
+    </>
   )
 };
 
 export const SingleVariant = ({color}: ColorPaletteProps) => {
-  const pickedColor = colors[color];
+  const theme = useTheme();
+  const pickedColor = theme.colors[color];
+
   return <>{
-    Object.keys(pickedColor).map((value) => (
-      <ColorItem title={`${color}.${value}`} subtitle={pickedColor[value]} colors={[pickedColor[value]]} />
+    Object.keys(pickedColor).map((range) => (
+      <ColorItem title={`${color}.${range}`} subtitle={pickedColor[range]} colors={[pickedColor[range]]} />
     ))
   }</>
 }
 
 export const ColorPalette = ({color}: ColorPaletteProps) => {
   return (
+    <ThemeProvider>
       <StorybookCollorPalette>
         <AllVariants color={color}/>
         <SingleVariant color={color}/>
       </StorybookCollorPalette>
+    </ThemeProvider>
   )
 };
