@@ -82,12 +82,13 @@ describe('Github controller', () => {
         GithubClient,
         JwtStrategy,
       ],
+      exports: [JwtStrategy],
     }).compile();
 
     app = module.createNestApplication();
-    githubController = module.get<GithubController>('GithubController');
-    prismaService = module.get<PrismaService & typeof mockPrismaService>('PrismaService');
-    jwtStrategy = module.get<JwtStrategy>('JwtStrategy');
+    jwtStrategy = await module.resolve(JwtStrategy);
+    githubController = await module.resolve(GithubController);
+    prismaService = await module.resolve(PrismaService);
     await app.init();
   }
 
