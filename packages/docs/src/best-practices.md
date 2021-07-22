@@ -36,19 +36,19 @@ sidebar_position: 6
 
 **If yes, write about it:**
 
-[] Are there any code parts that are too complex (can't be understood quickly or without additional explanation)?
-[] Do you see the potential for some abstractions that can make code more DRY?
-[] Are there any documentation parts that should be updated?
-[] Are there any edge cases that could break implemented feature?
-[] Does this code implements anything that we "might need in the future," but it's not used right now?
+- [ ] Are there any code parts that are too complex (can't be understood quickly or without additional explanation)?
+- [ ] Do you see the potential for some abstractions that can make code more DRY?
+- [ ] Are there any documentation parts that should be updated?
+- [ ] Are there any edge cases that could break implemented feature?
+- [ ] Does this code implements anything that we "might need in the future," but it's not used right now?
 
 **If no, write about it:**
 
-[] Does this code accomplish all acceptance criteria specified for the related issue?
-[] Does the code style follow our guidelines? Is it consistent with previous similar solutions?
-[] Does this code has all the necessary tests? Is it regression-proof?
-[] Does the developer use clear names for everything?
-[] Are eventual comments clear and valuable. Do they explain "why" instead of "what"?
+- [ ] Does this code accomplish all acceptance criteria specified for the related issue?
+- [ ] Does the code style follow our guidelines? Is it consistent with previous similar solutions?
+- [ ] Does this code has all the necessary tests? Is it regression-proof?
+- [ ] Does the developer use clear names for everything?
+- [ ] Are eventual comments clear and valuable. Do they explain "why" instead of "what"?
 
 ### Comment emojis
 
