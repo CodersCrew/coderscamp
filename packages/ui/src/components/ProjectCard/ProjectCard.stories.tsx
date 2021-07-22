@@ -1,35 +1,52 @@
 import React from 'react';
+import { SimpleGrid } from '@chakra-ui/react';
 import { Meta, Story } from '@storybook/react';
 
-import { HStack } from '../Stack';
 import { ProjectCard, ProjectCardType } from './ProjectCard';
 
-const title = 'Convallis tellus duis enim vulputate malesuada eget duis gravida sit.';
+const title = 'Zaawansowany React i Node';
+const date = new Date();
 
-// const tags = { h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6', a: 'a', span: 'span', p: 'p', div: 'div' };
+const status = { done: 'done', idle: 'idle', doing: 'doing', review: 'review' };
 const meta: Meta = {
   title: 'Components / ProjectCard',
   component: ProjectCard,
+  argTypes: {
+    status: {
+      options: Object.keys(status),
+      mapping: status,
+      control: {
+        type: 'select',
+      },
+    },
+  },
 };
 
 export default meta;
 
-const Template: Story<ProjectCardType> = (args) => <ProjectCard {...args} />;
+const Template: Story<ProjectCardType> = (args) => (
+  <SimpleGrid columns={4} spacing={5} h="444px">
+    <ProjectCard {...args} />
+  </SimpleGrid>
+);
 
 export const Playground = Template.bind({});
 
-// Playground.args = {
-//   children: 'lorem ipsum dolor sit amet',
-//   as: 'h1',
-//   size: 'md',
-//   weight: 'regular',
-// };
+Playground.args = {
+  status: 'idle',
+  image: 'test',
+  title: 'Podstawy web developmentu',
+  url: '/test',
+  date,
+  points: 100,
+  pointsMax: 200,
+};
 
 export const Variants = () => (
-  <HStack>
+  <SimpleGrid columns={4} spacing={3} h="444px" w="320">
+    <ProjectCard status="idle" image="test" title={title} url="test" date={date} />
+    <ProjectCard status="doing" image="test" title={title} url="test" date={date} />
+    <ProjectCard status="review" image="test" title={title} url="test" date={date} />
     <ProjectCard status="done" image="test" title={title} url="test" points={100} pointsMax={200} />
-    <ProjectCard status="idle" image="test" title={title} url="test" date="21.11.22" />
-    <ProjectCard status="review" image="test" title={title} url="test" date="21.11.22" />
-    <ProjectCard status="doing" image="test" title={title} url="test" date="21.11.22" />
-  </HStack>
+  </SimpleGrid>
 );
