@@ -10,11 +10,7 @@ interface ColorPaletteProps {
 export const AllVariants = ({color}: ColorPaletteProps) => {
   const theme = useTheme();
   
-  return (
-    <>
-      <ColorItem title={`${color}`} subtitle='' colors={theme.colors[color]} />
-    </>
-  )
+  return <ColorItem title={`${color}`} subtitle='' colors={theme.colors[color]} />
 };
 
 export const SingleVariant = ({color}: ColorPaletteProps) => {
