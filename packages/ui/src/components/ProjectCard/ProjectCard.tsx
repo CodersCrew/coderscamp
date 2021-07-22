@@ -36,6 +36,8 @@ export type ProjectCardType = ConditionalProps<
 >;
 
 export const ProjectCard = forwardRef<ProjectCardType, 'div'>(
+  // disabled for url props
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ status, image, title, url, points, pointsMax, date, ...props }, ref) => {
     const dateProps = date as Date;
     let statusText;
