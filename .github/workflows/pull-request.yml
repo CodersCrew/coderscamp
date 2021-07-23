@@ -13,6 +13,7 @@ jobs:
       GITHUB_CLIENT_SECRET: Secret
       JWT_SECRET: Secret
       GITHUB_CALLBACK_URL: URL
+      TOKEN_EXPIRATION_TIME: 60
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
