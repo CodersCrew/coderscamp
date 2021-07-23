@@ -8,9 +8,28 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  githubId Int    @unique
-  fullName String
-  email    String
-  image    String
+  id         Int         @id @default(autoincrement())
+  githubId   Int         @unique
+  fullName   String
+  email      String
+  image      String
+  city       String
+  gender     String
+  birthYear  Int
+  isStudent  Boolean
+  UserSurvey UserSurvey?
+}
+
+model UserSurvey {
+  userId                   Int     @unique
+  user                     User    @relation(fields: [userId], references: [id])
+  description              String
+  alreadyTookCourse        Boolean
+  reasonForRepeatingCourse String?
+  expectations             String
+  experience               String
+  uniqnues                 String
+  plans                    String
+  unavailablity            String
+  averageTime              Int
 }
