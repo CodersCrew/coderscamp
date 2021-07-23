@@ -8,8 +8,9 @@ generator client {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String
+  id       Int    @id @default(autoincrement())
+  githubId Int    @unique
+  fullName String
+  email    String
+  image    String
 }
