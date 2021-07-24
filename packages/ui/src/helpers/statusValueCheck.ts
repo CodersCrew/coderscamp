@@ -2,18 +2,19 @@ type StatusProps = 'idle' | 'doing' | 'review' | 'done';
 type StatusCase = {
   statusText: string;
   timeStatus: string;
-  dateOrPointsText: string;
+  dateOrPoints: string;
   isDoing: boolean;
 };
 
-export const propsTypeChecker = (status: StatusProps, dateProps: Date, points: number, pointsMax: number) => {
+export const statusValueCheck = (status: StatusProps, points: number, pointsMax: number, dateProps: Date) => {
   let statusCase: StatusCase;
+
   switch (status) {
     case 'doing':
       statusCase = {
         statusText: 'W trakcie',
         timeStatus: 'Deadline',
-        dateOrPointsText: dateProps.toLocaleDateString(),
+        dateOrPoints: dateProps.toLocaleDateString(),
         isDoing: true,
       };
       return statusCase;
@@ -21,23 +22,24 @@ export const propsTypeChecker = (status: StatusProps, dateProps: Date, points: n
       statusCase = {
         statusText: 'W ocenie',
         timeStatus: 'Demo',
-        dateOrPointsText: dateProps.toLocaleDateString(),
+        dateOrPoints: dateProps.toLocaleDateString(),
         isDoing: true,
       };
       return statusCase;
-    case 'done':
+    case 'done': {
       statusCase = {
         statusText: 'Zakończony',
         timeStatus: 'Punkty',
-        dateOrPointsText: `${points}/${pointsMax}`,
+        dateOrPoints: `${points}/${pointsMax}`,
         isDoing: true,
       };
       return statusCase;
+    }
     default:
       statusCase = {
         statusText: 'Nie rozpoczęty',
         timeStatus: 'Rozpoczęcie',
-        dateOrPointsText: dateProps.toLocaleDateString(),
+        dateOrPoints: dateProps.toLocaleDateString(),
         isDoing: false,
       };
       return statusCase;

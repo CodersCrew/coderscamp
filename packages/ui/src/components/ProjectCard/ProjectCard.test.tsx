@@ -3,13 +3,18 @@ import { render, screen } from '@testing-library/react';
 
 import { ProjectCard } from './ProjectCard';
 
+type StatusArray = {
+  status: 'idle' | 'doing' | 'review' | 'done';
+  text: string;
+}[];
+
 const title = 'Zaawansowany React i Node';
 const date = new Date();
-const statusArray = [
-  { status: 'idle' as const, text: 'Nie rozpoczęty' },
-  { status: 'doing' as const, text: 'W trakcie' },
-  { status: 'review' as const, text: 'W ocenie' },
-  { status: 'done' as const, text: 'Zakończony' },
+const statusArray: StatusArray = [
+  { status: 'idle', text: 'Nie rozpoczęty' },
+  { status: 'doing', text: 'W trakcie' },
+  { status: 'review', text: 'W ocenie' },
+  { status: 'done', text: 'Zakończony' },
 ];
 
 describe('ProjectCard', () => {

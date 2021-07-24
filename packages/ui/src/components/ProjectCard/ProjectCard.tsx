@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex, forwardRef, Grid } from '@chakra-ui/react';
 
-import { propsTypeChecker } from '../../helpers/propsTypeChecker';
+import { statusValueCheck } from '../../helpers/statusValueCheck';
 import { Button } from '../Button/Button';
 import { Typography } from '../Typography/Typography';
 
@@ -9,11 +9,14 @@ type DoneProps = {
   status: 'done';
   points: number;
   pointsMax: number;
+  date?: never;
 };
 
 type NotDoneProps = {
   status: 'idle' | 'doing' | 'review';
   date: Date;
+  points?: never;
+  pointsMax?: never;
 };
 
 type CommonProps = {
@@ -22,16 +25,21 @@ type CommonProps = {
   url: string;
 };
 
-export type ProjectCardProps = CommonProps & (NotDoneProps | DoneProps);
+export type ProjectCardProps = CommonProps & (DoneProps | NotDoneProps);
 
 export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
   // disabled for url props
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ status, image, title, url, points, pointsMax, date, ...props }, ref) => {
-    const { statusText, timeStatus, dateOrPointsText, isDoing } = propsTypeChecker(status, date, points, pointsMax);
+    const { statusText, timeStatus, dateOrPoints, isDoing } = statusValueCheck(
+      status,
+      points as number,
+      pointsMax as number,
+      date as Date,
+    );
 
     return (
-      <Box status={status} ref={ref} w="100%" boxShadow="base" borderRadius="8px" {...props}>
+      <Box status={status} ref={ref} w="100%" h="100%" boxShadow="base" borderRadius="8px" {...props}>
         <Grid templateRows="repeat(2, 1fr)" h="100%" gap="24px">
           <Box as="img" src={image} alt="" background="gray.300" borderRadius="8px 8px 0 0" h="auto" />
 
@@ -54,7 +62,7 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
                 {timeStatus}:
               </Typography>
               <Typography lineHeight="md" as="span">
-                {dateOrPointsText}
+                {dateOrPoints}
               </Typography>
             </Flex>
 

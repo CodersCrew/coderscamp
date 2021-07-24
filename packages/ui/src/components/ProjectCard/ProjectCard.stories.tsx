@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import { Meta, Story } from '@storybook/react';
 
 import { ProjectCard, ProjectCardProps } from './ProjectCard';
@@ -25,24 +25,23 @@ const meta: Meta = {
 export default meta;
 
 const Template: Story<ProjectCardProps> = (args) => (
-  <SimpleGrid columns={4} spacing={5} h="444px">
+  <Box h="444px" w="320px">
     <ProjectCard {...args} />
-  </SimpleGrid>
+  </Box>
 );
 
 export const Playground = Template.bind({});
 
 Playground.args = {
-  status: 'done',
+  status: 'idle',
   image: 'test',
   title: 'Podstawy web developmentu',
   url: '/test',
-  points: 100,
-  pointsMax: 200,
+  date,
 };
 
 export const Variants = () => (
-  <SimpleGrid columns={4} spacing={3} h="444px" w="320">
+  <SimpleGrid columns={4} spacing={3} h="444px">
     <ProjectCard status="idle" image="test" title={title} url="test" date={date} />
     <ProjectCard status="doing" image="test" title={title} url="test" date={date} />
     <ProjectCard status="review" image="test" title={title} url="test" date={date} />
