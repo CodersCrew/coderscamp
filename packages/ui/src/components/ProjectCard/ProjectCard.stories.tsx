@@ -2,7 +2,7 @@ import React from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 import { Meta, Story } from '@storybook/react';
 
-import { ProjectCard, ProjectCardType } from './ProjectCard';
+import { ProjectCard, ProjectCardProps } from './ProjectCard';
 
 const title = 'Zaawansowany React i Node';
 const date = new Date();
@@ -24,7 +24,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<ProjectCardType> = (args) => (
+const Template: Story<ProjectCardProps> = (args) => (
   <SimpleGrid columns={4} spacing={5} h="444px">
     <ProjectCard {...args} />
   </SimpleGrid>
@@ -33,11 +33,10 @@ const Template: Story<ProjectCardType> = (args) => (
 export const Playground = Template.bind({});
 
 Playground.args = {
-  status: 'idle',
+  status: 'done',
   image: 'test',
   title: 'Podstawy web developmentu',
   url: '/test',
-  date,
   points: 100,
   pointsMax: 200,
 };
