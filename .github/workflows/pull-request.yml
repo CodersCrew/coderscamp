@@ -8,6 +8,12 @@ jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
+    env:
+      GITHUB_CLIENT_ID: ID
+      GITHUB_CLIENT_SECRET: Secret
+      JWT_SECRET: Secret
+      GITHUB_CALLBACK_URL: URL
+      TOKEN_EXPIRATION_TIME: 60
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14

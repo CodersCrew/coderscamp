@@ -38,10 +38,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest-dom/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:testing-library/react',
   ],
   rules: {
     // Prevents from writing functions that are too complex (in terms of cyclomatic complexity).
@@ -143,6 +140,11 @@ module.exports = {
       // Files that should to contain a default export.
       files: ['*.config.[tj]s', 'packages/website/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
+    },
+    {
+      // Enable plugins rules only for test files
+      files: ['**/?(*.)+(spec|test).ts?(x)'],
+      extends: ['plugin:testing-library/react', 'plugin:jest-dom/recommended', 'plugin:jest/recommended'],
     },
   ],
   settings: {
