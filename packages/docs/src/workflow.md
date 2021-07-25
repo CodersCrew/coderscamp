@@ -1,16 +1,40 @@
 ---
-title: Commit conventions
-description: How to create meaningful and descriptive commits?
+title: Workflow
+description: How our workflow looks like and what restriction it implies?
 sidebar_position: 5
 ---
 
+## Tasks workflow
+
+### Normal issues
+
+1. Assign yourself to an issue. As a result, a new branch for the issue will be created.
+
+2. Pull the created branch locally and start your work.
+
+3. Make as many commits as you want, but remember two things:
+
+    - Each commit name should be suffixed with issue ID in brackets (e.g. `Some commit (#99)`). If you use git in the console, it will be done automatically, so you don't have to care about it.
+
+    - If you plan to make a pull request with only one commit, this commit must follow the Conventional Commit convention described in the next chapter.
+
+4. When the task is done, create a pull request on GitHub. Remember to follow the Conventional Commit convention described in the next chapter.
+
+5. Wait for two approvals from other developers.
+
+6. Click the "Squash and merge" button to merge your changes to the `main` branch.
+
+### Small refactors (chores)
+
+Sometimes you will find tasks so small that making an issue of them will take longer than finishing the entire task. In such cases, you can create a branch with a name prefixed by `chore-` and do the task immediately. Remember to describe the change and reasoning for it in the body of your pull request.
+
+## Commit conventions
+
 :::note
 
-You can name commits on your branches however you want. We use the "Squash and merge" strategy for pull requests, so the following rules apply only to PRs as merge commits are derived from them. They also apply in cases where you have only one commit on your branch.
+You can name commits on your branches however you want. We use the "Squash and merge" strategy for pull requests, so the following rules apply only to PRs as merge commits are derived from them. **They also apply in cases where you have only one commit on your branch.**
 
 :::
-
-## Conventional commits
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to ensure that each commit
 solves only one problem, and its message clearly describes changes that were made. According to that assumptions, commit
@@ -48,6 +72,7 @@ project, we use basic types set provided by
 - **refactor**: A code change that neither fixes a bug nor adds a feature.
 
 - **revert**: A code change that reverts another commit.
+
 - **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc.).
 
 - **test**: Adding missing tests or correcting existing tests.
@@ -84,7 +109,7 @@ the body.
 
 As your commit (PR) is directly related to a particular issue, the footer is the best place to mention it. Do it using the `Closes #ISSUE_ID` format.
 
-## PR samples
+### Example pull requests
 
 ```
 feat(ui): Add Icon component. (#1)
@@ -103,3 +128,4 @@ docs: Fix reference to Conventional Commits (#15)
 
 Closes #15
 ```
+
