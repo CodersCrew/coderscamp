@@ -22,15 +22,21 @@ export interface TeamCardProps extends BoxProps {
   active: boolean;
 }
 
-type AvatarProps = {
+type AvatarsProps = {
   teamMembers: TeamMember[];
 };
 
-const Avatars = ({ teamMembers }: AvatarProps) => {
+const Avatars = ({ teamMembers }: AvatarsProps) => {
   return (
     <AvatarGroup spacing="24px" marginTop="4px">
       {teamMembers.map(({ id, name, image, profileUrl }) => (
-        <Link href={profileUrl} key={id}>
+        <Link
+          href={profileUrl}
+          key={id}
+          _hover={{
+            textDecoration: 'none',
+          }}
+        >
           <Avatar src={image} name={name} size="sm" />
         </Link>
       ))}
