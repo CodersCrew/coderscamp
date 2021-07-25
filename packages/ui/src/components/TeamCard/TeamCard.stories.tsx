@@ -1,8 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { members, mentors } from './assets/teamMembers';
 import { TeamCard, TeamCardProps } from './TeamCard';
+import { members, mentors } from './teamMembers';
 
 const meta: Meta = {
   title: 'Components / TeamCard',

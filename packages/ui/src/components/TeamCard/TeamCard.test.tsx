@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { members, mentors } from './assets/teamMembers';
 import { notActiveText, TeamCard } from './TeamCard';
+import { members, mentors } from './teamMembers';
 
 describe('TeamCard', () => {
   it('renders team members correctly', () => {
@@ -13,8 +13,8 @@ describe('TeamCard', () => {
     const groupRole = screen.getAllByRole(role);
 
     /* eslint-disable testing-library/no-node-access */
-    expect(groupRole[0].children.length).toEqual(6);
-    expect(groupRole[1].children.length).toEqual(1);
+    expect(groupRole[0].children.length).toEqual(members.length);
+    expect(groupRole[1].children.length).toEqual(mentors.length);
   });
 
   it('renders correctly in not active state', () => {
