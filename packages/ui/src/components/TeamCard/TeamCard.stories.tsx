@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { TeamCard, TeamCardProps } from './TeamCard';
-import { members, mentors } from './teamMembers';
+import { members, mentors } from './TeamCard.mocks';
 
 const meta: Meta = {
   title: 'Components / TeamCard',

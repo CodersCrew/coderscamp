@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { notActiveText, TeamCard } from './TeamCard';
-import { members, mentors } from './teamMembers';
+import { NOT_ACTIVE_TEXT, TeamCard } from './TeamCard';
+import { members, mentors } from './TeamCard.mocks';
 
 describe('TeamCard', () => {
   it('renders team members correctly', () => {
@@ -20,6 +20,6 @@ describe('TeamCard', () => {
   it('renders correctly in not active state', () => {
     render(<TeamCard mentors={mentors} members={members} active={false} />);
 
-    expect(screen.getByText(notActiveText)).toBeVisible();
+    expect(screen.getByText(NOT_ACTIVE_TEXT)).toBeVisible();
   });
 });
