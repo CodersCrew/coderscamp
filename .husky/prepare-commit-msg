@@ -1,0 +1,36 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+CHORE_BRANCH_REGEX='^chore-.+$'
+VALID_BRANCH_REGEX='^issue-[0-9]+-.+$'
+COMMIT_MESSAGE=$(<$COMMIT_MSG_FILE)
+
+# Exit without error if it's not a local commit or if it's a chore branch or it's a rebase
+if [ "$COMMIT_SOURCE" != "message" ] || [[ $BRANCH_NAME =~ $CHORE_BRANCH_REGEX ]] || [ "$BRANCH_NAME" = "HEAD" ]; then
+    exit 0
+fi
+
+# Exit with error when the branch name is invalid
+if [[ ! $BRANCH_NAME =~ $VALID_BRANCH_REGEX ]]; then
+    echo "Branch names in this project must adhere to this contract: $VALID_BRANCH_REGEX. You should rename your branch to a valid name and try again."
+    exit 1
+fi
+
+if [ ! -z "$BRANCH_NAME" ]; then
+
+  SUFFIX_PATTERN='issue-([0-9]+)'
+
+  [[ $BRANCH_NAME =~ $SUFFIX_PATTERN ]]
+
+  SUFFIX=${BASH_REMATCH[1]}
+  VALID_MESSAGE_REGEX="^.+ \(#$SUFFIX\)$"
+
+  # Prefix branch name with issue ID if not already prefixed
+  if [[ -n "$SUFFIX" ]] && [[ ! $COMMIT_MESSAGE =~ $VALID_MESSAGE_REGEX ]]; then
+    echo "$COMMIT_MESSAGE (#$SUFFIX)" > "$COMMIT_MSG_FILE"
+  fi
+fi
