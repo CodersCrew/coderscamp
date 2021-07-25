@@ -3,38 +3,44 @@ import { TeamMember } from './TeamCard';
 const imageUrl =
   'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80';
 
+const MEMBERS_NAME = 'Ryan Buckley';
+export const MEMBERS_INITIALS = 'RB';
+
+const MENTORS_NAME = 'Sophie Mcdonald';
+export const MENTORS_INITIALS = 'SM';
+
 export const members: TeamMember[] = [
   {
     id: 1,
-    name: 'Ryan Buckley',
+    name: MEMBERS_NAME,
     image: imageUrl,
     profileUrl: '/',
   },
   {
     id: 2,
-    name: 'Ryan Buckley',
+    name: MEMBERS_NAME,
     profileUrl: '/',
   },
   {
     id: 3,
-    name: 'Ryan Buckley',
+    name: MEMBERS_NAME,
     image: imageUrl,
     profileUrl: '/',
   },
   {
     id: 4,
-    name: 'Sakina Wiley',
+    name: MEMBERS_NAME,
     profileUrl: '/',
   },
   {
     id: 5,
-    name: 'Ryan Buckley',
+    name: MEMBERS_NAME,
     image: imageUrl,
     profileUrl: '/',
   },
   {
     id: 6,
-    name: 'Eesa Salter',
+    name: MEMBERS_NAME,
     profileUrl: '/',
   },
 ];
@@ -42,7 +48,7 @@ export const members: TeamMember[] = [
 export const mentors: TeamMember[] = [
   {
     id: 7,
-    name: 'Ryan Buckley',
+    name: MENTORS_NAME,
     image: imageUrl,
     profileUrl: '/',
   },
