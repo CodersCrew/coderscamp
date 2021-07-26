@@ -1,15 +1,15 @@
-function baseStyleControl() {
-  const disabledCbColorLight = 'gray.100';
+const DISABLED_COLOR = 'gray.100';
 
-  return {
+const baseStyle = {
+  control: {
     _checked: {
       _active: {
         bg: `brand.700`,
         borderColor: `brand.700`,
       },
       _disabled: {
-        bg: disabledCbColorLight,
-        borderColor: disabledCbColorLight,
+        bg: DISABLED_COLOR,
+        borderColor: DISABLED_COLOR,
       },
     },
     _hover: {
@@ -20,19 +20,16 @@ function baseStyleControl() {
     },
     _disabled: {
       _hover: {
-        borderColor: disabledCbColorLight,
+        borderColor: DISABLED_COLOR,
       },
       _active: {
-        bg: disabledCbColorLight,
-        borderColor: disabledCbColorLight,
+        bg: DISABLED_COLOR,
+        borderColor: DISABLED_COLOR,
       },
     },
-  };
-}
+  },
+};
 
-const baseStyle = () => ({
-  control: baseStyleControl(),
-});
 const defaultProps = {
   colorScheme: 'brand',
   borderRadius: 2,

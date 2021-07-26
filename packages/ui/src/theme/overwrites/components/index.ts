@@ -1,5 +1,5 @@
-import { Checkbox } from './Checkbox';
 import { Button } from './button';
+import { Checkbox } from './checkbox-styles';
 import { Input } from './input';
 import { NumberInput } from './numberInput';
 import { Radio } from './radio';
