@@ -59,7 +59,7 @@ jobs:
       - name: Run TypeScript types check
         run: yarn typecheck
 
-  check-name:
+  pr-name:
     name: Check PR name
     runs-on: ubuntu-latest
     steps:
@@ -77,3 +77,12 @@ jobs:
           validateSingleCommit: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  branch-name:
+    name: Check branch name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: "^(issue-[0-9]+|chore)-.+$"
+          ignore: main
