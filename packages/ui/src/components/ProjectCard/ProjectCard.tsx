@@ -1,9 +1,9 @@
 import React from 'react';
-import { Box, Flex, forwardRef, Grid } from '@chakra-ui/react';
+import { Box, Flex, forwardRef, Grid, Image } from '@chakra-ui/react';
 
-import { statusValueCheck } from '../../helpers/statusValueCheck';
-import { Button } from '../Button/Button';
-import { Typography } from '../Typography/Typography';
+import { Button } from '../Button';
+import { Typography } from '../Typography';
+import { statusValueCheck } from './statusValueCheck';
 
 type DoneProps = {
   status: 'done';
@@ -31,7 +31,7 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
   // disabled for url props
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ status, image, title, url, points, pointsMax, date, ...props }, ref) => {
-    const { statusText, timeStatus, dateOrPoints, isDoing } = statusValueCheck(
+    const { statusText, timeStatus, dateOrPoints } = statusValueCheck(
       status,
       points as number,
       pointsMax as number,
@@ -41,7 +41,13 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
     return (
       <Box status={status} ref={ref} w="100%" h="100%" boxShadow="base" borderRadius="8px" {...props}>
         <Grid templateRows="repeat(2, 1fr)" h="100%" gap="24px">
-          <Box as="img" src={image} alt="" background="gray.300" borderRadius="8px 8px 0 0" h="auto" />
+          <Image
+            src={image}
+            alt={`Grafika projektu z modułu ${title}`}
+            background="gray.300"
+            borderRadius="8px 8px 0 0"
+            h="auto"
+          />
 
           <Grid templateRows="repeat(3 1fr)" justifyContent="center">
             <Typography as="p" fontWeight="700" size="lg" lineHeight="xl" letterSpacing="4xl">
@@ -65,8 +71,7 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
                 {dateOrPoints}
               </Typography>
             </Flex>
-
-            {isDoing ? <Button>Przejdź do projektu</Button> : <Button disabled>Przejdź do projektu</Button>}
+            <Button disabled={status === 'idle'}>Przejdź do projektu</Button>
           </Grid>
         </Grid>
       </Box>
