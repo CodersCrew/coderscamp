@@ -5,8 +5,8 @@
     "packages/*"
   ],
   "engines": {
-    "yarn": ">=2.4.0",
-    "node": ">=14.0.0"
+    "yarn": "2.4.2",
+    "node": "14.x"
   },
   "license": "GPL-3.0-only",
   "homepage": "https://github.com/CodersCrew/coderscamp#readme",
@@ -29,31 +29,31 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.24",
-    "@typescript-eslint/eslint-plugin": "4.28.2",
-    "@typescript-eslint/parser": "4.28.2",
+    "@typescript-eslint/eslint-plugin": "4.28.4",
+    "@typescript-eslint/parser": "4.28.4",
     "concurrently": "6.2.0",
     "cross-env": "7.0.3",
-    "eslint": "7.30.0",
+    "eslint": "7.31.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-react": "1.1.7",
     "eslint-import-resolver-typescript": "2.4.0",
     "eslint-plugin-import": "2.23.4",
-    "eslint-plugin-jest": "24.3.6",
+    "eslint-plugin-jest": "24.4.0",
     "eslint-plugin-jest-dom": "3.9.0",
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
-    "eslint-plugin-testing-library": "4.9.0",
+    "eslint-plugin-testing-library": "4.10.1",
     "jest": "27.0.6",
     "jest-transform-stub": "2.0.0",
     "prettier": "2.3.2",
     "rimraf": "3.0.2",
     "serve": "12.0.0",
     "shelljs": "0.8.4",
-    "ts-jest": "27.0.3",
+    "ts-jest": "27.0.4",
     "typescript": "4.3.5"
   }
 }

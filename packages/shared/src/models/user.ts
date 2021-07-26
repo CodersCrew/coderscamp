@@ -1,8 +1,17 @@
 export type User = {
   id: number;
-  firstName: string;
-  lastName: string;
+  githubId: number;
+  fullName: string;
   email: string;
+  image: string;
 };
 
-export type GetAllUsersResponse = User[];
+export type UserDTO = {
+  id: number;
+  githubId: number;
+  fullName: string;
+  email: string;
+  image: string;
+};
+
+export type GetAllUsersResponse = UserDTO[];
