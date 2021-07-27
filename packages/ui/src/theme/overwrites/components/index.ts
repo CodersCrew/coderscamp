@@ -1,4 +1,5 @@
 import { Button } from './button';
+import { Checkbox } from './checkbox';
 import { Input } from './input';
 import { NumberInput } from './numberInput';
 import { Radio } from './radio';
@@ -10,4 +11,5 @@ export const components = {
   NumberInput,
   Textarea,
   Input,
+  Checkbox,
 };
