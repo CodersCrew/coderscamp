@@ -155,7 +155,7 @@ module.exports = {
     },
     {
       // Files that should contain a default export.
-      files: ['*.config.[tj]s', 'packages/website/pages/**/*.tsx', '*.stories.tsx'],
+      files: ['*.config.[tj]s', 'packages/website/src/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
     },
     {
