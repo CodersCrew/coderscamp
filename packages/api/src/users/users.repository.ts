@@ -1,22 +1,57 @@
 import { Injectable } from '@nestjs/common';
 
-import type { User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, Survey, User } from '@coderscamp/shared/models/user';
 
+import type { GithubUserData } from '../auth/github/github.model';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
-  }
-
-  async create(userData: Omit<User, 'id'>): Promise<User> {
+  async create(userData: GithubUserData): Promise<RegisteredUser> {
     return this.prisma.user.create({ data: userData });
   }
 
-  async getByGithubId(githubId: number): Promise<User | null> {
+  async saveUserSurvey(survey: Survey, userId: number): Promise<Survey> {
+    const data = this.prisma.userSurvey.create({
+      data: { ...survey, user: { connect: { id: userId } } },
+    });
+    return data;
+  }
+
+  async getUserSurvey({ id }: User) {
+    const data = this.prisma.userSurvey.findUnique({ where: { userId: id }, include: { user: true } });
+    return data;
+  }
+
+  // : Promise<UserSurvey | null>
+  async getByGithubId(githubId: number): Promise<any> {
     return this.prisma.user.findUnique({ where: { githubId } });
   }
+
+  async updateUser({ id, ...data }: User): Promise<User> {
+    return this.prisma.user.update({ data, where: { id } }) as unknown as User;
+  }
+
+  // async saveUserSurvey2(data: UserSurvey): Promise<any> {
+  //   const { id, githubId, fullName, email, image, gender, city, birthYear, isStudent, ...survey } = data;
+  //   return this.prisma.user.update({
+  //     where: { id },
+  //     data: {
+  //       id,
+  //       githubId,
+  //       fullName,
+  //       email,
+  //       image,
+  //       gender,
+  //       city,
+  //       birthYear,
+  //       isStudent,
+  //       survey: { ...survey },
+  //     },
+  //     connect: { survey: id },
+  //     // survey: { create: survey },
+  //   });
+  // }
 }

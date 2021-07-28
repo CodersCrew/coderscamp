@@ -1,16 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
-import type { UserDTO } from '@coderscamp/shared/models/user';
+import type { UserSurveyDTO } from '@coderscamp/shared/models/user';
 
+import { UsersEntity } from './users.entity';
 import { UsersMapper } from './users.mapper';
-import { UsersRepository } from './users.repository';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(private readonly usersEntity: UsersEntity) {}
 
-  @Get('/')
-  async getAll(): Promise<UserDTO[]> {
-    return UsersMapper.toPlainMany(await this.usersRepository.getAll());
+  @Post('user-survey')
+  async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<UserSurveyDTO> {
+    const survey = UsersMapper.userSurveyToDomain(userSurveyDTO);
+    const result = await this.usersEntity.completeSurvey(survey);
+    console.log(result);
+    return UsersMapper.userSurveyToPlain(result);
   }
 }

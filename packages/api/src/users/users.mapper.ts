@@ -1,17 +1,20 @@
-import type { User, UserDTO } from '@coderscamp/shared/models/user';
+import type {
+  RegisteredUser,
+  RegisteredUserDTO,
+  User,
+  UserDTO,
+  UserSurvey,
+  UserSurveyDTO,
+} from '@coderscamp/shared/models/user';
 
 import type { GithubDTO } from '../auth/github/github.model';
 
 export class UsersMapper {
-  static toDomain(value: UserDTO): User {
+  static userToDomain(value: UserDTO): User {
     return value;
   }
 
-  static toDomainMany(values: UserDTO[]): User[] {
-    return values;
-  }
-
-  static fromGithubInputToDomain(value: GithubDTO): Omit<User, 'id'> {
+  static fromGithubToDomain(value: GithubDTO): Omit<RegisteredUserDTO, 'id'> {
     const { email, id, avatar_url: image, name } = value;
     return {
       email,
@@ -21,11 +24,20 @@ export class UsersMapper {
     };
   }
 
-  static toPlain(value: User): UserDTO {
+  static userToPlain(value: RegisteredUser): RegisteredUserDTO;
+  static userToPlain(value: User): UserDTO {
     return value;
   }
 
-  static toPlainMany(values: User[]): UserDTO[] {
-    return values;
+  static registeredUserToPlain(value: RegisteredUser): RegisteredUserDTO {
+    return value;
+  }
+
+  static userSurveyToDomain(data: UserSurveyDTO): UserSurvey {
+    return data;
+  }
+
+  static userSurveyToPlain(data: UserSurvey): UserSurveyDTO {
+    return data;
   }
 }

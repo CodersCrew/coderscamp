@@ -13,23 +13,25 @@ model User {
   fullName   String
   email      String
   image      String
-  city       String
-  gender     String
-  birthYear  Int
-  isStudent  Boolean
+  city       String?
+  gender     String?
+  birthYear  Int?
+  isStudent  Boolean?
   UserSurvey UserSurvey?
 }
 
 model UserSurvey {
-  userId                   Int     @unique
-  user                     User    @relation(fields: [userId], references: [id])
-  description              String
-  alreadyTookCourse        Boolean
-  reasonForRepeatingCourse String?
-  expectations             String
-  experience               String
-  uniqnues                 String
-  plans                    String
-  unavailablity            String
-  averageTime              Int
+  userId                  Int      @unique
+  user                    User     @relation(fields: [userId], references: [id])
+  description             String
+  alreadyTookCourse       Boolean
+  reasonForRetakingCourse String?
+  expectations            String
+  experience              String
+  uniques                 String
+  plans                   String
+  unavailability          String
+  averageTime             Int
+  associatedWords         String[]
+  courseInformationSource String
 }

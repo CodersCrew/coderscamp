@@ -3,16 +3,16 @@ import { PassportStrategy as GithubStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { VerifiedCallback } from 'passport-jwt';
 
-import type { UserDTO } from '@coderscamp/shared/models/user';
+import type { RegisteredUserDTO, UserDTO } from '@coderscamp/shared/models/user';
 
+import { UsersEntity } from '../../users/users.entity';
 import { UsersMapper } from '../../users/users.mapper';
-import { UsersRepository } from '../../users/users.repository';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import type { GithubResponse, GithubUserData } from './github.model';
 
 @Injectable()
 export class GithubClient extends GithubStrategy(Strategy) {
-  constructor(private usersRepository: UsersRepository, private jwtStrategy: JwtStrategy) {
+  constructor(private usersEntity: UsersEntity, private jwtStrategy: JwtStrategy) {
     super({
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -27,18 +27,20 @@ export class GithubClient extends GithubStrategy(Strategy) {
     { _json: profile }: GithubResponse,
     done: VerifiedCallback,
   ) {
-    done(null, UsersMapper.fromGithubInputToDomain(profile));
+    done(null, UsersMapper.fromGithubToDomain(profile));
   }
 
-  async githubAuth(user: GithubUserData): Promise<{ accessToken: string; profile: UserDTO } | null> {
-    let userFromDatabase = await this.usersRepository.getByGithubId(user.githubId);
+  async githubAuth(
+    user: GithubUserData,
+  ): Promise<{ accessToken: string; profile: UserDTO | RegisteredUserDTO } | null> {
+    let userFromDatabase = await this.usersEntity.getByGithubId(user.githubId);
     if (!userFromDatabase) {
-      userFromDatabase = await this.usersRepository.create(user);
+      userFromDatabase = await this.usersEntity.register(user);
     }
     return userFromDatabase
       ? {
           accessToken: this.jwtStrategy.generateToken(userFromDatabase),
-          profile: UsersMapper.toPlain(userFromDatabase),
+          profile: UsersMapper.userToPlain(userFromDatabase),
         }
       : null;
   }
