@@ -39,7 +39,7 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
     );
 
     return (
-      <Box status={status} ref={ref} w="100%" boxShadow="base" borderRadius="8px" {...props}>
+      <Box ref={ref} w="100%" boxShadow="base" borderRadius="8px" {...props}>
         <Grid templateRows="min-content 1fr" h="100%">
           <Image
             src={image}

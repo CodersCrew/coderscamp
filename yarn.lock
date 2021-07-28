@@ -2949,6 +2949,7 @@ __metadata:
     "@types/react": 17.0.14
     "@types/react-dom": 17.0.9
     framer-motion: 4.1.17
+    moment: 2.29.1
     react: 17.0.2
   peerDependencies:
     react: 17.0.2
@@ -17028,6 +17029,13 @@ fsevents@^1.2.7:
   version: 2.2.2
   resolution: "module-alias@npm:2.2.2"
   checksum: 1b37943df4fbe56799688eb3496f5113f7f1e18ff7a53bd3543e93fd4ee6c4b04e1548fc0cb49ae73e086b18ee712ab3321f6d7f5444cf413c638914decb8918
+  languageName: node
+  linkType: hard
+
+"moment@npm:2.29.1":
+  version: 2.29.1
+  resolution: "moment@npm:2.29.1"
+  checksum: 86729013febf7160de5b93da69273dd304d674b0224f9544b3abd09a87671ddd2cdd57598261ce57588910d63747ffd5590965e83c790d8bf327083c0e0a06e0
   languageName: node
   linkType: hard
 

@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+moment.locale('pl');
 type StatusProps = 'idle' | 'doing' | 'review' | 'done';
 type StatusCase = {
   statusText: string;
@@ -14,7 +17,7 @@ export const statusValueCheck = (status: StatusProps, points: number, pointsMax:
       statusCase = {
         statusText: 'W trakcie',
         timeStatus: 'Deadline',
-        dateOrPoints: dateProps.toLocaleDateString(),
+        dateOrPoints: moment(dateProps).format('L'),
         isDoing: true,
       };
       return statusCase;
@@ -22,7 +25,7 @@ export const statusValueCheck = (status: StatusProps, points: number, pointsMax:
       statusCase = {
         statusText: 'W ocenie',
         timeStatus: 'Demo',
-        dateOrPoints: dateProps.toLocaleDateString(),
+        dateOrPoints: moment(dateProps).format('L'),
         isDoing: true,
       };
       return statusCase;
@@ -39,7 +42,7 @@ export const statusValueCheck = (status: StatusProps, points: number, pointsMax:
       statusCase = {
         statusText: 'Nie rozpoczęty',
         timeStatus: 'Rozpoczęcie',
-        dateOrPoints: dateProps.toLocaleDateString(),
+        dateOrPoints: moment(dateProps).format('L'),
         isDoing: false,
       };
       return statusCase;

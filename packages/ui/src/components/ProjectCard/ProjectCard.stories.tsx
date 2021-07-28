@@ -14,7 +14,9 @@ const meta: Meta = {
   title: 'Components / ProjectCard',
   component: ProjectCard,
   argTypes: {
-    date: Date,
+    date: {
+      control: { type: 'date' },
+    },
     status: {
       options: Object.keys(status),
       mapping: status,
