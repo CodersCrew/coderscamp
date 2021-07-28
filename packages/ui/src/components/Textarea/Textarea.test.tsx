@@ -10,11 +10,13 @@ describe('Textarea', () => {
     render(<Textarea disabled />);
     expect(getTextarea()).toBeDisabled();
   });
+
   it('Renders correctly as default textarea', () => {
     render(<Textarea />);
     expect(getTextarea()).toBeEnabled();
     expect(getTextarea()).toBeInTheDocument();
   });
+
   it('Renders correctly in invalid state', () => {
     render(<Textarea invalid />);
     expect(getTextarea()).toBeInvalid();
