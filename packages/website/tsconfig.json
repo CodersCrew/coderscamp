@@ -8,7 +8,8 @@
     "module": "esnext",
     "noEmit": true,
     "paths": {
-      "@coderscamp/ui/*": ["../ui/src/*"]
+      "@coderscamp/ui/*": ["../ui/src/*"],
+      "@/components/*": ["src/components/*"]
     },
     "target": "es5"
   },

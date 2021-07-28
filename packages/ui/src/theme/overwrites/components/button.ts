@@ -1,4 +1,9 @@
-export const Button = {
+import type { ComponentStyleConfig } from '@chakra-ui/react';
+
+export const Button: ComponentStyleConfig = {
+  baseStyle: {
+    fontWeight: 'medium',
+  },
   sizes: {
     xs: {
       py: '4px',
