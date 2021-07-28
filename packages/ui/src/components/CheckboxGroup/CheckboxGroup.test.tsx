@@ -11,9 +11,9 @@ describe('CheckboxGroup', () => {
   it('renders correctly', () => {
     render(<CheckboxGroup value={['1']} onChange={() => {}} data-testid="Checkbox" />);
 
-    const Checkbox = screen.getByTestId('Checkbox');
+    const checkbox = screen.getByTestId('Checkbox');
 
-    expect(Checkbox).toBeInTheDocument();
+    expect(checkbox).toBeInTheDocument();
   });
 
   it('renders correctly checked Checkbox', () => {
@@ -24,11 +24,11 @@ describe('CheckboxGroup', () => {
       </CheckboxGroup>,
     );
 
-    const CheckboxOne = screen.getByLabelText(textOne);
-    const CheckboxTwo = screen.getByLabelText(textTwo);
+    const checkboxOne = screen.getByLabelText(textOne);
+    const checkboxTwo = screen.getByLabelText(textTwo);
 
-    expect(CheckboxOne).toBeChecked();
+    expect(checkboxOne).toBeChecked();
 
-    expect(CheckboxTwo).not.toBeChecked();
+    expect(checkboxTwo).not.toBeChecked();
   });
 });
