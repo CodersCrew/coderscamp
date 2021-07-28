@@ -4,17 +4,20 @@ import { Meta, Story } from '@storybook/react';
 import { HStack, VStack } from '../Stack';
 import { Typography, TypographyProps } from './Typography';
 
-const tags = { h1: 'h1', h2: 'h2', h3: 'h3', h4: 'h4', h5: 'h5', h6: 'h6', a: 'a', span: 'span', p: 'p', div: 'div' };
+const tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'span', 'p', 'div'];
+const sizes = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', '8xl'];
+
 const meta: Meta = {
   title: 'Components / Typography',
   component: Typography,
   argTypes: {
     as: {
-      options: Object.keys(tags),
-      mapping: tags,
-      control: {
-        type: 'select',
-      },
+      control: { type: 'select' },
+      options: tags,
+    },
+    size: {
+      control: { type: 'select' },
+      options: sizes,
     },
   },
 };

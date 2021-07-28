@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Box, forwardRef, HTMLChakraProps } from '@chakra-ui/react';
+import { Box, forwardRef, HTMLChakraProps, ResponsiveValue } from '@chakra-ui/react';
 
 type TypographyVariant = 'span' | 'div' | 'p' | 'a' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -10,7 +10,7 @@ type TypographyFontWeight = 'normal' | 'medium' | 'bold' | 'extrabold';
 export interface TypographyProps extends HTMLChakraProps<'div'> {
   children: ReactNode | ReactNode[];
   as?: TypographyVariant;
-  size?: TypographyFontSize;
+  size?: ResponsiveValue<TypographyFontSize>;
   weight?: TypographyFontWeight;
 }
 
