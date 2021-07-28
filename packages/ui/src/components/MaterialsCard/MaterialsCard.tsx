@@ -12,7 +12,7 @@ export interface MaterialsCardProps extends BoxProps {
 
 type MaterialsCardOptions = Record<MaterialsCardStatus, { statusText: string; buttonText: string }>;
 
-const MaterialsCardText: MaterialsCardOptions = {
+export const MaterialsCardText: MaterialsCardOptions = {
   idle: {
     statusText: 'Kliknij przycisk poniżej, aby wygenerować swoja unikalną listę z materiałami.',
     buttonText: 'Wygeneruj listę',
