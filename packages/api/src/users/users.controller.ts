@@ -13,7 +13,7 @@ export class UsersController {
   async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<UserSurveyDTO> {
     const survey = UsersMapper.userSurveyToDomain(userSurveyDTO);
     const result = await this.usersEntity.completeSurvey(survey);
-    console.log(result);
+
     return UsersMapper.userSurveyToPlain(result);
   }
 }

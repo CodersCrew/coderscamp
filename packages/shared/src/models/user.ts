@@ -24,7 +24,7 @@ export type Survey = {
   courseInformationSource: string;
 };
 
-export type UserSurvey = User & User & { survey: Survey };
+export type UserSurvey = User & { UserSurvey: Survey };
 
 export type RegisteredUserDTO = {
   id: number;
@@ -48,4 +48,4 @@ export type UserDTO = {
   isStudent: boolean;
 };
 
-export type UserSurveyDTO = User & { survey: Survey };
+export type UserSurveyDTO = User & { UserSurvey: Survey };

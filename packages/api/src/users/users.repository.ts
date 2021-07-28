@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import type { RegisteredUser, Survey, User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, Survey, User, UserSurvey } from '@coderscamp/shared/models/user';
 
 import type { GithubUserData } from '../auth/github/github.model';
 import { PrismaService } from '../prisma/prisma.service';
@@ -25,8 +25,7 @@ export class UsersRepository {
     return data;
   }
 
-  // : Promise<UserSurvey | null>
-  async getByGithubId(githubId: number): Promise<any> {
+  async getByGithubId(githubId: number): Promise<RegisteredUser | User | null> {
     return this.prisma.user.findUnique({ where: { githubId } });
   }
 
@@ -34,24 +33,10 @@ export class UsersRepository {
     return this.prisma.user.update({ data, where: { id } }) as unknown as User;
   }
 
-  // async saveUserSurvey2(data: UserSurvey): Promise<any> {
-  //   const { id, githubId, fullName, email, image, gender, city, birthYear, isStudent, ...survey } = data;
-  //   return this.prisma.user.update({
-  //     where: { id },
-  //     data: {
-  //       id,
-  //       githubId,
-  //       fullName,
-  //       email,
-  //       image,
-  //       gender,
-  //       city,
-  //       birthYear,
-  //       isStudent,
-  //       survey: { ...survey },
-  //     },
-  //     connect: { survey: id },
-  //     // survey: { create: survey },
-  //   });
-  // }
+  async getUserRepresentationById(id: number): Promise<UserSurvey | (User & { UserSurvey: Survey | null }) | null> {
+    return this.prisma.user.findUnique({ where: { id }, include: { UserSurvey: true } }) as unknown as
+      | UserSurvey
+      | (User & { UserSurvey: Survey | null })
+      | null;
+  }
 }

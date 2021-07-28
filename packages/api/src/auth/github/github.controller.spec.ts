@@ -1,7 +1,7 @@
 import { INestApplication, InternalServerErrorException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
-import type { User } from '../../../../shared/src/models/user';
+import type { RegisteredUserDTO } from '../../../../shared/src/models/user';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UsersRepository } from '../../users/users.repository';
 import { JWTModule } from '../jwtStrategy/jwt.module';
@@ -10,7 +10,7 @@ import { GithubClient } from './github.client';
 import { GithubController } from './github.controller';
 import { GithubUserData } from './github.model';
 
-const profile: User = {
+const profile: RegisteredUserDTO = {
   id: 1,
   fullName: 'Name',
   githubId: 22222222,

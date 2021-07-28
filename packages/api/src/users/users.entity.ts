@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { UserSurvey } from '@coderscamp/shared/models/user';
 
@@ -18,12 +18,17 @@ export class UsersEntity {
   }
 
   async completeSurvey(surveyData: UserSurvey): Promise<UserSurvey> {
-    const { survey, ...user } = surveyData;
+    const { UserSurvey: survey, ...user } = surveyData;
+    const userFromDb = await this.usersRepository.getUserRepresentationById(user.id);
+
+    if (!userFromDb) throw new NotFoundException('User does not exists.');
+    if (userFromDb.UserSurvey) throw new BadRequestException('Survey already filled.');
+
     const userResult = this.usersRepository.updateUser(user);
     const surveyResult = this.usersRepository.saveUserSurvey(survey, user.id);
 
     return Promise.all([userResult, surveyResult]).then((results) => {
-      return { ...results[0], survey: results[1] };
+      return { ...results[0], UserSurvey: results[1] };
     });
   }
 }
