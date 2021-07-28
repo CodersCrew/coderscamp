@@ -11,6 +11,7 @@ describe('Checkbox component', () => {
 
     expect(checkbox).toBeInTheDocument();
   });
+
   it('checks that checked checkbox is checked', () => {
     render(<Checkbox value="test" onChange={() => {}} checked aria-label="checkbox" />);
 
@@ -18,8 +19,10 @@ describe('Checkbox component', () => {
 
     expect(checkbox).toBeChecked();
   });
+
   it('checks checkbox displays correct labels', () => {
     const label = 'checkbox name';
+
     render(
       <Checkbox value="test" onChange={() => {}} checked>
         {label}

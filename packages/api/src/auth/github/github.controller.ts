@@ -20,6 +20,7 @@ export class GithubController {
     const result = await this.githubClient.githubAuth(req.user);
 
     if (result) return result;
+
     throw new InternalServerErrorException();
   }
 }
