@@ -10,7 +10,14 @@ export interface CheckboxGroupProps extends Omit<StackProps, 'onChange'> {
   disabled?: boolean;
 }
 
-export const CheckboxGroup = ({ value, onChange, children, disabled = false, size = 'md', ...props }: CheckboxGroupProps) => (
+export const CheckboxGroup = ({
+  value,
+  onChange,
+  children,
+  disabled = false,
+  size = 'md',
+  ...props
+}: CheckboxGroupProps) => (
   <ChakraCheckboxGroup value={value} onChange={onChange} size={size} isDisabled={disabled}>
     <Stack {...props}>{children}</Stack>
   </ChakraCheckboxGroup>
