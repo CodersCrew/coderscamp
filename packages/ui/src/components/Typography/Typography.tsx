@@ -27,7 +27,16 @@ export const Typography = forwardRef<TypographyProps, 'div'>(
   ({ as = 'div', size = 'md', weight = 'regular', children, ...props }, ref) => {
     const stylesForLink = as === 'a' && anchorStyle;
     return (
-      <Box as={as} fontSize={size} ref={ref} fontWeight={weight} {...props} {...stylesForLink}>
+      <Box
+        as={as}
+        fontSize={size}
+        lineHeight={size}
+        letterSpacing={size}
+        ref={ref}
+        fontWeight={weight}
+        {...props}
+        {...stylesForLink}
+      >
         {children}
       </Box>
     );

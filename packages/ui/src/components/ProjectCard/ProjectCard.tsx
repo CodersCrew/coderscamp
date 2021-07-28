@@ -39,8 +39,8 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
     );
 
     return (
-      <Box status={status} ref={ref} w="100%" h="100%" boxShadow="base" borderRadius="8px" {...props}>
-        <Grid templateRows="repeat(2, 1fr)" h="100%" gap="24px">
+      <Box status={status} ref={ref} w="100%" boxShadow="base" borderRadius="8px" {...props}>
+        <Grid templateRows="min-content 1fr" h="100%">
           <Image
             src={image}
             alt={`Grafika projektu z modułu ${title}`}
@@ -49,27 +49,23 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
             h="auto"
           />
 
-          <Grid templateRows="repeat(3 1fr)" justifyContent="center">
-            <Typography as="p" fontWeight="700" size="lg" lineHeight="xl" letterSpacing="4xl">
+          <Grid templateRows="repeat(4, 1fr)" padding="24px">
+            <Typography as="p" fontWeight="700" size="lg">
               {title}
             </Typography>
 
             <Flex justifyContent="space-between" alignSelf="end">
-              <Typography lineHeight="md" fontWeight="500" as="span">
+              <Typography fontWeight="500" as="span">
                 Status:
               </Typography>
-              <Typography lineHeight="md" as="span">
-                {statusText}
-              </Typography>
+              <Typography as="span">{statusText}</Typography>
             </Flex>
 
             <Flex justifyContent="space-between" alignSelf="start">
-              <Typography lineHeight="md" fontWeight="500" as="span">
+              <Typography fontWeight="500" as="span">
                 {timeStatus}:
               </Typography>
-              <Typography lineHeight="md" as="span">
-                {dateOrPoints}
-              </Typography>
+              <Typography as="span">{dateOrPoints}</Typography>
             </Flex>
             <Button disabled={status === 'idle'}>Przejdź do projektu</Button>
           </Grid>
