@@ -17,17 +17,25 @@ export interface TypographyProps extends HTMLChakraProps<'div'> {
 const anchorStyle = {
   color: 'brand.500',
   textDecoration: 'underline',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   _hover: { color: 'brand.600' },
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   _active: { color: 'brand.700' },
 };
 
 export const Typography = forwardRef<TypographyProps, 'div'>(
   ({ as = 'div', size = 'md', weight = 'regular', children, ...props }, ref) => {
     const stylesForLink = as === 'a' && anchorStyle;
+
     return (
-      <Box as={as} fontSize={size} ref={ref} fontWeight={weight} {...props} {...stylesForLink}>
+      <Box
+        as={as}
+        fontSize={size}
+        lineHeight={size}
+        letterSpacing={size}
+        ref={ref}
+        fontWeight={weight}
+        {...props}
+        {...stylesForLink}
+      >
         {children}
       </Box>
     );
