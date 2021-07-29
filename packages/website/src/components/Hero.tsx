@@ -15,7 +15,7 @@ export const Hero = () => {
   const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
 
   return (
-    <Flex justify="center" minH="100vh" width="100%" p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}>
+    <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}>
       <VStack spacing={{ base: '24px', md: '56px' }} maxW="min(1400px, 100%)">
         <VStack spacing={{ base: '16px', md: '32px' }} textAlign="center">
           <Typography size={mainHeaderSize} color="gray.900" weight="extrabold">
