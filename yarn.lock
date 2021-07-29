@@ -2948,9 +2948,11 @@ __metadata:
     "@testing-library/react": 12.0.0
     "@types/react": 17.0.14
     "@types/react-dom": 17.0.9
+    "@types/react-router-dom": 5.1.8
     framer-motion: 4.1.17
     moment: 2.29.1
     react: 17.0.2
+    react-router-dom: 5.2.0
   peerDependencies:
     react: 17.0.2
   languageName: unknown
@@ -6118,6 +6120,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/history@npm:*":
+  version: 4.7.9
+  resolution: "@types/history@npm:4.7.9"
+  checksum: b6aba3eb88899d987b273c384419d95ed1e8b0b3b27c36dc8faf53d748fdc16f982aacd62e31dac65877b0c6f1a77270f8112b7ac5b1d044b06f7ababaa72b75
+  languageName: node
+  linkType: hard
+
 "@types/html-minifier-terser@npm:^5.0.0":
   version: 5.1.1
   resolution: "@types/html-minifier-terser@npm:5.1.1"
@@ -6394,6 +6403,27 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 82da85bcfba524fb83946df50e433b8cc942dd30f5f3f6e0756816960ce4b85db6faa2da9f2b83124087fbe0d124580edf7b1017628b78fb28fee057e91512cb
+  languageName: node
+  linkType: hard
+
+"@types/react-router-dom@npm:5.1.8":
+  version: 5.1.8
+  resolution: "@types/react-router-dom@npm:5.1.8"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+    "@types/react-router": "*"
+  checksum: f647bc32a7b13614375714890521327168fb54f41d2acf726f5a9a16f75335da376bd399db99e8e2865dbeb6035ec2af5769936f3b76550095340d956cf4a6c6
+  languageName: node
+  linkType: hard
+
+"@types/react-router@npm:*":
+  version: 5.1.16
+  resolution: "@types/react-router@npm:5.1.16"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+  checksum: f8a286dfb328d66a635d24df23876a6fab0dc1dcc357a98709439ba096812bf647cee966d3d42d7fb00a3f355f5a991c0608ad3e7fb5063ea86eea8ea7542144
   languageName: node
   linkType: hard
 
@@ -19954,7 +19984,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^5.2.0":
+"react-router-dom@npm:5.2.0, react-router-dom@npm:^5.2.0":
   version: 5.2.0
   resolution: "react-router-dom@npm:5.2.0"
   dependencies:

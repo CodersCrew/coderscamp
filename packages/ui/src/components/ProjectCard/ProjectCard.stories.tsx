@@ -2,7 +2,8 @@ import React from 'react';
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import { Meta, Story } from '@storybook/react';
 
-import { ProjectCard, ProjectCardProps } from './ProjectCard';
+import { ProjectCardProps } from '.';
+import { ProjectCard } from './ProjectCard';
 
 const title = 'Zaawansowany React i Node';
 const dateProps = new Date();
@@ -50,6 +51,6 @@ export const Variants = () => (
     <ProjectCard status="idle" image={image} title={title} url="test" date={dateProps} />
     <ProjectCard status="doing" image={image} title={title} url="test" date={dateProps} />
     <ProjectCard status="review" image={image} title={title} url="test" date={dateProps} />
-    <ProjectCard status="done" image={image} title={title} url="test" points={100} pointsMax={200} />
+    <ProjectCard status="done" image={image} title={title} url="test" points={150} pointsMax={250} />
   </SimpleGrid>
 );

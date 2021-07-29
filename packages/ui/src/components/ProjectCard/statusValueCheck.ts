@@ -1,50 +1,36 @@
 import moment from 'moment';
 
+import { DoneProps, NotDoneProps } from './projectCardTypes';
+
 moment.locale('pl');
-type StatusProps = 'idle' | 'doing' | 'review' | 'done';
-type StatusCase = {
-  statusText: string;
-  timeStatus: string;
-  dateOrPoints: string;
-  isDoing: boolean;
-};
 
-export const statusValueCheck = (status: StatusProps, points: number, pointsMax: number, dateProps: Date) => {
-  let statusCase: StatusCase;
-
-  switch (status) {
-    case 'doing':
-      statusCase = {
-        statusText: 'W trakcie',
-        timeStatus: 'Deadline',
-        dateOrPoints: moment(dateProps).format('L'),
-        isDoing: true,
-      };
-      return statusCase;
-    case 'review':
-      statusCase = {
-        statusText: 'W ocenie',
-        timeStatus: 'Demo',
-        dateOrPoints: moment(dateProps).format('L'),
-        isDoing: true,
-      };
-      return statusCase;
-    case 'done': {
-      statusCase = {
-        statusText: 'Zakończony',
-        timeStatus: 'Punkty',
-        dateOrPoints: `${points}/${pointsMax}`,
-        isDoing: true,
-      };
-      return statusCase;
-    }
-    default:
-      statusCase = {
-        statusText: 'Nie rozpoczęty',
-        timeStatus: 'Rozpoczęcie',
-        dateOrPoints: moment(dateProps).format('L'),
-        isDoing: false,
-      };
-      return statusCase;
+export const statusValueCheck = (statusValue: DoneProps | NotDoneProps) => {
+  if (statusValue.status === 'done') {
+    return {
+      statusText: 'Zakończony',
+      timeStatus: 'Punkty',
+      dateOrPoints: `${statusValue.points}/${statusValue.pointsMax}`,
+    };
   }
+
+  if (statusValue.status === 'doing') {
+    return {
+      statusText: 'W trakcie',
+      timeStatus: 'Deadline',
+      dateOrPoints: moment(statusValue.date).format('L'),
+    };
+  }
+
+  if (statusValue.status === 'review') {
+    return {
+      statusText: 'W ocenie',
+      timeStatus: 'Demo',
+      dateOrPoints: moment(statusValue.date).format('L'),
+    };
+  }
+  return {
+    statusText: 'Nie rozpoczęty',
+    timeStatus: 'Rozpoczęcie',
+    dateOrPoints: moment(statusValue.date).format('L'),
+  };
 };

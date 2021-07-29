@@ -1,42 +1,20 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Box, Flex, forwardRef, Grid, Image } from '@chakra-ui/react';
 
 import { Button } from '../Button';
 import { Typography } from '../Typography';
+import { DoneProps, NotDoneProps, ProjectCardProps } from './projectCardTypes';
 import { statusValueCheck } from './statusValueCheck';
 
-type DoneProps = {
-  status: 'done';
-  points: number;
-  pointsMax: number;
-  date?: never;
-};
-
-type NotDoneProps = {
-  status: 'idle' | 'doing' | 'review';
-  date: Date;
-  points?: never;
-  pointsMax?: never;
-};
-
-type CommonProps = {
-  image: string;
-  title: string;
-  url: string;
-};
-
-export type ProjectCardProps = CommonProps & (DoneProps | NotDoneProps);
-
 export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
-  // disabled for url props
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ status, image, title, url, points, pointsMax, date, ...props }, ref) => {
-    const { statusText, timeStatus, dateOrPoints } = statusValueCheck(
-      status,
-      points as number,
-      pointsMax as number,
-      date as Date,
-    );
+  ({ status, image, title, url, points = 100, pointsMax = 200, date = new Date(), ...props }, ref) => {
+    const history = useHistory();
+    const statusValue: DoneProps | NotDoneProps = status === 'done' ? { status, points, pointsMax } : { status, date };
+
+    const { statusText, timeStatus, dateOrPoints } = statusValueCheck(statusValue);
+
+    const goToProjectPage = () => history.push(url);
 
     return (
       <Box ref={ref} w="100%" boxShadow="base" borderRadius="8px" {...props}>
@@ -67,7 +45,9 @@ export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
               </Typography>
               <Typography as="span">{dateOrPoints}</Typography>
             </Flex>
-            <Button disabled={status === 'idle'}>Przejdź do projektu</Button>
+            <Button disabled={status === 'idle'} onClick={goToProjectPage}>
+              Przejdź do projektu
+            </Button>
           </Grid>
         </Grid>
       </Box>
