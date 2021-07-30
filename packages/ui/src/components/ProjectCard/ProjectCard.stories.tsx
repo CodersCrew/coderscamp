@@ -47,7 +47,7 @@ Playground.args = {
 };
 
 export const Variants = () => (
-  <SimpleGrid columns={4} spacing={3} h="444px">
+  <SimpleGrid columns={4} spacing={5} h="444px">
     <ProjectCard status="idle" image={image} title={title} url="test" date={dateProps} />
     <ProjectCard status="doing" image={image} title={title} url="test" date={dateProps} />
     <ProjectCard status="review" image={image} title={title} url="test" date={dateProps} />

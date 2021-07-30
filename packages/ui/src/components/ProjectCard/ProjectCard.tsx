@@ -8,11 +8,15 @@ import { DoneProps, NotDoneProps, ProjectCardProps } from './projectCardTypes';
 import { statusValueCheck } from './statusValueCheck';
 
 export const ProjectCard = forwardRef<ProjectCardProps, 'div'>(
-  ({ status, image, title, url, points = 100, pointsMax = 200, date = new Date(), ...props }, ref) => {
+  ({ status, image, title, url, points, pointsMax, date, ...props }, ref) => {
     const history = useHistory();
+
+    // Here is problem with StatusValue type.
     const statusValue: DoneProps | NotDoneProps = status === 'done' ? { status, points, pointsMax } : { status, date };
 
     const { statusText, timeStatus, dateOrPoints } = statusValueCheck(statusValue);
+
+    console.log(typeof date, typeof points);
 
     const goToProjectPage = () => history.push(url);
 
