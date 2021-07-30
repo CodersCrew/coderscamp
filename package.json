@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "engines": {
-    "yarn": "3.0.0",
+    "yarn": "2.4.2",
     "node": "14.x"
   },
   "license": "GPL-3.0-only",
