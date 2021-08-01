@@ -4,12 +4,12 @@ import { UsersModule } from '../../users/users.module';
 import { UsersRepository } from '../../users/users.repository';
 import { JWTModule } from '../jwtStrategy/jwt.module';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
-import { GithubClient } from './github.client';
 import { GithubController } from './github.controller';
+import { GithubStrategy } from './github.strategy';
 
 @Module({
   imports: [UsersModule, JWTModule],
-  providers: [JwtStrategy, UsersRepository, GithubClient],
+  providers: [JwtStrategy, UsersRepository, GithubStrategy],
   controllers: [GithubController],
 })
 export class GithubModule {}

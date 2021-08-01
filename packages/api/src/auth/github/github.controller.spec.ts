@@ -6,7 +6,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { UsersRepository } from '../../users/users.repository';
 import { JWTModule } from '../jwtStrategy/jwt.module';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
-import { GithubClient } from './github.client';
+import { GithubStrategy } from './github.strategy';
 import { GithubController } from './github.controller';
 import { GithubUserData } from './github.model';
 
@@ -79,7 +79,7 @@ describe('Github controller', () => {
           useValue: mockPrismaService,
         },
         UsersRepository,
-        GithubClient,
+        GithubStrategy,
         JwtStrategy,
       ],
       exports: [JwtStrategy],

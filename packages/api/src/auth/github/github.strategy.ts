@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PassportStrategy as GithubStrategy } from '@nestjs/passport';
+import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { VerifiedCallback } from 'passport-jwt';
 
@@ -11,7 +11,7 @@ import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import type { GithubResponse, GithubUserData } from './github.model';
 
 @Injectable()
-export class GithubClient extends GithubStrategy(Strategy) {
+export class GithubStrategy extends PassportStrategy(Strategy) {
   constructor(private usersRepository: UsersRepository, private jwtStrategy: JwtStrategy) {
     super({
       clientID: process.env.GITHUB_CLIENT_ID,
