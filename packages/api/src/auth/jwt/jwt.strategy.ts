@@ -22,7 +22,7 @@ export const getTokenFromCookies: JwtFromRequestFunction = (req) => {
   return token;
 };
 
-export const jwtOptions = {
+const jwtOptions = {
   ignoreExpiration: false,
 };
 

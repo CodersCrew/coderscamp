@@ -66,8 +66,8 @@ describe('Github controller', () => {
 
       expect(response._getStatusCode()).toBe(200);
       expect(response._getJSONData()).toBe(true);
-      expect(response.cookies.access_token).toEqual({
-        options: { expires: new Date(env.TOKEN_EXPIRATION_TIME * 1000), httpOnly: true },
+      expect(response.cookies[env.TOKEN_COOKIE_NAME]).toEqual({
+        options: { expires: new Date(Date.now() + env.TOKEN_EXPIRATION_TIME * 1000), httpOnly: true },
         value: `${env.TOKEN_PREFIX}${tokenValue}`,
       });
     });
