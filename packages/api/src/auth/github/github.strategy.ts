@@ -7,7 +7,7 @@ import type { UserDTO } from '@coderscamp/shared/models/user';
 
 import { UsersMapper } from '../../users/users.mapper';
 import { UsersRepository } from '../../users/users.repository';
-import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
+import { JwtStrategy } from '../jwt/jwt.strategy';
 import type { GithubResponse, GithubUserData } from './github.model';
 
 @Injectable()
