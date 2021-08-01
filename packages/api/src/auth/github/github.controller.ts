@@ -5,7 +5,7 @@ import { env } from '@/common/env';
 
 import { JwtService } from '../jwt/jwt.service';
 import { GithubService } from './github.service';
-import type { RequestWithGithubUser } from './github.types';
+import { GithubAuthGuardReq } from './github.types';
 import { GithubAuthGuard } from './github-auth.guard';
 
 @Controller('auth/github')
@@ -20,7 +20,7 @@ export class GithubController {
 
   @Get('callback')
   @UseGuards(GithubAuthGuard)
-  async githubOAuthCallback(@Req() req: RequestWithGithubUser, @Res() res: Response): Promise<boolean> {
+  async githubOAuthCallback(@Req() req: GithubAuthGuardReq, @Res() res: Response): Promise<boolean> {
     const user = await this.githubService.authorizeUser(req.user);
     const token = await this.jwtService.generateToken(user);
 

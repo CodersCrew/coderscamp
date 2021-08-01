@@ -1,6 +1,8 @@
 import type { Request } from 'express';
 
-export interface GithubDTO {
+import type { GithubStrategy } from './github.strategy';
+
+export interface GithubUser {
   id: number;
   name: string;
   email: string;
@@ -8,17 +10,6 @@ export interface GithubDTO {
   avatar_url: string;
 }
 
-export interface GithubUserData {
-  githubId: number;
-  email: string;
-  image: string;
-  fullName: string;
-}
-
-export interface GithubResponse {
-  _json: GithubDTO;
-}
-
-export interface RequestWithGithubUser extends Request {
-  user: GithubUserData;
+export interface GithubAuthGuardReq extends Request {
+  user: ReturnType<GithubStrategy['validate']>;
 }

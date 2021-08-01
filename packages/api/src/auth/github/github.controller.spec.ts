@@ -7,7 +7,7 @@ import { env } from '@/common/env';
 import { JwtService } from '../jwt/jwt.service';
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
-import { RequestWithGithubUser } from './github.types';
+import { GithubAuthGuardReq } from './github.types';
 
 const user = {
   id: 1,
@@ -20,7 +20,7 @@ const user = {
 const tokenValue = 'token';
 const date = new Date();
 
-const request: RequestWithGithubUser = httpMocks.createRequest({ user });
+const request: GithubAuthGuardReq = httpMocks.createRequest({ user });
 
 describe('Github controller', () => {
   let controller: GithubController;
@@ -43,14 +43,8 @@ describe('Github controller', () => {
     const module = await Test.createTestingModule({
       controllers: [GithubController],
       providers: [
-        {
-          provide: GithubService,
-          useValue: githubService,
-        },
-        {
-          provide: JwtService,
-          useValue: jwtService,
-        },
+        { provide: GithubService, useValue: githubService },
+        { provide: JwtService, useValue: jwtService },
       ],
     }).compile();
 
@@ -58,7 +52,7 @@ describe('Github controller', () => {
   });
 
   describe('githubOAuthCallback', () => {
-    it('Returns true', async () => {
+    it('Returns true for successful requests', async () => {
       const response = httpMocks.createResponse();
       const result = await controller.githubOAuthCallback(request, response);
 
@@ -74,7 +68,7 @@ describe('Github controller', () => {
       expect(response._getJSONData()).toBe(true);
       expect(response.cookies.access_token).toEqual({
         options: { expires: new Date(env.TOKEN_EXPIRATION_TIME * 1000), httpOnly: true },
-        value: `Bearer ${tokenValue}`,
+        value: `${env.TOKEN_PREFIX}${tokenValue}`,
       });
     });
   });

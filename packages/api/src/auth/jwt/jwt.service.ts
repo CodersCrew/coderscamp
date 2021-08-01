@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
+import { UsersMapper } from 'src/users/users.mapper';
 
-import { JWTPayload } from '@/common/typings';
+import type { UserFromJwt } from '../../users/users.types';
 
 @Injectable()
 export class JwtService {
   constructor(private readonly nestJwtService: NestJwtService) {}
 
-  generateToken({ id }: { id: number }) {
-    const payload: JWTPayload = { sub: String(id) };
-
-    return this.nestJwtService.sign(payload);
+  generateToken(user: UserFromJwt): string {
+    return this.nestJwtService.sign(UsersMapper.fromDomainToJwt(user));
   }
 }

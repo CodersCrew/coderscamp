@@ -5,7 +5,12 @@ import { Strategy } from 'passport-github2';
 import { env } from '@/common/env';
 
 import { UsersMapper } from '../../users/users.mapper';
-import type { GithubResponse } from './github.types';
+import { UserFromGithub } from '../../users/users.types';
+import type { GithubUser } from './github.types';
+
+interface GithubResponse {
+  _json: GithubUser;
+}
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy) {
@@ -18,7 +23,7 @@ export class GithubStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(_token: string, _refreshToken: string | undefined, { _json: profile }: GithubResponse) {
-    return UsersMapper.fromGithubInputToDomain(profile);
+  validate(_token: string, _refreshToken: string | undefined, { _json }: GithubResponse): UserFromGithub {
+    return UsersMapper.fromGithubToDomain(_json);
   }
 }

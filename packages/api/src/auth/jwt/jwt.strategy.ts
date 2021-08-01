@@ -3,7 +3,10 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, JwtFromRequestFunction, Strategy, StrategyOptions } from 'passport-jwt';
 
 import { env } from '@/common/env';
-import type { JWTPayload, RequestUser } from '@/common/typings';
+
+import { UsersMapper } from '../../users/users.mapper';
+import type { UserFromJwt } from '../../users/users.types';
+import type { JwtPayload } from './jwt.types';
 
 export const getTokenFromCookies: JwtFromRequestFunction = (req) => {
   let token: string | null = null;
@@ -35,9 +38,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super(strategyOptions);
   }
 
-  async validate(payload: JWTPayload) {
-    const requestUser: RequestUser = { id: Number(payload.sub) };
-
-    return requestUser;
+  validate(payload: JwtPayload): UserFromJwt {
+    return UsersMapper.fromJwtToDomain(payload);
   }
 }
