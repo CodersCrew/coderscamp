@@ -1,3 +1,5 @@
+import type { Request } from 'express';
+
 export interface GithubDTO {
   id: number;
   name: string;
@@ -17,6 +19,6 @@ export interface GithubResponse {
   _json: GithubDTO;
 }
 
-export interface RequestWithGitHubUser extends Request {
+export interface RequestWithGithubUser extends Request {
   user: GithubUserData;
 }

@@ -1,5 +1,6 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { env } from 'process';
 import supertest from 'supertest';
 
 import { AuthModule } from '../src/auth/auth.module';
@@ -15,7 +16,7 @@ describe('AuthController', () => {
       const response = await request.get('/auth/github/login');
 
       expect(response.headers.location).toEqual(
-        `https://github.com/login/oauth/authorize?response_type=code&scope=read%3Auser&client_id=${process.env.GITHUB_CLIENT_ID}`,
+        `https://github.com/login/oauth/authorize?response_type=code&scope=read%3Auser&client_id=${env.GITHUB_CLIENT_ID}`,
       );
       expect(response.statusCode).toEqual(HttpStatus.FOUND);
     });

@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule as NestJwtModule } from '@nestjs/jwt';
 
+import { env } from '@/common/env';
+
+import { JwtService } from './jwt.service';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.TOKEN_EXPIRATION_TIME },
+    NestJwtModule.register({
+      secret: env.JWT_SECRET,
+      signOptions: { expiresIn: env.TOKEN_EXPIRATION_TIME },
     }),
   ],
-  providers: [JwtStrategy],
-  exports: [JwtStrategy, JwtModule],
+  providers: [JwtStrategy, JwtService],
+  exports: [NestJwtModule, JwtService],
 })
-export class JWTModule {}
+export class JwtModule {}

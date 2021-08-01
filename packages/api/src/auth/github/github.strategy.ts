@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 
+import { env } from '@/common/env';
+
 import { UsersMapper } from '../../users/users.mapper';
 import type { GithubResponse } from './github.types';
 
@@ -9,9 +11,9 @@ import type { GithubResponse } from './github.types';
 export class GithubStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackUrl: process.env.GITHUB_CALLBACK_URL,
+      clientID: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+      callbackUrl: env.GITHUB_CALLBACK_URL,
       scope: ['read:user'],
     });
   }

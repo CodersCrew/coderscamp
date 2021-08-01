@@ -1,28 +1,37 @@
-import { Controller, Get, InternalServerErrorException, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import type { Response } from 'express';
 
-import { GithubGuard } from './github.guard';
+import { env } from '@/common/env';
+
+import { JwtService } from '../jwt/jwt.service';
 import { GithubService } from './github.service';
-import type { RequestWithGitHubUser } from './github.types';
+import type { RequestWithGithubUser } from './github.types';
+import { GithubAuthGuard } from './github-auth.guard';
 
 @Controller('auth/github')
 export class GithubController {
-  constructor(private githubService: GithubService) {}
+  constructor(private githubService: GithubService, private readonly jwtService: JwtService) {}
 
   @Get()
-  @UseGuards(GithubGuard)
+  @UseGuards(GithubAuthGuard)
   async githubOAuth() {
     // Redirects to github login page
   }
 
   @Get('callback')
-  @UseGuards(GithubGuard)
-  async githubOAuthCallback(@Req() req: RequestWithGitHubUser) {
-    const result = await this.githubService.authorizeUser(req.user);
+  @UseGuards(GithubAuthGuard)
+  async githubOAuthCallback(@Req() req: RequestWithGithubUser, @Res() res: Response): Promise<boolean> {
+    const user = await this.githubService.authorizeUser(req.user);
+    const token = await this.jwtService.generateToken(user);
 
-    if (!result) {
-      throw new InternalServerErrorException();
-    }
+    res
+      .status(200)
+      .cookie(env.TOKEN_COOKIE_NAME, env.TOKEN_PREFIX + token, {
+        expires: new Date(Date.now() + env.TOKEN_EXPIRATION_TIME * 1000),
+        httpOnly: true,
+      })
+      .send(true);
 
-    return result;
+    return true;
   }
 }
