@@ -6,19 +6,12 @@ type Options = {
   tsconfig: string;
   moduleNameMapper?: Record<string, string>;
   overrides?: JestConfig;
-  collectCoverageFrom?: string[];
 };
 
-export const createJestConfig = ({
-  tsconfig,
-  moduleNameMapper = {},
-  overrides = {},
-  collectCoverageFrom = [],
-}: Options): JestConfig => ({
+export const createJestConfig = ({ tsconfig, moduleNameMapper = {}, overrides = {} }: Options): JestConfig => ({
   moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
   roots: ['<rootDir>/src'],
   testMatch: ['**/?(*.)+(spec|test).+(ts|tsx|js)'],
-  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts', ...collectCoverageFrom],
   moduleNameMapper: {
     '^@coderscamp/([a-z-]+)/(.+)': '<rootDir>/../$1/src/$2',
     ...moduleNameMapper,
