@@ -1,6 +1,6 @@
 import type { User, UserDTO } from '@coderscamp/shared/models/user';
 
-import type { GithubDTO } from '../auth/github/github.model';
+import type { GithubDTO } from '../auth/github/github.types';
 
 export class UsersMapper {
   static toDomain(value: UserDTO): User {

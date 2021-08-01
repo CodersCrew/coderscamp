@@ -6,9 +6,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { UsersRepository } from '../../users/users.repository';
 import { JWTModule } from '../jwt/jwt.module';
 import { JwtStrategy } from '../jwt/jwt.strategy';
-import { GithubStrategy } from './github.strategy';
 import { GithubController } from './github.controller';
-import { GithubUserData } from './github.model';
+import { GithubStrategy } from './github.strategy';
+import { RequestWithGitHubUser } from './github.types';
 
 const profile: User = {
   id: 1,
@@ -44,7 +44,7 @@ describe('Github controller', () => {
       await expect(
         githubController.githubOAuthCallback({
           user: githubUserData,
-        } as Request & { user: GithubUserData }),
+        } as RequestWithGitHubUser),
       ).resolves.toEqual({ accessToken: jwtStrategy.generateToken(profile), profile });
       expect(prismaService.user.create.mock.calls.length).toBe(1);
     });
@@ -53,7 +53,7 @@ describe('Github controller', () => {
       await expect(
         githubController.githubOAuthCallback({
           user: githubUserData,
-        } as Request & { user: GithubUserData }),
+        } as RequestWithGitHubUser),
       ).resolves.toEqual({ accessToken: jwtStrategy.generateToken(profile), profile });
     });
 
@@ -64,7 +64,7 @@ describe('Github controller', () => {
       await expect(
         githubController.githubOAuthCallback({
           user: githubUserData,
-        } as Request & { user: GithubUserData }),
+        } as RequestWithGitHubUser),
       ).rejects.toThrow(InternalServerErrorException);
     });
   });

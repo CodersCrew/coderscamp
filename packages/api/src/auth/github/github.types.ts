@@ -16,3 +16,7 @@ export interface GithubUserData {
 export interface GithubResponse {
   _json: GithubDTO;
 }
+
+export interface RequestWithGitHubUser extends Request {
+  user: GithubUserData;
+}
