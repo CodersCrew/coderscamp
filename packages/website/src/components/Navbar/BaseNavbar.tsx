@@ -34,22 +34,18 @@ export const MobileBaseNavbar = () => {
   const { route } = useRouter();
   const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
 
-  const Menu = () => (
-    <ChakraMenu>
-      <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
-      <MenuList>
-        {NavbarElements.map((element) => (
-          <Link key={element.text} href={element.destinationLink}>
-            <MenuItem fontWeight={fontWeight(element.destinationLink)}>{element.text}</MenuItem>
-          </Link>
-        ))}
-      </MenuList>
-    </ChakraMenu>
-  );
-
   return (
     <Flex>
-      <Menu />
+      <ChakraMenu>
+        <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
+        <MenuList>
+          {NavbarElements.map((element) => (
+            <Link key={element.text} href={element.destinationLink}>
+              <MenuItem fontWeight={fontWeight(element.destinationLink)}>{element.text}</MenuItem>
+            </Link>
+          ))}
+        </MenuList>
+      </ChakraMenu>
       {logoLayout && <Logo ml="6" maxWidth="280px" color="black" layout={logoLayout} />}
     </Flex>
   );
@@ -58,18 +54,14 @@ export const MobileBaseNavbar = () => {
 export const DesktopBaseNavbar = () => {
   const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
 
-  const Menu = () => (
-    <Flex>
-      {NavbarElements.map((element) => (
-        <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
-      ))}
-    </Flex>
-  );
-
   return (
     <>
       {logoLayout && <Logo maxWidth="280px" color="black" layout={logoLayout} />}
-      <Menu />
+      <Flex>
+        {NavbarElements.map((element) => (
+          <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
+        ))}
+      </Flex>
     </>
   );
 };
