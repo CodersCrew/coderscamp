@@ -16,6 +16,7 @@
     "react": "17.0.2"
   },
   "dependencies": {
+    "@chakra-ui/icons": "1.0.14",
     "@chakra-ui/react": "1.6.5",
     "@chakra-ui/theme-tools": "1.1.8",
     "@emotion/react": "11.4.0",

@@ -2393,6 +2393,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:1.0.14":
+  version: 1.0.14
+  resolution: "@chakra-ui/icons@npm:1.0.14"
+  dependencies:
+    "@chakra-ui/icon": 1.1.10
+    "@types/react": ^17.0.0
+  peerDependencies:
+    "@chakra-ui/system": ">=1.0.0"
+    react: ">=16.8.6"
+  checksum: a200b8cc239accfdd34fd1fa18291788cc00d35b1deecbfeccaf3dea63c5c31c4d011d131bf0a1e3d2a8d5a2bb5c722839512eb44145eb0e91902cc63107ab24
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:1.0.17":
   version: 1.0.17
   resolution: "@chakra-ui/image@npm:1.0.17"
@@ -3054,6 +3067,7 @@ __metadata:
   resolution: "@coderscamp/ui@workspace:packages/ui"
   dependencies:
     "@chakra-ui/cli": 1.5.0
+    "@chakra-ui/icons": 1.0.14
     "@chakra-ui/react": 1.6.5
     "@chakra-ui/theme-tools": 1.1.8
     "@emotion/react": 11.4.0
@@ -6798,7 +6812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.15":
+"@types/react@npm:17.0.15, @types/react@npm:^17.0.0":
   version: 17.0.15
   resolution: "@types/react@npm:17.0.15"
   dependencies:

@@ -1,0 +1,26 @@
+import { Button } from '@coderscamp/ui/components/Button';
+import { Flex } from '@coderscamp/ui/components/Flex';
+import { HStack } from '@coderscamp/ui/components/Stack';
+import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
+
+import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
+
+export const Navbar = () => {
+  const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
+
+  return (
+    <HStack
+      padding="18px calc(4px + 2.2vw)"
+      width="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      position="relative"
+    >
+      {baseNavbar}
+      <Flex>
+        <Button mr="3"> Zostań mentorem</Button>
+        <Button color="brand"> Zapisz się na kurs</Button>
+      </Flex>
+    </HStack>
+  );
+};
