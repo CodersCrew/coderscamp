@@ -7,7 +7,7 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
-  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md' } as const);
+  const buttonSize = useBreakpointValue({ base: 'xs', sm: 'md' } as const);
 
   return (
     <HStack padding="18px 2.4vw" width="100%" justifyContent="space-between" alignItems="center" position="relative">
