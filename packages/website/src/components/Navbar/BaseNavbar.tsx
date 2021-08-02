@@ -35,7 +35,7 @@ export const MobileBaseNavbar = () => {
   const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
 
   return (
-    <Flex>
+    <Flex alignItems="center">
       <ChakraMenu>
         <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
         <MenuList>
