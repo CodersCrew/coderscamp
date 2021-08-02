@@ -22,6 +22,7 @@
     "@hapi/joi": "17.1.1",
     "@nestjs/common": "8.0.4",
     "@nestjs/core": "8.0.4",
+    "@nestjs/cqrs": "8.0.0",
     "@nestjs/jwt": "8.0.0",
     "@nestjs/passport": "8.0.0",
     "@nestjs/platform-express": "8.0.4",
@@ -36,6 +37,7 @@
     "yup": "0.32.9"
   },
   "devDependencies": {
+    "@databases/pg-test": "3.0.1",
     "@nestjs/cli": "8.0.2",
     "@nestjs/schematics": "8.0.2",
     "@nestjs/testing": "8.0.4",

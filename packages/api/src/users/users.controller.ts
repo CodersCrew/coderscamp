@@ -1,19 +1,19 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { EventBus } from '@nestjs/cqrs';
 
 import type { UserSurveyDTO } from '@coderscamp/shared/models/user';
 
-import { UsersEntity } from './users.entity';
+import { UserRegisteredEvent } from './events/userRegistered.event';
 import { UsersMapper } from './users.mapper';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersEntity: UsersEntity) {}
+  constructor(private readonly eventBus: EventBus) {}
 
-  @Post('user-survey')
+  @Post('survey')
   async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<UserSurveyDTO> {
-    const survey = UsersMapper.userSurveyToDomain(userSurveyDTO);
-    const result = await this.usersEntity.completeSurvey(survey);
-
-    return UsersMapper.userSurveyToPlain(result);
+    return UsersMapper.userSurveyToPlain(
+      await this.eventBus.publish(new UserRegisteredEvent(UsersMapper.userSurveyToDomain(userSurveyDTO))),
+    );
   }
 }

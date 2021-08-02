@@ -1,8 +1,8 @@
 import type {
   RegisteredUser,
   RegisteredUserDTO,
-  User,
-  UserDTO,
+  UserInformation,
+  UserInformationDTO,
   UserSurvey,
   UserSurveyDTO,
 } from '@coderscamp/shared/models/user';
@@ -10,7 +10,7 @@ import type {
 import type { GithubDTO } from '../auth/github/github.model';
 
 export class UsersMapper {
-  static userToDomain(value: UserDTO): User {
+  static userToDomain(value: UserInformationDTO): UserInformation {
     return value;
   }
 
@@ -25,7 +25,7 @@ export class UsersMapper {
   }
 
   static userToPlain(value: RegisteredUser): RegisteredUserDTO;
-  static userToPlain(value: User): UserDTO {
+  static userToPlain(value: UserInformation): UserInformationDTO {
     return value;
   }
 

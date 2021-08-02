@@ -3,16 +3,16 @@ import { PassportStrategy as GithubStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { VerifiedCallback } from 'passport-jwt';
 
-import type { RegisteredUserDTO, UserDTO } from '@coderscamp/shared/models/user';
+import type { RegisteredUserDTO, UserInformationDTO } from '@coderscamp/shared/models/user';
 
-import { UsersEntity } from '../../users/users.entity';
 import { UsersMapper } from '../../users/users.mapper';
+import { UsersService } from '../../users/users.service';
 import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import type { GithubResponse, GithubUserData } from './github.model';
 
 @Injectable()
 export class GithubClient extends GithubStrategy(Strategy) {
-  constructor(private usersEntity: UsersEntity, private jwtStrategy: JwtStrategy) {
+  constructor(private usersService: UsersService, private jwtStrategy: JwtStrategy) {
     super({
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -32,10 +32,10 @@ export class GithubClient extends GithubStrategy(Strategy) {
 
   async githubAuth(
     user: GithubUserData,
-  ): Promise<{ accessToken: string; profile: UserDTO | RegisteredUserDTO } | null> {
-    let userFromDatabase = await this.usersEntity.getByGithubId(user.githubId);
+  ): Promise<{ accessToken: string; profile: UserInformationDTO | RegisteredUserDTO } | null> {
+    let userFromDatabase = await this.usersService.getByGithubId(user.githubId);
     if (!userFromDatabase) {
-      userFromDatabase = await this.usersEntity.register(user);
+      userFromDatabase = await this.usersService.register(user);
     }
     return userFromDatabase
       ? {

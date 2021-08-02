@@ -49,6 +49,7 @@
     "eslint-plugin-testing-library": "4.9.0",
     "jest": "27.0.6",
     "jest-transform-stub": "2.0.0",
+    "pg-mem": "1.9.15",
     "prettier": "2.3.2",
     "rimraf": "3.0.2",
     "serve": "12.0.0",

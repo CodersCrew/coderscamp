@@ -1,42 +1,31 @@
 import { Injectable } from '@nestjs/common';
 
-import type { RegisteredUser, Survey, User, UserSurvey } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, Survey, UserInformation } from '@coderscamp/shared/models/user';
 
 import type { GithubUserData } from '../auth/github/github.model';
-import { PrismaService } from '../prisma/prisma.service';
+import { UserRepositoryService } from '../contracts /user.repository.service';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly userRepositoryService: UserRepositoryService) {}
 
   async create(userData: GithubUserData): Promise<RegisteredUser> {
-    return this.prisma.user.create({ data: userData });
+    return this.userRepositoryService.create(userData);
   }
 
-  async saveUserSurvey(survey: Survey, userId: number): Promise<Survey> {
-    const data = this.prisma.userSurvey.create({
-      data: { ...survey, user: { connect: { id: userId } } },
-    });
-    return data;
+  async getByGithubId(githubId: number): Promise<RegisteredUser | UserInformation | null> {
+    return this.userRepositoryService.findByGithubId(githubId);
   }
 
-  async getUserSurvey({ id }: User) {
-    const data = this.prisma.userSurvey.findUnique({ where: { userId: id }, include: { user: true } });
-    return data;
+  async updateUser(data: UserInformation): Promise<UserInformation> {
+    return this.userRepositoryService.update(data) as unknown as UserInformation;
   }
 
-  async getByGithubId(githubId: number): Promise<RegisteredUser | User | null> {
-    return this.prisma.user.findUnique({ where: { githubId } });
+  async getUser(id: number) {
+    return this.userRepositoryService.getUser(id);
   }
 
-  async updateUser({ id, ...data }: User): Promise<User> {
-    return this.prisma.user.update({ data, where: { id } }) as unknown as User;
-  }
-
-  async getUserRepresentationById(id: number): Promise<UserSurvey | (User & { UserSurvey: Survey | null }) | null> {
-    return this.prisma.user.findUnique({ where: { id }, include: { UserSurvey: true } }) as unknown as
-      | UserSurvey
-      | (User & { UserSurvey: Survey | null })
-      | null;
+  async saveSurvey(data: Survey): Promise<Survey> {
+    return this.userRepositoryService.saveSurvey(data);
   }
 }
