@@ -52,20 +52,26 @@ describe('Github controller', () => {
   });
 
   describe('githubOAuthCallback', () => {
-    it('Returns true for successful requests', async () => {
+    it('Returns void for a successful request', async () => {
       const response = httpMocks.createResponse();
       const result = await controller.githubOAuthCallback(request, response);
 
-      expect(result).toBe(true);
+      expect(result).toBeUndefined();
     });
 
-    it('Sends a success response with token cookie and `true` as a body', async () => {
+    it('Sends 204 code as a successful response', async () => {
       const response = httpMocks.createResponse();
 
       await controller.githubOAuthCallback(request, response);
 
-      expect(response._getStatusCode()).toBe(200);
-      expect(response._getJSONData()).toBe(true);
+      expect(response._getStatusCode()).toBe(204);
+    });
+
+    it('Attaches token cookie to a successful response', async () => {
+      const response = httpMocks.createResponse();
+
+      await controller.githubOAuthCallback(request, response);
+
       expect(response.cookies[env.TOKEN_COOKIE_NAME]).toEqual({
         options: { expires: new Date(Date.now() + env.TOKEN_EXPIRATION_TIME * 1000), httpOnly: true },
         value: `${env.TOKEN_PREFIX}${tokenValue}`,

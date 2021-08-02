@@ -20,18 +20,15 @@ export class GithubController {
 
   @Get('callback')
   @UseGuards(GithubAuthGuard)
-  async githubOAuthCallback(@Req() req: GithubAuthGuardReq, @Res() res: Response): Promise<boolean> {
+  async githubOAuthCallback(@Req() req: GithubAuthGuardReq, @Res() res: Response): Promise<void> {
     const user = await this.githubService.authorizeUser(req.user);
     const token = await this.jwtService.generateToken(user);
 
     res
-      .status(200)
       .cookie(env.TOKEN_COOKIE_NAME, env.TOKEN_PREFIX + token, {
         expires: new Date(Date.now() + env.TOKEN_EXPIRATION_TIME * 1000),
         httpOnly: true,
       })
-      .send(true);
-
-    return true;
+      .sendStatus(204);
   }
 }

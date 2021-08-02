@@ -18,14 +18,22 @@ describe('Auth controller', () => {
   });
 
   describe('logout', () => {
-    it('Returns true for successful requests', async () => {
+    it('Returns void for a successful request', async () => {
       const response = httpMocks.createResponse();
       const result = await controller.logout(response);
 
-      expect(result).toBe(true);
+      expect(result).toBeUndefined();
     });
 
-    it('Clears the cookie containing authorization JWT and sends true as a response', async () => {
+    it('Sends 204 code as a successful response', async () => {
+      const response = httpMocks.createResponse();
+
+      await controller.logout(response);
+
+      expect(response._getStatusCode()).toBe(204);
+    });
+
+    it('Clears the cookie containing authorization JWT', async () => {
       const response = httpMocks.createResponse();
 
       response.cookie(env.TOKEN_COOKIE_NAME, 'some token value');
@@ -36,7 +44,6 @@ describe('Auth controller', () => {
 
       expect(removedCookie.value).toBe('');
       expect(removedCookie.options.expires?.getTime()).toBe(new Date(1).getTime());
-      expect(response._getStatusCode()).toBe(200);
     });
   });
 });

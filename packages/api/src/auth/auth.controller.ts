@@ -6,9 +6,7 @@ import { env } from '@/common/env';
 @Controller('auth')
 export class AuthController {
   @Post('logout')
-  async logout(@Res() res: Response): Promise<true> {
-    res.clearCookie(env.TOKEN_COOKIE_NAME).send(true);
-
-    return true;
+  async logout(@Res() res: Response): Promise<void> {
+    res.clearCookie(env.TOKEN_COOKIE_NAME).sendStatus(204);
   }
 }
