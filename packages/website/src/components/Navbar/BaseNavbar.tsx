@@ -1,5 +1,5 @@
-import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
@@ -17,11 +17,11 @@ const NavbarElements = [
   },
   {
     text: 'Dla mentorów',
-    destinationLink: '/forMentors',
+    destinationLink: '/mentors',
   },
   {
     text: 'FAQ',
-    destinationLink: '/FAQ',
+    destinationLink: '/faq',
   },
   {
     text: 'Kontakt',

@@ -7,19 +7,18 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
+  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md' } as const);
 
   return (
-    <HStack
-      padding="18px calc(4px + 2.2vw)"
-      width="100%"
-      justifyContent="space-between"
-      alignItems="center"
-      position="relative"
-    >
+    <HStack padding="18px 2.4vw" width="100%" justifyContent="space-between" alignItems="center" position="relative">
       {baseNavbar}
       <Flex>
-        <Button mr="3"> Zostań mentorem</Button>
-        <Button color="brand"> Zapisz się na kurs</Button>
+        <Button size={buttonSize} mr="3">
+          Zostań mentorem
+        </Button>
+        <Button size={buttonSize} color="brand">
+          Zapisz się na kurs
+        </Button>
       </Flex>
     </HStack>
   );

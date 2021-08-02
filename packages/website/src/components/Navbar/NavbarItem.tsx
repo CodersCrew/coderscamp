@@ -1,8 +1,8 @@
 import React from 'react';
-import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import { Typography, TypographyProps } from '@coderscamp/ui/components/Typography';
+import { Typography } from '@coderscamp/ui/components/Typography';
 
 export interface NavbarItemProps {
   current?: boolean;
@@ -12,38 +12,33 @@ export interface NavbarItemProps {
 const commonStyle = {
   size: 'md',
   lineHeight: '24px',
-  mx: '6',
+  mx: '24px',
   cursor: 'pointer',
 } as const;
 
-const SelectedTypography: React.FC<TypographyProps> = ({ children, ...restProps }) => (
-  <Typography
-    color="gray.700"
-    weight="bold"
-    fontStyle="normal"
-    textDecoration="underline"
-    textDecorationColor="brand.500"
-    textDecorationThickness="4px"
-    textUnderlineOffset="4px"
-    {...commonStyle}
-    {...restProps}
-  >
-    {children}
-  </Typography>
-);
-const BaseTypography: React.FC<TypographyProps> = ({ children, ...restProps }) => (
-  <Typography color="gray.500" weight="medium" _hover={{ color: 'gray.600' }} {...commonStyle} {...restProps}>
-    {children}
-  </Typography>
-);
+const selectedTypographyStyles = {
+  color: 'gray.700',
+  weight: 'bold',
+  fontStyle: 'normal',
+  textDecoration: 'underline',
+  textDecorationColor: 'brand.500',
+  textDecorationThickness: '4px',
+  textUnderlineOffset: '6px',
+} as const;
+
+const baseTypographyStyles = {
+  color: 'gray.500',
+  weight: 'medium',
+  _hover: { color: 'gray.600' },
+} as const;
 
 export const NavbarItem = ({ text, href }: NavbarItemProps) => {
   const { route } = useRouter();
-  const UsedTypography = route === href ? SelectedTypography : BaseTypography;
+  const usedTypographyStyles = route === href ? selectedTypographyStyles : baseTypographyStyles;
 
   return (
-    <UsedTypography>
+    <Typography {...usedTypographyStyles} {...commonStyle}>
       <Link href={href}>{text}</Link>
-    </UsedTypography>
+    </Typography>
   );
 };
