@@ -17,7 +17,7 @@ const NavbarElements = [
   },
   {
     text: 'Dla mentorów',
-    destinationLink: '/mentors',
+    destinationLink: '/mentorzy',
   },
   {
     text: 'FAQ',
@@ -25,7 +25,7 @@ const NavbarElements = [
   },
   {
     text: 'Kontakt',
-    destinationLink: '/contact',
+    destinationLink: '/kontakt',
   },
 ];
 
