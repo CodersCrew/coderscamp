@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
-import { HamburgerIcon } from '@coderscamp/ui/components/Icons';
 import { Logo } from '@coderscamp/ui/components/Logo';
 import { Menu as ChakraMenu, MenuButton, MenuItem, MenuList } from '@coderscamp/ui/components/Menu';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
+import { SolidMenuIcon } from '@coderscamp/ui/icons';
 
 import { NavbarItem } from './NavbarItem';
 
@@ -37,7 +37,7 @@ export const MobileBaseNavbar = () => {
   return (
     <Flex alignItems="center">
       <ChakraMenu>
-        <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} />
+        <MenuButton as={IconButton} aria-label="Options" icon={<SolidMenuIcon />} />
         <MenuList>
           {NavbarElements.map((element) => (
             <Link key={element.text} href={element.destinationLink}>
