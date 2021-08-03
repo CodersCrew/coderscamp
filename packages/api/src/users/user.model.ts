@@ -10,8 +10,6 @@ interface UserModelInterface {
 }
 
 export class UserModel extends AggregateRoot implements UserModelInterface {
-  // private readonly id!: number;
-
   constructor(properties: UserInformation | RegisteredUser | Omit<RegisteredUser, 'id'>) {
     super();
     Object.assign(this, properties);

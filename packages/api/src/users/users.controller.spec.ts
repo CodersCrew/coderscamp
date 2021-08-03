@@ -16,7 +16,6 @@ describe('Users controller', () => {
   let app: INestApplication;
   let usersController: UsersController;
   let userSurvey: UserSurveyDTO;
-  // let repository: UserRepositoryService;
 
   describe('saveUserSurvey', () => {
     it('Should update user and create UserSurvey', async () => {

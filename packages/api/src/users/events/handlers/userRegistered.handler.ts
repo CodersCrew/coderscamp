@@ -19,6 +19,7 @@ export class RegisterHandler implements ICommandHandler<UserRegisteredEvent> {
 
     user.register(input);
     user.commit();
+
     return user;
   }
 }
