@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 export type UserInformation = {
   id: number;
   githubId: number;
@@ -25,9 +27,7 @@ export type Survey = {
   courseInformationSource: string;
 };
 
-export type UserSurvey = UserInformation & { UserSurvey: Survey };
-
-export type RegisteredUserDTO = {
+export type RegisteredUser = {
   id: number;
   githubId: number;
   fullName: string;
@@ -35,10 +35,16 @@ export type RegisteredUserDTO = {
   image: string;
 };
 
-export type RegisteredUser = RegisteredUserDTO;
+export type RegisteredUserDTO = RegisteredUser;
 
 export type UserInformationDTO = UserInformation;
 
-export type UserSurveyDTO = UserInformation & { UserSurvey: Survey };
+export type UserSurvey = UserInformation & { Survey: Survey };
+export type UserSurveyDTO = UserInformation & { Survey: Survey };
 
-export type User = UserInformation & { UserSurvey: Survey };
+export type User = UserInformation & { Survey: Survey };
+
+export const userSchema = yup.object().shape({
+  id: yup.number().typeError('Id must be a number').required('Id must be defined'),
+  fullName: yup.string().typeError('Full name must be a string').required('Full name is required'),
+});

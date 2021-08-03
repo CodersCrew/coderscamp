@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import type { RegisteredUser, Survey, UserInformation } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, User, UserInformation } from '@coderscamp/shared/models/user';
 
 import type { GithubUserData } from '../auth/github/github.model';
 import { UserRepositoryService } from '../contracts/user.repository.service';
@@ -21,11 +21,15 @@ export class UsersRepository {
     return this.userRepositoryService.update(data) as unknown as UserInformation;
   }
 
+  async findById(id: number) {
+    return this.userRepositoryService.findById(id);
+  }
+
   async getUser(id: number) {
     return this.userRepositoryService.getUser(id);
   }
 
-  async saveSurvey(data: Survey): Promise<Survey> {
+  async saveSurvey(data: User) {
     return this.userRepositoryService.saveSurvey(data);
   }
 }

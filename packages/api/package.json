@@ -20,9 +20,9 @@
   "dependencies": {
     "@coderscamp/shared": "0.0.1",
     "@hapi/joi": "17.1.1",
-    "@nestjs/cqrs": "8.0.0",
     "@nestjs/common": "8.0.5",
     "@nestjs/core": "8.0.5",
+    "@nestjs/cqrs": "8.0.0",
     "@nestjs/jwt": "8.0.0",
     "@nestjs/passport": "8.0.0",
     "@nestjs/platform-express": "8.0.5",
@@ -33,8 +33,8 @@
     "passport-github2": "0.1.12",
     "passport-jwt": "4.0.0",
     "reflect-metadata": "0.1.13",
-    "yup": "0.32.9",
-    "rxjs": "7.3.0"
+    "rxjs": "7.3.0",
+    "yup": "0.32.9"
   },
   "devDependencies": {
     "@databases/pg-test": "3.0.1",

@@ -8,6 +8,7 @@ export class MemoryDbService {
 
   constructor() {
     const db = newDb();
+
     this.db = db;
   }
 
@@ -19,13 +20,24 @@ export class MemoryDbService {
     return Object.entries(object)
       .map(([key, value]) => {
         if (typeof value === 'string') return `"${key}" = '${value}'`;
-        return `"${key}" = ${value}`;
+
+        if (Array.isArray(value)) return `"${key}" = '{ ${value.map((val) => `"${val}"`).join(', ')} }'`;
+
+        return `"${key}" = ${value || 'NULL'}`;
       })
       .join(', ');
   }
 
   mapValueArrayToInsertString(array: any[]): string {
-    return array.map((value) => (typeof value === 'string' ? `'${value}'` : value)).join(', ');
+    return array
+      .map((value) => {
+        if (typeof value === 'string') return `'${value}'`;
+
+        if (Array.isArray(value)) return `'{ ${value.map((val) => `"${val}"`).join(', ')} }'`;
+
+        return value === null ? 'NULL' : value;
+      })
+      .join(', ');
   }
 
   mapKeysArrayToColumnNamesString(array: string[]): string {

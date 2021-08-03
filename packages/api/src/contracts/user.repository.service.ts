@@ -9,7 +9,7 @@ export abstract class UserRepositoryService {
 
   abstract update(data: UserInformation): Promise<UserInformation | RegisteredUser>;
 
-  abstract saveSurvey(data: Survey): Promise<Survey>;
+  abstract saveSurvey(data: User): Promise<User>;
 
   abstract getUser(userId: number): Promise<((User | RegisteredUser) & { Survey: Survey | null }) | null>;
 }

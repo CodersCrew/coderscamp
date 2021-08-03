@@ -4,5 +4,11 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "yup": "0.32.9"
+  },
+  "devDependencies": {
+    "@types/yup": "0.29.13"
   }
 }

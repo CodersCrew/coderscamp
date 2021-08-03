@@ -52,6 +52,8 @@ describe('Github controller', () => {
   });
 
   async function setup() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const envValues = env;
     const module = await Test.createTestingModule({
       imports: [JWTModule],
       controllers: [GithubController],
@@ -69,11 +71,11 @@ describe('Github controller', () => {
       exports: [JwtStrategy],
     }).compile();
 
-    console.log(env);
     app = module.createNestApplication();
     jwtStrategy = await module.resolve(JwtStrategy);
     githubController = await module.resolve(GithubController);
     repositoryService = await module.resolve(UserRepositoryService);
+
     const db = app.get<MemoryDbService>(MemoryDbService);
 
     await db.migrate();

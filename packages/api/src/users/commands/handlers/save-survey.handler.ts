@@ -1,8 +1,9 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { UserSurvey } from '@coderscamp/shared/models/user';
+import { User } from '@coderscamp/shared/models/user';
 
+import { ErrorMessage } from '../../error';
 import { UsersRepository } from '../../users.repository';
 import { SaveSurveyCommand } from '../save-survey.command';
 
@@ -10,18 +11,13 @@ import { SaveSurveyCommand } from '../save-survey.command';
 export class SaveSurveyHandler implements ICommandHandler<SaveSurveyCommand> {
   constructor(private repository: UsersRepository) {}
 
-  async execute({ input: { UserSurvey: survey, ...user } }: SaveSurveyCommand): Promise<UserSurvey> {
-    await this.repository.updateUser(user);
-    const userFromDb = await this.repository.getUser(user.id);
+  async execute({ input }: SaveSurveyCommand): Promise<User> {
+    const userFromDb = await this.repository.getUser(input.id);
 
-    if (!userFromDb) throw new NotFoundException('User does not exists.');
-    if (userFromDb.Survey) throw new BadRequestException('Survey already filled.');
+    if (!userFromDb) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
-    const userResult = this.repository.updateUser(user);
-    const surveyResult = this.repository.saveSurvey(survey);
+    if (userFromDb.Survey) throw new BadRequestException(ErrorMessage.SURVEY_ALREADY_FILLED);
 
-    return Promise.all([userResult, surveyResult]).then((results) => {
-      return { ...results[0], UserSurvey: results[1] };
-    });
+    return this.repository.saveSurvey(input);
   }
 }
