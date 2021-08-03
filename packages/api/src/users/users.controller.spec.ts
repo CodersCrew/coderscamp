@@ -55,14 +55,13 @@ describe('Users controller', () => {
     const db = app.get<MemoryDbService>(MemoryDbService);
     const repository = app.get<UserRepositoryService>(UserRepositoryService);
 
-    await db.migrate();
+    await Promise.all([app.init(), db.migrate()]);
     await repository.create({
       githubId: 12345678,
       fullName: 'Name',
       email: 'example@test.com',
       image: 'https://photo-url.com',
     });
-    await app.init();
 
     userSurvey = {
       id: 1,

@@ -14,8 +14,9 @@ export class UsersMapper {
     return value;
   }
 
-  static fromGithubToDomain(value: GithubDTO): Omit<RegisteredUserDTO, 'id'> {
-    const { email, id, avatar_url: image, name } = value;
+  static fromGithubToDomain(profile: GithubDTO): Omit<RegisteredUserDTO, 'id'> {
+    const { email, id, avatar_url: image, name } = profile;
+    // ! new user may not set his email address to public and also he may not set his name.
 
     return {
       email,

@@ -1,8 +1,9 @@
 import { INestApplication, InternalServerErrorException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
+import { env } from '@/common/env';
+
 import type { RegisteredUserDTO } from '../../../../shared/src/models/user';
-import { env } from '../../common/env';
 import { UserRepositoryService } from '../../contracts/user.repository.service';
 import { MemoryDbService } from '../../memoryDB/memoryDB.service';
 import { PgMemUserRepositoryAdapter } from '../../memoryDB/user.repository.service';
@@ -52,8 +53,9 @@ describe('Github controller', () => {
   });
 
   async function setup() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const envValues = env;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    env;
+
     const module = await Test.createTestingModule({
       imports: [JWTModule],
       controllers: [GithubController],
@@ -78,8 +80,7 @@ describe('Github controller', () => {
 
     const db = app.get<MemoryDbService>(MemoryDbService);
 
-    await db.migrate();
-    await app.init();
+    await Promise.all([db.migrate(), app.init()]);
 
     githubUserData = {
       githubId: 22222222,
