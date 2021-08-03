@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ErrorMessage } from 'src/users/error';
-import { UserFactory } from 'src/users/user.factory';
 
+import { ErrorMessage } from '../../error';
+import { UserFactory } from '../../user.factory';
 import { UsersRepository } from '../../users.repository';
 import { UserRegisteredEvent } from '../userRegistered.event';
 

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { RegisteredUser, Survey, UserInformation } from '@coderscamp/shared/models/user';
 
 import type { GithubUserData } from '../auth/github/github.model';
-import { UserRepositoryService } from '../contracts /user.repository.service';
+import { UserRepositoryService } from '../contracts/user.repository.service';
 
 @Injectable()
 export class UsersRepository {

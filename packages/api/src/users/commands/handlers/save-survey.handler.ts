@@ -7,7 +7,7 @@ import { UsersRepository } from '../../users.repository';
 import { SaveSurveyCommand } from '../save-survey.command';
 
 @CommandHandler(SaveSurveyCommand)
-export class RegisterHandler implements ICommandHandler<SaveSurveyCommand> {
+export class SaveSurveyHandler implements ICommandHandler<SaveSurveyCommand> {
   constructor(private repository: UsersRepository) {}
 
   async execute({ input: { UserSurvey: survey, ...user } }: SaveSurveyCommand): Promise<UserSurvey> {

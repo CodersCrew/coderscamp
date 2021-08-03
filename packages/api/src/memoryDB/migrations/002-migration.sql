@@ -1,0 +1,7 @@
+ALTER TABLE "User" DROP COLUMN "firstName";
+ALTER TABLE "User" DROP COLUMN "lastName";
+ALTER TABLE "User" ADD COLUMN "fullName" TEXT NOT NULL;
+ALTER TABLE "User" ADD COLUMN "githubId" INTEGER NOT NULL;
+ALTER TABLE "User" ADD COLUMN "image" TEXT NOT NULL;
+
+CREATE UNIQUE INDEX "User.githubId_unique" ON "User"("githubId");

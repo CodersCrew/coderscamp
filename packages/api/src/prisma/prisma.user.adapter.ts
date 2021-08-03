@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 
 import { Survey } from '@coderscamp/shared/models/user';
 
-import { UserRepositoryService } from '../contracts /user.repository.service';
+import { UserRepositoryService } from '../contracts/user.repository.service';
 import { PrismaService } from './prisma.service';
 
 @Injectable()

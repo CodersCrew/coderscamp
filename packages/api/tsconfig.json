@@ -14,5 +14,5 @@
     "sourceMap": true,
     "target": "es2017"
   },
-  "include": ["src", "../shared/src"]
+  "include": ["src", "../shared/src", "prisma/github.controller.spec.ts"]
 }

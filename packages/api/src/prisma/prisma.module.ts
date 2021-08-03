@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 
-import { UserRepositoryService } from '../contracts /user.repository.service';
+import { UserRepositoryService } from '../contracts/user.repository.service';
 import { PrismaService } from './prisma.service';
 import { PrismaUserAdapter } from './prisma.user.adapter';
 
