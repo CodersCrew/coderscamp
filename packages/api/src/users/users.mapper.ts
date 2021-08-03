@@ -16,6 +16,7 @@ export class UsersMapper {
 
   static fromGithubToDomain(value: GithubDTO): Omit<RegisteredUserDTO, 'id'> {
     const { email, id, avatar_url: image, name } = value;
+
     return {
       email,
       githubId: id,

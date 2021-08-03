@@ -1,4 +1,5 @@
 {
+  "branchPrefix": "chore-update-dependencies-",
   "groupName": "All dependencies",
   "groupSlug": "all",
   "labels": ["dependencies"],

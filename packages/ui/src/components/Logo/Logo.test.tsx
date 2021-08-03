@@ -8,6 +8,7 @@ describe('Logo', () => {
     render(<Logo />);
 
     const logo = screen.getByRole('img');
+
     expect(logo).toHaveAttribute('alt', 'Logo CodersCamp');
   });
 });

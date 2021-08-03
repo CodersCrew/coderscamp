@@ -45,6 +45,7 @@ export interface ButtonProps extends HTMLChakraProps<'button'> {
 
 const getSchemeFromColor = (color: ButtonColor): ChakraButtonProps['colorScheme'] => {
   if (color === 'danger') return 'red';
+
   if (color === 'brand') return 'brand';
 
   return 'gray';

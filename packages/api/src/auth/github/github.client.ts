@@ -34,9 +34,11 @@ export class GithubClient extends GithubStrategy(Strategy) {
     user: GithubUserData,
   ): Promise<{ accessToken: string; profile: UserInformationDTO | RegisteredUserDTO } | null> {
     let userFromDatabase = await this.usersService.getByGithubId(user.githubId);
+
     if (!userFromDatabase) {
       userFromDatabase = await this.usersService.register(user);
     }
+
     return userFromDatabase
       ? {
           accessToken: this.jwtStrategy.generateToken(userFromDatabase),
