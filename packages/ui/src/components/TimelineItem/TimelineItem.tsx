@@ -24,7 +24,7 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({ step, date, informat
       justifyContent="flex-start"
       textAlign="center"
       overflow="auto"
-      borderColor="#D1D5DB"
+      borderColor="gray.300"
       borderWidth="1px"
       {...props}
     >
