@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { Box, BoxProps } from '@chakra-ui/react';
+import React, { ReactElement, useState } from 'react';
+import { Box, BoxProps, Center } from '@chakra-ui/react';
 
 import { Typography } from '../Typography';
 
@@ -10,11 +10,15 @@ export interface BenefitCardProps extends BoxProps {
 }
 
 export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProps) => {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <Box
       bg="gray.50"
       borderRadius="8px"
-      p="32px"
+      pt="52px"
+      pb="80px"
+      px="24px"
       w="100%"
       minHeight="248px"
       display="flex"
@@ -23,9 +27,11 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
       flexDirection="column"
       textAlign="center"
       pos="relative"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       {...props}
     >
-      <Box
+      <Center
         bg="brand.500"
         color="white"
         borderRadius="6px"
@@ -34,16 +40,18 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
         pos="absolute"
         top="-26px"
         fontSize="32px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
+        boxShadow={hovered ? 'lg' : 'none'}
+        transition="ease-in-out"
+        transitionDuration="0.3s"
       >
         {icon}
-      </Box>
-      <Typography size="lg" weight="medium" mb="16px">
+      </Center>
+      <Typography size="lg" color="gray.900" weight="medium" mb="16px">
         {title}
       </Typography>
-      <Typography size="md">{subtitle}</Typography>
+      <Typography size="md" color="gray.700">
+        {subtitle}
+      </Typography>
     </Box>
   );
 };

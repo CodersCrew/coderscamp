@@ -8,6 +8,11 @@ import { BenefitCard, BenefitCardProps } from './BenefitCard';
 const meta: Meta = {
   title: 'Components / BenefitCard',
   component: BenefitCard,
+  argTypes: {
+    icon: {
+      control: false,
+    },
+  },
 };
 
 export default meta;
@@ -24,4 +29,5 @@ Playground.args = {
   icon: <SolidGitHubIcon />,
   title: 'Push to Deploy',
   subtitle: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+  maxWidth: '400px',
 };
