@@ -22,13 +22,13 @@ const ARGS = [
     id: 1,
   },
   {
-    title: 'Dolor mi amet sed feugiat at?',
+    title: 'Nibh sit nulla mollis pretium?',
     content:
       'Quam mattis ut nec amet, eget quisque. Lectus in ac orci magna euismod velit. Aenean pellentesque gravida ac gravida sit.',
     id: 2,
   },
   {
-    title: 'Dolor mi amet sed feugiat at?',
+    title: 'Egestas semper accumsan, sit accumsan aliquam volutpat amet arcu nisi?',
     content:
       'Quam mattis ut nec amet, eget quisque. Lectus in ac orci magna euismod velit. Aenean pellentesque gravida ac gravida sit.',
     id: 3,
@@ -38,5 +38,3 @@ const ARGS = [
 Playground.args = {
   items: ARGS,
 };
-
-export const Expanded = () => <QuestionsAccordion items={ARGS} />;
