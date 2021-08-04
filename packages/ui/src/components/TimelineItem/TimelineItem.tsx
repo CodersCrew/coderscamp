@@ -10,8 +10,8 @@ export interface TimelineItemProps extends FlexProps {
 }
 
 export const TimelineItem: React.FC<TimelineItemProps> = ({ step, date, information, ...props }) => {
-  const boxPadding = useBreakpointValue({ base: '18px', md: '32px' } as const) ?? '18px';
-  const dateVerticalMargin = useBreakpointValue({ base: '16px', md: '24px' } as const) ?? '16px';
+  const boxPadding = useBreakpointValue({ base: '18px', md: '32px' } as const, '18px');
+  const dateVerticalMargin = useBreakpointValue({ base: '16px', md: '24px' } as const, '16px');
 
   return (
     <Center
@@ -24,31 +24,26 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({ step, date, informat
       justifyContent="flex-start"
       textAlign="center"
       overflow="auto"
+      borderColor="#D1D5DB"
+      borderWidth="1px"
       {...props}
     >
-      <Center
+      <Typography
         bg="brand.500"
         borderRadius="8px"
         color="white"
         width="48px"
         height="48px"
-        fontSize="36px"
-        fontWeight={800}
+        size="4xl"
+        fontWeight="extrabold"
       >
         {step}
-      </Center>
-      <Typography
-        my={dateVerticalMargin}
-        fontFamily="inter"
-        fontWeight={800}
-        fontSize="20px"
-        letterSpacing="-0.017em"
-        color="gray.900"
-      >
+      </Typography>
+      <Typography my={dateVerticalMargin} fontFamily="inter" size="xl" color="gray.900" fontWeight="extrabold">
         {date}
       </Typography>
 
-      <Typography fontFamily="inter" letterSpacing="0.014em" color="gray.700">
+      <Typography size="lg" fontFamily="inter" color="gray.700">
         {information}
       </Typography>
     </Center>

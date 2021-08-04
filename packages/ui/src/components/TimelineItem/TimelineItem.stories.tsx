@@ -12,7 +12,7 @@ const meta: Meta = {
 export default meta;
 
 const Template: Story<TimelineItemProps> = (args) => (
-  <Box bg="gray.200" p="40px">
+  <Box bg="white" p="40px">
     <TimelineItem {...args} width="400px" height="292px" mb="10px" />
   </Box>
 );
