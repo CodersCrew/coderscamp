@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel } from '@chakra-ui/react';
 
 import { Typography } from '../Typography';
 
@@ -13,11 +13,9 @@ export const Question = ({ title, content }: QuestionProps) => {
     <AccordionItem borderColor="gray.200">
       <h2>
         <AccordionButton>
-          <Box flex="1" textAlign="left">
-            <Typography size="lg" weight="medium">
-              {title}
-            </Typography>
-          </Box>
+          <Typography flex="1" textAlign="left" size="lg" weight="medium">
+            {title}
+          </Typography>
           <AccordionIcon color="gray.400" />
         </AccordionButton>
       </h2>
