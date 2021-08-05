@@ -29,6 +29,7 @@ describe('ProjectCard', () => {
 
   it('should have button disabled if status is equal to idle', () => {
     render(<ProjectCard status="idle" image="test" title={title} url="test" date={date} />);
+
     const button = screen.getByRole('button', { name: 'Przejdź do projektu' });
     expect(button).toBeDisabled();
   });
