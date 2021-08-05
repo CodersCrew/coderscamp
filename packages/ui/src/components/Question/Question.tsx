@@ -1,7 +1,7 @@
 import React from 'react';
 import { AccordionButton, AccordionItem, AccordionItemProps, AccordionPanel } from '@chakra-ui/react';
 
-import { OutlinedArrowDown } from '../../icons/OutlinedArrowDown';
+import { OutlinedArrowDownIcon } from '../../icons';
 import { Typography } from '../Typography';
 
 export type QuestionProps = {
@@ -19,7 +19,7 @@ export const Question = ({ title, content }: QuestionProps) => {
               <Typography flex="1" textAlign="left" size="lg" weight="medium" color="gray.900">
                 {title}
               </Typography>
-              <OutlinedArrowDown
+              <OutlinedArrowDownIcon
                 color="gray.400"
                 transform={isExpanded ? 'rotate(-180deg)' : undefined}
                 transition="transform 0.2s ease-in-out"
