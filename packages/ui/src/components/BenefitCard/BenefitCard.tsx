@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { Box, BoxProps, Center } from '@chakra-ui/react';
+import { BoxProps, Center } from '@chakra-ui/react';
 
 import { Typography } from '../Typography';
 
