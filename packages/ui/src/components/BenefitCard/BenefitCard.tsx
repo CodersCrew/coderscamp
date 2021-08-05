@@ -1,9 +1,9 @@
 import React, { ReactElement, useState } from 'react';
-import { BoxProps, Center } from '@chakra-ui/react';
+import { Center, CenterProps } from '@chakra-ui/react';
 
 import { Typography } from '../Typography';
 
-export interface BenefitCardProps extends BoxProps {
+export interface BenefitCardProps extends CenterProps {
   icon: ReactElement;
   title?: string;
   subtitle?: string;
