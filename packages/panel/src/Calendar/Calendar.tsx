@@ -1,6 +1,6 @@
 import 'tui-calendar/dist/tui-calendar.css';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Calendar from '@toast-ui/react-calendar';
 import { ISchedule } from 'tui-calendar';
 
@@ -15,12 +15,6 @@ import { calendars } from './calendars';
 import { events } from './events';
 
 type Action = 'prev' | 'today' | 'next';
-
-type CalendarRef = {
-  next: () => void;
-  prev: () => void;
-  today: () => void;
-} & Calendar;
 
 const months = [
   'Styczeń',
@@ -40,13 +34,9 @@ const months = [
 export const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const calendarInst = useRef<CalendarRef | null>(null);
+  const calendarRef = useRef<Calendar>(null);
 
-  useEffect(() => {
-    if (calendarInst.current) {
-      calendarInst.current = calendarInst.current.getInstance();
-    }
-  }, []);
+  const calendarInstance = calendarRef.current?.getInstance();
 
   const handleMonthChange = (action: Action) => {
     switch (action) {
@@ -79,8 +69,8 @@ export const CalendarPage = () => {
   const handleCalendarNavigationClick = (action: Action) => {
     handleMonthChange(action);
 
-    if (calendarInst.current) {
-      calendarInst.current[action]();
+    if (calendarInstance) {
+      calendarInstance[action]();
     }
   };
 
@@ -110,7 +100,7 @@ export const CalendarPage = () => {
         </Box>
       </Flex>
       <Calendar
-        ref={calendarInst}
+        ref={calendarRef}
         month={{
           startDayOfWeek: 1,
         }}
