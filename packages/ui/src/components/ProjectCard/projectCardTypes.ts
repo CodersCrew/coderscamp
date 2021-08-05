@@ -1,11 +1,13 @@
-export type DoneProps = {
+import { BoxProps } from '../Box';
+
+type DoneProps = {
   status: 'done';
   points: number;
   pointsMax: number;
   date?: never;
 };
 
-export type NotDoneProps = {
+type NotDoneProps = {
   status: 'idle' | 'doing' | 'review';
   date: Date;
   points?: never;
@@ -16,6 +18,30 @@ type CommonProps = {
   image: string;
   title: string;
   url: string;
+  onButtonClick?: (url: string) => void;
 };
 
-export type ProjectCardProps = CommonProps & (DoneProps | NotDoneProps);
+type ProjectCardStatus = 'idle' | 'doing' | 'review' | 'done';
+
+type ProjectCardOptions = Record<ProjectCardStatus, { statusText: string; timeStatus: string }>;
+
+export const ProjectCardText: ProjectCardOptions = {
+  idle: {
+    statusText: 'Nie rozpoczęty',
+    timeStatus: 'Rozpoczęcie',
+  },
+  doing: {
+    statusText: 'W trakcie',
+    timeStatus: 'Deadline',
+  },
+  review: {
+    statusText: 'W ocenie',
+    timeStatus: 'Demo',
+  },
+  done: {
+    statusText: 'Zakończony',
+    timeStatus: 'Punkty',
+  },
+};
+
+export type ProjectCardProps = CommonProps & (DoneProps | NotDoneProps) & BoxProps;

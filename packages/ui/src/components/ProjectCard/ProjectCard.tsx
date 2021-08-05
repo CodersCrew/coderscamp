@@ -1,20 +1,22 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Box, Flex, Grid, Image } from '@chakra-ui/react';
 
 import { Button } from '../Button';
 import { Typography } from '../Typography';
-import { DoneProps, NotDoneProps, ProjectCardProps } from './projectCardTypes';
-import { statusValueCheck } from './statusValueCheck';
+import { ProjectCardProps, ProjectCardText } from './projectCardTypes';
 
-export const ProjectCard = ({ status, image, title, url, points, pointsMax, date, ...props }: ProjectCardProps) => {
-  const history = useHistory();
-
-  const { statusText, timeStatus, dateOrPoints } = statusValueCheck(
-    ({ status, points, pointsMax } as DoneProps) || ({ status, date } as NotDoneProps),
-  );
-
-  const goToProjectPage = () => history.push(url);
+export const ProjectCard = ({
+  status,
+  image,
+  title,
+  url,
+  points,
+  pointsMax,
+  date,
+  onButtonClick,
+  ...props
+}: ProjectCardProps) => {
+  const goToProjectPage = () => onButtonClick && onButtonClick(url);
 
   return (
     <Box w="100%" boxShadow="base" borderRadius="8px" {...props}>
@@ -36,14 +38,16 @@ export const ProjectCard = ({ status, image, title, url, points, pointsMax, date
             <Typography fontWeight="500" as="span">
               Status:
             </Typography>
-            <Typography as="span">{statusText}</Typography>
+            <Typography as="span">{ProjectCardText[status].statusText}</Typography>
           </Flex>
 
           <Flex justifyContent="space-between" alignSelf="start">
             <Typography fontWeight="500" as="span">
-              {timeStatus}:
+              {ProjectCardText[status].timeStatus}:
             </Typography>
-            <Typography as="span">{dateOrPoints}</Typography>
+            <Typography as="span">
+              {status !== 'done' && date ? date.toLocaleDateString() : `${points}/${pointsMax}`}
+            </Typography>
           </Flex>
           <Button disabled={status === 'idle'} onClick={goToProjectPage}>
             Przejdź do projektu
