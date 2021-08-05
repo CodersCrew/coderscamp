@@ -1,18 +1,26 @@
 import 'tui-calendar/dist/tui-calendar.css';
 
 import React, { useEffect, useRef, useState } from 'react';
-import TUICalendar from '@toast-ui/react-calendar';
+import Calendar from '@toast-ui/react-calendar';
 import { ISchedule } from 'tui-calendar';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
+import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Typography } from '@coderscamp/ui/components/Typography';
+import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '@coderscamp/ui/icons';
 
 import { calendars } from './calendars';
 import { events } from './events';
 
 type Action = 'prev' | 'today' | 'next';
+
+type CalendarRef = {
+  next: () => void;
+  prev: () => void;
+  today: () => void;
+} & Calendar;
 
 const months = [
   'Styczeń',
@@ -32,10 +40,12 @@ const months = [
 export const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const calendarInst = useRef(null);
+  const calendarInst = useRef<CalendarRef | null>(null);
 
   useEffect(() => {
-    calendarInst.current = calendarInst.current?.getInstance();
+    if (calendarInst.current) {
+      calendarInst.current = calendarInst.current.getInstance();
+    }
   }, []);
 
   const handleMonthChange = (action: Action) => {
@@ -69,26 +79,37 @@ export const CalendarPage = () => {
   const handleCalendarNavigationClick = (action: Action) => {
     handleMonthChange(action);
 
-    calendarInst.current[action]();
+    if (calendarInst.current) {
+      calendarInst.current[action]();
+    }
   };
 
   return (
     <Box width="100vw" justifyContent="center" alignItems="center">
       <Flex alignItems="center" justifyContent="center" height="70px">
-        <Button color="brand" variant="ghost" onClick={() => handleCalendarNavigationClick('prev')}>
-          Poprzedni
-        </Button>
+        <IconButton
+          icon={<OutlinedArrowLeftIcon />}
+          variant="ghost"
+          aria-label="Poprzedni miesiąc"
+          onClick={() => handleCalendarNavigationClick('prev')}
+        />
+
         <Button variant="ghost" onClick={() => handleCalendarNavigationClick('today')} margin="0px 20px">
           Dzisiaj
         </Button>
-        <Button color="brand" variant="ghost" onClick={() => handleCalendarNavigationClick('next')}>
-          Następny
-        </Button>
-        <Typography as="h1" fontSize="16px" fontWeight="bold" marginLeft="20px">
-          {months[currentMonth]} {currentYear}
-        </Typography>
+        <IconButton
+          icon={<OutlinedArrowRightIcon />}
+          variant="ghost"
+          aria-label="Następny miesiąc"
+          onClick={() => handleCalendarNavigationClick('next')}
+        />
+        <Box width="200px">
+          <Typography as="h1" fontSize="16px" fontWeight="bold" marginLeft="20px">
+            {months[currentMonth]} {currentYear}
+          </Typography>
+        </Box>
       </Flex>
-      <TUICalendar
+      <Calendar
         ref={calendarInst}
         month={{
           startDayOfWeek: 1,
