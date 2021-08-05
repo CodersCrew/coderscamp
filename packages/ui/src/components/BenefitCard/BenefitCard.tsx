@@ -13,7 +13,7 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Box
+    <Center
       bg="gray.50"
       borderRadius="8px"
       pt="52px"
@@ -21,9 +21,6 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
       px="24px"
       w="100%"
       minHeight="248px"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
       flexDirection="column"
       textAlign="center"
       pos="relative"
@@ -52,6 +49,6 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
       <Typography size="md" color="gray.700">
         {subtitle}
       </Typography>
-    </Box>
+    </Center>
   );
 };
