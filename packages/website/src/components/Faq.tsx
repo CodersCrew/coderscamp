@@ -38,6 +38,7 @@ export const Faq = () => {
           size={mainHeaderSize}
           weight="bold"
           textAlign="center"
+          color="gray.900"
         >
           Najczęściej zadawane pytania
         </Typography>
