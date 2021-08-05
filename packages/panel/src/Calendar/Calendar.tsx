@@ -12,9 +12,7 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { calendars } from './calendars';
 import { events } from './events';
 
-type EventTarget = {
-  target: HTMLButtonElement;
-};
+type Action = 'prev' | 'today' | 'next';
 
 const months = [
   'Styczeń',
@@ -33,25 +31,29 @@ const months = [
 
 export const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const calendarInst = useRef(null);
 
   useEffect(() => {
-    calendarInst.current = calendarInst?.current?.getInstance();
+    calendarInst.current = calendarInst.current?.getInstance();
   }, []);
 
-  // eslint-disable-next-line consistent-return
-  const handleMonthChange = (action: string) => {
+  const handleMonthChange = (action: Action) => {
     switch (action) {
       case 'next':
         if (currentMonth === 11) {
-          return setCurrentMonth(0);
+          setCurrentMonth(0);
+          setCurrentYear(currentYear + 1);
+          return;
         }
 
         setCurrentMonth(currentMonth + 1);
         break;
       case 'prev':
         if (currentMonth === 0) {
-          return setCurrentMonth(11);
+          setCurrentMonth(11);
+          setCurrentYear(currentYear - 1);
+          return;
         }
 
         setCurrentMonth(currentMonth - 1);
@@ -59,53 +61,31 @@ export const CalendarPage = () => {
       case 'today':
       default:
         setCurrentMonth(new Date().getMonth());
+        setCurrentYear(new Date().getFullYear());
         break;
     }
   };
 
-  const handleCalendarNavigationClick = (event: EventTarget) => {
-    if (event.target.tagName === 'BUTTON') {
-      const { target } = event;
-      let action = (target.dataset.action as string) || (target.getAttribute('data-action') as string);
-      action = action?.replace('move-', '');
+  const handleCalendarNavigationClick = (action: Action) => {
+    handleMonthChange(action);
 
-      handleMonthChange(action);
-
-      calendarInst.current[action]();
-    }
+    calendarInst.current[action]();
   };
 
   return (
     <Box width="100vw" justifyContent="center" alignItems="center">
-      <Flex alignItems="center" height="70px" marginLeft="50px">
-        <Button
-          className="btn btn-default btn-sm move-day"
-          data-action="move-prev"
-          color="brand"
-          variant="ghost"
-          onClick={(e) => handleCalendarNavigationClick(e as unknown as EventTarget)}
-        >
-          Prev
+      <Flex alignItems="center" justifyContent="center" height="70px">
+        <Button color="brand" variant="ghost" onClick={() => handleCalendarNavigationClick('prev')}>
+          Poprzedni
         </Button>
-        <Button
-          className="btn btn-default btn-sm move-today"
-          data-action="move-today"
-          variant="ghost"
-          onClick={(e) => handleCalendarNavigationClick(e as unknown as EventTarget)}
-        >
+        <Button variant="ghost" onClick={() => handleCalendarNavigationClick('today')} margin="0px 20px">
           Dzisiaj
         </Button>
-        <Button
-          className="btn btn-default btn-sm move-day"
-          data-action="move-next"
-          color="brand"
-          variant="ghost"
-          onClick={(e) => handleCalendarNavigationClick(e as unknown as EventTarget)}
-        >
-          Next
+        <Button color="brand" variant="ghost" onClick={() => handleCalendarNavigationClick('next')}>
+          Następny
         </Button>
         <Typography as="h1" fontSize="16px" fontWeight="bold" marginLeft="20px">
-          {months[currentMonth]}
+          {months[currentMonth]} {currentYear}
         </Typography>
       </Flex>
       <TUICalendar
