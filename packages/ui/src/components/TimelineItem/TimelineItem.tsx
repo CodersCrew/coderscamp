@@ -10,8 +10,8 @@ export interface TimelineItemProps extends FlexProps {
 }
 
 export const TimelineItem: React.FC<TimelineItemProps> = ({ step, date, information, ...props }) => {
-  const boxPadding = useBreakpointValue({ base: '18px', md: '32px' } as const, '18px');
-  const dateVerticalMargin = useBreakpointValue({ base: '16px', md: '24px' } as const, '16px');
+  const boxPadding = useBreakpointValue({ base: '18px', md: '32px' } as const, 'base');
+  const dateVerticalMargin = useBreakpointValue({ base: '16px', md: '24px' } as const, 'base');
 
   return (
     <Center
