@@ -13,7 +13,7 @@ export const Navbar = () => {
     <HStack padding="18px 2.4vw" width="100%" justifyContent="space-between" alignItems="center" position="relative">
       {baseNavbar}
       <Flex>
-        <Button size={buttonSize} mr="3">
+        <Button size={buttonSize} mr="12px">
           Zostań mentorem
         </Button>
         <Button size={buttonSize} color="brand">
