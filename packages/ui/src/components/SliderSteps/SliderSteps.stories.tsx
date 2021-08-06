@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { SliderSteps, SliderStepsProps } from './SliderSteps';
@@ -15,7 +15,12 @@ const Template: Story<SliderStepsProps> = (args: SliderStepsProps) => <SliderSte
 export const Playground = Template.bind({});
 
 Playground.args = {
-  count: 6,
+  count: 8,
   selectedIdx: 0,
-  onChangeIdx: () => {},
+};
+
+export const Interactive = () => {
+  const [selected, setSelectedIdx] = useState(0);
+
+  return <SliderSteps count={8} selectedIdx={selected} onChangeIdx={setSelectedIdx} />;
 };
