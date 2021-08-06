@@ -7,7 +7,7 @@ export interface SliderStepProps {
 
 export const SliderStep = ({ current }: SliderStepProps) => {
   const bgColor = current ? 'brand.500' : 'gray.300';
-  const verticalMargin = current ? '2px' : '10px';
+  const horizontalMargin = current ? '2px' : '10px';
 
   return (
     <Box
@@ -15,7 +15,7 @@ export const SliderStep = ({ current }: SliderStepProps) => {
       borderRadius="50%"
       backgroundColor={bgColor}
       my="0px"
-      mx={verticalMargin}
+      mx={horizontalMargin}
       w="12px"
       h="12px"
       boxSizing="content-box"
