@@ -8,9 +8,17 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
   const buttonSize = useBreakpointValue({ base: 'xs', sm: 'md' } as const);
+  const horizontalPadding = useBreakpointValue({ base: '8px', sm: '18px', md: '24px', lg: '40px' });
 
   return (
-    <HStack padding="18px 2.4vw" width="100%" justifyContent="space-between" alignItems="center" position="relative">
+    <HStack
+      py="18px"
+      px={horizontalPadding}
+      width="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      position="relative"
+    >
       {baseNavbar}
       <Flex>
         <Button size={buttonSize} mr="12px">
