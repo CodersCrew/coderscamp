@@ -1,7 +1,7 @@
 import React from 'react';
 import { Center } from '@chakra-ui/react';
 
-import { OutlinedArrowLeft, OutlinedArrowRight } from '../../icons';
+import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '../../icons';
 import { SliderStep } from './SliderStep';
 
 export interface SliderStepsProps {
@@ -22,11 +22,17 @@ export const SliderSteps = ({ count, selectedIdx, onChangeIdx }: SliderStepsProp
 
   return (
     <Center width="max-content">
-      <OutlinedArrowLeft {...arrowStyles} onClick={() => onChangeIdx(selectedIdx !== 0 ? selectedIdx - 1 : lastIdx)} />
+      <OutlinedArrowLeftIcon
+        {...arrowStyles}
+        onClick={() => onChangeIdx(selectedIdx !== 0 ? selectedIdx - 1 : lastIdx)}
+      />
       {[...Array(count).keys()].map((idx) => (
         <SliderStep key={idx} current={selectedIdx === idx} />
       ))}
-      <OutlinedArrowRight {...arrowStyles} onClick={() => onChangeIdx(selectedIdx !== lastIdx ? selectedIdx + 1 : 0)} />
+      <OutlinedArrowRightIcon
+        {...arrowStyles}
+        onClick={() => onChangeIdx(selectedIdx !== lastIdx ? selectedIdx + 1 : 0)}
+      />
     </Center>
   );
 };
