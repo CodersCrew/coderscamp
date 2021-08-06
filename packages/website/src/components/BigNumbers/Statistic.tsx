@@ -12,10 +12,10 @@ interface StatisticProps {
 export const Statistic = ({ amount, label, pb }: StatisticProps) => {
   return (
     <Box textAlign="center" flex="1" pb={pb}>
-      <Typography size="5xl" color="brand.500" fontWeight="800">
+      <Typography size="5xl" color="brand.500" fontWeight="bold">
         {amount}
       </Typography>
-      <Typography size="lg" color="gray.500" fontWeight="500">
+      <Typography size="lg" color="gray.500" fontWeight="medium">
         {label}
       </Typography>
     </Box>

@@ -16,7 +16,7 @@ interface StatsWithTitleProps {
 export const StatsWithTitle = ({ amounts, labels, title }: StatsWithTitleProps) => {
   const statisticStackDirection = useBreakpointValue({ base: 'column', xl: 'row' } as const);
   const statisticFlexDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
-  const statisticSize = useBreakpointValue({ xl: 'min(1120px, 100%)', md: 'min(850px, 100%)' } as const);
+  const statisticSize = useBreakpointValue({ md: 'min(850px, 100%)', xl: 'min(1120px, 100%)' } as const);
 
   const stackProps = { direction: statisticStackDirection, width: statisticSize };
   const flexProps = { direction: statisticFlexDirection, width: statisticSize };
