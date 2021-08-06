@@ -10,9 +10,10 @@ import { Statistic } from './Statistic';
 interface StatsWithTitleProps {
   amounts: string[];
   labels: string[];
+  title: string;
 }
 
-export const StatsWithTitle = ({ amounts, labels }: StatsWithTitleProps) => {
+export const StatsWithTitle = ({ amounts, labels, title }: StatsWithTitleProps) => {
   const statisticStackDirection = useBreakpointValue({ base: 'column', xl: 'row' } as const);
   const statisticFlexDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
   const statisticSize = useBreakpointValue({ xl: 'min(1120px, 100%)', md: 'min(850px, 100%)' } as const);
@@ -23,7 +24,7 @@ export const StatsWithTitle = ({ amounts, labels }: StatsWithTitleProps) => {
   return (
     <VStack spacing="32px" width="100%">
       <Typography size="md" color="gray.400" weight="bold">
-        BIEŻĄCA EDYCJA
+        {title}
       </Typography>
       <Stack {...stackProps}>
         <Flex {...flexProps}>
