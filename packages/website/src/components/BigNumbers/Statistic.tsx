@@ -1,16 +1,17 @@
 import React from 'react';
-import { Box, HTMLChakraProps } from '@chakra-ui/react';
 
+import { Box } from '@coderscamp/ui/components/Box';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-interface StatisticProps extends HTMLChakraProps<'div'> {
+interface StatisticProps {
   amount: string;
   label: string;
+  pb?: string;
 }
 
-export const Statistic = ({ amount, label, ...props }: StatisticProps) => {
+export const Statistic = ({ amount, label, pb }: StatisticProps) => {
   return (
-    <Box textAlign="center" flex="1" {...props}>
+    <Box textAlign="center" flex="1" pb={pb}>
       <Typography size="5xl" color="brand.500" fontWeight="800">
         {amount}
       </Typography>
