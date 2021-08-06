@@ -25,8 +25,6 @@ export const Question = ({ title, content }: QuestionProps) => {
                 transition="transform 0.2s ease-in-out"
                 width="28px"
                 height="28px"
-                px="6.5px"
-                py="9px"
                 m="0px 24px"
               />
             </AccordionButton>
