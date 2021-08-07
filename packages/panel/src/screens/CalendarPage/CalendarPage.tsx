@@ -11,8 +11,7 @@ import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '@coderscamp/ui/icons';
 
-import { calendars } from './calendars';
-import { events } from './events';
+import { useCalendar } from '@/hooks/useCalendar';
 
 type Action = 'prev' | 'today' | 'next';
 
@@ -34,7 +33,9 @@ const months = [
 export const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
   const calendarRef = useRef<Calendar>(null);
+  const { value: events } = useCalendar();
 
   const calendarInstance = calendarRef.current?.getInstance();
 
@@ -75,7 +76,7 @@ export const CalendarPage = () => {
   };
 
   return (
-    <Box width="100vw" justifyContent="center" alignItems="center">
+    <Box justifyContent="center" alignItems="center">
       <Flex alignItems="center" justifyContent="center" height="70px">
         <IconButton
           icon={<OutlinedArrowLeftIcon />}
@@ -83,8 +84,7 @@ export const CalendarPage = () => {
           aria-label="Poprzedni miesiąc"
           onClick={() => handleCalendarNavigationClick('prev')}
         />
-
-        <Button variant="ghost" onClick={() => handleCalendarNavigationClick('today')} margin="0px 20px">
+        <Button variant="ghost" onClick={() => handleCalendarNavigationClick('today')} margin="0px 10px">
           Dzisiaj
         </Button>
         <IconButton
@@ -93,7 +93,7 @@ export const CalendarPage = () => {
           aria-label="Następny miesiąc"
           onClick={() => handleCalendarNavigationClick('next')}
         />
-        <Box width="200px">
+        <Box width="160px">
           <Typography as="h1" fontSize="16px" fontWeight="bold" marginLeft="20px">
             {months[currentMonth]} {currentYear}
           </Typography>
@@ -108,7 +108,6 @@ export const CalendarPage = () => {
         defaultView="month"
         height="calc(100vh - 71px)"
         isReadOnly
-        calendars={calendars}
         schedules={events}
         scheduleView
         taskView
