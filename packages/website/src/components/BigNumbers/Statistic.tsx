@@ -6,12 +6,11 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 interface StatisticProps {
   amount: string;
   label: string;
-  pb?: string;
 }
 
-export const Statistic = ({ amount, label, pb }: StatisticProps) => {
+export const Statistic = ({ amount, label }: StatisticProps) => {
   return (
-    <Box textAlign="center" flex="1" pb={pb}>
+    <Box textAlign="center"  >
       <Typography size="5xl" color="brand.500" fontWeight="bold">
         {amount}
       </Typography>
