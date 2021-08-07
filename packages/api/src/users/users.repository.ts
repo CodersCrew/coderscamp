@@ -28,8 +28,5 @@ export class UsersRepository {
   async getUser(id: number) {
     return this.userRepositoryService.getUser(id);
   }
-
-  async saveSurvey(data: User) {
-    return this.userRepositoryService.saveSurvey(data);
-  }
+  
 }

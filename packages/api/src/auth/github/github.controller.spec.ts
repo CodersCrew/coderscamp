@@ -1,5 +1,6 @@
-import { INestApplication, InternalServerErrorException } from '@nestjs/common';
+/* eslint-disable no-underscore-dangle */
 import { Test } from '@nestjs/testing';
+import httpMocks from 'node-mocks-http';
 
 import { env } from '@/common/env';
 
@@ -9,100 +10,82 @@ import { MemoryDbService } from '../../memoryDB/memoryDB.service';
 import { PgMemUserRepositoryAdapter } from '../../memoryDB/user.repository.service';
 import { UsersRepository } from '../../users/users.repository';
 import { UsersService } from '../../users/users.service';
-import { JWTModule } from '../jwtStrategy/jwt.module';
-import { JwtStrategy } from '../jwtStrategy/jwt.strategy';
 import { GithubClient } from './github.client';
+import { JwtService } from '../jwt/jwt.service';
 import { GithubController } from './github.controller';
-import { GithubUserData } from './github.model';
+import { GithubService } from './github.service';
+import { GithubAuthGuardReq } from './github.types';
+
+
+const user = {
+  id: 1,
+  fullName: 'Name',
+  githubId: 123,
+  email: 'example@test.com',
+  image: 'https://photo-url.com',
+};
+
+const tokenValue = 'token';
+const date = new Date();
+
+const request: GithubAuthGuardReq = httpMocks.createRequest({ user });
 
 describe('Github controller', () => {
-  let app: INestApplication;
-  let githubController: GithubController;
-  let jwtStrategy: JwtStrategy;
-  let repositoryService: UserRepositoryService;
-  let profile: RegisteredUserDTO;
-  let githubUserData: GithubUserData;
+  let controller: GithubController;
+  let githubService: Partial<GithubService>;
+  let jwtService: Partial<JwtService>;
 
-  describe('githubOAuthCallback', () => {
-    it('Should register user and return token.', async () => {
-      expect(
-        await githubController.githubOAuthCallback({
-          user: githubUserData,
-        } as Request & { user: GithubUserData }),
-      ).toMatchObject({ accessToken: jwtStrategy.generateToken(profile), profile });
-    });
-
-    it('Should return user token and user data if user exists in database.', async () => {
-      expect(
-        await githubController.githubOAuthCallback({
-          user: githubUserData,
-        } as Request & { user: GithubUserData }),
-      ).toMatchObject({ accessToken: jwtStrategy.generateToken(profile), profile });
-    });
-
-    it('Should throw internal server error if user do not exist and can not be created', async () => {
-      repositoryService.findByGithubId = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
-      repositoryService.create = jest.fn().mockImplementationOnce(() => Promise.resolve(null));
-
-      await expect(
-        githubController.githubOAuthCallback({
-          user: githubUserData,
-        } as Request & { user: GithubUserData }),
-      ).rejects.toThrow(InternalServerErrorException);
-    });
+  beforeAll(() => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(date.getTime());
   });
 
-  async function setup() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    env;
+  beforeEach(async () => {
+    githubService = {
+      authorizeUser: () => Promise.resolve(user),
+    };
+    jwtService = {
+      generateToken: (_user: { id: number }) => tokenValue,
+    };
 
     const module = await Test.createTestingModule({
-      imports: [JWTModule],
       controllers: [GithubController],
       providers: [
-        MemoryDbService,
-        {
-          provide: UserRepositoryService,
-          useClass: PgMemUserRepositoryAdapter,
-        },
-        UsersRepository,
-        UsersService,
-        GithubClient,
-        JwtStrategy,
+        { provide: GithubService, useValue: githubService },
+        { provide: JwtService, useValue: jwtService },
+
       ],
-      exports: [JwtStrategy],
     }).compile();
 
-    app = module.createNestApplication();
-    jwtStrategy = await module.resolve(JwtStrategy);
-    githubController = await module.resolve(GithubController);
-    repositoryService = await module.resolve(UserRepositoryService);
 
-    const db = app.get<MemoryDbService>(MemoryDbService);
-
-    await Promise.all([db.migrate(), app.init()]);
-
-    githubUserData = {
-      githubId: 22222222,
-      fullName: 'Name',
-      email: 'example@test.com',
-      image: 'https://photo-url.com',
-    };
-
-    profile = {
-      id: 1,
-      fullName: 'Name',
-      githubId: 22222222,
-      email: 'example@test.com',
-      image: 'https://photo-url.com',
-    };
-  }
-
-  beforeAll(async () => {
-    await setup();
+    controller = await module.resolve(GithubController);
   });
 
-  afterAll(async () => {
-    await app.close();
+  describe('githubOAuthCallback', () => {
+    it('Returns void for a successful request', async () => {
+      const response = httpMocks.createResponse();
+      const result = await controller.githubOAuthCallback(request, response);
+
+      expect(result).toBeUndefined();
+    });
+
+    it('Sends 204 code as a successful response', async () => {
+      const response = httpMocks.createResponse();
+
+      await controller.githubOAuthCallback(request, response);
+
+      expect(response._getStatusCode()).toBe(204);
+    });
+
+    it('Attaches token cookie to a successful response', async () => {
+      const response = httpMocks.createResponse();
+
+      await controller.githubOAuthCallback(request, response);
+
+      expect(response.cookies[env.TOKEN_COOKIE_NAME]).toEqual({
+        options: { expires: new Date(Date.now() + env.TOKEN_EXPIRATION_TIME * 1000), httpOnly: true },
+        value: `${env.TOKEN_PREFIX}${tokenValue}`,
+      });
+    });
   });
 });

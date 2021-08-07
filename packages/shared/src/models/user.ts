@@ -48,3 +48,7 @@ export const userSchema = yup.object().shape({
   id: yup.number().typeError('Id must be a number').required('Id must be defined'),
   fullName: yup.string().typeError('Full name must be a string').required('Full name is required'),
 });
+
+export type GetAllUsersResponse = User[];
+
+export type GetMeResponse = User | null;
