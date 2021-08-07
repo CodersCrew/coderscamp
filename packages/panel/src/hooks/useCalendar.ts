@@ -60,7 +60,7 @@ export const useCalendar = () => {
         start: new Date(start.date || start.dateTime),
         end: new Date(end.date || end.dateTime),
         category: 'time',
-        // google returns start.date only if event is all day long, otherwise it returns end.dateTime
+        // Google Calendar API returns start.date only if event is all day long, otherwise it returns end.dateTime
         isAllDay: !!start.date,
         bgColor: color,
         borderColor: color,

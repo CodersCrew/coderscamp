@@ -12,7 +12,6 @@ export const createJestConfig = ({ tsconfig, moduleNameMapper = {}, overrides = 
   moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
   roots: ['<rootDir>/src'],
   testMatch: ['**/?(*.)+(spec|test).+(ts|tsx|js)'],
-  collectCoverageFrom: ['**/*.tsx?'],
   moduleNameMapper: {
     '^@coderscamp/([a-z-]+)/(.+)': '<rootDir>/../$1/src/$2',
     ...moduleNameMapper,

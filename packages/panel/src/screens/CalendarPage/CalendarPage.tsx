@@ -45,6 +45,7 @@ export const CalendarPage = () => {
         if (currentMonth === 11) {
           setCurrentMonth(0);
           setCurrentYear(currentYear + 1);
+
           return;
         }
 
@@ -54,6 +55,7 @@ export const CalendarPage = () => {
         if (currentMonth === 0) {
           setCurrentMonth(11);
           setCurrentYear(currentYear - 1);
+
           return;
         }
 
@@ -82,6 +84,7 @@ export const CalendarPage = () => {
           icon={<OutlinedArrowLeftIcon />}
           variant="ghost"
           aria-label="Poprzedni miesiąc"
+          size="md"
           onClick={() => handleCalendarNavigationClick('prev')}
         />
         <Button variant="ghost" onClick={() => handleCalendarNavigationClick('today')} margin="0px 10px">
@@ -91,6 +94,7 @@ export const CalendarPage = () => {
           icon={<OutlinedArrowRightIcon />}
           variant="ghost"
           aria-label="Następny miesiąc"
+          size="md"
           onClick={() => handleCalendarNavigationClick('next')}
         />
         <Box width="160px">
