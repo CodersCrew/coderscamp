@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
-import { RegisteredUser, UserInformation } from '@coderscamp/shared/models/user';
+import { RegisteredUser, User } from '@coderscamp/shared/models/user';
 
 import { UserModel } from './user.model';
 
@@ -12,7 +12,7 @@ export class UserFactory {
     return this.eventPublisher.mergeObjectContext(new UserModel(properties));
   }
 
-  reconstruct(properties: UserInformation | RegisteredUser): UserModel {
+  reconstruct(properties: User | RegisteredUser): UserModel {
     return this.eventPublisher.mergeObjectContext(new UserModel(properties));
   }
 }

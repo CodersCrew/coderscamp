@@ -1,13 +1,12 @@
 import { Test } from '@nestjs/testing';
 
-import type { User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser } from '@coderscamp/shared/models/user';
 import { createObjectMock } from '@coderscamp/shared/utils/test';
 
 import { UsersRepository } from '../../users/users.repository';
-import { UserFromGithub } from '../../users/users.types';
 import { GithubService } from './github.service';
 
-const createUser = (githubId: number): User => ({
+const createUser = (githubId: number): RegisteredUser => ({
   id: Math.round(Math.random() * 100),
   fullName: 'Name',
   githubId,
@@ -39,7 +38,7 @@ describe('Github controller', () => {
 
       usersRepository.getByGithubId = jest.fn().mockResolvedValue(dbUser);
 
-      const githubUser = createObjectMock<UserFromGithub>({ githubId: dbUser.githubId });
+      const githubUser = createObjectMock<RegisteredUser>({ githubId: dbUser.githubId });
 
       const result = await service.authorizeUser(githubUser);
 
@@ -53,7 +52,7 @@ describe('Github controller', () => {
       usersRepository.getByGithubId = jest.fn().mockResolvedValue(null);
       usersRepository.create = jest.fn().mockResolvedValue(newUser);
 
-      const githubUser = createObjectMock<UserFromGithub>({ githubId: newUser.githubId });
+      const githubUser = createObjectMock<RegisteredUser>({ githubId: newUser.githubId });
 
       const result = await service.authorizeUser(githubUser);
 

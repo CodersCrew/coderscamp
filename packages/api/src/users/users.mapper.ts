@@ -1,24 +1,22 @@
 import type {
   RegisteredUser,
   RegisteredUserDTO,
-  UserInformation,
-  UserInformationDTO,
-  UserSurvey,
-  UserSurveyDTO,
+  User,
+  UserDTO,
+  // UserSurvey,
+  // UserSurveyDTO,
 } from '@coderscamp/shared/models/user';
+
 import type { GithubUser } from '../auth/github/github.types';
 import type { JwtPayload } from '../auth/jwt/jwt.types';
-import type { UserFromGithub, UserFromJwt } from './users.types';
-
-import type { GithubDTO } from '../auth/github/github.model';
+import type { UserFromJwt } from './users.types';
 
 export class UsersMapper {
-  static userToDomain(value: UserInformationDTO): UserInformation {
+  static userToDomain(value: UserDTO): User {
     return value;
   }
-    
-  static fromGithubToDomain(user: GithubUser): UserFromGithub {
 
+  static fromGithubToDomain(user: GithubUser): Omit<RegisteredUser, 'id'> {
     // ! new user may not set his email address to public and also he may not set his name.
     return {
       fullName: user.name,
@@ -29,7 +27,7 @@ export class UsersMapper {
   }
 
   static userToPlain(value: RegisteredUser): RegisteredUserDTO;
-  static userToPlain(value: UserInformation): UserInformationDTO {
+  static userToPlain(value: User): UserDTO {
     return value;
   }
 
@@ -37,13 +35,13 @@ export class UsersMapper {
     return value;
   }
 
-  static userSurveyToDomain(data: UserSurveyDTO): UserSurvey {
-    return data;
-  }
+  // static userSurveyToDomain(data: UserSurveyDTO): UserSurvey {
+  //   return data;
+  // }
 
-  static userSurveyToPlain(data: UserSurvey): UserSurveyDTO {
-    return data;
-  }
+  // static userSurveyToPlain(data: UserSurvey): UserSurveyDTO {
+  //   return data;
+  // }
 
   static fromJwtToDomain(payload: JwtPayload): UserFromJwt {
     return {

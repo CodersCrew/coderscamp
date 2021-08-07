@@ -1,31 +1,6 @@
 import * as yup from 'yup';
 
-export type UserInformation = {
-  id: number;
-  githubId: number;
-  fullName: string;
-  email: string;
-  image: string;
-  gender: string;
-  city: string;
-  birthYear: number;
-  isStudent: boolean;
-};
-
-export type Survey = {
-  userId: number;
-  description: string;
-  alreadyTookCourse: boolean;
-  reasonForRetakingCourse: string | null;
-  expectations: string;
-  experience: string;
-  uniques: string;
-  plans: string;
-  unavailability: string;
-  averageTime: number;
-  associatedWords: string[];
-  courseInformationSource: string;
-};
+import { Survey } from './survey';
 
 export type RegisteredUser = {
   id: number;
@@ -35,20 +10,27 @@ export type RegisteredUser = {
   image: string;
 };
 
+export type User = RegisteredUser & {
+  gender: string;
+  city: string;
+  birthYear: number;
+  isStudent: boolean;
+};
+
 export type RegisteredUserDTO = RegisteredUser;
 
-export type UserInformationDTO = UserInformation;
+export type UserDTO = User;
 
-export type UserSurvey = UserInformation & { Survey: Survey };
-export type UserSurveyDTO = UserInformation & { Survey: Survey };
+export type UserSurvey = User & { Survey: Survey };
+export type UserSurveyDTO = User & { Survey: Survey };
 
-export type User = UserInformation & { Survey: Survey };
+export type PopulatedUser = User & { Survey: Survey };
 
 export const userSchema = yup.object().shape({
   id: yup.number().typeError('Id must be a number').required('Id must be defined'),
   fullName: yup.string().typeError('Full name must be a string').required('Full name is required'),
 });
 
-export type GetAllUsersResponse = User[];
+export type GetAllUsersResponse = PopulatedUser[];
 
-export type GetMeResponse = User | null;
+export type GetMeResponse = RegisteredUser | User | null;

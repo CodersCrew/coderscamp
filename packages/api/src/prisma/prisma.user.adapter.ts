@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 
-import { User as SharedUser } from '@coderscamp/shared/models/user';
+import { PopulatedUser } from '@coderscamp/shared/models/user';
 
 import { UserRepository } from '../contracts/user.repository';
 import { PrismaService } from './prisma.service';
@@ -26,7 +26,7 @@ export class PrismaUserAdapter implements UserRepository {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  async saveSurvey({ id, Survey: survey, ...user }: SharedUser) {
+  async saveSurvey({ id, Survey: survey, ...user }: PopulatedUser) {
     return this.prisma.user.update({
       where: { id },
       data: {
@@ -34,7 +34,7 @@ export class PrismaUserAdapter implements UserRepository {
         Survey: { create: { ...survey } },
       },
       include: { Survey: true },
-    }) as unknown as SharedUser;
+    }) as unknown as PopulatedUser;
   }
 
   async getUser(id: number) {

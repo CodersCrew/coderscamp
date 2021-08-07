@@ -1,37 +1,24 @@
-import { Body, Controller, Post, UsePipes, UseGuards, Get } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 
-import { userSchema, UserSurveyDTO } from '@coderscamp/shared/models/user';
+import { UserErrorMessage } from '@coderscamp/shared/errors/user.errors';
+import type { GetMeResponse } from '@coderscamp/shared/models/user';
 
-import { YupValidationPipe } from '@/common/yupValidationPipe';
-
-import { SaveSurveyCommand } from './commands';
-import { UsersMapper } from './users.mapper';
-import type { GetAllUsersResponse, GetMeResponse } from '@coderscamp/shared/models/user';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { UserId } from '../auth/jwt/user-id.decorator';
+import { UsersMapper } from './users.mapper';
 import { UsersRepository } from './users.repository';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly commandBus: CommandBus, private readonly usersRepository: UsersRepository) {}
-
-  @Post('survey')
-  @UsePipes(new YupValidationPipe(userSchema))
-  async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<UserSurveyDTO> {
-    const command = new SaveSurveyCommand(UsersMapper.userSurveyToDomain(userSurveyDTO));
-    return UsersMapper.userSurveyToPlain(await this.commandBus.execute(command));
-  }
-
-  @Get('/')
-  async getAll(): Promise<GetAllUsersResponse> {
-    return this.usersRepository.getAll();
-  }
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   async getMe(@UserId() id: number): Promise<GetMeResponse> {
-    return this.usersRepository.getById(id);
+    const user = await this.usersRepository.findById(id);
 
+    if (!user) throw new NotFoundException(UserErrorMessage.USER_NOT_FOUND);
+
+    return UsersMapper.userToPlain(user);
   }
 }
