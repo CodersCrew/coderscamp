@@ -1,12 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 
-import { UserRepositoryService } from '../contracts/user.repository.service';
+import { UserRepository } from '../contracts/user.repository';
 import { PrismaService } from './prisma.service';
 import { PrismaUserAdapter } from './prisma.user.adapter';
 
 @Global()
 @Module({
-  providers: [PrismaService, { provide: UserRepositoryService, useClass: PrismaUserAdapter }],
-  exports: [PrismaService, UserRepositoryService],
+  providers: [PrismaService, { provide: UserRepository, useClass: PrismaUserAdapter }],
+  exports: [PrismaService, UserRepository],
 })
 export class PrismaModule {}

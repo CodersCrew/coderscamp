@@ -3,11 +3,11 @@ import { User } from '@prisma/client';
 
 import { User as SharedUser } from '@coderscamp/shared/models/user';
 
-import { UserRepositoryService } from '../contracts/user.repository.service';
+import { UserRepository } from '../contracts/user.repository';
 import { PrismaService } from './prisma.service';
 
 @Injectable()
-export class PrismaUserAdapter implements UserRepositoryService {
+export class PrismaUserAdapter implements UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: User) {

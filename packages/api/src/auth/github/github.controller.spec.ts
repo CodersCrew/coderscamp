@@ -5,17 +5,16 @@ import httpMocks from 'node-mocks-http';
 import { env } from '@/common/env';
 
 import type { RegisteredUserDTO } from '../../../../shared/src/models/user';
-import { UserRepositoryService } from '../../contracts/user.repository.service';
+import { UserRepository } from '../../contracts/user.repository';
 import { MemoryDbService } from '../../memoryDB/memoryDB.service';
-import { PgMemUserRepositoryAdapter } from '../../memoryDB/user.repository.service';
+import { PgMemUserRepositoryAdapter } from '../../memoryDB/user.repository';
 import { UsersRepository } from '../../users/users.repository';
 import { UsersService } from '../../users/users.service';
-import { GithubClient } from './github.client';
 import { JwtService } from '../jwt/jwt.service';
+import { GithubClient } from './github.client';
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { GithubAuthGuardReq } from './github.types';
-
 
 const user = {
   id: 1,
@@ -53,10 +52,8 @@ describe('Github controller', () => {
       providers: [
         { provide: GithubService, useValue: githubService },
         { provide: JwtService, useValue: jwtService },
-
       ],
     }).compile();
-
 
     controller = await module.resolve(GithubController);
   });

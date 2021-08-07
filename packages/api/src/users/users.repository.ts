@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import type { RegisteredUser, User, UserInformation } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, UserInformation } from '@coderscamp/shared/models/user';
 
 import type { GithubUserData } from '../auth/github/github.model';
-import { UserRepositoryService } from '../contracts/user.repository.service';
+import { UserRepository } from '../contracts/user.repository';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly userRepositoryService: UserRepositoryService) {}
+  constructor(private readonly userRepositoryService: UserRepository) {}
 
   async create(userData: GithubUserData): Promise<RegisteredUser> {
     return this.userRepositoryService.create(userData);
@@ -28,5 +28,4 @@ export class UsersRepository {
   async getUser(id: number) {
     return this.userRepositoryService.getUser(id);
   }
-  
 }

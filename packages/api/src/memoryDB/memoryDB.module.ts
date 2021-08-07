@@ -1,12 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 
-import { UserRepositoryService } from '../contracts/user.repository.service';
+import { UserRepository } from '../contracts/user.repository';
 import { MemoryDbService } from './memoryDB.service';
-import { PgMemUserRepositoryAdapter } from './user.repository.service';
+import { PgMemUserRepositoryAdapter } from './user.repository';
 
 @Global()
 @Module({
-  providers: [MemoryDbService, { provide: UserRepositoryService, useClass: PgMemUserRepositoryAdapter }],
-  exports: [MemoryDbService, UserRepositoryService],
+  providers: [MemoryDbService, { provide: UserRepository, useClass: PgMemUserRepositoryAdapter }],
+  exports: [MemoryDbService, UserRepository],
 })
 export class MemoryDbModule {}
