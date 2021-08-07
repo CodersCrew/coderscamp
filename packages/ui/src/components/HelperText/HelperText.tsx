@@ -1,6 +1,7 @@
 import React, { forwardRef, ReactText } from 'react';
 import { HTMLChakraProps } from '@chakra-ui/react';
 
+import { useFieldContextSize } from '../FormControl/FieldContext';
 import { Typography } from '../Typography';
 
 type HelperTextVariant = 'default' | 'warning' | 'error';
@@ -20,9 +21,11 @@ const colors: Record<HelperTextVariant, string> = {
 };
 
 export const HelperText = forwardRef<HTMLDivElement, HelperTextProps>(
-  ({ children, variant = 'default', size = 'md', ...props }, ref) => {
+  ({ children, variant = 'default', size, ...props }, ref) => {
+    const helperTextSize = useFieldContextSize(size);
+
     return (
-      <Typography {...props} color={colors[variant]} size={size} ref={ref}>
+      <Typography {...props} color={colors[variant]} size={helperTextSize} ref={ref}>
         {children}
       </Typography>
     );
