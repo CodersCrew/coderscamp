@@ -30,7 +30,7 @@ export const MaterialsCardText: MaterialsCardOptions = {
 export const MaterialsCard = ({ status, ...props }: MaterialsCardProps) => {
   return (
     <Box w="100%" boxShadow="base" borderRadius="8px" padding="24px" {...props}>
-      <Typography as="p" fontWeight="800" size="xl" lineHeight="xl" letterSpacing="xl">
+      <Typography as="p" weight="extrabold" size="xl">
         Materiały
       </Typography>
       <Box paddingTop="24px">
