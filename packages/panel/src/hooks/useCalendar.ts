@@ -27,23 +27,23 @@ type GoogleCalendarResponse = {
 
 const getEventColor = (summary: string) => {
   if (summary.includes('Dział 1')) {
-    return colors.brand[300];
+    return '#f0db4f';
   }
 
   if (summary.includes('Dział 2')) {
-    return colors.blue[400];
+    return '#007acc';
   }
 
   if (summary.includes('Dział 3')) {
-    return colors.green[400];
+    return '#68a063';
   }
 
   if (summary.includes('Dział 4')) {
-    return colors.blue[300];
+    return '#61dbfb';
   }
 
   if (summary.includes('Dział 5')) {
-    return colors.blue[500];
+    return '#764abc';
   }
 
   return colors.brand[600];

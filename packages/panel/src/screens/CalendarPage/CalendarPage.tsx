@@ -2,7 +2,8 @@ import 'tui-calendar/dist/tui-calendar.css';
 
 import React, { useRef, useState } from 'react';
 import Calendar from '@toast-ui/react-calendar';
-import { ISchedule } from 'tui-calendar';
+import { getDateWithoutHours, getFormattedDate, getHourWithMinutes } from 'src/utils/date';
+import { DateType, ISchedule } from 'tui-calendar';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Button } from '@coderscamp/ui/components/Button';
@@ -118,8 +119,15 @@ export const CalendarPage = () => {
         useDetailPopup
         view="month"
         template={{
-          allday({ title }: ISchedule) {
-            return `<h1 style="text-align:center;">${title}</h1>`;
+          time({ start, title }: ISchedule) {
+            return `<strong>${getFormattedDate(start as DateType)} ${title}</strong>`;
+          },
+          popupDetailDate(isAllDay: boolean, start: DateType, end: DateType) {
+            if (!isAllDay) {
+              return `<h2 style="font-weight: 400;">${getHourWithMinutes(start)} - ${getHourWithMinutes(end)}</h2>`;
+            }
+
+            return `<h2 style="font-weight: 400;">${getDateWithoutHours(start)} - ${getDateWithoutHours(end)}</h2>`;
           },
         }}
       />

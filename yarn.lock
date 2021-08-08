@@ -2740,6 +2740,7 @@ __metadata:
     "@types/react-dom": 17.0.9
     "@types/react-router-dom": 5.1.8
     "@vitejs/plugin-react-refresh": 1.3.6
+    moment: 2.29.1
     react: 17.0.2
     react-dom: 17.0.2
     react-router-dom: 5.2.0
@@ -16885,6 +16886,13 @@ fsevents@^1.2.7:
   version: 2.2.2
   resolution: "module-alias@npm:2.2.2"
   checksum: 4b5543f834b484033e5bd184096ca8276b9195e32e88883ee6ea8d3a4789d97c470d26f5fa7271bd7a26588bf67e4d27dbdb594ee327aef1c9619d855dc78342
+  languageName: node
+  linkType: hard
+
+"moment@npm:2.29.1":
+  version: 2.29.1
+  resolution: "moment@npm:2.29.1"
+  checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
   languageName: node
   linkType: hard
 
