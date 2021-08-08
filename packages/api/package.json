@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --config jest-e2e.config.ts",
     "generate": "prisma generate",
     "synchronize": "prisma db push",
     "migrate": "prisma migrate dev"
@@ -20,14 +20,16 @@
   "dependencies": {
     "@coderscamp/shared": "0.0.1",
     "@hapi/joi": "17.1.1",
-    "@nestjs/common": "8.0.5",
-    "@nestjs/core": "8.0.5",
+    "@nestjs/common": "8.0.6",
+    "@nestjs/core": "8.0.6",
     "@nestjs/jwt": "8.0.0",
-    "@nestjs/passport": "8.0.0",
-    "@nestjs/platform-express": "8.0.5",
+    "@nestjs/passport": "8.0.1",
+    "@nestjs/platform-express": "8.0.6",
     "@nestjs/serve-static": "2.2.2",
     "@prisma/client": "2.28.0",
+    "cookie-parser": "1.4.5",
     "dotenv": "10.0.0",
+    "express": "4.17.1",
     "passport": "0.4.1",
     "passport-github2": "0.1.12",
     "passport-jwt": "4.0.0",
@@ -35,37 +37,22 @@
     "rxjs": "7.3.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "8.1.0",
+    "@nestjs/cli": "8.1.1",
     "@nestjs/schematics": "8.0.2",
-    "@nestjs/testing": "8.0.5",
+    "@nestjs/testing": "8.0.6",
+    "@types/cookie-parser": "1.4.2",
     "@types/dotenv": "8.2.0",
     "@types/express": "4.17.13",
     "@types/hapi__joi": "17.1.7",
-    "@types/node": "16.4.7",
+    "@types/node": "16.4.13",
     "@types/passport-github2": "1.2.5",
     "@types/passport-jwt": "3.0.6",
     "@types/supertest": "2.0.11",
+    "node-mocks-http": "1.10.1",
     "prisma": "2.28.0",
     "supertest": "6.1.4",
-    "ts-loader": "9.2.4",
+    "ts-loader": "9.2.5",
     "ts-node": "10.1.0",
     "tsconfig-paths": "3.10.1"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      ".+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

@@ -6,12 +6,6 @@ export type User = {
   image: string;
 };
 
-export type UserDTO = {
-  id: number;
-  githubId: number;
-  fullName: string;
-  email: string;
-  image: string;
-};
+export type GetAllUsersResponse = User[];
 
-export type GetAllUsersResponse = UserDTO[];
+export type GetMeResponse = User | null;

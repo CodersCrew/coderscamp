@@ -4,9 +4,6 @@ import { forwardRef, HTMLChakraProps, Radio as ChakraRadio } from '@chakra-ui/re
 export type RadioSize = 'md' | 'lg';
 
 export interface RadioProps extends Omit<HTMLChakraProps<'div'>, 'onChange' | 'defaultChecked'> {
-  /**
-   * Determines radio's and text size.
-   */
   size?: RadioSize;
   checked?: boolean;
   disabled?: boolean;
