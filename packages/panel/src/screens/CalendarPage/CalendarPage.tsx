@@ -9,6 +9,7 @@ import { Box } from '@coderscamp/ui/components/Box';
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
+import { Spinner } from '@coderscamp/ui/components/Spinner';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '@coderscamp/ui/icons';
 
@@ -36,7 +37,7 @@ export const CalendarPage = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   const calendarRef = useRef<Calendar>(null);
-  const { value: events } = useCalendar();
+  const { value: events, loading } = useCalendar();
 
   const calendarInstance = calendarRef.current?.getInstance();
 
@@ -88,6 +89,14 @@ export const CalendarPage = () => {
       calendarInstance[action]();
     }
   };
+
+  if (loading) {
+    return (
+      <Flex alignItems="center" justifyContent="center" height="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <Box justifyContent="center" alignItems="center">
