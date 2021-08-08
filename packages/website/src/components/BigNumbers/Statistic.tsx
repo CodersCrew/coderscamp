@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@coderscamp/ui/components/Box';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-interface StatisticProps {
+export interface StatisticProps {
   amount: string;
   label: string;
 }

@@ -5,22 +5,26 @@ import { VStack } from '@coderscamp/ui/components/Stack';
 
 import { StatsWithTitle } from './StatsWithTitle';
 
-const amounts = {
-  currentEdition: ['7.', '1516', '200', '6'],
-  previousEditions: ['6526', '1022', '372', '502'],
-};
+const currentEdition = [
+  { amount: '7.', label: 'edycja' },
+  { amount: '1 516', label: 'zadań i materiałów' },
+  { amount: '200', label: 'miejsc na kurs' },
+  { amount: '6', label: 'projektów do stworzenia' },
+];
 
-const labels = {
-  currentEdition: ['edycja', 'zadań i materiałów', 'miejsc na kurs', 'projektów do stworzenia'],
-  previousEditions: ['zgłoszeń', 'osób na kursie', 'wydanych certyfikatów', 'zakodowanych projektów'],
-};
+const previousEditions = [
+  { amount: '6 526', label: 'zgłoszeń' },
+  { amount: '1 022', label: 'osób na kursie' },
+  { amount: '372', label: 'wydanych certyfikatów' },
+  { amount: '502', label: 'zakodowanych projektów' },
+];
 
 export const BigNumbers = () => {
   return (
     <Flex justify="center" mx="auto" pt="40px" pb="80px" maxW="min(1120px, 100%)">
       <VStack spacing="80px" width="100%">
-        <StatsWithTitle amounts={amounts.currentEdition} labels={labels.currentEdition} title="BIEŻĄCA EDYCJA" />
-        <StatsWithTitle amounts={amounts.previousEditions} labels={labels.previousEditions} title="POPRZEDNIE EDYCJE" />
+        <StatsWithTitle statistics={currentEdition} title="BIEŻĄCA EDYCJA" />
+        <StatsWithTitle statistics={previousEditions} title="POPRZEDNIE EDYCJE" />
       </VStack>
     </Flex>
   );
