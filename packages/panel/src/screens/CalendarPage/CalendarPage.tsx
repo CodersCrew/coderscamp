@@ -110,7 +110,7 @@ export const CalendarPage = () => {
           onClick={() => handleCalendarNavigationClick('next')}
         />
         <Box width="160px">
-          <Typography as="h1" fontSize="16px" fontWeight="bold" marginLeft="20px">
+          <Typography as="h1" marginLeft="20px">
             {months[currentMonth]} {currentYear}
           </Typography>
         </Box>
