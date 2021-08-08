@@ -10,6 +10,8 @@ import {
   UseNumberInputProps,
 } from '@chakra-ui/react';
 
+import { useFieldContextSize } from '../FormControl/FieldContext';
+
 type NumberInputSize = 'sm' | 'md' | 'lg';
 
 type NumberInputMode = 'numeric' | 'decimal';
@@ -60,7 +62,7 @@ export interface NumberInputProps extends Omit<HTMLChakraProps<'div'>, keyof Use
 export const NumberInput = forwardRef<NumberInputProps, 'input'>(
   (
     {
-      size = 'md',
+      size,
       inputMode = 'decimal',
       disabled = false,
       'aria-describedby': ariaDescribedby,
@@ -70,15 +72,18 @@ export const NumberInput = forwardRef<NumberInputProps, 'input'>(
     },
     ref,
   ) => {
+    const inputSize = useFieldContextSize(size);
+
     return (
       <ChakraNumberInput
-        size={size}
+        size={inputSize}
         inputMode={inputMode}
         isDisabled={disabled}
         aria-describedby={ariaDescribedby}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
         ref={ref}
+        width="100%"
         {...props}
       >
         <NumberInputField />
