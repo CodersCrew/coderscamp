@@ -1,31 +1,30 @@
 import React, { ReactNode } from 'react';
-import { Box, forwardRef, HTMLChakraProps } from '@chakra-ui/react';
+import { Box, forwardRef, HTMLChakraProps, ResponsiveValue } from '@chakra-ui/react';
 
-type TypographyVariant = 'span' | 'div' | 'p' | 'a' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+type TypographyVariant = 'span' | 'div' | 'p' | 'a' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label';
 
-type TypographyFontSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl';
+type TypographyFontSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl';
 
-type TypographyFontWeight = 'regular' | 'medium';
+type TypographyFontWeight = 'normal' | 'medium' | 'bold' | 'extrabold';
 
 export interface TypographyProps extends HTMLChakraProps<'div'> {
   children: ReactNode | ReactNode[];
   as?: TypographyVariant;
-  size?: TypographyFontSize;
+  size?: ResponsiveValue<TypographyFontSize>;
   weight?: TypographyFontWeight;
 }
 
 const anchorStyle = {
   color: 'brand.500',
   textDecoration: 'underline',
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   _hover: { color: 'brand.600' },
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   _active: { color: 'brand.700' },
 };
 
 export const Typography = forwardRef<TypographyProps, 'div'>(
-  ({ as = 'div', size = 'md', weight = 'regular', children, ...props }, ref) => {
+  ({ as = 'div', size = 'md', weight = 'normal', children, ...props }, ref) => {
     const stylesForLink = as === 'a' && anchorStyle;
+
     return (
       <Box
         as={as}

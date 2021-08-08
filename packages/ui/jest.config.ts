@@ -8,5 +8,11 @@ export default createJestConfig({
   overrides: {
     testEnvironment: 'jsdom',
     setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
+    collectCoverageFrom: [
+      'src/components/**/*.tsx',
+      '!**/*.(stories|mocks).{ts,tsx}',
+      '!**/index.{ts,tsx}',
+      '!**/components/*.tsx',
+    ],
   },
 });

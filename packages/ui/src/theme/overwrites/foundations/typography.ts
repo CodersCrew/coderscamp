@@ -17,6 +17,7 @@ export const typography = {
     '5xl': '3rem',
     '6xl': '3.75rem',
     '7xl': '4.5rem',
+    '8xl': '6.25rem',
   },
 
   lineHeights: {
@@ -25,12 +26,13 @@ export const typography = {
     md: '1.5rem',
     lg: '1.75rem',
     xl: '1.75rem',
-    '2xl': '2rem',
-    '3xl': '2.25rem',
-    '4xl': '2.5rem',
+    '2xl': '2.5rem',
+    '3xl': '3rem',
+    '4xl': '3rem',
     '5xl': '3rem',
     '6xl': '3.75rem',
     '7xl': '4.5rem',
+    '8xl': '6.25rem',
   },
 
   letterSpacings: {
@@ -45,5 +47,6 @@ export const typography = {
     '5xl': '-0.022em',
     '6xl': '-0.022em',
     '7xl': '-0.022em',
+    '8xl': '-0.022em',
   },
 };

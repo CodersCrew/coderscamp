@@ -8,10 +8,12 @@
     "module": "esnext",
     "noEmit": true,
     "paths": {
-      "@coderscamp/ui/*": ["../ui/src/*"]
+      "@coderscamp/ui/*": ["../ui/src/*"],
+      "@/assets/*": ["src/assets/*"],
+      "@/components/*": ["src/components/*"]
     },
     "target": "es5"
   },
-  "include": ["next-env.d.ts", "src", "../ui/src"],
+  "include": ["next-env.d.ts", "declarations.d.ts", "src", "../ui/src"],
   "exclude": ["node_modules"]
 }

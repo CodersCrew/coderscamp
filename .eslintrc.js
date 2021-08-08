@@ -31,6 +31,7 @@ module.exports = {
     'prettier',
     'simple-import-sort',
     'testing-library',
+    'jest-formatting',
   ],
   extends: [
     'eslint:recommended',
@@ -38,10 +39,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest-dom/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:testing-library/react',
   ],
   rules: {
     // Prevents from writing functions that are too complex (in terms of cyclomatic complexity).
@@ -109,6 +107,22 @@ module.exports = {
         ],
       },
     ],
+
+    // Add blank lines between particular parts of the code.
+    'padding-line-between-statements': [
+      2,
+      // Always require blank lines before return statements.
+      { blankLine: 'always', prev: '*', next: 'return' },
+
+      // Always require blank lines before and after class declaration, if, switch, try.
+      { blankLine: 'always', prev: '*', next: ['if', 'class', 'for', 'switch', 'try'] },
+      { blankLine: 'always', prev: ['if', 'class', 'for', 'switch', 'try'], next: '*' },
+
+      // Always require blank lines before and after every sequence of variable declarations and export.
+      { blankLine: 'always', prev: '*', next: ['const', 'let', 'var', 'export'] },
+      { blankLine: 'always', prev: ['const', 'let', 'var', 'export'], next: '*' },
+      { blankLine: 'any', prev: ['const', 'let', 'var', 'export'], next: ['const', 'let', 'var', 'export'] },
+    ],
   },
   overrides: [
     {
@@ -140,9 +154,19 @@ module.exports = {
       rules: { '@typescript-eslint/no-var-requires': 0 },
     },
     {
-      // Files that should to contain a default export.
-      files: ['*.config.[tj]s', 'packages/website/pages/**/*.tsx', '*.stories.tsx'],
+      // Files that should contain a default export.
+      files: ['*.config.[tj]s', 'packages/website/src/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
+    },
+    {
+      // Enable plugins rules only for test files.
+      files: ['**/?(*.)+(spec|test).ts?(x)'],
+      extends: [
+        'plugin:testing-library/react',
+        'plugin:jest-dom/recommended',
+        'plugin:jest/recommended',
+        'plugin:jest-formatting/recommended',
+      ],
     },
   ],
   settings: {
