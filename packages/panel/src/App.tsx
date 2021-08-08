@@ -13,7 +13,7 @@ export const App = () => {
           <SignUpPageForCandidates />
           <GoToFormPage />
         </Route>
-        <Route path="/calendar" exact>
+        <Route path="/kalendarz" exact>
           <CalendarPage />
         </Route>
       </Switch>
