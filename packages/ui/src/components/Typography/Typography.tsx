@@ -7,7 +7,9 @@ type TypographyFontSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4x
 
 type TypographyFontWeight = 'normal' | 'medium' | 'bold' | 'extrabold';
 
-export interface TypographyProps extends HTMLChakraProps<'div'> {
+type ExcludedProps = 'fontSize' | 'fontWeight' | 'letterSpacing' | 'lineHeight' | 'fontFamily';
+
+export interface TypographyProps extends Omit<HTMLChakraProps<'div'>, ExcludedProps> {
   children: ReactNode | ReactNode[];
   as?: TypographyVariant;
   size?: ResponsiveValue<TypographyFontSize>;
