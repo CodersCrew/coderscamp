@@ -16,11 +16,11 @@ export const Playground = Template.bind({});
 
 Playground.args = {
   count: 8,
-  selectedIdx: 0,
+  selectedIndex: 0,
 };
 
 export const Interactive = () => {
-  const [selected, setSelectedIdx] = useState(0);
+  const [selected, setSelectedIndex] = useState(0);
 
-  return <SliderSteps count={8} selectedIdx={selected} onChangeIdx={setSelectedIdx} />;
+  return <SliderSteps count={8} selectedIndex={selected} onChange={setSelectedIndex} />;
 };

@@ -1,25 +1,35 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Circle } from '@chakra-ui/react';
 
 export interface SliderStepProps {
   current: boolean;
+  onClick: () => void;
 }
+const currentDotProps = {
+  backgroundColor: 'brand.500',
+  mx: '2px',
+  borderColor: 'brand.200',
+  borderWidth: '4px',
+};
+const defaultProps = {
+  backgroundColor: 'gray.300',
+  mx: '10px',
+  cursor: 'pointer',
+};
 
-export const SliderStep = ({ current }: SliderStepProps) => {
-  const bgColor = current ? 'brand.500' : 'gray.300';
-  const horizontalMargin = current ? '2px' : '10px';
+export const SliderStep = ({ current, onClick }: SliderStepProps) => {
+  const stepProps = current ? currentDotProps : defaultProps;
+  const selectStep = () => !current && onClick();
 
   return (
-    <Box
-      data-testid={current ? 'currentSliderStep' : 'baseSliderStep'}
-      borderRadius="50%"
-      backgroundColor={bgColor}
-      my="0px"
-      mx={horizontalMargin}
-      w="12px"
-      h="12px"
+    <Circle
+      size="12px"
       boxSizing="content-box"
-      {...(current && { borderColor: 'brand.200', borderWidth: '4px' })}
+      onClick={selectStep}
+      role="tab"
+      tabIndex={0}
+      aria-selected={current}
+      {...stepProps}
     />
   );
 };

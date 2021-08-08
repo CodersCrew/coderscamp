@@ -2,36 +2,40 @@ import React from 'react';
 import { Center } from '@chakra-ui/react';
 
 import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '../../icons';
+import { IconButton } from '../IconButton';
 import { SliderStep } from './SliderStep';
 
 export interface SliderStepsProps {
   count: number;
-  selectedIdx: number;
-  onChangeIdx: (newIdx: number) => void;
+  selectedIndex: number;
+  onChange: (newIdx: number) => void;
 }
 
-export const SliderSteps = ({ count, selectedIdx, onChangeIdx }: SliderStepsProps) => {
+const arrowStyles = {
+  variant: 'ghost',
+  size: 'sm',
+} as const;
+
+export const SliderSteps = ({ count, selectedIndex, onChange }: SliderStepsProps) => {
   const lastIdx = count - 1;
-  const arrowStyles = {
-    w: '32px',
-    h: '32px',
-    p: '6px',
-    borderRadius: '6px',
-    color: 'gray.800',
-  };
+  const goForward = () => onChange(selectedIndex !== lastIdx ? selectedIndex + 1 : 0);
+  const goBack = () => onChange(selectedIndex !== 0 ? selectedIndex - 1 : lastIdx);
+  const goToSelected = (index: number) => onChange(index);
+
+  if (selectedIndex < 0 || selectedIndex >= count)
+    throw new Error('SelectedIndex property should be positive number and less than count of dots');
 
   return (
-    <Center width="max-content">
-      <OutlinedArrowLeftIcon
-        {...arrowStyles}
-        onClick={() => onChangeIdx(selectedIdx !== 0 ? selectedIdx - 1 : lastIdx)}
-      />
-      {[...Array(count).keys()].map((idx) => (
-        <SliderStep key={idx} current={selectedIdx === idx} />
+    <Center width="max-content" role="tablist">
+      <IconButton icon={<OutlinedArrowLeftIcon />} {...arrowStyles} onClick={goBack} aria-label="go back button" />
+      {[...Array(count).keys()].map((index) => (
+        <SliderStep key={index} current={selectedIndex === index} onClick={() => goToSelected(index)} />
       ))}
-      <OutlinedArrowRightIcon
+      <IconButton
+        icon={<OutlinedArrowRightIcon />}
         {...arrowStyles}
-        onClick={() => onChangeIdx(selectedIdx !== lastIdx ? selectedIdx + 1 : 0)}
+        onClick={goForward}
+        aria-label="go forward button"
       />
     </Center>
   );
