@@ -1,6 +1,9 @@
 const DISABLED_COLOR = 'gray.100';
 
 const baseStyle = {
+  label: {
+    color: 'gray.700',
+  },
   control: {
     _checked: {
       _active: {

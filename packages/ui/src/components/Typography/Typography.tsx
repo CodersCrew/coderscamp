@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Box, forwardRef, HTMLChakraProps, ResponsiveValue } from '@chakra-ui/react';
 
-type TypographyVariant = 'span' | 'div' | 'p' | 'a' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+type TypographyVariant = 'span' | 'div' | 'p' | 'a' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label';
 
 type TypographyFontSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl';
 
