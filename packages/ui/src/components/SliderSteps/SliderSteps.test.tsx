@@ -66,14 +66,17 @@ describe('SliderSteps', () => {
   });
 
   it('throws exception if component pass selectedIndex as negative number or grater than rendered dots', () => {
+    // eslint-disable-next-line no-console
     const err = console.error;
 
+    // eslint-disable-next-line no-console
     console.error = jest.fn();
 
     expect(() => render(<SliderSteps count={givenStepsCount} selectedIndex={-1} onChange={() => {}} />)).toThrow();
 
     expect(() => render(<SliderSteps count={givenStepsCount} selectedIndex={10} onChange={() => {}} />)).toThrow();
 
+    // eslint-disable-next-line no-console
     console.error = err;
   });
 });
