@@ -2,7 +2,7 @@ import 'tui-calendar/dist/tui-calendar.css';
 
 import React, { useRef, useState } from 'react';
 import Calendar from '@toast-ui/react-calendar';
-import { getDateWithoutHours, getFormattedDate, getHourWithMinutes } from 'src/utils/date';
+import { getDateWithoutHours, getHourWithMinutes } from 'src/utils/date';
 import { DateType, ISchedule } from 'tui-calendar';
 
 import { Box } from '@coderscamp/ui/components/Box';
@@ -40,32 +40,43 @@ export const CalendarPage = () => {
 
   const calendarInstance = calendarRef.current?.getInstance();
 
+  const changeToNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+
+      return;
+    }
+
+    setCurrentMonth(currentMonth + 1);
+  };
+
+  const changeToPrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+
+      return;
+    }
+
+    setCurrentMonth(currentMonth - 1);
+  };
+
+  const changeToToday = () => {
+    setCurrentMonth(new Date().getMonth());
+    setCurrentYear(new Date().getFullYear());
+  };
+
   const handleMonthChange = (action: Action) => {
     switch (action) {
       case 'next':
-        if (currentMonth === 11) {
-          setCurrentMonth(0);
-          setCurrentYear(currentYear + 1);
-
-          return;
-        }
-
-        setCurrentMonth(currentMonth + 1);
+        changeToNextMonth();
         break;
       case 'prev':
-        if (currentMonth === 0) {
-          setCurrentMonth(11);
-          setCurrentYear(currentYear - 1);
-
-          return;
-        }
-
-        setCurrentMonth(currentMonth - 1);
+        changeToPrevMonth();
         break;
-      case 'today':
       default:
-        setCurrentMonth(new Date().getMonth());
-        setCurrentYear(new Date().getFullYear());
+        changeToToday();
         break;
     }
   };
@@ -120,7 +131,7 @@ export const CalendarPage = () => {
         view="month"
         template={{
           time({ start, title }: ISchedule) {
-            return `<strong>${getFormattedDate(start as DateType)} ${title}</strong>`;
+            return `<strong>${getHourWithMinutes(start as DateType)} ${title}</strong>`;
           },
           popupDetailDate(isAllDay: boolean, start: DateType, end: DateType) {
             if (!isAllDay) {
@@ -128,6 +139,11 @@ export const CalendarPage = () => {
             }
 
             return `<h2 style="font-weight: 400;">${getDateWithoutHours(start)} - ${getDateWithoutHours(end)}</h2>`;
+          },
+          allday({ title }: ISchedule) {
+            const isTitleWhite = title?.includes('Dział 2') || title?.includes('Dział 3') || title?.includes('Dział 5');
+
+            return `<h1 style="padding-left: 10px; ${isTitleWhite && 'color: #ffff;'}">${title}</h1>`;
           },
         }}
       />

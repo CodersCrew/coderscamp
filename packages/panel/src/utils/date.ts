@@ -1,18 +1,9 @@
-import moment from 'moment';
 import { DateType } from 'tui-calendar';
-
-export const getFormattedDate = (date: DateType) => {
-  const dateTime = new Date(date as string);
-
-  dateTime.setHours(dateTime.getHours() + 1);
-
-  return moment(dateTime).format('HH:mm');
-};
 
 export const getDateWithoutHours = (date: DateType) => {
   const dateTime = new Date(date as string);
 
-  return moment(dateTime).format('DD.MM.YYYY');
+  return new Intl.DateTimeFormat('pl').format(dateTime);
 };
 
 export const getHourWithMinutes = (date: DateType) => {
@@ -20,5 +11,5 @@ export const getHourWithMinutes = (date: DateType) => {
 
   dateTime.setHours(dateTime.getHours() + 1);
 
-  return moment(dateTime).format('HH:mm');
+  return new Intl.DateTimeFormat('pl', { timeStyle: 'short' }).format(dateTime);
 };

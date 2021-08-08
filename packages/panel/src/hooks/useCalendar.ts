@@ -3,9 +3,10 @@ import { ISchedule } from 'tui-calendar';
 
 import { colors } from '@coderscamp/ui/theme/overwrites/foundations/colors';
 
-const { VITE_CALENDAR_ID, VITE_GOOGLE_API_KEY } = import.meta.env;
+const { VITE_GOOGLE_API_KEY } = import.meta.env;
+const CALENDAR_ID = 'c_pormamd238tbnleq3adm7q33fc@group.calendar.google.com';
 
-const GOOGLE_CALENDAR_API_URL = `https://www.googleapis.com/calendar/v3/calendars/${VITE_CALENDAR_ID}/events?key=${VITE_GOOGLE_API_KEY}`;
+const GOOGLE_CALENDAR_API_URL = `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${VITE_GOOGLE_API_KEY}`;
 
 type GoogleCalendarEvent = {
   id: string;
@@ -49,25 +50,25 @@ const getEventColor = (summary: string) => {
   return colors.brand[600];
 };
 
+const restructureCalendarEvents = ({ items }: GoogleCalendarResponse): ISchedule[] => {
+  return items.map(({ id, summary, start, end }) => {
+    const color = getEventColor(summary);
+
+    return {
+      id,
+      title: summary,
+      start: new Date(start.date || start.dateTime),
+      end: new Date(end.date || end.dateTime),
+      category: 'time',
+      // Google Calendar API returns start.date only if event is all day long, otherwise it returns end.dateTime
+      isAllDay: !!start.date,
+      bgColor: color,
+      borderColor: color,
+    };
+  });
+};
+
 export const useCalendar = () => {
-  const restructureCalendarEvents = ({ items }: GoogleCalendarResponse): ISchedule[] => {
-    return items.map(({ id, summary, start, end }) => {
-      const color = getEventColor(summary);
-
-      return {
-        id,
-        title: summary,
-        start: new Date(start.date || start.dateTime),
-        end: new Date(end.date || end.dateTime),
-        category: 'time',
-        // Google Calendar API returns start.date only if event is all day long, otherwise it returns end.dateTime
-        isAllDay: !!start.date,
-        bgColor: color,
-        borderColor: color,
-      };
-    });
-  };
-
   const events = useAsync(async () => {
     const response = await fetch(GOOGLE_CALENDAR_API_URL);
     const result: GoogleCalendarResponse = await response.json();
