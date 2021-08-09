@@ -28,3 +28,5 @@ export const RadioGroup = ({ onChange, value, name, children, size, ...props }: 
     </ChakraRadioGroup>
   );
 };
+
+RadioGroup.displayName = 'RadioGroup';
