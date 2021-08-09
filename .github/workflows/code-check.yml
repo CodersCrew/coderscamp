@@ -11,11 +11,18 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     env:
+      NODE_ENV: test
+      APP_ENV: review
+      DATABASE_URL: db
+      PORT: 4000
       GITHUB_CLIENT_ID: ID
       GITHUB_CLIENT_SECRET: Secret
-      JWT_SECRET: Secret
       GITHUB_CALLBACK_URL: URL
-      TOKEN_EXPIRATION_TIME: 60
+      JWT_SECRET: kljsr89qwh89YT89gvedstfg
+      TOKEN_EXPIRATION_TIME: 3600
+      TOKEN_PREFIX: Bearer
+      TOKEN_COOKIE_NAME: access_token
+      COOKIE_SECRET: 786Tgiu3564Rti8oh89YG6re6
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
