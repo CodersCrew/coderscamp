@@ -1,7 +1,7 @@
 import 'tui-calendar/dist/tui-calendar.css';
 
 import React, { useRef, useState } from 'react';
-import Calendar from '@toast-ui/react-calendar';
+import TuiCalendar from '@toast-ui/react-calendar';
 import { getDateWithoutHours, getHourWithMinutes } from 'src/utils/date';
 import { DateType, ISchedule } from 'tui-calendar';
 
@@ -14,6 +14,16 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '@coderscamp/ui/icons';
 
 import { useCalendar } from '@/hooks/useCalendar';
+
+// This workaround fixes Calendar Page crashing on the production
+// The solution comes from this github thread: https://github.com/vitejs/vite/issues/2139#issuecomment-854960323
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const interopDefault = <T,>(value: T): T => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (value as any).default;
+};
+
+const Calendar = interopDefault(TuiCalendar);
 
 type Action = 'prev' | 'today' | 'next';
 
@@ -36,7 +46,7 @@ export const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
-  const calendarRef = useRef<Calendar>(null);
+  const calendarRef = useRef<TuiCalendar>(null);
   const { value: events, loading } = useCalendar();
 
   const calendarInstance = calendarRef.current?.getInstance();
