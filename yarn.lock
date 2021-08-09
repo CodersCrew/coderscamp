@@ -2791,6 +2791,7 @@ __metadata:
     next-transpile-modules: 8.0.0
     react: 17.0.2
     react-dom: 17.0.2
+    react-hook-form: 7.12.2
   languageName: unknown
   linkType: soft
 
@@ -19687,6 +19688,15 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ">=16.3.0"
   checksum: a4998479dab7fc1c2799eddefb1870a9d881b5f71cfdf97979a9882e42f4bb50402d55335f308f461e735e01a06f46b16cc7b4e6bcb22c7a4a6f85a753c5c106
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:7.12.2":
+  version: 7.12.2
+  resolution: "react-hook-form@npm:7.12.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17
+  checksum: 77779cc10f2a8024b2b96cdea6398ec311dc23768f084d0175f53b6632f221a9e2966fb5ab27cf00b6670dfb4a5754990809f2949ffd41c4a910eabe66000c98
   languageName: node
   linkType: hard
 

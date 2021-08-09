@@ -18,7 +18,7 @@ export const FormControl = forwardRef<FormControlProps, 'div'>(
   ({ size = defaultFieldContextValue.size, children, ...props }, ref) => {
     return (
       <FieldContextProvider value={{ size }}>
-        <VStack {...props} align="flex-start" spacing={spacings[size]} ref={ref}>
+        <VStack align="flex-start" width="100%" {...props} spacing={spacings[size]} ref={ref}>
           {children}
         </VStack>
       </FieldContextProvider>
