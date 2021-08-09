@@ -17,7 +17,7 @@ describe('SliderSteps', () => {
   const getSelectedDotIndex = () =>
     screen.getAllByRole('tab').findIndex((x) => x.getAttribute('aria-selected') === 'true');
 
-  const fireButtonClick = (buttonLabel: string) => {
+  const fireButtonClick = (buttonLabel: 'go forward button' | 'go back button') => {
     const button = screen.getByLabelText(buttonLabel);
 
     fireEvent.click(button);
@@ -26,7 +26,7 @@ describe('SliderSteps', () => {
   it('renders given number of steps correctly with one selected step', () => {
     render(<TestSliderComponent startSelectedIndex={selectedIndex} />);
 
-    expect(screen.getAllByRole('tab').length).toEqual(givenStepsCount);
+    expect(screen.getAllByRole('tab')).toHaveLength(givenStepsCount);
     expect(screen.getAllByRole('tab', { selected: true }).length).toEqual(1);
   });
 
