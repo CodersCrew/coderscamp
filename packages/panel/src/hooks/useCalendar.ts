@@ -1,7 +1,7 @@
 import { useAsync } from 'react-use';
 import { ISchedule } from 'tui-calendar';
 
-import { colors } from '@coderscamp/ui/theme/overwrites/foundations/colors';
+import { useTheme } from '@coderscamp/ui/hooks/useTheme';
 
 const { VITE_GOOGLE_API_KEY } = import.meta.env;
 const CALENDAR_ID = 'c_pormamd238tbnleq3adm7q33fc@group.calendar.google.com';
@@ -26,7 +26,7 @@ type GoogleCalendarResponse = {
   items: GoogleCalendarEvent[];
 };
 
-const getEventColor = (summary: string) => {
+const getEventColor = (summary: string, defaultEventColor: string) => {
   if (summary.includes('Dział 1')) {
     return '#f0db4f';
   }
@@ -47,12 +47,12 @@ const getEventColor = (summary: string) => {
     return '#764abc';
   }
 
-  return colors.brand[600];
+  return defaultEventColor;
 };
 
-const restructureCalendarEvents = ({ items }: GoogleCalendarResponse): ISchedule[] => {
+const restructureCalendarEvents = ({ items }: GoogleCalendarResponse, defaultEventColor: string): ISchedule[] => {
   return items.map(({ id, summary, start, end }) => {
-    const color = getEventColor(summary);
+    const color = getEventColor(summary, defaultEventColor);
 
     return {
       id,
@@ -69,11 +69,14 @@ const restructureCalendarEvents = ({ items }: GoogleCalendarResponse): ISchedule
 };
 
 export const useCalendar = () => {
+  const theme = useTheme();
+  const defaultEventColor = theme.colors.brand[600];
+
   const events = useAsync(async () => {
     const response = await fetch(GOOGLE_CALENDAR_API_URL);
     const result: GoogleCalendarResponse = await response.json();
 
-    const calendarEvents = restructureCalendarEvents(result);
+    const calendarEvents = restructureCalendarEvents(result, defaultEventColor);
 
     return calendarEvents;
   }, []);
