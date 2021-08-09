@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { SurveyRepositoryPort } from 'src/contracts/survey.repository';
 
-import { Survey } from '@coderscamp/shared/models/survey';
+import type { Survey, UserSurvey } from '@coderscamp/shared/models';
 
+import { SurveyRepositoryPort } from '../contracts/survey.repository';
 import { PrismaService } from './prisma.service';
 
 @Injectable()
@@ -20,5 +20,16 @@ export class PrismaSurveyAdapter implements SurveyRepositoryPort {
         ...survey,
       },
     });
+  }
+
+  async saveAndUpdateRelatedUser({ Survey: survey, ...user }: UserSurvey) {
+    return this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        ...user,
+        Survey: { create: survey },
+      },
+    }) as unknown as UserSurvey;
+    // TODO: find a better way to represent fact that user and survey are completed
   }
 }

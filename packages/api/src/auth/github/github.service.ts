@@ -15,7 +15,7 @@ export class GithubService {
     if (!user) {
       user = await this.githubRepository.createUser(githubUserData);
 
-      const userModel = new UserModel();
+      const userModel = new UserModel(user);
 
       userModel.register(user);
     }

@@ -1,11 +1,11 @@
-import { Survey, SurveyDTO } from '@coderscamp/shared/models/survey';
+import type { UserSurvey, UserSurveyDTO } from '@coderscamp/shared/models';
 
 export class SurveyMapper {
-  static surveyToDomain(data: SurveyDTO): Survey {
+  static surveyToDomain(data: UserSurveyDTO): UserSurvey {
     return data;
   }
 
-  static surveyToPlain(data: Survey): SurveyDTO {
+  static surveyToPlain(data: UserSurvey): UserSurveyDTO {
     return data;
   }
 }

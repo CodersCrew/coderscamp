@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 
 import { Survey } from '@coderscamp/shared/models/survey';
-import { PopulatedUser as SharedUser, RegisteredUserDTO } from '@coderscamp/shared/models/user';
+import type { RegisteredUserDTO, UserSurvey } from '@coderscamp/shared/models/user';
 
 import { UserRepositoryPort } from '../contracts/user.repository';
 import { MemoryDbService } from './memoryDB.service';
@@ -60,7 +60,7 @@ export class PgMemUserRepositoryAdapter implements UserRepositoryPort {
     return this.pgMem.db.public.one(`SELECT * FROM "${CONFIG.userTableName}" u WHERE u.id = ${id}`);
   }
 
-  async saveSurvey({ Survey: survey, ...user }: SharedUser) {
+  async saveSurvey({ Survey: survey, ...user }: UserSurvey) {
     this.pgMem.db.public.one(
       `INSERT INTO "${CONFIG.surveyTableName}" (${this.pgMem.mapKeysArrayToColumnNamesString(
         Object.keys(survey),
@@ -69,7 +69,7 @@ export class PgMemUserRepositoryAdapter implements UserRepositoryPort {
 
     this.update(user);
 
-    return this.getUser(survey.userId) as Promise<SharedUser>;
+    return this.getUser(survey.userId) as Promise<UserSurvey>;
   }
 
   async getUser(id: number) {

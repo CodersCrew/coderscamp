@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { SurveyDTO } from '@coderscamp/shared/models/survey';
+import type { UserSurveyDTO } from '@coderscamp/shared/models';
 
 import { SaveSurveyCommand } from './commands';
 import { SurveyMapper } from './survey.mapper';
@@ -10,8 +10,8 @@ import { SurveyMapper } from './survey.mapper';
 export class SurveyController {
   constructor(private commandBus: CommandBus) {}
 
-  @Post('survey')
-  async saveUserSurvey(@Body() userSurveyDTO: SurveyDTO): Promise<SurveyDTO> {
+  @Post('')
+  async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<UserSurveyDTO> {
     const command = new SaveSurveyCommand(SurveyMapper.surveyToDomain(userSurveyDTO));
 
     return SurveyMapper.surveyToPlain(await this.commandBus.execute(command));

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { Survey } from '@coderscamp/shared/models/survey';
+import type { Survey, UserSurvey } from '@coderscamp/shared/models';
 
-import { PrismaSurveyAdapter } from '../prisma/prisma..survey.adapter';
+import { SurveyRepositoryPort } from '../contracts/survey.repository';
 
 @Injectable()
 export class SurveyRepository {
-  constructor(private readonly repository: PrismaSurveyAdapter) {}
+  constructor(private readonly repository: SurveyRepositoryPort) {}
 
   async findByUserId(userId: number) {
     return this.repository.findByUserId(userId);
@@ -14,5 +14,9 @@ export class SurveyRepository {
 
   async save(data: Survey) {
     return this.repository.save(data);
+  }
+
+  saveAndUpdateRelatedUser(data: UserSurvey) {
+    return this.repository.saveAndUpdateRelatedUser(data);
   }
 }

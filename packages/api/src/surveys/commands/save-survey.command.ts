@@ -1,7 +1,7 @@
 import { ICommand } from '@nestjs/cqrs';
 
-import { Survey } from '@coderscamp/shared/models/survey';
+import type { UserSurvey } from '@coderscamp/shared/models';
 
-export class SaveSurveyCommand implements ICommand {
-  constructor(public readonly input: Survey) {}
+export class SaveFilledSurveyCommand implements ICommand {
+  constructor(public readonly input: UserSurvey) {}
 }
