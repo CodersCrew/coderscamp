@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 
-import { PopulatedUser } from '@coderscamp/shared/models/user';
+import { RegisteredUser } from '@coderscamp/shared/models/user';
 
-import { UserRepository } from '../contracts/user.repository';
+import { UserRepositoryPort } from '../contracts/user.repository';
 import { PrismaService } from './prisma.service';
 
 @Injectable()
-export class PrismaUserAdapter implements UserRepository {
+export class PrismaUserAdapter implements UserRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: User) {
+  async create(data: Omit<RegisteredUser, 'id'>) {
     return this.prisma.user.create({ data });
   }
 
@@ -24,17 +24,6 @@ export class PrismaUserAdapter implements UserRepository {
 
   async findById(id: number) {
     return this.prisma.user.findUnique({ where: { id } });
-  }
-
-  async saveSurvey({ id, Survey: survey, ...user }: PopulatedUser) {
-    return this.prisma.user.update({
-      where: { id },
-      data: {
-        ...user,
-        Survey: { create: { ...survey } },
-      },
-      include: { Survey: true },
-    }) as unknown as PopulatedUser;
   }
 
   async getUser(id: number) {

@@ -5,7 +5,7 @@ import httpMocks from 'node-mocks-http';
 import { env } from '@/common/env';
 
 import type { RegisteredUserDTO } from '../../../../shared/src/models/user';
-import { UserRepository } from '../../contracts/user.repository';
+import { UserRepositoryPort } from '../../contracts/user.repository';
 import { MemoryDbService } from '../../memoryDB/memoryDB.service';
 import { PgMemUserRepositoryAdapter } from '../../memoryDB/user.repository';
 import { UsersRepository } from '../../users/users.repository';

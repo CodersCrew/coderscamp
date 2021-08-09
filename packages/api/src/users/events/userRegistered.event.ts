@@ -1,5 +1,5 @@
-import { GithubUserData } from '../../auth/github/github.model';
+import type { RegisteredUser } from '@coderscamp/shared/models/user';
 
 export class UserRegisteredEvent {
-  constructor(public readonly input: GithubUserData) {}
+  constructor(public readonly input: Omit<RegisteredUser, 'id'>) {}
 }

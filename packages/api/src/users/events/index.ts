@@ -1,2 +1,3 @@
+export { UserRegisterHandler } from './handlers/userRegistered.handler';
+
 export { UserRegisteredEvent } from './userRegistered.event';
-export { RegisterHandler } from './handlers/userRegistered.handler';

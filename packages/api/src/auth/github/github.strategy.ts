@@ -6,7 +6,7 @@ import { RegisteredUser } from '@coderscamp/shared/models/user';
 
 import { env } from '@/common/env';
 
-import { UsersMapper } from '../../users/users.mapper';
+import { GithubMapper } from './github.mapper';
 import type { GithubUser } from './github.types';
 
 interface GithubResponse {
@@ -25,6 +25,6 @@ export class GithubStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(_token: string, _refreshToken: string | undefined, { _json }: GithubResponse): Omit<RegisteredUser, 'id'> {
-    return UsersMapper.fromGithubToDomain(_json);
+    return GithubMapper.fromGithubToDomain(_json);
   }
 }

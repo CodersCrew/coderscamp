@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { UserModel } from 'src/users/user.model';
 
 import { RegisteredUser } from '@coderscamp/shared/models/user';
 
-import { UsersRepository } from '../../users/users.repository';
+import { GithubRepository } from './github.repository';
 
 @Injectable()
 export class GithubService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(private readonly githubRepository: GithubRepository) {}
 
-  async authorizeUser(githubUserData: RegisteredUser): Promise<RegisteredUser> {
-    let user = await this.usersRepository.getByGithubId(githubUserData.githubId);
+  async authorizeUser(githubUserData: Omit<RegisteredUser, 'id'>): Promise<RegisteredUser> {
+    let user = await this.githubRepository.findUserByGithubId(githubUserData.githubId);
 
     if (!user) {
-      user = await this.usersRepository.create(githubUserData);
+      user = await this.githubRepository.createUser(githubUserData);
+
+      const userModel = new UserModel();
+
+      userModel.register(user);
     }
 
     return user;

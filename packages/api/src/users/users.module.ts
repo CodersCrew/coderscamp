@@ -1,19 +1,17 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { RegisterHandler } from './events';
-import { UserFactory } from './user.factory';
+import { UserRegisterHandler } from './events';
 import { UserModel } from './user.model';
 import { UsersController } from './users.controller';
 import { UsersRepository } from './users.repository';
-import { UsersService } from './users.service';
 
 export const CommandHandlers = [];
-export const EventHandlers = [RegisterHandler];
+export const EventHandlers = [UserRegisterHandler];
 @Module({
   imports: [CqrsModule],
   controllers: [UsersController],
-  providers: [UserFactory, UsersRepository, UserModel, UsersService, ...CommandHandlers, ...EventHandlers],
+  providers: [UsersRepository, UserModel, ...CommandHandlers, ...EventHandlers],
   exports: [UserModel],
 })
 export class UsersModule {}

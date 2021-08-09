@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 
-import { PopulatedUser as SharedUser, RegisteredUserDTO, Survey } from '@coderscamp/shared/models/user';
+import { Survey } from '@coderscamp/shared/models/survey';
+import { PopulatedUser as SharedUser, RegisteredUserDTO } from '@coderscamp/shared/models/user';
 
-import { UserRepository } from '../contracts/user.repository';
+import { UserRepositoryPort } from '../contracts/user.repository';
 import { MemoryDbService } from './memoryDB.service';
 
 const CONFIG = {
@@ -13,7 +14,7 @@ const CONFIG = {
 };
 
 @Injectable()
-export class PgMemUserRepositoryAdapter implements UserRepository {
+export class PgMemUserRepositoryAdapter implements UserRepositoryPort {
   constructor(private readonly pgMem: MemoryDbService) {}
 
   private mapGetResultToSurvey({

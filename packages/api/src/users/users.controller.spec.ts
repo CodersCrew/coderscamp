@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
 import type { UserSurveyDTO } from '../../../shared/src/models/user';
-import { UserRepository } from '../contracts/user.repository';
+import { UserRepositoryPort } from '../contracts/user.repository';
 import { MemoryDbService } from '../memoryDB/memoryDB.service';
 import { PgMemUserRepositoryAdapter } from '../memoryDB/user.repository';
 import { UserFactory } from './user.factory';
@@ -38,7 +38,7 @@ describe('Users controller', () => {
       providers: [
         MemoryDbService,
         {
-          provide: UserRepository,
+          provide: UserRepositoryPort,
           useClass: PgMemUserRepositoryAdapter,
         },
         UserFactory,
@@ -53,7 +53,7 @@ describe('Users controller', () => {
     usersController = app.get<UsersController>(UsersController);
 
     const db = app.get<MemoryDbService>(MemoryDbService);
-    const repository = app.get<UserRepository>(UserRepository);
+    const repository = app.get<UserRepositoryPort>(UserRepositoryPort);
 
     await Promise.all([app.init(), db.migrate()]);
     await repository.create({
