@@ -23,7 +23,9 @@ export const SliderSteps = ({ count, selectedIndex, onChange }: SliderStepsProps
   const goToSelected = (index: number) => onChange(index);
 
   if (selectedIndex < 0 || selectedIndex >= count)
-    throw new Error('SelectedIndex property should be positive number and less than count of dots');
+    throw new Error(
+      `SelectedIndex property should be should be in range between 0 to ${lastIdx} (count - 1), but was ${selectedIndex}`,
+    );
 
   return (
     <Center width="max-content" role="tablist">
