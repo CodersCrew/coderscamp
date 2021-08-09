@@ -6,7 +6,7 @@ import { DateType, ISchedule } from 'tui-calendar';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Button } from '@coderscamp/ui/components/Button';
-import { Flex } from '@coderscamp/ui/components/Flex';
+import { Center } from '@coderscamp/ui/components/Center';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Spinner } from '@coderscamp/ui/components/Spinner';
 import { Typography } from '@coderscamp/ui/components/Typography';
@@ -110,15 +110,15 @@ export const CalendarPage = () => {
 
   if (loading) {
     return (
-      <Flex alignItems="center" justifyContent="center" height="100vh">
+      <Center height="100vh">
         <Spinner size="xl" />
-      </Flex>
+      </Center>
     );
   }
 
   return (
     <Box justifyContent="center" alignItems="center">
-      <Flex alignItems="center" justifyContent="center" height="70px">
+      <Center height="70px">
         <IconButton
           icon={<OutlinedArrowLeftIcon />}
           variant="ghost"
@@ -141,7 +141,7 @@ export const CalendarPage = () => {
             {months[currentMonth]} {currentYear}
           </Typography>
         </Box>
-      </Flex>
+      </Center>
       <CalendarComponent
         ref={calendarRef}
         month={{
