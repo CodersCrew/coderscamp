@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactText } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import { HTMLChakraProps } from '@chakra-ui/react';
 
 import { useFieldContextSize } from '../FormControl/FieldContext';
@@ -11,7 +11,7 @@ type HelperTextSize = 'sm' | 'md' | 'lg';
 export interface HelperTextProps extends Omit<HTMLChakraProps<'div'>, 'as'> {
   variant?: HelperTextVariant;
   size?: HelperTextSize;
-  children: ReactText | ReactText[];
+  children: ReactNode;
 }
 
 const colors: Record<HelperTextVariant, string> = {

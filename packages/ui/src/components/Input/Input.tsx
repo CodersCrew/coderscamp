@@ -11,10 +11,11 @@ export interface InputProps extends Omit<HTMLChakraProps<'input'>, 'readonly' | 
   value?: ChakraInputProps['value'];
   name?: ChakraInputProps['name'];
   onChange?: ChakraInputProps['onChange'];
+  invalid?: boolean;
 }
 
-export const Input = forwardRef<InputProps, 'input'>(({ size, disabled = false, ...props }, ref) => {
+export const Input = forwardRef<InputProps, 'input'>(({ size, disabled = false, invalid = false, ...props }, ref) => {
   const inputSize = useFieldContextSize(size);
 
-  return <ChakraInput size={inputSize} isDisabled={disabled} ref={ref} {...props} />;
+  return <ChakraInput size={inputSize} isDisabled={disabled} isInvalid={invalid} ref={ref} {...props} />;
 });
