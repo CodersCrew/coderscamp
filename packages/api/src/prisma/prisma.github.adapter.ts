@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { RegisteredUser } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, UserId } from '@coderscamp/shared/models';
 
 import { GithubRepositoryPort } from '../contracts/github.repository';
 import { PrismaService } from './prisma.service';
@@ -13,11 +13,11 @@ export class PrismaGithubAdapter implements GithubRepositoryPort {
     return this.prisma.user.findUnique({ where: { githubId } });
   }
 
-  async findById(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+  async findById(userId: UserId) {
+    return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
-  async createUser(data: Omit<RegisteredUser, 'id'>) {
-    return this.prisma.user.create({ data });
+  async createUser(notRegisteredUser: RegisteredUser) {
+    return this.prisma.user.create({ data: notRegisteredUser });
   }
 }

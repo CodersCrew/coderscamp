@@ -1,5 +1,7 @@
 import type { Request } from 'express';
 
+import type { RegisteredUser } from '@coderscamp/shared/models';
+
 import type { GithubStrategy } from './github.strategy';
 
 export interface GithubUser {
@@ -13,3 +15,5 @@ export interface GithubUser {
 export interface GithubAuthGuardReq extends Request {
   user: ReturnType<GithubStrategy['validate']>;
 }
+
+export type NotRegisteredUser = Omit<RegisteredUser, 'id'>;

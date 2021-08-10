@@ -1,4 +1,4 @@
-import type { RegisteredUser, RegisteredUserDTO, User, UserDTO } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, RegisteredUserDTO, User, UserDTO } from '@coderscamp/shared/models';
 
 export class UsersMapper {
   static userToDomain(value: UserDTO): User {

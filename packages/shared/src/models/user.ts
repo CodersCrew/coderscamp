@@ -1,10 +1,12 @@
 import { Survey } from './survey';
 
+export type UserId = string;
+
 export type RegisteredUser = {
-  id: number;
+  id: UserId;
   githubId: number;
-  fullName: string;
-  email: string;
+  fullName: string | null;
+  email: string | null;
   image: string;
 };
 

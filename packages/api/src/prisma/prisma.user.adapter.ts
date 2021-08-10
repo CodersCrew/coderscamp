@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 
-import { RegisteredUser } from '@coderscamp/shared/models/user';
+import type { UserId } from '@coderscamp/shared/models';
 
 import { UserRepositoryPort } from '../contracts/user.repository';
 import { PrismaService } from './prisma.service';
@@ -10,23 +10,19 @@ import { PrismaService } from './prisma.service';
 export class PrismaUserAdapter implements UserRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: Omit<RegisteredUser, 'id'>) {
-    return this.prisma.user.create({ data });
-  }
-
   async findByGithubId(githubId: number) {
     return this.prisma.user.findUnique({ where: { githubId } });
   }
 
-  async update(data: User) {
-    return this.prisma.user.update({ where: { id: data.id }, data });
+  async update(userData: User) {
+    return this.prisma.user.update({ where: { id: userData.id }, data: userData });
   }
 
-  async findById(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+  async findById(userId: UserId) {
+    return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
-  async getUser(id: number) {
-    return this.prisma.user.findUnique({ where: { id }, include: { Survey: true } });
+  async getUser(userId: string) {
+    return this.prisma.user.findUnique({ where: { id: userId }, include: { Survey: true } });
   }
 }

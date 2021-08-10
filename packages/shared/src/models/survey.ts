@@ -1,5 +1,5 @@
 export type Survey = {
-  userId: number;
+  userId: string;
   description: string;
   alreadyTookCourse: boolean;
   reasonForRetakingCourse: string | null;

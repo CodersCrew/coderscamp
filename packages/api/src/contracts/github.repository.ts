@@ -1,9 +1,9 @@
-import { RegisteredUser, User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, User, UserId } from '@coderscamp/shared/models';
 
 export abstract class GithubRepositoryPort {
   abstract findByGithubId(githubId: number): Promise<User | RegisteredUser | null>;
 
-  abstract findById(id: number): Promise<User | RegisteredUser | null>;
+  abstract findById(id: UserId): Promise<User | RegisteredUser | null>;
 
-  abstract createUser(data: Omit<RegisteredUser, 'id'>): Promise<User | RegisteredUser>;
+  abstract createUser(data: RegisteredUser): Promise<User | RegisteredUser>;
 }

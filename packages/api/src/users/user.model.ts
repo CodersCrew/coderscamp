@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import type { RegisteredUser, User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, User } from '@coderscamp/shared/models';
 
 import { UserRegisteredEvent } from './events';
 

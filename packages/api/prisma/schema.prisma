@@ -8,10 +8,10 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id
   githubId  Int      @unique
-  fullName  String
-  email     String
+  fullName  String?
+  email     String?
   image     String
   city      String?
   gender    String?
@@ -21,7 +21,7 @@ model User {
 }
 
 model Survey {
-  userId                  Int      @unique
+  userId                  String   @unique
   user                    User     @relation(fields: [userId], references: [id])
   description             String
   alreadyTookCourse       Boolean

@@ -1,4 +1,4 @@
-import { RegisteredUser } from '@coderscamp/shared/models/user';
+import type { RegisteredUser } from '@coderscamp/shared/models';
 
 import type { JwtStrategy } from './jwt.strategy';
 

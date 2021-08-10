@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { nanoid } from 'nanoid';
 
-import { RegisteredUser } from '@coderscamp/shared/models/user';
+import type { UserId } from '@coderscamp/shared/models';
 
 import { GithubRepositoryPort } from '../../contracts/github.repository';
+import type { NotRegisteredUser } from './github.types';
 
 @Injectable()
 export class GithubRepository {
   constructor(private readonly repository: GithubRepositoryPort) {}
 
-  async findUserById(id: number) {
+  async findUserById(id: UserId) {
     return this.repository.findById(id);
   }
 
@@ -16,7 +18,7 @@ export class GithubRepository {
     return this.repository.findByGithubId(id);
   }
 
-  async createUser(data: Omit<RegisteredUser, 'id'>) {
-    return this.repository.createUser(data);
+  async createUser(userData: NotRegisteredUser) {
+    return this.repository.createUser({ ...userData, id: nanoid() });
   }
 }

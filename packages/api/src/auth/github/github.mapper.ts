@@ -1,9 +1,7 @@
-import { RegisteredUser } from '@coderscamp/shared/models/user';
-
-import { GithubUser } from './github.types';
+import type { GithubUser, NotRegisteredUser } from './github.types';
 
 export class GithubMapper {
-  static fromGithubToDomain(user: GithubUser): Omit<RegisteredUser, 'id'> {
+  static fromGithubToDomain(user: GithubUser): NotRegisteredUser {
     // ! new user may not set his email address to public and also he may not set his name.
     return {
       fullName: user.name,

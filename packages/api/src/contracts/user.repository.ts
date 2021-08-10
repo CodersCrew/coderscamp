@@ -1,14 +1,11 @@
-import { Survey } from '@coderscamp/shared/models/survey';
-import { RegisteredUser, User, UserSurvey } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, Survey, User, UserId, UserSurvey } from '@coderscamp/shared/models';
 
 export abstract class UserRepositoryPort {
-  abstract create(data: Omit<RegisteredUser, 'id'>): Promise<User | RegisteredUser>;
-
   abstract findByGithubId(githubId: number): Promise<User | RegisteredUser | null>;
 
-  abstract findById(id: number): Promise<User | RegisteredUser | null>;
+  abstract findById(id: UserId): Promise<User | RegisteredUser | null>;
 
   abstract update(data: User): Promise<User | RegisteredUser>;
 
-  abstract getUser(userId: number): Promise<((UserSurvey | RegisteredUser) & { Survey: Survey | null }) | null>;
+  abstract getUser(userId: string): Promise<((UserSurvey | RegisteredUser) & { Survey: Survey | null }) | null>;
 }

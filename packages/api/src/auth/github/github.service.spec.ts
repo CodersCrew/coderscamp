@@ -1,9 +1,11 @@
 import { Test } from '@nestjs/testing';
+import { GithubRepositoryPort } from 'src/contracts/github.repository';
 
-import type { RegisteredUser } from '@coderscamp/shared/models/user';
+import type { RegisteredUser } from '@coderscamp/shared/models';
 import { createObjectMock } from '@coderscamp/shared/utils/test';
 
 import { UsersRepository } from '../../users/users.repository';
+import { GithubRepository } from './github.repository';
 import { GithubService } from './github.service';
 
 const createUser = (githubId: number): RegisteredUser => ({
@@ -14,23 +16,9 @@ const createUser = (githubId: number): RegisteredUser => ({
   image: 'https://photo-url.com',
 });
 
-describe('Github controller', () => {
+describe('Github service', () => {
   let service: GithubService;
   let usersRepository: Partial<UsersRepository>;
-
-  beforeEach(async () => {
-    usersRepository = {
-      getByGithubId: jest.fn(),
-      create: jest.fn(),
-    };
-
-    const module = await Test.createTestingModule({
-      controllers: [GithubService],
-      providers: [{ provide: UsersRepository, useValue: usersRepository }],
-    }).compile();
-
-    service = await module.resolve(GithubService);
-  });
 
   describe('authorizeUser', () => {
     it('Returns already existing user when `githubId` matches some record in db', async () => {
@@ -59,6 +47,24 @@ describe('Github controller', () => {
       expect(usersRepository.getByGithubId).toHaveBeenCalledWith(newUser.githubId);
       expect(usersRepository.create).toHaveBeenCalledWith(githubUser);
       expect(result).toEqual(newUser);
+    });
+
+    beforeEach(async () => {
+      usersRepository = {
+        getByGithubId: jest.fn(),
+        create: jest.fn(),
+      };
+
+      const module = await Test.createTestingModule({
+        controllers: [GithubService],
+        providers: [
+          { provide: GithubRepositoryPort, useClass: PgMemUserRepositoryAdapter },
+          GithubRepository,
+          { provide: UsersRepository, useValue: usersRepository },
+        ],
+      }).compile();
+
+      service = await module.resolve(GithubService);
     });
   });
 });

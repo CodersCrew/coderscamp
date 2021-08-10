@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 
-import { RegisteredUser } from '@coderscamp/shared/models/user';
-
 import { env } from '@/common/env';
 
 import { GithubMapper } from './github.mapper';
-import type { GithubUser } from './github.types';
+import type { GithubUser, NotRegisteredUser } from './github.types';
 
 interface GithubResponse {
   _json: GithubUser;
@@ -24,7 +22,7 @@ export class GithubStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(_token: string, _refreshToken: string | undefined, { _json }: GithubResponse): Omit<RegisteredUser, 'id'> {
+  validate(_token: string, _refreshToken: string | undefined, { _json }: GithubResponse): NotRegisteredUser {
     return GithubMapper.fromGithubToDomain(_json);
   }
 }
