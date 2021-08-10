@@ -57,6 +57,7 @@ export interface NumberInputProps extends Omit<HTMLChakraProps<'div'>, keyof Use
    * Determines the initial value of the counter
    */
   defaultValue?: string | number;
+  invalid?: boolean;
 }
 
 export const NumberInput = forwardRef<NumberInputProps, 'input'>(
@@ -65,6 +66,7 @@ export const NumberInput = forwardRef<NumberInputProps, 'input'>(
       size,
       inputMode = 'decimal',
       disabled = false,
+      invalid = false,
       'aria-describedby': ariaDescribedby,
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
@@ -84,6 +86,7 @@ export const NumberInput = forwardRef<NumberInputProps, 'input'>(
         aria-labelledby={ariaLabelledby}
         ref={ref}
         width="100%"
+        isInvalid={invalid}
         {...props}
       >
         <NumberInputField />
@@ -95,3 +98,5 @@ export const NumberInput = forwardRef<NumberInputProps, 'input'>(
     );
   },
 );
+
+NumberInput.displayName = 'NumberInput';

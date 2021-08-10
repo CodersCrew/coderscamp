@@ -3,52 +3,62 @@ import { Meta, Story } from '@storybook/react';
 
 import { Checkbox } from '../Checkbox';
 import { CheckboxGroup } from '../CheckboxGroup';
-import { HelperText } from '../HelperText';
 import { Input } from '../Input';
-import { Label } from '../Label';
 import { NumberInput } from '../NumberInput';
 import { Radio } from '../Radio';
 import { RadioGroup } from '../RadioGroup';
-import { FormControl, FormControlProps } from './FormControl';
+import { Textarea } from '../Textarea';
+import { FormField, FormFieldProps } from './FormField';
 
 const meta: Meta = {
-  title: 'Components / FormControl',
-  component: FormControl,
+  title: 'Components / FormField',
+  component: FormField,
   argTypes: {
     children: { control: false },
+    error: { control: 'text' },
+    warning: { control: 'text' },
+    helper: { control: 'text' },
   },
 };
 
 export default meta;
 
-const Template: Story<FormControlProps> = ({ children, ...args }) => {
-  return (
-    <FormControl width="320px" {...args}>
-      <Label>Label</Label>
-      {children}
-      <HelperText>Helper text content</HelperText>
-    </FormControl>
-  );
-};
+const Template: Story<FormFieldProps> = (args) => <FormField width="320px" {...args} />;
+
+const defaultArgs = {
+  size: 'md',
+  label: 'Label',
+  required: false,
+  error: '',
+  warning: '',
+  helper: '',
+} as const;
 
 export const WithInput = Template.bind({});
 
 WithInput.args = {
-  size: 'md',
+  ...defaultArgs,
   children: <Input />,
+};
+
+export const WithTextarea = Template.bind({});
+
+WithTextarea.args = {
+  ...defaultArgs,
+  children: <Textarea />,
 };
 
 export const WithNumberInput = Template.bind({});
 
 WithNumberInput.args = {
-  size: 'md',
+  ...defaultArgs,
   children: <NumberInput />,
 };
 
 export const WithRadioGroup = Template.bind({});
 
 WithRadioGroup.args = {
-  size: 'md',
+  ...defaultArgs,
   children: (
     <RadioGroup name="radio-group" value="radio1" onChange={() => {}}>
       <Radio value="radio1">Radio 1 text</Radio>
@@ -61,7 +71,7 @@ WithRadioGroup.args = {
 export const WithCheckboxGroup = Template.bind({});
 
 WithCheckboxGroup.args = {
-  size: 'md',
+  ...defaultArgs,
   children: (
     <CheckboxGroup value={['checkbox1']} onChange={() => {}}>
       <Checkbox value="checkbox1">Checkbox 1 text</Checkbox>
