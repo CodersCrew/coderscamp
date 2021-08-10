@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Center } from '@coderscamp/ui/components/Center';
-import { Flex } from '@coderscamp/ui/components/Flex';
 import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
