@@ -28,3 +28,5 @@ export const CheckboxGroup = ({ value, onChange, children, disabled = false, siz
     </ChakraCheckboxGroup>
   );
 };
+
+CheckboxGroup.displayName = 'CheckboxGroup';
