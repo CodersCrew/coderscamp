@@ -16,6 +16,10 @@ export class UsersRepository {
     return this.prisma.user.create({ data: userData });
   }
 
+  async getById(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
   async getByGithubId(githubId: number): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { githubId } });
   }

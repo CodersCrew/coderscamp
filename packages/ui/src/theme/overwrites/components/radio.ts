@@ -1,5 +1,8 @@
 export const Radio = {
   baseStyle: {
+    label: {
+      color: 'gray.700',
+    },
     control: {
       borderColor: 'gray.300',
 
