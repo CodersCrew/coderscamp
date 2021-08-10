@@ -21,14 +21,14 @@ export const GoToFormPage: React.FC<GoToFormPageProps> = ({ formExpirationDate =
         bg="#fff"
         boxShadow="base"
       >
-        <Typography as="h1" size="2xl" fontWeight="400" lineHeight="2xl" letterSpacing="sm">
+        <Typography as="h1" size="2xl">
           Właśnie założyłeś konto na platformie kursu CodersCamp 🎉
         </Typography>
-        <Typography as="p" size="md" lineHeight="md" letterSpacing="xs">
+        <Typography as="p" size="md">
           Zanim uzyskasz pełen dostęp do platformy chcielibyśmy trochę lepiej Cię poznać. Poniżej znajdziesz 3-etapowy
           formularz, którego wypełnienie powinno zająć Ci od 15 do 30 minut.
         </Typography>
-        <Typography lineHeight="md" letterSpacing="xs">
+        <Typography as="p" size="md">
           Jeśli obecnie nie masz tyle czasu nie przejmuj się. Możesz zapisać sobie adres URL tej strony i wrócić na nią
           później. Pamiętaj jednak, aby wysłać formularz nie później niż {formExpirationDate}
         </Typography>
