@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
+import {CqrsModule} from '@nestjs/cqrs';
 import {GenerateLearningResourcesCommandHandler} from "./core/generate-learning-resources.command-handler";
 import {WhatAreLearningResourcesForUserQueryHandler} from "./core/what-are-learning-resources-for-user.query-handler";
 import {LEARNING_RESOURCES_REPOSITORY} from "./core/learning-resources.repository";

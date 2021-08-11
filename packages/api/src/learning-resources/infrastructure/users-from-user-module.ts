@@ -1,8 +1,8 @@
-import {Users} from "../core/users";
+import {UsersFullNames} from "../core/usersFullNames";
 import {UserId} from "../../shared/user-id";
 import {UsersRepository} from "../../users/users.repository";
 
-export class UsersFromUserModule implements Users {
+export class UsersFromUserModule implements UsersFullNames {
   constructor(private readonly usersRepository: UsersRepository) {
   }
 

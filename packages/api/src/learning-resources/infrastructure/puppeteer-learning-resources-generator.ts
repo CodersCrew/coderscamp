@@ -3,15 +3,22 @@ import {UserId} from "../../shared/user-id";
 import {LearningResources} from "../core/learning.resources";
 import puppeteer from 'puppeteer';
 import {TimeProvider} from "../core/time-provider";
+import {UsersFullNames} from "../core/usersFullNames";
 
 export class PuppeteerLearningResourcesGenerator implements LearningResourcesGenerator {
 
-  constructor(private readonly timeProvider: TimeProvider) {
+  constructor(
+    private readonly timeProvider: TimeProvider,
+    private readonly usersFullNames: UsersFullNames
+  ) {
   }
 
   async generateFor(userId: UserId): Promise<LearningResources> {
-    const username = userId //todo: find username by userid
-    const resourcesUrl = await generateProcessStChecklist(username);
+    const user = await this.usersFullNames.findUserById(userId)
+    if(!user){
+      throw new Error("Cannot generate learning resources for not existing user!")
+    }
+    const resourcesUrl = await generateProcessStChecklist(user.fullName);
     return new LearningResources(userId, resourcesUrl, this.timeProvider.currentTime());
   }
 
