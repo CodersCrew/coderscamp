@@ -6,19 +6,28 @@ import {LEARNING_RESOURCES_REPOSITORY} from "./core/learning-resources.repositor
 import {LearningResourcesInMemoryRepository} from "./infrastructure/learning-resources.in-memory-repository";
 import {LEARNING_RESOURCES_GENERATOR} from "./core/learning-resources-generator";
 import {PuppeteerLearningResourcesGenerator} from "./infrastructure/puppeteer-learning-resources-generator";
+import {WhenLearningResourcesWasGeneratedThenSendEmailAutomation} from "./automation/when-learning-resources-was-generated-then-send-email.automation";
+import {TIME_PROVIDER, TimeProvider} from "./core/time-provider";
+import {SystemTimeProvider} from "./infrastructure/system-time-provider";
 
 @Module({
   imports: [CqrsModule],
   providers: [
     GenerateLearningResourcesCommandHandler,
     WhatAreLearningResourcesForUserQueryHandler,
+    WhenLearningResourcesWasGeneratedThenSendEmailAutomation,
     {
       provide: LEARNING_RESOURCES_REPOSITORY,
       useClass: LearningResourcesInMemoryRepository //todo: leave for unit test, replace for prod with real database
     },
     {
+      provide: TIME_PROVIDER,
+      useClass: SystemTimeProvider
+    },
+    {
       provide: LEARNING_RESOURCES_GENERATOR,
-      useValue: new PuppeteerLearningResourcesGenerator() //todo: leave for unit test, replace for prod with real database
+      useFactory: (timeProvider: TimeProvider) => new PuppeteerLearningResourcesGenerator(timeProvider), //todo: leave for unit test, replace for prod with real database
+      inject: [TIME_PROVIDER]
     }
   ]
 })
