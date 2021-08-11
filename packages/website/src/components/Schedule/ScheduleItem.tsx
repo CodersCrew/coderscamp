@@ -15,8 +15,8 @@ export const ScheduleItem = ({ index, date, description }: ScheduleItemProps) =>
       flexDirection="column"
       justifyContent="start"
       textAlign="center"
-      w="min(400px, 95%)"
-      h="292px"
+      maxW="400px"
+      minH="292px"
       p="32px"
       border="1px solid"
       borderColor="gray.300"
@@ -27,10 +27,10 @@ export const ScheduleItem = ({ index, date, description }: ScheduleItemProps) =>
           {index}
         </Typography>
       </Center>
-      <Typography size="xl" weight="extrabold" mt="16px">
+      <Typography size="xl" weight="extrabold" mt="16px" color="gray.900">
         {date}
       </Typography>
-      <Typography size="lg" m="24px 0">
+      <Typography size="lg" my="24px" color="gray.700">
         {description}
       </Typography>
     </Center>

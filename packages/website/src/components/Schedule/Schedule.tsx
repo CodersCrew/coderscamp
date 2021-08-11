@@ -45,18 +45,13 @@ const schedulePlan = [
 
 export const Schedule = () => {
   return (
-    <Center flexDirection="column" mx="auto" w="100%">
+    <Center flexDirection="column" mx="auto" w="100%" mt="120px" mb="80px">
       <Typography size="4xl" weight="extrabold" m="64px 0">
         Jak wziąć udział?
       </Typography>
-      <SimpleGrid
-        columns={{ xl: 3, lg: 2, sm: 1 }}
-        justifyItems="center"
-        spacing="40px"
-        width={{ xl: '1280px', lg: '900px' }}
-      >
+      <SimpleGrid columns={{ xl: 3, lg: 2, sm: 1 }} spacing="40px" width={{ xl: '1280px', lg: '900px' }} px="10px">
         {schedulePlan.map((item) => (
-          <ScheduleItem index={item.index} date={item.date} description={item.description} key={item.index} />
+          <ScheduleItem key={item.index} {...item} />
         ))}
       </SimpleGrid>
     </Center>
