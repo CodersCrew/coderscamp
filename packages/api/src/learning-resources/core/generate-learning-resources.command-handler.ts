@@ -21,24 +21,15 @@ export class GenerateLearningResourcesCommandHandler implements ICommandHandler<
   async execute(command: GenerateLearningResources): Promise<void> {
     const existingLearningResources = await this.repository.findByUserId(command.userId)
     const currentTime = this.timeProvider.currentTime()
-    if(!existingLearningResources){
-      const learningResources = await this.learningResourcesGenerator.generateFor(command.userId)
-      await this.repository.save(learningResources)
-
-      const event = new LearningResourcesWasGenerated(command.userId, learningResources.resourcesUrl)
-      this.eventBus.publish(event)
-    } else {
-      if(dayjs(currentTime).diff(existingLearningResources.generatedAt, 'hours') < 24){
-        console.log("CURRENT TIME", currentTime)
-        throw new Error("You cannot generate learning resources frequently than 24 hours.")
-      }
-      //todo: remove duplicate code
-      const learningResources = await this.learningResourcesGenerator.generateFor(command.userId)
-      await this.repository.save(learningResources)
-
-      const event = new LearningResourcesWasGenerated(command.userId, learningResources.resourcesUrl)
-      this.eventBus.publish(event)
+    if(existingLearningResources && dayjs(currentTime).diff(existingLearningResources.generatedAt, 'hours') < 24){
+      throw new Error("You cannot generate learning resources frequently than 24 hours.")
     }
+
+    const learningResources = await this.learningResourcesGenerator.generateFor(command.userId)
+    await this.repository.save(learningResources)
+
+    const event = new LearningResourcesWasGenerated(command.userId, learningResources.resourcesUrl)
+    this.eventBus.publish(event)
   }
 
 }
