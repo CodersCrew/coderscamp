@@ -9,13 +9,12 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
   const buttonSize = useBreakpointValue({ base: 'xs', sm: 'md' } as const);
-  const horizontalPadding = useBreakpointValue({ base: '8px', sm: '18px', md: '24px', lg: '40px' });
 
   return (
     <Center width="100%">
       <HStack
         py="18px"
-        px={horizontalPadding}
+        px={{ base: '8px', sm: '18px', md: '24px', lg: '40px' }}
         width="min(1920px, 100%)"
         justifyContent="space-between"
         alignItems="center"
