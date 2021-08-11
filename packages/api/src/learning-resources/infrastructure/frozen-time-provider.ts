@@ -1,6 +1,6 @@
-import {TimeProvider} from "../core/time-provider";
+import {TimeProviderPort} from "../core/time-provider";
 
-export class FrozenTimeProvider implements TimeProvider {
+export class FrozenTimeProvider implements TimeProviderPort {
   constructor(private time: Date) {
   }
 

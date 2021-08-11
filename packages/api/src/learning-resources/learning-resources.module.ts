@@ -7,7 +7,7 @@ import {LearningResourcesInMemoryRepository} from "./infrastructure/learning-res
 import {LEARNING_RESOURCES_GENERATOR} from "./core/learning-resources-generator";
 import {PuppeteerLearningResourcesGenerator} from "./infrastructure/puppeteer-learning-resources-generator";
 import {WhenLearningResourcesWasGeneratedThenSendEmailAutomation} from "./automation/when-learning-resources-was-generated-then-send-email.automation";
-import {TIME_PROVIDER, TimeProvider} from "./core/time-provider";
+import {TIME_PROVIDER, TimeProvider} from "./core/time-provider.port";
 import {SystemTimeProvider} from "./infrastructure/system-time-provider";
 
 @Module({

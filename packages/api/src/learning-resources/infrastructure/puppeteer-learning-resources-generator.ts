@@ -1,9 +1,9 @@
 import {LearningResourcesGenerator} from "../core/learning-resources-generator";
 import {UserId} from "../../shared/user-id";
-import {LearningResources} from "../core/learning.resources";
 import puppeteer from 'puppeteer';
-import {TimeProvider} from "../core/time-provider";
-import {UsersFullNames} from "../core/usersFullNames";
+import {TimeProvider} from "../core/time-provider.port";
+import {UsersFullNames} from "../core/users-full-names.port";
+import {LearningResources} from "../core/learning-resources.model";
 
 export class PuppeteerLearningResourcesGenerator implements LearningResourcesGenerator {
 

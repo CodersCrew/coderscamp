@@ -1,6 +1,6 @@
-import {LearningResources} from "../core/learning.resources";
 import {LearningResourcesRepository} from "../core/learning-resources.repository";
 import { UserId } from "src/shared/user-id";
+import {LearningResources} from "../core/learning-resources.model";
 
 export class LearningResourcesInMemoryRepository implements LearningResourcesRepository {
   private readonly entities: { [id: string]: LearningResources } = {};

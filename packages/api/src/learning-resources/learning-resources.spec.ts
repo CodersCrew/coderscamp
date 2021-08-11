@@ -5,9 +5,9 @@ import {GenerateLearningResources} from "./api/generate-learning-resources.comma
 import {LearningResourcesWasGenerated, ResourcesUrl} from "./api/learning-resources-was-generated.event";
 import {WhatAreLearningResourcesForUser} from "./api/what-are-learning-resources-for-user.query";
 import {LEARNING_RESOURCES_GENERATOR, LearningResourcesGenerator} from "./core/learning-resources-generator";
-import {LearningResources} from "./core/learning.resources";
+import {LearningResources} from "./core/learning-resources.model";
 import {UserId} from "../shared/user-id";
-import {TIME_PROVIDER, TimeProvider} from "./core/time-provider";
+import {TIME_PROVIDER, TimeProvider} from "./core/time-provider.port";
 import {FrozenTimeProvider} from "./infrastructure/frozen-time-provider";
 import dayjs from 'dayjs'
 
