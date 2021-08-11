@@ -1,28 +1,10 @@
-import {LearningResourcesGenerator} from "../core/learning-resources-generator";
-import {UserId} from "../../shared/user-id";
 import puppeteer from 'puppeteer';
-import {TimeProvider} from "../core/time-provider.port";
-import {UsersFullNames} from "../core/users-full-names.port";
-import {LearningResources} from "../core/learning-resources.model";
 
-export class PuppeteerLearningResourcesGenerator implements LearningResourcesGenerator {
-
-  constructor(
-    private readonly timeProvider: TimeProvider,
-    private readonly usersFullNames: UsersFullNames
-  ) {
-  }
-
-  async generateFor(userId: UserId): Promise<LearningResources> {
-    const user = await this.usersFullNames.findUserById(userId)
-    if(!user){
-      throw new Error("Cannot generate learning resources for not existing user!")
-    }
-    const resourcesUrl = await generateProcessStChecklist(user.fullName);
-    return new LearningResources(userId, resourcesUrl, this.timeProvider.currentTime());
-  }
-
-}
+import { UserId } from '../../shared/user-id';
+import { LearningResources } from '../core/learning-resources.model';
+import { LearningResourcesGenerator } from '../core/learning-resources-generator';
+import { TimeProvider } from '../core/time-provider.port';
+import { UsersFullNames } from '../core/users-full-names.port';
 
 /**
  * todo: Do tego kodu z puppeteer doadajcie try-finally, aby wyczyścić resourcy w przypadku błędu
@@ -43,4 +25,20 @@ const generateProcessStChecklist = async (name: string) => {
   await browser.close();
 
   return result;
+};
+
+export class PuppeteerLearningResourcesGenerator implements LearningResourcesGenerator {
+  constructor(private readonly timeProvider: TimeProvider, private readonly usersFullNames: UsersFullNames) {}
+
+  async generateFor(userId: UserId): Promise<LearningResources> {
+    const user = await this.usersFullNames.findUserById(userId);
+
+    if (!user) {
+      throw new Error('Cannot generate learning resources for not existing user!');
+    }
+
+    const resourcesUrl = await generateProcessStChecklist(user.fullName);
+
+    return new LearningResources(userId, resourcesUrl, this.timeProvider.currentTime());
+  }
 }

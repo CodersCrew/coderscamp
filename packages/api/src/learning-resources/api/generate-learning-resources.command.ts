@@ -1,7 +1,5 @@
-import {UserId} from "../../shared/user-id";
-
+import { UserId } from '../../shared/user-id';
 
 export class GenerateLearningResources {
-  constructor(readonly userId: UserId) {
-  }
+  constructor(readonly userId: UserId) {}
 }
