@@ -6,6 +6,4 @@ export abstract class UserRepositoryPort {
   abstract findById(id: UserId): Promise<User | RegisteredUser | null>;
 
   abstract update(data: User): Promise<User | RegisteredUser>;
-
-  abstract getUser(userId: string): Promise<((UserSurvey | RegisteredUser) & { Survey: Survey | null }) | null>;
 }

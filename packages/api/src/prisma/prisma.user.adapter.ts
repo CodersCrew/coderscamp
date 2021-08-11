@@ -21,8 +21,4 @@ export class PrismaUserAdapter implements UserRepositoryPort {
   async findById(userId: UserId) {
     return this.prisma.user.findUnique({ where: { id: userId } });
   }
-
-  async getUser(userId: string) {
-    return this.prisma.user.findUnique({ where: { id: userId }, include: { Survey: true } });
-  }
 }

@@ -19,8 +19,4 @@ export class UsersRepository {
   async findById(id: UserId) {
     return this.repository.findById(id);
   }
-
-  async getUser(id: UserId) {
-    return this.repository.getUser(id);
-  }
 }
