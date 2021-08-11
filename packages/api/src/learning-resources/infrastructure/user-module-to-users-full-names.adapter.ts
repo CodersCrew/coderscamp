@@ -1,8 +1,8 @@
-import {UsersFullNamesPort} from "../core/usersFullNames";
 import {UserId} from "../../shared/user-id";
 import {UsersRepository} from "../../users/users.repository";
+import {UsersFullNames} from "../core/users-full-names.port";
 
-export class UsersFromUserModule implements UsersFullNamesPort {
+export class UserModuleToUsersFullNamesAdapter implements UsersFullNames {
   constructor(private readonly usersRepository: UsersRepository) {
   }
 

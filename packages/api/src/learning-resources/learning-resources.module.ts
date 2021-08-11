@@ -9,6 +9,8 @@ import {PuppeteerLearningResourcesGenerator} from "./infrastructure/puppeteer-le
 import {WhenLearningResourcesWasGeneratedThenSendEmailAutomation} from "./automation/when-learning-resources-was-generated-then-send-email.automation";
 import {TIME_PROVIDER, TimeProvider} from "./core/time-provider.port";
 import {SystemTimeProvider} from "./infrastructure/system-time-provider";
+import {USERS_FULL_NAMES} from "./core/users-full-names.port";
+import {UserModuleToUsersFullNamesAdapter} from "./infrastructure/user-module-to-users-full-names.adapter";
 
 @Module({
   imports: [CqrsModule],
@@ -24,6 +26,10 @@ import {SystemTimeProvider} from "./infrastructure/system-time-provider";
       provide: TIME_PROVIDER,
       useClass: SystemTimeProvider
     },
+    // {
+    //   provide: USERS_FULL_NAMES,
+    //   useClass: new UserModuleToUsersFullNamesAdapter()
+    // },
     {
       provide: LEARNING_RESOURCES_GENERATOR,
       useFactory: (timeProvider: TimeProvider) => new PuppeteerLearningResourcesGenerator(timeProvider), //todo: leave for unit test, replace for prod with real database
