@@ -1,0 +1,8 @@
+import {UserId} from "../../shared/user-id";
+import {LearningResources} from "./learning.resources";
+
+export const LEARNING_RESOURCES_REPOSITORY = Symbol("LearningResourcesRepository")
+export interface LearningResourcesRepository {
+  save(learningResources: LearningResources): Promise<void>
+  findByUserId(userId: UserId): Promise<LearningResources | undefined>
+}

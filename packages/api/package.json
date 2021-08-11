@@ -22,6 +22,7 @@
     "@hapi/joi": "17.1.1",
     "@nestjs/common": "8.0.6",
     "@nestjs/core": "8.0.6",
+    "@nestjs/cqrs": "8.0.0",
     "@nestjs/jwt": "8.0.0",
     "@nestjs/passport": "8.0.1",
     "@nestjs/platform-express": "8.0.6",
@@ -33,6 +34,7 @@
     "passport": "0.4.1",
     "passport-github2": "0.1.12",
     "passport-jwt": "4.0.0",
+    "puppeteer": "10.2.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.3.0"
   },
