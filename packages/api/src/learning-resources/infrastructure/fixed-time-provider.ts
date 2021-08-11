@@ -1,6 +1,6 @@
 import { TimeProvider } from '../core/time-provider.port';
 
-export class FrozenTimeProvider implements TimeProvider {
+export class FixedTimeProvider implements TimeProvider {
   constructor(private time: Date) {}
 
   currentTime(): Date {

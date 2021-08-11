@@ -10,7 +10,7 @@ import { LearningResources } from './core/learning-resources.model';
 import { LEARNING_RESOURCES_GENERATOR, LearningResourcesGenerator } from './core/learning-resources-generator';
 import { TIME_PROVIDER, TimeProvider } from './core/time-provider.port';
 import { USERS_FULL_NAMES, UsersFullNames } from './core/users-full-names.port';
-import { FrozenTimeProvider } from './infrastructure/frozen-time-provider';
+import { FixedTimeProvider } from './infrastructure/fixed-time-provider';
 import { UsersFullNamesInMemoryRepository } from './infrastructure/users-full-names.in-memory-repository';
 import { LearningResourcesModule } from './learning-resources.module';
 
@@ -41,15 +41,18 @@ class MockedLearningResourcesGenerator implements LearningResourcesGenerator {
   }
 }
 
-describe('Learning Resources', () => {
+/**
+ * Unit tests of main business logic without out-of-process dependencies (like database) and another modules.
+ */
+describe('Learning Resources | Module Core business logic', () => {
   let commandBus: CommandBus;
   let eventBusSpy: EventBusSpy;
   let queryBus: QueryBus;
-  let testTimeProvider: FrozenTimeProvider;
+  let testTimeProvider: FixedTimeProvider;
   const existingUserId = '1';
 
   beforeEach(async () => {
-    testTimeProvider = new FrozenTimeProvider(dayjs('2018-04-04T16:00:00.000Z').toDate());
+    testTimeProvider = new FixedTimeProvider(dayjs('2018-04-04T16:00:00.000Z').toDate());
 
     const usersFullNamesInMemoryRepository = new UsersFullNamesInMemoryRepository({
       1: { fullName: 'Jan Kowalski' },
