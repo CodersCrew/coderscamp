@@ -17,8 +17,9 @@ import { PuppeteerLearningResourcesGenerator } from './infrastructure/puppeteer-
 import { SystemTimeProvider } from './infrastructure/system-time-provider';
 import { UserModuleToUsersFullNamesAdapter } from './infrastructure/user-module-to-users-full-names.adapter';
 import { UsersFullNamesInMemoryRepository } from './infrastructure/users-full-names.in-memory-repository';
+import { LearningResourcesController } from './presentation/rest/learning-resources.controller';
 
-const isProduction = env.NODE_ENV === 'production';
+const isProduction = env.NODE_ENV === 'production'; // todo: create config for adapters (like use in-memory db / fixed time etc.)
 
 const modules = isProduction ? [CqrsModule, UsersModule] : [CqrsModule];
 const commandHandlers = [GenerateLearningResourcesCommandHandler];
@@ -55,8 +56,11 @@ const adapters = [
   },
 ];
 
+const controllers = [LearningResourcesController];
+
 @Module({
   imports: modules,
+  controllers,
   providers: [...commandHandlers, ...queryHandlers, ...eventHandlers, ...adapters],
 })
 export class LearningResourcesModule {}
