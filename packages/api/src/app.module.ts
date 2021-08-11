@@ -7,6 +7,7 @@ import { env } from '@/common/env';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
+import {LearningResourcesModule} from "./learning-resources/learning-resources.module";
 
 const isProduction = env.NODE_ENV === 'production';
 
@@ -18,6 +19,6 @@ const productionImports = [
 ];
 
 @Module({
-  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule, AuthModule],
+  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule, AuthModule, LearningResourcesModule],
 })
 export class AppModule {}
