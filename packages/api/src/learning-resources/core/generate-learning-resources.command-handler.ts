@@ -3,7 +3,7 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import dayjs from 'dayjs';
 
 import { GenerateLearningResources } from '../api/generate-learning-resources.command';
-import { LearningResourcesWasGenerated } from '../api/learning-resources-was-generated.event';
+import { LearningResourcesWereGenerated } from '../api/learning-resources-were-generated.event';
 import { LEARNING_RESOURCES_REPOSITORY, LearningResourcesRepository } from './learning-resources.repository';
 import { LEARNING_RESOURCES_GENERATOR, LearningResourcesGenerator } from './learning-resources-generator';
 import { TIME_PROVIDER, TimeProvider } from './time-provider.port';
@@ -21,7 +21,10 @@ export class GenerateLearningResourcesCommandHandler implements ICommandHandler<
     const existingLearningResources = await this.repository.findByUserId(command.userId);
     const currentTime = this.timeProvider.currentTime();
 
-    if (existingLearningResources && dayjs(currentTime).diff(existingLearningResources.generatedAt, 'hours') < 24) {
+    const resourcesWereGeneratedInLast24Hours =
+      existingLearningResources && dayjs(currentTime).diff(existingLearningResources.generatedAt, 'hours') < 24;
+
+    if (resourcesWereGeneratedInLast24Hours) {
       throw new Error('You cannot generate learning resources frequently than 24 hours.');
     }
 
@@ -29,7 +32,7 @@ export class GenerateLearningResourcesCommandHandler implements ICommandHandler<
 
     await this.repository.save(learningResources);
 
-    const event = new LearningResourcesWasGenerated(
+    const event = new LearningResourcesWereGenerated(
       this.timeProvider.currentTime(),
       learningResources.id,
       command.userId,

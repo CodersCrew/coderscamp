@@ -5,7 +5,7 @@ import { env } from '@/common/env';
 
 import { UsersModule } from '../users/users.module';
 import { UsersRepository } from '../users/users.repository';
-import { WhenLearningResourcesWasGeneratedThenSendEmailAutomation } from './automation/when-learning-resources-was-generated-then-send-email.automation';
+import { WhenLearningResourcesWereGeneratedThenSendEmailAutomation } from './automation/when-learning-resources-were-generated-then-send-email.automation';
 import { GenerateLearningResourcesCommandHandler } from './core/generate-learning-resources.command-handler';
 import { ID_GENERATOR, IdGenerator } from './core/id-generator';
 import { LEARNING_RESOURCES_REPOSITORY } from './core/learning-resources.repository';
@@ -25,7 +25,7 @@ const isProduction = env.NODE_ENV === 'production'; // todo: create config for a
 
 const modules = isProduction ? [CqrsModule, UsersModule] : [CqrsModule];
 const commandHandlers = [GenerateLearningResourcesCommandHandler];
-const eventHandlers = [WhenLearningResourcesWasGeneratedThenSendEmailAutomation];
+const eventHandlers = [WhenLearningResourcesWereGeneratedThenSendEmailAutomation];
 const queryHandlers = [WhatAreLearningResourcesForUserQueryHandler];
 
 const adapters = [

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import { UserId } from '../shared/core/user-id';
 import { GenerateLearningResources } from './api/generate-learning-resources.command';
-import { LearningResourcesWasGenerated } from './api/learning-resources-was-generated.event';
+import { LearningResourcesWereGenerated } from './api/learning-resources-were-generated.event';
 import { WhatAreLearningResourcesForUser } from './api/what-are-learning-resources-for-user.query';
 import { ID_GENERATOR, IdGenerator } from './core/id-generator';
 import { LearningResources } from './core/learning-resources.model';
@@ -111,7 +111,7 @@ describe('Learning Resources | Module Core business logic', () => {
     const lastPublishedEvent = getLastPublishedEvent();
 
     expect(lastPublishedEvent).toStrictEqual(
-      new LearningResourcesWasGenerated(currentTime, 'generatedId1', existingUserId, PROCESS_ST_URL_FOR_EXISTING_USER),
+      new LearningResourcesWereGenerated(currentTime, 'generatedId1', existingUserId, PROCESS_ST_URL_FOR_EXISTING_USER),
     );
 
     // then
@@ -141,7 +141,7 @@ describe('Learning Resources | Module Core business logic', () => {
 
     // then
     expect(lastPublishedEvent).toStrictEqual(
-      new LearningResourcesWasGenerated(
+      new LearningResourcesWereGenerated(
         resourcesRegeneratedAt,
         'generatedId2',
         existingUserId,
