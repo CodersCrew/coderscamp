@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import type { Survey, UserId, UserSurvey } from '@coderscamp/shared/models';
+import type { Survey, UserId } from '@coderscamp/shared/models';
 
 import { SurveyRepositoryPort } from '../contracts/survey.repository';
 
@@ -14,9 +14,5 @@ export class SurveyRepository {
 
   async save(data: Survey) {
     return this.repository.save(data);
-  }
-
-  saveAndUpdateRelatedUser(data: UserSurvey) {
-    return this.repository.saveAndUpdateRelatedUser(data);
   }
 }
