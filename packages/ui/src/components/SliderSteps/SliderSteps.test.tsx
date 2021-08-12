@@ -2,95 +2,121 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { SliderSteps } from './SliderSteps';
+import { withExpectedError } from '../../testHelpers';
+import { SliderSteps, SliderStepsProps } from './SliderSteps';
+
+const clickForwardArrow = () => {
+  userEvent.click(screen.getByLabelText('go forward button'));
+};
+
+const clickBackArrow = () => {
+  userEvent.click(screen.getByLabelText('go back button'));
+};
+
+const renderSliderSteps = (props: Partial<SliderStepsProps>) =>
+  render(<SliderSteps count={5} selectedIndex={1} onChange={jest.fn()} {...props} />);
 
 describe('SliderSteps', () => {
-  const givenStepsCount = 5;
-  const lastDotIndex = givenStepsCount - 1;
-  const selectedIndex = 2;
-  let selectedIndexAfterClick: number | undefined;
+  it('renders given number of steps', () => {
+    const count = 3;
 
-  const RenderSliderComponentAtPosition = (selectedDotIndex: number) =>
-    render(
-      <SliderSteps
-        count={givenStepsCount}
-        selectedIndex={selectedDotIndex}
-        onChange={(newIndex) => {
-          selectedIndexAfterClick = newIndex;
-        }}
-      />,
-    );
+    renderSliderSteps({ count });
 
-  const getSelectedDotIndex = () =>
-    screen.getAllByRole('tab').findIndex((x) => x.getAttribute('aria-selected') === 'true');
-
-  const fireButtonClick = (buttonLabel: 'go forward button' | 'go back button') => {
-    const button = screen.getByLabelText(buttonLabel);
-
-    userEvent.click(button);
-  };
-
-  beforeEach(() => {
-    selectedIndexAfterClick = undefined;
+    expect(screen.getAllByRole('tab')).toHaveLength(count);
   });
 
-  it('renders given number of steps correctly with one selected step', () => {
-    RenderSliderComponentAtPosition(selectedIndex);
+  it('has selected index on a given position', () => {
+    const selectedIndex = 2;
 
-    expect(screen.getAllByRole('tab')).toHaveLength(givenStepsCount);
-    expect(screen.getAllByRole('tab', { selected: true }).length).toEqual(1);
+    renderSliderSteps({ selectedIndex });
+
+    const dots = screen.getAllByRole('tab');
+    const selectedDotIndex = dots.findIndex((dot) => dot.getAttribute('aria-selected') === 'true');
+
+    expect(selectedDotIndex).toEqual(selectedIndex);
   });
 
-  it('has selected index on given position', () => {
-    RenderSliderComponentAtPosition(selectedIndex);
+  it('calls `onChange` with the dot index when user clicks any non-selected dot', () => {
+    const selectedIndex = 2;
+    const indexToClick = selectedIndex + 2;
+    const onChange = jest.fn();
 
-    expect(getSelectedDotIndex()).toEqual(selectedIndex);
+    renderSliderSteps({ selectedIndex, onChange });
+
+    userEvent.click(screen.getAllByRole('tab')[indexToClick]);
+
+    expect(onChange).toHaveBeenCalledWith(indexToClick);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
-  it('should increase by one current dot after click forward button', () => {
-    RenderSliderComponentAtPosition(selectedIndex);
+  it("doesn't call `onChange` when user clicks the currently selected dot", () => {
+    const selectedIndex = 2;
+    const onChange = jest.fn();
 
-    fireButtonClick('go forward button');
+    renderSliderSteps({ selectedIndex });
 
-    expect(selectedIndexAfterClick).toEqual(selectedIndex + 1);
+    userEvent.click(screen.getAllByRole('tab')[selectedIndex]);
+
+    expect(onChange).not.toHaveBeenCalled();
   });
 
-  it('should decrease by one current dot after click back button', () => {
-    RenderSliderComponentAtPosition(selectedIndex);
+  it('calls `onChange` with value of the index incremented by one when user clicks the forward button', () => {
+    const selectedIndex = 1;
+    const onChange = jest.fn();
 
-    fireButtonClick('go back button');
+    renderSliderSteps({ selectedIndex, onChange });
 
-    expect(selectedIndexAfterClick).toEqual(selectedIndex - 1);
+    clickForwardArrow();
+
+    expect(onChange).toHaveBeenCalledWith(selectedIndex + 1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
-  it('should select first dot after click forward button when last dot is selected', () => {
-    RenderSliderComponentAtPosition(lastDotIndex);
+  it('calls `onChange` with value of the index decremented by one when user clicks the back button', () => {
+    const selectedIndex = 1;
+    const onChange = jest.fn();
 
-    fireButtonClick('go forward button');
+    renderSliderSteps({ selectedIndex, onChange });
 
-    expect(selectedIndexAfterClick).toEqual(0);
+    clickBackArrow();
+
+    expect(onChange).toHaveBeenCalledWith(selectedIndex - 1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
-  it('should select last dot after click back button when first dot is selected', () => {
-    RenderSliderComponentAtPosition(0);
+  it('calls `onChange` with the first index when user clicks the forward button and `selectedIndex` is the last step', () => {
+    const count = 3;
+    const firstIndex = 0;
+    const lastIndex = count - 1;
+    const onChange = jest.fn();
 
-    fireButtonClick('go back button');
+    renderSliderSteps({ count, selectedIndex: lastIndex, onChange });
 
-    expect(selectedIndexAfterClick).toEqual(lastDotIndex);
+    clickForwardArrow();
+
+    expect(onChange).toHaveBeenCalledWith(firstIndex);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
-  it('throws exception if component pass selectedIndex as negative number or grater than rendered dots', () => {
-    // eslint-disable-next-line no-console
-    const err = console.error;
+  it('calls `onChange` with the last index when user clicks the forward button and `selectedIndex` is the first step', () => {
+    const count = 3;
+    const firstIndex = 0;
+    const lastIndex = count - 1;
+    const onChange = jest.fn();
 
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
+    renderSliderSteps({ count, selectedIndex: firstIndex, onChange });
 
-    expect(() => RenderSliderComponentAtPosition(-1)).toThrow();
+    clickBackArrow();
 
-    expect(() => RenderSliderComponentAtPosition(givenStepsCount + 1)).toThrow();
+    expect(onChange).toHaveBeenCalledWith(lastIndex);
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
 
-    // eslint-disable-next-line no-console
-    console.error = err;
+  it('throws when component receives `selectedIndex` grater than the number of rendered dots', () => {
+    expect(withExpectedError(() => renderSliderSteps({ count: 3, selectedIndex: 4 }))).toThrow();
+  });
+
+  it('throws when component receives `selectedIndex` as a negative number', () => {
+    expect(withExpectedError(() => renderSliderSteps({ selectedIndex: -1 }))).toThrow();
   });
 });
