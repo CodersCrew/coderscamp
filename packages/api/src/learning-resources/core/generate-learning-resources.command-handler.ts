@@ -29,7 +29,12 @@ export class GenerateLearningResourcesCommandHandler implements ICommandHandler<
 
     await this.repository.save(learningResources);
 
-    const event = new LearningResourcesWasGenerated(command.userId, learningResources.resourcesUrl);
+    const event = new LearningResourcesWasGenerated(
+      this.timeProvider.currentTime(),
+      learningResources.id,
+      command.userId,
+      learningResources.resourcesUrl,
+    );
 
     this.eventBus.publish(event);
   }

@@ -1,4 +1,4 @@
-import { UserId } from '../../shared/user-id';
+import { UserId } from '../../shared/core/user-id';
 import { UsersFullNames } from '../core/users-full-names.port';
 
 export class UsersFullNamesInMemoryRepository implements UsersFullNames {

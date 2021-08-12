@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { UsersRepository } from '../users/users.repository';
 import { WhenLearningResourcesWasGeneratedThenSendEmailAutomation } from './automation/when-learning-resources-was-generated-then-send-email.automation';
 import { GenerateLearningResourcesCommandHandler } from './core/generate-learning-resources.command-handler';
+import { ID_GENERATOR, IdGenerator } from './core/id-generator';
 import { LEARNING_RESOURCES_REPOSITORY } from './core/learning-resources.repository';
 import { LEARNING_RESOURCES_GENERATOR } from './core/learning-resources-generator';
 import { TIME_PROVIDER, TimeProvider } from './core/time-provider.port';
@@ -17,6 +18,7 @@ import { PuppeteerLearningResourcesGenerator } from './infrastructure/puppeteer-
 import { SystemTimeProvider } from './infrastructure/system-time-provider';
 import { UserModuleToUsersFullNamesAdapter } from './infrastructure/user-module-to-users-full-names.adapter';
 import { UsersFullNamesInMemoryRepository } from './infrastructure/users-full-names.in-memory-repository';
+import { UuidGenerator } from './infrastructure/uuid-generator';
 import { LearningResourcesController } from './presentation/rest/learning-resources.controller';
 
 const isProduction = env.NODE_ENV === 'production'; // todo: create config for adapters (like use in-memory db / fixed time etc.)
@@ -30,6 +32,10 @@ const adapters = [
   {
     provide: LEARNING_RESOURCES_REPOSITORY,
     useClass: LearningResourcesInMemoryRepository, // todo: leave for unit test, replace for prod with real database
+  },
+  {
+    provide: ID_GENERATOR,
+    useClass: UuidGenerator,
   },
   {
     provide: TIME_PROVIDER,
@@ -50,9 +56,9 @@ const adapters = [
       },
   {
     provide: LEARNING_RESOURCES_GENERATOR,
-    useFactory: (timeProvider: TimeProvider, usersFullNames: UsersFullNames) =>
-      new PuppeteerLearningResourcesGenerator(timeProvider, usersFullNames),
-    inject: [TIME_PROVIDER, USERS_FULL_NAMES],
+    useFactory: (timeProvider: TimeProvider, usersFullNames: UsersFullNames, idGenerator: IdGenerator) =>
+      new PuppeteerLearningResourcesGenerator(timeProvider, usersFullNames, idGenerator),
+    inject: [TIME_PROVIDER, USERS_FULL_NAMES, ID_GENERATOR],
   },
 ];
 

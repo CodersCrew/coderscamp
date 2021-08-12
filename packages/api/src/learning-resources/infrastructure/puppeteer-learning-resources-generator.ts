@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 
-import { UserId } from '../../shared/user-id';
+import { UserId } from '../../shared/core/user-id';
+import { IdGenerator } from '../core/id-generator';
 import { LearningResources } from '../core/learning-resources.model';
 import { LearningResourcesGenerator } from '../core/learning-resources-generator';
 import { TimeProvider } from '../core/time-provider.port';
@@ -28,7 +29,11 @@ const generateProcessStChecklist = async (name: string) => {
 };
 
 export class PuppeteerLearningResourcesGenerator implements LearningResourcesGenerator {
-  constructor(private readonly timeProvider: TimeProvider, private readonly usersFullNames: UsersFullNames) {}
+  constructor(
+    private readonly timeProvider: TimeProvider,
+    private readonly usersFullNames: UsersFullNames,
+    private readonly idGenerator: IdGenerator,
+  ) {}
 
   async generateFor(userId: UserId): Promise<LearningResources> {
     const user = await this.usersFullNames.findUserById(userId);
@@ -39,6 +44,8 @@ export class PuppeteerLearningResourcesGenerator implements LearningResourcesGen
 
     const resourcesUrl = await generateProcessStChecklist(user.fullName);
 
-    return new LearningResources(userId, resourcesUrl, this.timeProvider.currentTime());
+    const learningResourcesId = await this.idGenerator.generate();
+
+    return new LearningResources(learningResourcesId, userId, resourcesUrl, this.timeProvider.currentTime());
   }
 }

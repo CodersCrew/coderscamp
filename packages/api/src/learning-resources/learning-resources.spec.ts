@@ -2,10 +2,11 @@ import { CommandBus, EventBus, IEvent, QueryBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 import dayjs from 'dayjs';
 
-import { UserId } from '../shared/user-id';
+import { UserId } from '../shared/core/user-id';
 import { GenerateLearningResources } from './api/generate-learning-resources.command';
 import { LearningResourcesWasGenerated } from './api/learning-resources-was-generated.event';
 import { WhatAreLearningResourcesForUser } from './api/what-are-learning-resources-for-user.query';
+import { ID_GENERATOR, IdGenerator } from './core/id-generator';
 import { LearningResources } from './core/learning-resources.model';
 import { LEARNING_RESOURCES_GENERATOR, LearningResourcesGenerator } from './core/learning-resources-generator';
 import { TIME_PROVIDER, TimeProvider } from './core/time-provider.port';
@@ -26,12 +27,19 @@ const PROCESS_ST_URL_FOR_EXISTING_USER =
   'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
 
 class MockedLearningResourcesGenerator implements LearningResourcesGenerator {
-  constructor(private readonly timeProvider: TimeProvider, private readonly usersFullNames: UsersFullNames) {}
+  constructor(
+    private readonly timeProvider: TimeProvider,
+    private readonly usersFullNames: UsersFullNames,
+    private readonly idGenerator: IdGenerator,
+  ) {}
 
   async generateFor(userId: UserId): Promise<LearningResources> {
     const user = await this.usersFullNames.findUserById(userId);
 
+    const learningResourcesId = await this.idGenerator.generate();
+
     return new LearningResources(
+      learningResourcesId,
       userId,
       `https://app.process.st/runs/${encodeURIComponent(
         user?.fullName ?? 'No name',
@@ -50,9 +58,18 @@ describe('Learning Resources | Module Core business logic', () => {
   let queryBus: QueryBus;
   let testTimeProvider: FixedTimeProvider;
   const existingUserId = '1';
+  const currentTime = dayjs('2018-04-04T16:00:00.000Z').toDate();
 
   beforeEach(async () => {
-    testTimeProvider = new FixedTimeProvider(dayjs('2018-04-04T16:00:00.000Z').toDate());
+    testTimeProvider = new FixedTimeProvider(currentTime);
+
+    const mockedIdGenerator: IdGenerator = {
+      generate: jest
+        .fn()
+        .mockResolvedValueOnce('generatedId1')
+        .mockResolvedValueOnce('generatedId2')
+        .mockResolvedValueOnce('generatedId3'),
+    };
 
     const usersFullNamesInMemoryRepository = new UsersFullNamesInMemoryRepository({
       1: { fullName: 'Jan Kowalski' },
@@ -60,8 +77,12 @@ describe('Learning Resources | Module Core business logic', () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [LearningResourcesModule],
     })
+      .overrideProvider(ID_GENERATOR)
+      .useValue(mockedIdGenerator)
       .overrideProvider(LEARNING_RESOURCES_GENERATOR)
-      .useValue(new MockedLearningResourcesGenerator(testTimeProvider, usersFullNamesInMemoryRepository))
+      .useValue(
+        new MockedLearningResourcesGenerator(testTimeProvider, usersFullNamesInMemoryRepository, mockedIdGenerator),
+      )
       .overrideProvider(TIME_PROVIDER)
       .useValue(testTimeProvider)
       .overrideProvider(USERS_FULL_NAMES)
@@ -90,7 +111,7 @@ describe('Learning Resources | Module Core business logic', () => {
     const lastPublishedEvent = getLastPublishedEvent();
 
     expect(lastPublishedEvent).toStrictEqual(
-      new LearningResourcesWasGenerated(existingUserId, PROCESS_ST_URL_FOR_EXISTING_USER),
+      new LearningResourcesWasGenerated(currentTime, 'generatedId1', existingUserId, PROCESS_ST_URL_FOR_EXISTING_USER),
     );
 
     // then
@@ -111,14 +132,21 @@ describe('Learning Resources | Module Core business logic', () => {
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
     // when
-    testTimeProvider.timeTravelTo(dayjs('2018-04-08T16:00:00.000Z').toDate());
+    const resourcesRegeneratedAt = dayjs('2018-04-08T16:00:00.000Z').toDate();
+
+    testTimeProvider.timeTravelTo(resourcesRegeneratedAt);
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
     const lastPublishedEvent = getNthPublishedEvent(1);
 
     // then
     expect(lastPublishedEvent).toStrictEqual(
-      new LearningResourcesWasGenerated(existingUserId, PROCESS_ST_URL_FOR_EXISTING_USER),
+      new LearningResourcesWasGenerated(
+        resourcesRegeneratedAt,
+        'generatedId2',
+        existingUserId,
+        PROCESS_ST_URL_FOR_EXISTING_USER,
+      ),
     );
   });
 
@@ -127,7 +155,9 @@ describe('Learning Resources | Module Core business logic', () => {
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
     // when
-    testTimeProvider.timeTravelTo(dayjs('2018-04-05T12:00:00.000Z').toDate());
+    const triedToGenerateResourcesAt = dayjs('2018-04-05T12:00:00.000Z').toDate();
+
+    testTimeProvider.timeTravelTo(triedToGenerateResourcesAt);
 
     await expect(() => commandBus.execute(new GenerateLearningResources(existingUserId))).rejects.toStrictEqual(
       new Error('You cannot generate learning resources frequently than 24 hours.'),

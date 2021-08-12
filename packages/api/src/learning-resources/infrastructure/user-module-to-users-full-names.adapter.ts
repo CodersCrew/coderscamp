@@ -1,4 +1,4 @@
-import { UserId } from '../../shared/user-id';
+import { UserId } from '../../shared/core/user-id';
 import { UsersRepository } from '../../users/users.repository';
 import { UsersFullNames } from '../core/users-full-names.port';
 

@@ -1,4 +1,4 @@
-import { UserId } from 'src/shared/user-id';
+import { UserId } from 'src/shared/core/user-id';
 
 import { LearningResources } from '../core/learning-resources.model';
 import { LearningResourcesRepository } from '../core/learning-resources.repository';

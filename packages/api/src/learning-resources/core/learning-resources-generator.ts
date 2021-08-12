@@ -1,4 +1,4 @@
-import { UserId } from '../../shared/user-id';
+import { UserId } from '../../shared/core/user-id';
 import { LearningResources } from './learning-resources.model';
 
 export const LEARNING_RESOURCES_GENERATOR = Symbol('LEARNING_RESOURCES_GENERATOR');

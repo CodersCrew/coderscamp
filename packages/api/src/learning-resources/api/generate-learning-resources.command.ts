@@ -1,4 +1,4 @@
-import { UserId } from '../../shared/user-id';
+import { UserId } from '../../shared/core/user-id';
 
 export class GenerateLearningResources {
   constructor(readonly userId: UserId) {}

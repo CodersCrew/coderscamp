@@ -2697,6 +2697,7 @@ __metadata:
     "@types/passport-github2": 1.2.5
     "@types/passport-jwt": 3.0.6
     "@types/supertest": 2.0.11
+    "@types/uuid": 8.3.1
     cookie-parser: 1.4.5
     dayjs: 1.10.6
     dotenv: 10.0.0
@@ -2714,6 +2715,7 @@ __metadata:
     ts-loader: 9.2.5
     ts-node: 10.1.0
     tsconfig-paths: 3.10.1
+    uuid: 8.3.2
   languageName: unknown
   linkType: soft
 
@@ -6508,6 +6510,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:8.3.1":
+  version: 8.3.1
+  resolution: "@types/uuid@npm:8.3.1"
+  checksum: b41bdc5e86c6f0f1899306be10455636da0f2168c9489b869edd6837ddeb7c0e501b1ff7d857402462986bada2a379125743dd895fa801d03437cd632116a373
   languageName: node
   linkType: hard
 
