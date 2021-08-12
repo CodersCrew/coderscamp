@@ -96,11 +96,9 @@ describe('Learning Resources | Module Core business logic', () => {
   });
 
   function getLastPublishedEvent() {
-    return eventBusSpy.mock.calls[0][0];
-  }
+    const lastEventIndex = eventBusSpy.mock.calls.length - 1;
 
-  function getNthPublishedEvent(eventOrder: number) {
-    return eventBusSpy.mock.calls[eventOrder][0];
+    return eventBusSpy.mock.calls[lastEventIndex][0];
   }
 
   it('when generate learning resources, then learning resources should be generated', async () => {
@@ -127,7 +125,7 @@ describe('Learning Resources | Module Core business logic', () => {
     );
   });
 
-  it('given learning resources were generated, then generate new learning resources after at least 24 hours, then learning resources should be generated', async () => {
+  it('given learning resources were generated, when generate new learning resources after at least 24 hours, then learning resources should be generated', async () => {
     // given
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
@@ -137,7 +135,7 @@ describe('Learning Resources | Module Core business logic', () => {
     testTimeProvider.timeTravelTo(resourcesRegeneratedAt);
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
-    const lastPublishedEvent = getNthPublishedEvent(1);
+    const lastPublishedEvent = getLastPublishedEvent();
 
     // then
     expect(lastPublishedEvent).toStrictEqual(
@@ -150,7 +148,7 @@ describe('Learning Resources | Module Core business logic', () => {
     );
   });
 
-  it('given learning resources were generated, then generate new learning resources after 20 hours, then learning resources should NOT be generated', async () => {
+  it('given learning resources were generated, when generate new learning resources after 20 hours, then learning resources should NOT be generated', async () => {
     // given
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
