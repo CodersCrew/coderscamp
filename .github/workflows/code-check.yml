@@ -13,7 +13,7 @@ jobs:
     env:
       NODE_ENV: test
       APP_ENV: review
-      DATABASE_URL: postgres://postgres:password@localhost:5432/test-db
+      DATABASE_URL: postgresql://root:root@localhost:5432/main-db
       PORT: 4000
       GITHUB_CLIENT_ID: ID
       GITHUB_CLIENT_SECRET: Secret
