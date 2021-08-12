@@ -13,7 +13,7 @@ export class WhatAreLearningResourcesForUserQueryHandler implements IQueryHandle
     const found = await this.repository.findByUserId(query.userId);
 
     if (found?.resourcesUrl === undefined) {
-      throw new Error("Learning resources for user wasn't generated!");
+      throw new Error("Learning resources for user weren't generated!");
     }
 
     return { resourcesUrl: found.resourcesUrl };

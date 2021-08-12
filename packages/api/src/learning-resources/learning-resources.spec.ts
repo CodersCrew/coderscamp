@@ -120,14 +120,14 @@ describe('Learning Resources | Module Core business logic', () => {
     expect(result).toStrictEqual({ resourcesUrl: PROCESS_ST_URL_FOR_EXISTING_USER });
   });
 
-  it("given resources was not generated for user, when ask what are learning resources for user, then should throw with 'Learning resources for user wasn't generated!'", async () => {
+  it("given resources were not generated for user, when ask what are learning resources for user, then should throw with 'Learning resources for user wasn't generated!'", async () => {
     // when - then
     await expect(() => queryBus.execute(new WhatAreLearningResourcesForUser(existingUserId))).rejects.toStrictEqual(
-      new Error("Learning resources for user wasn't generated!"),
+      new Error("Learning resources for user weren't generated!"),
     );
   });
 
-  it('given learning resources was generated, then generate new learning resources after at least 24 hours, then learning resources should be generated', async () => {
+  it('given learning resources were generated, then generate new learning resources after at least 24 hours, then learning resources should be generated', async () => {
     // given
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
@@ -150,7 +150,7 @@ describe('Learning Resources | Module Core business logic', () => {
     );
   });
 
-  it('given learning resources was generated, then generate new learning resources after 20 hours, then learning resources should NOT be generated', async () => {
+  it('given learning resources were generated, then generate new learning resources after 20 hours, then learning resources should NOT be generated', async () => {
     // given
     await commandBus.execute(new GenerateLearningResources(existingUserId));
 
