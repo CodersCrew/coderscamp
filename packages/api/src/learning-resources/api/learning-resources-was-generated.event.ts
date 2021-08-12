@@ -1,7 +1,5 @@
 import { UserId } from '../../shared/core/user-id';
-import { LearningResourcesId } from '../core/learning-resources.model';
-
-export type ResourcesUrl = string;
+import { LearningResourcesId, ResourcesUrl } from '../core/learning-resources.model';
 
 // todo: add basic event property like: eventId, streamId, causationId and correlationId etc.
 export class LearningResourcesWasGenerated {
