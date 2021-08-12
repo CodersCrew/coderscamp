@@ -1,9 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import type { UserSurveyDTO } from '@coderscamp/shared/models';
+import type { Survey, UserSurveyDTO } from '@coderscamp/shared/models';
 
-import { SaveSurveyCommand } from './commands';
+import { UpdateUserCommand } from '../users/commands';
+import { SaveFilledSurveyCommand } from './commands';
 import { SurveyMapper } from './survey.mapper';
 
 @Controller('surveys')
@@ -11,9 +12,12 @@ export class SurveyController {
   constructor(private commandBus: CommandBus) {}
 
   @Post('')
-  async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<UserSurveyDTO> {
-    const command = new SaveSurveyCommand(SurveyMapper.surveyToDomain(userSurveyDTO));
+  async saveUserSurvey(@Body() userSurveyDTO: UserSurveyDTO): Promise<{ message: string }> {
+    const { Survey: survey, ...user } = SurveyMapper.surveyToDomain(userSurveyDTO);
 
-    return SurveyMapper.surveyToPlain(await this.commandBus.execute(command));
+    await this.commandBus.execute(new UpdateUserCommand(user));
+    await this.commandBus.execute<SaveFilledSurveyCommand, Survey>(new SaveFilledSurveyCommand(survey));
+
+    return { message: 'Operation successful' };
   }
 }

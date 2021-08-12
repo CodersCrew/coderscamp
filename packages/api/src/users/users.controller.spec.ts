@@ -2,11 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
-import type { RegisteredUser } from '@coderscamp/shared/models';
-
-import { UserRepositoryPort } from '../contracts/user.repository';
-import { MemoryDbService } from '../memoryDB/memoryDB.service';
-import { PgMemUserRepositoryAdapter } from '../memoryDB/user.repository';
 import { UsersController } from './users.controller';
 import { CommandHandlers, EventHandlers } from './users.module';
 import { UsersRepository } from './users.repository';
@@ -14,27 +9,33 @@ import { UsersRepository } from './users.repository';
 describe('Users controller', () => {
   let app: INestApplication;
   let usersController: UsersController;
-  let userMock: RegisteredUser;
+  let usersRepository: Partial<UsersRepository>;
+  const userId = 'Id';
 
   describe('getMe', () => {
     it('Should return user', async () => {
-      const user = await usersController.getMe(userMock.id);
+      usersRepository.findById = jest.fn().mockResolvedValue({ id: userId });
 
-      expect(user).toMatchObject(userMock);
+      const result = await usersController.getMe(userId);
+
+      expect(usersRepository.findById).toBeCalledWith(userId);
+      expect(result).toEqual({ id: userId });
     });
   });
 
   async function setup() {
+    usersRepository = {
+      findById: jest.fn(),
+    };
+
     const module = await Test.createTestingModule({
       imports: [CqrsModule],
       controllers: [UsersController],
       providers: [
-        MemoryDbService,
         {
-          provide: UserRepositoryPort,
-          useClass: PgMemUserRepositoryAdapter,
+          provide: UsersRepository,
+          useValue: usersRepository,
         },
-        UsersRepository,
         ...CommandHandlers,
         ...EventHandlers,
       ],
@@ -42,17 +43,9 @@ describe('Users controller', () => {
 
     app = module.createNestApplication();
     usersController = app.get<UsersController>(UsersController);
+    usersRepository = app.get<UsersRepository>(UsersRepository);
 
-    const db = app.get<MemoryDbService>(MemoryDbService);
-    const repository = app.get<UserRepositoryPort>(UserRepositoryPort);
-
-    await Promise.all([app.init(), db.migrate()]);
-    userMock = await repository.create({
-      githubId: 12345678,
-      fullName: 'Name',
-      email: 'example@test.com',
-      image: 'https://photo-url.com',
-    });
+    await app.init();
   }
 
   beforeAll(async () => {

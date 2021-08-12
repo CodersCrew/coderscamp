@@ -1,4 +1,4 @@
-import { Survey } from './survey';
+import { Survey } from '../survey';
 
 export type UserId = string;
 

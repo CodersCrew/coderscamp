@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { SaveSurveyHandler } from './commands';
+import { SaveFilledSurveyHandler } from './commands';
 import { SurveyController } from './survey.controller';
 import { SurveyRepository } from './survey.repository';
 
-const CommandHandlers = [SaveSurveyHandler];
+export const CommandHandlers = [SaveFilledSurveyHandler];
 @Module({
   imports: [CqrsModule],
   providers: [SurveyRepository, ...CommandHandlers],

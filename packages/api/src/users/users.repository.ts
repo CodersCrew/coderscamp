@@ -19,4 +19,8 @@ export class UsersRepository {
   async findById(id: UserId) {
     return this.repository.findById(id);
   }
+
+  async create(user: RegisteredUser) {
+    return this.repository.createUser(user);
+  }
 }

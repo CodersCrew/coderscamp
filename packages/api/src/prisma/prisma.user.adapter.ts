@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 
-import type { UserId } from '@coderscamp/shared/models';
+import type { RegisteredUser, UserId } from '@coderscamp/shared/models';
 
 import { UserRepositoryPort } from '../contracts/user.repository';
 import { PrismaService } from './prisma.service';
@@ -20,5 +20,9 @@ export class PrismaUserAdapter implements UserRepositoryPort {
 
   async findById(userId: UserId) {
     return this.prisma.user.findUnique({ where: { id: userId } });
+  }
+
+  async createUser(notRegisteredUser: RegisteredUser) {
+    return this.prisma.user.create({ data: notRegisteredUser });
   }
 }

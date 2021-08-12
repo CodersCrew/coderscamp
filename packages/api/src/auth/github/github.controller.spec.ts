@@ -4,20 +4,13 @@ import httpMocks from 'node-mocks-http';
 
 import { env } from '@/common/env';
 
-import type { RegisteredUserDTO } from '../../../../shared/src/models/user';
-import { UserRepositoryPort } from '../../contracts/user.repository';
-import { MemoryDbService } from '../../memoryDB/memoryDB.service';
-import { PgMemUserRepositoryAdapter } from '../../memoryDB/user.repository';
-import { UsersRepository } from '../../users/users.repository';
-import { UsersService } from '../../users/users.service';
 import { JwtService } from '../jwt/jwt.service';
-import { GithubClient } from './github.client';
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { GithubAuthGuardReq } from './github.types';
 
 const user = {
-  id: 1,
+  id: '1',
   fullName: 'Name',
   githubId: 123,
   email: 'example@test.com',
@@ -44,7 +37,7 @@ describe('Github controller', () => {
       authorizeUser: () => Promise.resolve(user),
     };
     jwtService = {
-      generateToken: (_user: { id: number }) => tokenValue,
+      generateToken: (_user: { id: string }) => tokenValue,
     };
 
     const module = await Test.createTestingModule({

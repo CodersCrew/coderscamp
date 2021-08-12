@@ -36,6 +36,7 @@ jobs:
       - name: Start database
         run: docker-compose up -d
       - name: Prisma migrate
+        working-directory: ./packages/api
         run: yarn prisma migrate deploy
       - name: Run tests for all files
         run: yarn test --coverage
