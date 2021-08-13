@@ -3,7 +3,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { RegisteredUser, User } from '@coderscamp/shared/models';
 
 import { UsersRepository } from '../../users.repository';
-import { FindUserWithGivenGithubIdQuery } from '..';
+import { FindUserWithGivenGithubIdQuery } from '../find-user-with-given-github-id.query';
 
 @QueryHandler(FindUserWithGivenGithubIdQuery)
 export class FindUserWithGivenGithubIdQueryHandler implements IQueryHandler<FindUserWithGivenGithubIdQuery> {
