@@ -11,7 +11,7 @@ export const MentorPerspective = () => {
   const downloadSize = useBreakpointValue({ base: 'sm', sm: 'lg' } as const, 'base');
 
   return (
-    <Center py="80px" backgroundColor="gray.100">
+    <Center py="80px" backgroundColor="gray.50">
       <VStack spacing="32px" mx={{ base: '30px', xl: 'auto' }} maxW="min(1280px, 100%)">
         <Typography as="h2" textAlign="center" size="4xl" weight="extrabold" color="gray.900">
           CodersCamp z perspektywy mentora
