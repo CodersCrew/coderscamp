@@ -13,10 +13,10 @@ export const MentorPerspective = () => {
   return (
     <Center py="80px" backgroundColor="gray.100">
       <VStack mx={{ base: '30px', xl: 'auto' }} maxW="min(1280px, 100%)">
-        <Typography pb="64px" textAlign="center" as="h2" size="4xl" weight="extrabold" color="gray.900">
+        <Typography as="h2" pb="64px" textAlign="center" size="4xl" weight="extrabold" color="gray.900">
           Czego oczekujemy od mentora
         </Typography>
-        <Typography pb="40px" weight="normal" size="lg" color="gray.500" textAlign="center">
+        <Typography pb="40px" textAlign="center" weight="normal" size="lg" color="gray.500">
           Jeżeli chcesz już teraz w szczegółach dowiedzieć się, z jakimi wyzwaniami spotkasz się jako mentor, możesz
           pobrać nasz pełny poradnik dla mentorów, klikając przycisk poniżej.
         </Typography>
