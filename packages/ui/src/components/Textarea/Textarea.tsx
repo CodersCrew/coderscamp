@@ -15,6 +15,8 @@ export interface TextareaProps extends Omit<HTMLChakraProps<'textarea'>, 'readon
 
 export const Textarea = forwardRef<TextareaProps, 'textarea'>(
   ({ disabled = false, invalid = false, ...props }, ref) => (
-    <ChakraTextarea isDisabled={disabled} {...props} ref={ref} isInvalid={invalid} />
+    <ChakraTextarea isDisabled={disabled} isInvalid={invalid} {...props} ref={ref} />
   ),
 );
+
+Textarea.displayName = 'Textarea';

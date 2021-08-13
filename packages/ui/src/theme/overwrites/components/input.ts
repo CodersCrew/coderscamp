@@ -22,11 +22,13 @@ export const Input = {
         borderColor: 'gray.300',
         borderRadius: '6px',
         _focus: {
-          background: 'white',
           boxShadow: 'outline',
         },
         _hover: {
           borderColor: 'gray.400',
+        },
+        _disabled: {
+          borderColor: 'gray.300',
         },
       },
     },
