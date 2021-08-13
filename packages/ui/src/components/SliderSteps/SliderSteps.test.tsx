@@ -13,7 +13,7 @@ const clickBackArrow = () => {
   userEvent.click(screen.getByLabelText('go back button'));
 };
 
-const dots = () => screen.getAllByRole('tab');
+const getAllDots = () => screen.getAllByRole('tab');
 
 const renderSliderSteps = (props: Partial<SliderStepsProps>) =>
   render(<SliderSteps count={5} selectedIndex={1} onChange={jest.fn()} {...props} />);
@@ -24,7 +24,7 @@ describe('SliderSteps', () => {
 
     renderSliderSteps({ count });
 
-    expect(dots()).toHaveLength(count);
+    expect(getAllDots()).toHaveLength(count);
   });
 
   it('has selected index on a given position', () => {
@@ -32,7 +32,7 @@ describe('SliderSteps', () => {
 
     renderSliderSteps({ selectedIndex });
 
-    const selectedDotIndex = dots().findIndex((dot) => dot.getAttribute('aria-selected') === 'true');
+    const selectedDotIndex = getAllDots().findIndex((dot) => dot.getAttribute('aria-selected') === 'true');
 
     expect(selectedDotIndex).toEqual(selectedIndex);
   });
@@ -44,7 +44,7 @@ describe('SliderSteps', () => {
 
     renderSliderSteps({ selectedIndex, onChange });
 
-    userEvent.click(dots()[indexToClick]);
+    userEvent.click(getAllDots()[indexToClick]);
 
     expect(onChange).toHaveBeenCalledWith(indexToClick);
     expect(onChange).toHaveBeenCalledTimes(1);
@@ -56,7 +56,7 @@ describe('SliderSteps', () => {
 
     renderSliderSteps({ selectedIndex });
 
-    userEvent.click(dots()[selectedIndex]);
+    userEvent.click(getAllDots()[selectedIndex]);
 
     expect(onChange).not.toHaveBeenCalled();
   });
