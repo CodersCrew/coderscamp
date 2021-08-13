@@ -1,15 +1,17 @@
 import { extendTheme } from '@chakra-ui/react';
+import type { Styles } from '@chakra-ui/theme-tools';
 
 import { components } from './components';
 import { foundations } from './foundations';
-import { styles } from './styles';
+import { createStyles } from './styles';
 
-export const theme = extendTheme({
-  ...foundations,
-  styles,
-  components,
-  config: {
-    initialColorMode: 'light',
-    useSystemColorMode: false,
-  },
-});
+export const createTheme = (globalStyles: Styles['global']) =>
+  extendTheme({
+    ...foundations,
+    ...createStyles(globalStyles),
+    components,
+    config: {
+      initialColorMode: 'light',
+      useSystemColorMode: false,
+    },
+  });

@@ -7,7 +7,7 @@ import { App } from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider>
+    <ThemeProvider globalStyles={{ 'html, body': { backgroundColor: 'gray.100' } }}>
       <App />
     </ThemeProvider>
   </React.StrictMode>,
