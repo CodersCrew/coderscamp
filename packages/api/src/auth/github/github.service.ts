@@ -1,20 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import type { RegisteredUser } from '@coderscamp/shared/models';
 
+import { RegisterUserCommand } from '../../users/commands';
+import { FindUserWithGivenGithubIdQuery } from '../../users/queries';
 import { UserModel } from '../../users/user.model';
-import { GithubRepository } from './github.repository';
 import type { NotRegisteredUser } from './github.types';
 
 @Injectable()
 export class GithubService {
-  constructor(private readonly githubRepository: GithubRepository) {}
+  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
   async authorizeUser(githubUserData: NotRegisteredUser): Promise<RegisteredUser> {
-    let user = await this.githubRepository.findUserByGithubId(githubUserData.githubId);
+    let user = await this.queryBus.execute(new FindUserWithGivenGithubIdQuery(githubUserData.githubId));
 
     if (!user) {
-      user = await this.githubRepository.createUser(githubUserData);
+      user = await this.commandBus.execute<RegisterUserCommand, RegisteredUser>(
+        new RegisterUserCommand(githubUserData),
+      );
 
       const userModel = new UserModel(user);
 

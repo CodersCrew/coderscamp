@@ -12,7 +12,7 @@ export class SaveFilledSurveyHandler implements ICommandHandler<SaveFilledSurvey
   constructor(private surveyRepository: SurveyRepository) {}
 
   async execute({ input }: SaveFilledSurveyCommand): Promise<Survey> {
-    const surveyFromDb = await this.surveyRepository.findByUserId(input.userId);
+    const surveyFromDb = await this.surveyRepository.findSurveyByUserId(input.userId);
 
     if (surveyFromDb) throw new BadRequestException(SurveyErrorMessage.SURVEY_ALREADY_FILLED);
 

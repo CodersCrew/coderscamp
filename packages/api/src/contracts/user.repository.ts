@@ -1,11 +1,12 @@
 import type { RegisteredUser, User, UserId } from '@coderscamp/shared/models';
 
-export abstract class UserRepositoryPort {
-  abstract findByGithubId(githubId: number): Promise<User | RegisteredUser | null>;
+export const USER_REPOSITORY_PORT = Symbol('UserRepositoryPort');
+export interface UserRepositoryPort {
+  findByGithubId(githubId: number): Promise<User | RegisteredUser | null>;
 
-  abstract findById(id: UserId): Promise<User | RegisteredUser | null>;
+  findById(id: UserId): Promise<User | RegisteredUser | null>;
 
-  abstract update(data: User): Promise<User | RegisteredUser>;
+  update(data: User): Promise<User | RegisteredUser>;
 
-  abstract createUser(data: RegisteredUser): Promise<User | RegisteredUser>;
+  createUser(data: RegisteredUser): Promise<User | RegisteredUser>;
 }

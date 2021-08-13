@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import type { Survey, UserId } from '@coderscamp/shared/models';
 
-import { SurveyRepositoryPort } from '../contracts/survey.repository';
+import { SURVEY_REPOSITORY_PORT, SurveyRepositoryPort } from '../contracts/survey.repository';
 
 @Injectable()
 export class SurveyRepository {
-  constructor(private readonly repository: SurveyRepositoryPort) {}
+  constructor(@Inject(SURVEY_REPOSITORY_PORT) private readonly repository: SurveyRepositoryPort) {}
 
-  async findByUserId(userId: UserId) {
-    return this.repository.findByUserId(userId);
+  async findSurveyByUserId(userId: UserId) {
+    return this.repository.findSurveyByUserId(userId);
   }
 
   async save(data: Survey) {

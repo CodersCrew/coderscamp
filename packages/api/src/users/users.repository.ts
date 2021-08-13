@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import type { RegisteredUser, User, UserId } from '@coderscamp/shared/models';
 
-import { UserRepositoryPort } from '../contracts/user.repository';
+import { USER_REPOSITORY_PORT, UserRepositoryPort } from '../contracts/user.repository';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly repository: UserRepositoryPort) {}
+  constructor(@Inject(USER_REPOSITORY_PORT) private readonly repository: UserRepositoryPort) {}
 
-  async getByGithubId(githubId: number): Promise<RegisteredUser | User | null> {
+  async findByGithubId(githubId: number): Promise<RegisteredUser | User | null> {
     return this.repository.findByGithubId(githubId);
   }
 

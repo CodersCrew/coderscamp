@@ -1,2 +1,2 @@
 export * from './survey';
-export * from './user/user';
+export * from './user';

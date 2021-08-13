@@ -1,7 +1,8 @@
 import type { Survey, UserId } from '@coderscamp/shared/models';
 
-export abstract class SurveyRepositoryPort {
-  abstract findByUserId(userId: UserId): Promise<Survey | null>;
+export const SURVEY_REPOSITORY_PORT = Symbol('SURVEY_REPOSITORY_PORT');
+export interface SurveyRepositoryPort {
+  findSurveyByUserId(userId: UserId): Promise<Survey | null>;
 
-  abstract save(data: Survey): Promise<Survey>;
+  save(data: Survey): Promise<Survey>;
 }

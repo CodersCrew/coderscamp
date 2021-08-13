@@ -22,7 +22,7 @@ export class PrismaUserAdapter implements UserRepositoryPort {
     return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
-  async createUser(notRegisteredUser: RegisteredUser) {
-    return this.prisma.user.create({ data: notRegisteredUser });
+  async createUser(userData: RegisteredUser) {
+    return this.prisma.user.create({ data: userData });
   }
 }

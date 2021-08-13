@@ -9,7 +9,7 @@ import { PrismaService } from './prisma.service';
 export class PrismaSurveyAdapter implements SurveyRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByUserId(userId: UserId) {
+  async findSurveyByUserId(userId: UserId) {
     return this.prisma.survey.findUnique({ where: { userId } });
   }
 

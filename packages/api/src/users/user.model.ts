@@ -5,7 +5,7 @@ import type { RegisteredUser, User } from '@coderscamp/shared/models';
 import { UserRegisteredEvent } from './events';
 
 interface UserModelInterface {
-  register: (input: Omit<RegisteredUser, 'id'>) => void;
+  register: (input: RegisteredUser) => void;
 }
 
 export class UserModel extends AggregateRoot implements UserModelInterface {
@@ -14,7 +14,7 @@ export class UserModel extends AggregateRoot implements UserModelInterface {
     Object.assign(this, input);
   }
 
-  register(input: Omit<RegisteredUser, 'id'>) {
+  register(input: RegisteredUser) {
     this.apply(Object.assign(new UserRegisteredEvent(input), this));
   }
 }

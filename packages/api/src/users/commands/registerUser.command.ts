@@ -1,7 +1,7 @@
 import type { ICommand } from '@nestjs/cqrs';
 
-import type { RegisteredUser } from '@coderscamp/shared/models';
+import { NotRegisteredUser } from '../../auth/github/github.types';
 
 export class RegisterUserCommand implements ICommand {
-  constructor(public readonly input: RegisteredUser) {}
+  constructor(public readonly input: NotRegisteredUser) {}
 }
