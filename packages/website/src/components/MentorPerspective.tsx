@@ -8,19 +8,19 @@ import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
 export const MentorPerspective = () => {
-  const downloadIcon = useBreakpointValue({ base: undefined, sm: <SolidDownloadIcon /> });
+  const downloadSize = useBreakpointValue({ base: 'sm', sm: 'lg' } as const, 'base');
 
   return (
     <Center py="80px" backgroundColor="gray.100">
-      <VStack mx={{ base: '30px', xl: 'auto' }} maxW="min(1280px, 100%)">
-        <Typography as="h2" pb="64px" textAlign="center" size="4xl" weight="extrabold" color="gray.900">
-          Czego oczekujemy od mentora
+      <VStack spacing="32px" mx={{ base: '30px', xl: 'auto' }} maxW="min(1280px, 100%)">
+        <Typography as="h2" textAlign="center" size="4xl" weight="extrabold" color="gray.900">
+          CodersCamp z perspektywy mentora
         </Typography>
-        <Typography pb="40px" textAlign="center" weight="normal" size="lg" color="gray.500">
+        <Typography pb="8px" textAlign="center" weight="normal" size="lg" color="gray.500">
           Jeżeli chcesz już teraz w szczegółach dowiedzieć się, z jakimi wyzwaniami spotkasz się jako mentor, możesz
           pobrać nasz pełny poradnik dla mentorów, klikając przycisk poniżej.
         </Typography>
-        <Button color="brand" icon={downloadIcon}>
+        <Button size={downloadSize} color="brand" icon={<SolidDownloadIcon />}>
           Pobierz poradnik dla mentorów
         </Button>
       </VStack>
