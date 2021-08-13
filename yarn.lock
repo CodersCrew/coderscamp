@@ -2751,12 +2751,18 @@ __metadata:
   dependencies:
     "@coderscamp/shared": 0.0.1
     "@coderscamp/ui": 0.0.1
+    "@toast-ui/react-calendar": 1.0.5
     "@types/react": 17.0.16
     "@types/react-dom": 17.0.9
+    "@types/react-router-dom": 5.1.8
     "@vitejs/plugin-react-refresh": 1.3.6
+    dotenv: 10.0.0
+    joi: 17.4.2
     react: 17.0.2
     react-dom: 17.0.2
+    react-router-dom: 5.2.0
     react-use: 17.2.4
+    tui-calendar: 1.13.1
     vite: 2.4.4
     vite-tsconfig-paths: 3.3.13
   languageName: unknown
@@ -5815,6 +5821,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@toast-ui/react-calendar@npm:1.0.5":
+  version: 1.0.5
+  resolution: "@toast-ui/react-calendar@npm:1.0.5"
+  dependencies:
+    tui-calendar: ^1.12.5
+  peerDependencies:
+    react: ^16.3.0
+  checksum: 0fb503121ee72b007edf4ecf13b35442190c911dc298707e4b3101f7163dfa691c6fe6e7d1289a12c30363407d033b5faf3178cb61bac4ea1ceee6d69d115e7f
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:1":
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
@@ -6068,6 +6085,13 @@ __metadata:
   dependencies:
     "@types/unist": "*"
   checksum: 1538165b34a86e9c1fd894bb185abdd4cf0c9ca72e3d6b619bdbc80ac87766d3d611ec4f22c3f8c2709c4b530b80d1f8ad645672a104a4eb3c4d86641a93756d
+  languageName: node
+  linkType: hard
+
+"@types/history@npm:*":
+  version: 4.7.9
+  resolution: "@types/history@npm:4.7.9"
+  checksum: 556b062adb92795839301965776b0418e9ca32798bd8a6031345a6a84d7512771107143a497b7e3ff826d0b0d4456e962c6450485dda6f55c7dd33371e840529
   languageName: node
   linkType: hard
 
@@ -6393,6 +6417,27 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: b7e898e1a22643a371f58e801a3d1d8cf13a82d77063c24be73e840ef8d877ca1d04adc5db168d0dac3167dc050a26b1d70efc5fe8566a7f46a3c488a8322989
+  languageName: node
+  linkType: hard
+
+"@types/react-router-dom@npm:5.1.8":
+  version: 5.1.8
+  resolution: "@types/react-router-dom@npm:5.1.8"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+    "@types/react-router": "*"
+  checksum: ff4af091f8e076b64f6f3f2af52429772641388393065930880e8931ce881873c2f0dff53bb1e373db5ae6b737fc514db4a1f5daa7d8bf3cf3b3088ce84472fc
+  languageName: node
+  linkType: hard
+
+"@types/react-router@npm:*":
+  version: 5.1.16
+  resolution: "@types/react-router@npm:5.1.16"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+  checksum: a9c04be430e7f63b17d3ac46fb5594e4089747b3004af04560cd068db136ccaedd66622f448489280cb5a94873dece69a5bc1f91c892ec5178e41ed00b78b43d
   languageName: node
   linkType: hard
 
@@ -15815,7 +15860,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"joi@npm:^17.3.0, joi@npm:^17.4.0":
+"joi@npm:17.4.2, joi@npm:^17.3.0, joi@npm:^17.4.0":
   version: 17.4.2
   resolution: "joi@npm:17.4.2"
   dependencies:
@@ -20574,7 +20619,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^5.2.0":
+"react-router-dom@npm:5.2.0, react-router-dom@npm:^5.2.0":
   version: 5.2.0
   resolution: "react-router-dom@npm:5.2.0"
   dependencies:
@@ -23678,6 +23723,40 @@ resolve@^2.0.0-next.3:
   version: 0.0.1
   resolution: "tty-browserify@npm:0.0.1"
   checksum: 93b745d43fa5a7d2b948fa23be8d313576d1d884b48acd957c07710bac1c0d8ac34c0556ad4c57c73d36e11741763ef66b3fb4fb97b06b7e4d525315a3cd45f5
+  languageName: node
+  linkType: hard
+
+"tui-calendar@npm:1.13.1, tui-calendar@npm:^1.12.5":
+  version: 1.13.1
+  resolution: "tui-calendar@npm:1.13.1"
+  dependencies:
+    tui-code-snippet: ^1.5.0
+    tui-date-picker: ^4.0.2
+    tui-time-picker: ^2.0.1
+  checksum: 42eab51f98164fbbd849a4afaac264c7a44e466eaa2a1441cce832af52185768d08b9138dd5208729a3c72fc56d702abb6c91683a1bd8d4525c4c1f8bfed3d6c
+  languageName: node
+  linkType: hard
+
+"tui-code-snippet@npm:^1.5.0":
+  version: 1.5.2
+  resolution: "tui-code-snippet@npm:1.5.2"
+  checksum: 31bee543d4daa86e1fb82ad18aed37ad7b55842f5823991dd0035d045033921cf7babc77ba17cabd5945d88425bf1eaa1720ce1dddfd2ad20aaa9a18913d8332
+  languageName: node
+  linkType: hard
+
+"tui-date-picker@npm:^4.0.2":
+  version: 4.2.2
+  resolution: "tui-date-picker@npm:4.2.2"
+  dependencies:
+    tui-time-picker: ^2.1.2
+  checksum: 622820fa82f76429abf064cbddea8e67fc71f6d5bac594b7c17e932be6a994f51e62a794253830947d26082411423282bb103498805090798b8762ba883b0f55
+  languageName: node
+  linkType: hard
+
+"tui-time-picker@npm:^2.0.1, tui-time-picker@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "tui-time-picker@npm:2.1.2"
+  checksum: 5a1e66fa51b638ec2bcc4b4c281bc0029c35f65ea214d1bcb0869675491c2c86ba6d067e897ae24b09637d8179b5530309a2931506a39dfd659e4922d160f365
   languageName: node
   linkType: hard
 

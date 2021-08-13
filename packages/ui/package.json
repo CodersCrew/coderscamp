@@ -9,8 +9,9 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "generate:theme": "chakra-cli tokens \"src/theme/overwrites/index.ts\"",
-    "generate:icons": "svgr -d src/icons icons && rimraf \"src/icons/solid/index.tsx\" \"src/icons/outlined/index.tsx\"",
-    "generate": "concurrently \"yarn generate:theme\" \"yarn generate:icons\""
+    "generate:icons": "rimraf \"src/icons\" && svgr --config-file svgr-icons.config.js -d src/icons icons",
+    "generate:svg": "rimraf \"src/svg\" && svgr --config-file svgr-svg.config.js -d src/svg svg",
+    "generate": "concurrently \"yarn generate:theme\" \"yarn generate:icons\" \"yarn generate:svg\""
   },
   "peerDependencies": {
     "react": "17.0.2"
