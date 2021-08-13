@@ -12,7 +12,7 @@ export class UsersRepository {
     return this.repository.findByGithubId(githubId);
   }
 
-  async updateUser(data: User): Promise<User> {
+  async updateUser(data: Partial<User>): Promise<User> {
     return this.repository.update(data) as unknown as User;
   }
 

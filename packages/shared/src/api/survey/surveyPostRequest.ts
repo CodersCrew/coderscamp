@@ -1,7 +1,12 @@
-import type { User, UserId } from './user';
-
-export type Survey = {
-  userId: UserId;
+export interface SurveyPostRequest {
+  fullName: string;
+  email: string;
+  town: string;
+  birthYear: number;
+  gender: string;
+  educationStatus: string;
+  courseInformationSource: string[];
+  associatedWords: string[];
   description: string;
   prevParticipation: string;
   reasonForRetakingCourse: string | null;
@@ -11,11 +16,5 @@ export type Survey = {
   plans: string;
   absencePeriod: string;
   averageTime: number;
-  associatedWords: string[];
-  courseInformationSource: string[];
   marketingAccept: boolean;
-};
-
-export type SurveyDTO = Survey;
-
-export type CreateSurveyData = Omit<User, 'image'> & Survey;
+}

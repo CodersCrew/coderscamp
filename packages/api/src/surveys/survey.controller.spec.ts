@@ -2,9 +2,8 @@ import { BadRequestException, INestApplication } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 
-import { SurveyErrorMessage } from '@coderscamp/shared/errors/survey.errors';
-import { UserErrorMessage } from '@coderscamp/shared/errors/user.errors';
-import { Survey, User, UserSurvey } from '@coderscamp/shared/models';
+import { SurveyErrorMessage, SurveyPostRequest, UserErrorMessage } from '@coderscamp/shared/api';
+import { Survey, User, UserId } from '@coderscamp/shared/models';
 
 import { UpdateUserHandler } from '../users/commands';
 import { UsersRepository } from '../users/users.repository';
@@ -15,15 +14,16 @@ import { SurveyRepository } from './survey.repository';
 describe('Survey controller', () => {
   let app: INestApplication;
   let surveyController: SurveyController;
-  let userSurvey: UserSurvey;
-  let user: User;
+  let user: Partial<User>;
   let survey: Survey;
   let surveySaveHandler: SaveFilledSurveyHandler;
   let userUpdateHandler: UpdateUserHandler;
+  let surveyPostRequest: SurveyPostRequest;
+  let userId: UserId;
 
   describe('saveUserSurvey', () => {
     it('Should update user and create UserSurvey', async () => {
-      const result = await surveyController.saveUserSurvey(userSurvey);
+      const result = await surveyController.saveUserSurvey(surveyPostRequest, userId);
 
       expect(userUpdateHandler.execute).toBeCalledWith({ input: user });
       expect(surveySaveHandler.execute).toBeCalledWith({ input: survey });
@@ -35,7 +35,7 @@ describe('Survey controller', () => {
         .fn()
         .mockRejectedValueOnce(new BadRequestException(UserErrorMessage.USER_NOT_FOUND));
 
-      await expect(surveyController.saveUserSurvey(userSurvey)).rejects.toEqual(
+      await expect(surveyController.saveUserSurvey(surveyPostRequest, userId)).rejects.toEqual(
         new BadRequestException(UserErrorMessage.USER_NOT_FOUND),
       );
     });
@@ -46,7 +46,7 @@ describe('Survey controller', () => {
         .mockRejectedValueOnce(new BadRequestException(SurveyErrorMessage.SURVEY_ALREADY_FILLED));
 
       expect(userUpdateHandler.execute).toBeCalledWith({ input: user });
-      await expect(surveyController.saveUserSurvey(userSurvey)).rejects.toEqual(
+      await expect(surveyController.saveUserSurvey(surveyPostRequest, userId)).rejects.toEqual(
         new BadRequestException(SurveyErrorMessage.SURVEY_ALREADY_FILLED),
       );
     });
@@ -77,34 +77,51 @@ describe('Survey controller', () => {
 
     user = {
       id: 'a234b',
-      githubId: Math.floor(Math.random() * 1000),
       fullName: 'Albert Einstein',
       email: 'albert.einstein@gmail.com',
-      image: 'https://avatars.githubusercontent.com/u/12345678?v=4',
-      city: 'Wrocław',
+      town: 'Wrocław',
       gender: 'male',
       birthYear: 1999,
-      isStudent: false,
+      educationStatus: 'Tak, studiuję',
     };
+
+    surveyPostRequest = {
+      fullName: 'Albert Einstein',
+      email: 'albert.einstein@gmail.com',
+      town: 'Wrocław',
+      gender: 'male',
+      birthYear: 1999,
+      educationStatus: 'Tak, studiuję',
+      description: 'description',
+      prevParticipation: 'Nie',
+      reasonForRetakingCourse: null,
+      expectations: 'expectations',
+      experience: 'experience',
+      reasonToAccept: 'uniques',
+      plans: 'plans',
+      absencePeriod: 'yes',
+      averageTime: 20,
+      associatedWords: ['coders', 'camp'],
+      courseInformationSource: ['fb'],
+      marketingAccept: true,
+    };
+
+    userId = 'a234b';
 
     survey = {
       userId: 'a234b',
       description: 'description',
-      alreadyTookCourse: false,
+      prevParticipation: 'Nie',
       reasonForRetakingCourse: null,
       expectations: 'expectations',
       experience: 'experience',
-      uniques: 'uniques',
+      reasonToAccept: 'uniques',
       plans: 'plans',
-      unavailability: 'yes',
+      absencePeriod: 'yes',
       averageTime: 20,
       associatedWords: ['coders', 'camp'],
-      courseInformationSource: 'fb',
-    };
-
-    userSurvey = {
-      ...user,
-      Survey: survey,
+      courseInformationSource: ['fb'],
+      marketingAccept: true,
     };
 
     await app.init();

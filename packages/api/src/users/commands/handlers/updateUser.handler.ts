@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { UserErrorMessage } from '@coderscamp/shared/errors/user.errors';
+import { UserErrorMessage } from '@coderscamp/shared/api';
 import type { RegisteredUser } from '@coderscamp/shared/models';
 
 import { UsersRepository } from '../../users.repository';

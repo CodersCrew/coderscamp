@@ -6,7 +6,7 @@ export interface UserRepositoryPort {
 
   findById(id: UserId): Promise<User | RegisteredUser | null>;
 
-  update(data: User): Promise<User | RegisteredUser>;
+  update(data: Partial<User>): Promise<User | RegisteredUser>;
 
   createUser(data: RegisteredUser): Promise<User | RegisteredUser>;
 }

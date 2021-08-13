@@ -7,9 +7,9 @@
 -- AlterTable
 ALTER TABLE "User" DROP CONSTRAINT "User_pkey",
 ADD COLUMN     "birthYear" INTEGER,
-ADD COLUMN     "city" TEXT,
+ADD COLUMN     "educationStatus" TEXT,
 ADD COLUMN     "gender" TEXT,
-ADD COLUMN     "isStudent" BOOLEAN,
+ADD COLUMN     "town" TEXT,
 ALTER COLUMN "id" DROP DEFAULT,
 ALTER COLUMN "id" SET DATA TYPE TEXT,
 ALTER COLUMN "email" DROP NOT NULL,
@@ -21,16 +21,17 @@ DROP SEQUENCE "User_id_seq";
 CREATE TABLE "Survey" (
     "userId" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "alreadyTookCourse" BOOLEAN NOT NULL,
+    "prevParticipation" TEXT NOT NULL,
     "reasonForRetakingCourse" TEXT,
     "expectations" TEXT NOT NULL,
-    "experience" TEXT NOT NULL,
-    "uniques" TEXT NOT NULL,
+    "experience" TEXT,
+    "reasonToAccept" TEXT NOT NULL,
     "plans" TEXT NOT NULL,
-    "unavailability" TEXT NOT NULL,
+    "absencePeriod" TEXT NOT NULL,
     "averageTime" INTEGER NOT NULL,
     "associatedWords" TEXT[],
-    "courseInformationSource" TEXT NOT NULL
+    "courseInformationSource" TEXT[],
+    "marketingAccept" BOOLEAN NOT NULL
 );
 
 -- CreateIndex

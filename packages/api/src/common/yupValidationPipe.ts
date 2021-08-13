@@ -5,7 +5,7 @@ import type { ObjectShape } from 'yup/lib/object';
 const VALIDATION_OPTIONS = {
   strict: false,
   abortEarly: false,
-  stripUnknown: false, // TODO change to true
+  stripUnknown: true,
   recursive: true,
 };
 
@@ -15,9 +15,9 @@ export class YupValidationPipe<Input extends ObjectShape> implements PipeTransfo
 
   transform(input: Record<string, any>, _metadata: ArgumentMetadata) {
     try {
-      this.schema.validateSync(input, VALIDATION_OPTIONS);
+      const result = this.schema.validateSync(input, VALIDATION_OPTIONS);
 
-      return input; // ! change to result
+      return result;
     } catch (err) {
       throw new BadRequestException(err.errors);
     }

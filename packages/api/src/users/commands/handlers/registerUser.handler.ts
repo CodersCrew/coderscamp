@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { nanoid } from 'nanoid';
 
-import { UserErrorMessage } from '@coderscamp/shared/errors/user.errors';
+import { UserErrorMessage } from '@coderscamp/shared/api';
 import type { RegisteredUser } from '@coderscamp/shared/models';
 
 import { UserRegisteredEvent } from '../../events';

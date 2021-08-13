@@ -1,4 +1,4 @@
-import { Survey } from './survey';
+import type { Survey } from './survey';
 
 export type UserId = string;
 
@@ -12,9 +12,9 @@ export type RegisteredUser = {
 
 export type User = RegisteredUser & {
   gender: string;
-  city: string;
+  town: string;
   birthYear: number;
-  isStudent: boolean;
+  educationStatus: string;
 };
 
 export type RegisteredUserDTO = RegisteredUser;
@@ -25,5 +25,3 @@ export type UserSurvey = User & { Survey: Survey };
 export type UserSurveyDTO = User & { Survey: Survey };
 
 export type GetAllUsersResponse = User[];
-
-export type GetMeResponse = RegisteredUser | User | null;

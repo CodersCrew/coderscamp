@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { SurveyErrorMessage } from '@coderscamp/shared/errors/survey.errors';
+import { SurveyErrorMessage } from '@coderscamp/shared/api';
 import type { Survey } from '@coderscamp/shared/models';
 
 import { SurveyRepository } from '../../survey.repository';

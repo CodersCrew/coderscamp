@@ -14,7 +14,7 @@ export class PrismaUserAdapter implements UserRepositoryPort {
     return this.prisma.user.findUnique({ where: { githubId } });
   }
 
-  async update(userData: User) {
+  async update(userData: Partial<User>) {
     return this.prisma.user.update({ where: { id: userData.id }, data: userData });
   }
 

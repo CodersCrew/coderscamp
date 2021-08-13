@@ -8,30 +8,31 @@ generator client {
 }
 
 model User {
-  id        String   @id
-  githubId  Int      @unique
-  fullName  String?
-  email     String?
-  image     String
-  city      String?
-  gender    String?
-  birthYear Int?
-  isStudent Boolean?
-  Survey    Survey?
+  id              String   @id
+  githubId        Int      @unique
+  fullName        String?
+  email           String?
+  image           String
+  town            String?
+  gender          String?
+  birthYear       Int?
+  educationStatus String?
+  Survey          Survey?
 }
 
 model Survey {
   userId                  String   @unique
   user                    User     @relation(fields: [userId], references: [id])
   description             String
-  alreadyTookCourse       Boolean
+  prevParticipation       String
   reasonForRetakingCourse String?
   expectations            String
-  experience              String
-  uniques                 String
+  experience              String?
+  reasonToAccept          String
   plans                   String
-  unavailability          String
+  absencePeriod           String
   averageTime             Int
   associatedWords         String[]
-  courseInformationSource String
+  courseInformationSource String[]
+  marketingAccept         Boolean
 }

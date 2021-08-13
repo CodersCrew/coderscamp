@@ -1,7 +1,7 @@
 import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 
-import { UserErrorMessage } from '@coderscamp/shared/errors/user.errors';
-import type { GetMeResponse, UserId as Id } from '@coderscamp/shared/models';
+import { GetMeResponse, UserErrorMessage } from '@coderscamp/shared/api';
+import type { UserId as Id } from '@coderscamp/shared/models';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { UserId } from '../auth/jwt/user-id.decorator';
