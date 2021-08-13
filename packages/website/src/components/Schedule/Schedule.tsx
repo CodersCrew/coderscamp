@@ -56,7 +56,7 @@ export const Schedule = () => {
       <Typography size="4xl" weight="extrabold" m="64px 0">
         Jak wziąć udział?
       </Typography>
-      <SimpleGrid columns={{ xl: 3, lg: 2, sm: 1 }} spacing="40px" width={{ xl: '1280px', lg: '900px' }} px="10px">
+      <SimpleGrid columns={{ xl: 3, lg: 2, sm: 1 }} spacing="40px" width={{ xl: '1280px', lg: '900px' }} px="12px">
         {schedulePlan.map((item) => (
           <ScheduleItem key={item.index} {...item} />
         ))}
