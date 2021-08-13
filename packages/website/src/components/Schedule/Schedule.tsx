@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
 import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { Typography } from '@coderscamp/ui/components/Typography';
@@ -10,8 +11,14 @@ const schedulePlan = [
   {
     index: 0,
     date: 'W każdej chwili',
-    description:
-      'Kliknij tutaj, aby zostawić nam swoje imię i adres e-mail. Damy Ci znać kiedy tylko rozpoczną się zapisy na kurs.',
+    description: (
+      <>
+        <Button size="lg" variant="link">
+          Kliknij tutaj,
+        </Button>{' '}
+        aby zostawić nam swoje imię i adres e-mail. Damy Ci znać kiedy tylko rozpoczną się zapisy na kurs.
+      </>
+    ),
   },
   {
     index: 1,
