@@ -17,7 +17,7 @@
     "react-hook-form": "7.12.2"
   },
   "devDependencies": {
-    "@types/react": "17.0.16",
+    "@types/react": "17.0.17",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "8.0.0"
   }
