@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { HStack } from '../Stack';
+import { Box } from '../Box';
 import { CourseProgressCard, CourseProgressCardProps } from './CourseProgressCard';
 
 const status = [
@@ -27,42 +27,23 @@ const meta: Meta = {
   component: CourseProgressCard,
   argTypes: {
     stats: {
-      options: [
-        {
-          name: { options: 'Materiały', control: { type: 'string' } },
-          value: { options: 50, control: 'number' },
-          max: { options: 120, control: 'number' },
-        },
-        {
-          name: { options: 'Testy', control: { type: 'string' } },
-          value: { options: 1, control: { type: 'number' } },
-          max: { options: 6, control: { type: 'number' } },
-        },
-        {
-          name: { options: 'Projekty', control: { type: 'string' } },
-          value: { options: 2, control: { type: 'number' } },
-          max: { options: 6, control: { type: 'number' } },
-        },
-      ],
-      control: {
-        type: 'array',
-      },
+      status: { type: 'array' },
     },
   },
 };
 
 export default meta;
 
-const Template: Story<CourseProgressCardProps> = (args) => <CourseProgressCard {...args} />;
+const Template: Story<CourseProgressCardProps> = (args) => {
+  return (
+    <Box w="376px" h="256px">
+      <CourseProgressCard {...args} />
+    </Box>
+  );
+};
 
 export const Playground = Template.bind({});
 
 Playground.args = {
   stats: status,
 };
-
-export const Status = () => (
-  <HStack>
-    <CourseProgressCard stats={status} />
-  </HStack>
-);

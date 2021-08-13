@@ -26,7 +26,7 @@ export const CourseProgressCard = ({ stats, ...props }: CourseProgressCardProps)
         {stats.map((value) => {
           return (
             <Flex direction="column" key={value.name}>
-              <Flex justify="space-between">
+              <Flex justify="space-between" pt="24px">
                 <Typography as="p" weight="medium" size="sm" color="gray.900">
                   {value.name}
                 </Typography>
