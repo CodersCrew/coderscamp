@@ -7,7 +7,7 @@ export interface SliderStepProps {
 }
 const currentDotProps = {
   backgroundColor: 'brand.500',
-  mx: '2px',
+  mx: '6px',
   borderColor: 'brand.200',
   borderWidth: '4px',
 };
