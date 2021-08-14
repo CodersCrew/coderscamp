@@ -6,8 +6,8 @@ import { useFieldContextSize } from '../FormControl/FieldContext';
 import { Stack, StackProps } from '../Stack';
 
 export interface CheckboxGroupProps extends Omit<StackProps, 'onChange'> {
-  value: ChakraCheckboxGroupProps['value'];
-  onChange: ChakraCheckboxGroupProps['onChange'];
+  value?: ChakraCheckboxGroupProps['value'];
+  onChange?: ChakraCheckboxGroupProps['onChange'];
   size?: CheckboxSize;
   disabled?: boolean;
 }

@@ -14,8 +14,7 @@ export interface FormFieldProps extends FormControlProps {
 }
 
 const componentsWithInvalidState = ['Input', 'Textarea', 'NumberInput'];
-// TODO Fix
-const validChildren = [...componentsWithInvalidState, 'RadioGroup', 'CheckboxGroup', undefined];
+const validChildren = [...componentsWithInvalidState, 'RadioGroup', 'CheckboxGroup'];
 
 export const hasInvalidProp = (children: FormFieldProps['children']) => {
   if (Children.count(children) !== 1) {

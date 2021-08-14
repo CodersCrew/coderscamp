@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -13,11 +13,11 @@ import { NumberInput } from '@coderscamp/ui/components/NumberInput';
 import { Radio } from '@coderscamp/ui/components/Radio';
 import { RadioGroup } from '@coderscamp/ui/components/RadioGroup';
 
-import { FormFooter } from '../FormFooter';
-import { FormHeader } from '../FormHeader';
-import { StorageHelper } from '../helpers/storageHelper';
+import { StorageHelper } from '../../../helpers/storageHelper';
+import { FormProps } from '../../../types/formTypes';
+import { FormFooter } from '../../FormUI/FormFooter';
+import { FormHeader } from '../../FormUI/FormHeader';
 import { validationSchemaStepOne } from '../validationSchemas';
-import { FormProps } from './types';
 
 export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
   const {
@@ -26,28 +26,41 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
     formState: { errors },
     control,
     watch,
+    getValues,
+    setValue,
   } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(validationSchemaStepOne),
-    defaultValues: {
-      name: '',
-      email: '',
-      town: '',
-      yearOfBirth: 2000,
-      gender: '',
-      educationStatus: '',
-      fromWhere: [],
-      source: '',
-      thoughts: '',
-    },
   });
+
+  useEffect(() => {
+    // TODO Refactor and extract to custom hook
+    window.scrollTo(0, 0);
+    StorageHelper.getValue('formStepOne').then((res) => {
+      if (res) {
+        const values = getValues();
+
+        Object.keys(JSON.parse(res)).forEach((key) => {
+          setValue(key as keyof typeof values, JSON.parse(res)[key]);
+        });
+      }
+    });
+
+    const saveInterval = setInterval(() => {
+      StorageHelper.setValue('formStepOne', JSON.stringify(getValues()));
+    }, 1000 * 60);
+
+    return () => {
+      clearInterval(saveInterval);
+    };
+  }, []);
 
   const watchSource: string[] = watch('fromWhere');
 
   const onSubmit = (data: any) => {
     setCurrentStep(1);
     StorageHelper.setValue('formStepNumber', 1);
-    console.log({ ...data });
+    StorageHelper.setValue('formStepOne', JSON.stringify(data));
   };
 
   return (

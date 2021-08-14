@@ -12,11 +12,11 @@ import { Radio } from '@coderscamp/ui/components/Radio';
 import { RadioGroup } from '@coderscamp/ui/components/RadioGroup';
 import { Textarea } from '@coderscamp/ui/components/Textarea';
 
-import { FormFooter } from '../FormFooter';
-import { FormHeader } from '../FormHeader';
-import { StorageHelper } from '../helpers/storageHelper';
+import { StorageHelper } from '../../../helpers/storageHelper';
+import { FormProps } from '../../../types/formTypes';
+import { FormFooter } from '../../FormUI/FormFooter';
+import { FormHeader } from '../../FormUI/FormHeader';
 import { validationSchemaStepTwo } from '../validationSchemas';
-import { FormProps } from './types';
 
 export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
   const {

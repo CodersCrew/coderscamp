@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 
-import { StorageHelper } from './helpers/storageHelper';
-import { FormStepOne, FormStepThree, FormStepTwo } from './Steps';
+import { FormStepOne, FormStepThree, FormStepTwo } from '../../components/FormElements/Steps';
+import { StorageHelper } from '../../helpers/storageHelper';
 
 export const Form = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -16,16 +16,16 @@ export const Form = () => {
     });
   }, []);
 
-  const formElements = [
-    <FormStepOne setCurrentStep={setCurrentStep} currentStep={currentStep} key={0} />,
-    <FormStepTwo setCurrentStep={setCurrentStep} currentStep={currentStep} key={1} />,
-    <FormStepThree setCurrentStep={setCurrentStep} currentStep={currentStep} key={2} />,
-  ];
+  const formElements = {
+    0: <FormStepOne setCurrentStep={setCurrentStep} key={0} />,
+    1: <FormStepTwo setCurrentStep={setCurrentStep} key={1} />,
+    2: <FormStepThree setCurrentStep={setCurrentStep} key={2} />,
+  };
 
   return (
     <Flex backgroundColor="gray.100">
       <Flex maxWidth="720px" margin="80px auto 192px auto" background="#fff">
-        {formElements[currentStep]}
+        {formElements[currentStep as keyof typeof formElements]}
       </Flex>
     </Flex>
   );

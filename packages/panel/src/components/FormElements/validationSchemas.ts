@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 
+// TODO Extract constants
 const requiredMessage = 'To pole jest wymagane';
 
 export const validationSchemaStepOne = yup.object({
@@ -19,7 +20,7 @@ export const validationSchemaStepOne = yup.object({
     .string()
     .notRequired()
     .when('fromWhere', {
-      is: (values: string[]) => values.includes('Z innego źródła'),
+      is: (values: string[]) => values && values.includes('Z innego źródła'),
       then: yup.string().required(requiredMessage),
     }),
   thoughts: yup.string().required(requiredMessage),
@@ -32,7 +33,7 @@ export const validationSchemaStepTwo = yup.object({
     .string()
     .notRequired()
     .when('prevParticipation', {
-      is: (value: string) => value !== 'Nie',
+      is: (value: string) => value === 'Tak, ukończyłem/am kurs' || value === 'Tak, ale nie ukończyłem/am kursu',
       then: yup.string().required(requiredMessage),
     }),
   campExpectations: yup.string().required(requiredMessage),

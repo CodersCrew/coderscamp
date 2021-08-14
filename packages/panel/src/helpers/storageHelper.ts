@@ -1,5 +1,7 @@
 type StorageName = 'formStepOne' | 'formStepTwo' | 'formStepThree' | 'formStepNumber';
 
+// TODO Improve and add interfaces
+
 export class StorageHelper {
   static setValue(name: StorageName, value: any) {
     localStorage.setItem(name, value);
