@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 
-import type { User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser } from '@coderscamp/shared/models/user';
 import { createObjectMock } from '@coderscamp/shared/utils/test';
 
 import { UsersRepository } from '../../users/users.repository';
 import { UserFromGithub } from '../../users/users.types';
 import { GithubService } from './github.service';
 
-const createUser = (githubId: number): User => ({
+const createUser = (githubId: number): RegisteredUser => ({
   id: Math.round(Math.random() * 100),
   fullName: 'Name',
   githubId,
