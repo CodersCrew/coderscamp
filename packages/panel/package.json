@@ -11,14 +11,17 @@
   "dependencies": {
     "@coderscamp/shared": "0.0.1",
     "@coderscamp/ui": "0.0.1",
+    "@hookform/resolvers": "2.7.1",
     "@toast-ui/react-calendar": "1.0.5",
     "dotenv": "10.0.0",
     "joi": "17.4.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-hook-form": "7.12.2",
     "react-router-dom": "5.2.0",
     "react-use": "17.2.4",
-    "tui-calendar": "1.13.1"
+    "tui-calendar": "1.13.1",
+    "yup": "0.32.9"
   },
   "devDependencies": {
     "@types/react": "17.0.17",
