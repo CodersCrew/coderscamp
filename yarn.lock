@@ -2669,6 +2669,7 @@ __metadata:
     "@nestjs/cli": 8.1.1
     "@nestjs/common": 8.0.6
     "@nestjs/core": 8.0.6
+    "@nestjs/cqrs": 8.0.0
     "@nestjs/jwt": 8.0.0
     "@nestjs/passport": 8.0.1
     "@nestjs/platform-express": 8.0.6
@@ -2687,6 +2688,7 @@ __metadata:
     cookie-parser: 1.4.5
     dotenv: 10.0.0
     express: 4.17.1
+    nanoid: 3.1.25
     node-mocks-http: 1.10.1
     passport: 0.4.1
     passport-github2: 0.1.12
@@ -4051,6 +4053,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/cqrs@npm:8.0.0":
+  version: 8.0.0
+  resolution: "@nestjs/cqrs@npm:8.0.0"
+  peerDependencies:
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+    reflect-metadata: 0.1.13
+    rxjs: ^7.2.0
+  checksum: 17d249bd540009af8cb0d76a8cba62fa08b7f38705058fb29f2e015905a00873b66c85e81cf23b4698aefd486a53c55043b2bc79e307494c67f9f16fb8505fbc
+  languageName: node
+  linkType: hard
+
 "@nestjs/jwt@npm:8.0.0":
   version: 8.0.0
   resolution: "@nestjs/jwt@npm:8.0.0"
@@ -4287,10 +4301,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polka/url@npm:^1.0.0-next.15":
-  version: 1.0.0-next.15
-  resolution: "@polka/url@npm:1.0.0-next.15"
-  checksum: 10f5ebf60b1c6237a36c6f62d90b0426e660c3d8afb4db3cee9c25231eb1f76bed55cb8845bc145187793396a07fa9592fe591e7333e7fa3dc639b741f9cf6c7
+"@polka/url@npm:^1.0.0-next.17":
+  version: 1.0.0-next.17
+  resolution: "@polka/url@npm:1.0.0-next.17"
+  checksum: 6a24aa7a04b3b50fa42e9c7c2f3ca46a762773850b663c4e5ed67939ff94c66d5361d1a1866cc82a0c171c3dd043b62b30881a04f51fc77dc9efc3716b77d563
   languageName: node
   linkType: hard
 
@@ -11066,9 +11080,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.564, electron-to-chromium@npm:^1.3.723, electron-to-chromium@npm:^1.3.793":
-  version: 1.3.805
-  resolution: "electron-to-chromium@npm:1.3.805"
-  checksum: 1397b35c0e59ede7f9cbbec0b14d81e80951ef458390cebbdc59e822681f0c4bf4bad42d6683c48fa76a14cce13415012c2091da38ce036059e12ae0dae1e8ef
+  version: 1.3.806
+  resolution: "electron-to-chromium@npm:1.3.806"
+  checksum: cba7104935f8fe9d5d466a7ade478021a7ede8d8c8ad5a13bf11022ebbc316270065bb2ed7ecd3fb450bbf1351628d123d4efadd600001f97c05e6628f0de59d
   languageName: node
   linkType: hard
 
@@ -17070,7 +17084,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.23":
+"nanoid@npm:3.1.25, nanoid@npm:^3.1.23":
   version: 3.1.25
   resolution: "nanoid@npm:3.1.25"
   bin:
@@ -20212,9 +20226,9 @@ fsevents@^1.2.7:
   linkType: hard
 
 "reading-time@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "reading-time@npm:1.3.0"
-  checksum: abdc7403d74ae9269ff273b32fd00bebba50e4bda08129fc2fab995f495dc4d7c8e9802d5960a0aa67b840566ef1ec87fcf46c46fc348d31ea4d1d5f369fc154
+  version: 1.4.0
+  resolution: "reading-time@npm:1.4.0"
+  checksum: 9eb2acd7492b7432f26e9cfc62eb704a488ce0b1f0c3cd96d9df8f5ee92cbf367a0212736f4660e898e983fc22cd1b5a3be78664f0ff1d34485e0292573c8e94
   languageName: node
   linkType: hard
 
@@ -21358,13 +21372,13 @@ resolve@^2.0.0-next.3:
   linkType: hard
 
 "sirv@npm:^1.0.7":
-  version: 1.0.12
-  resolution: "sirv@npm:1.0.12"
+  version: 1.0.14
+  resolution: "sirv@npm:1.0.14"
   dependencies:
-    "@polka/url": ^1.0.0-next.15
+    "@polka/url": ^1.0.0-next.17
     mime: ^2.3.1
     totalist: ^1.0.0
-  checksum: 30f56cfd94654bbc57d47688e369a64b09eeaf41543205003d4cf969565b35618996260e401f591485e3d4bba6cea9c782381d05f442fb5f9e2db7c7c7c3f70d
+  checksum: 3d6fbc8d3ca93050abcbaa58c32dd91dc704a0215a7504eecd5fe33c1a158c20b6137d7b5390634e246899546f490a7ca0ac3fb5a9046cff1780b732d1fd2c00
   languageName: node
   linkType: hard
 

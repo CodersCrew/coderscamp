@@ -1,23 +1,24 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 
-import type { GetAllUsersResponse, GetMeResponse } from '@coderscamp/shared/models/user';
+import { GetMeResponse, UserErrorMessage } from '@coderscamp/shared/api';
+import type { UserId as Id } from '@coderscamp/shared/models';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { UserId } from '../auth/jwt/user-id.decorator';
+import { UsersMapper } from './users.mapper';
 import { UsersRepository } from './users.repository';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  @Get('/')
-  async getAll(): Promise<GetAllUsersResponse> {
-    return this.usersRepository.getAll();
-  }
-
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  async getMe(@UserId() id: number): Promise<GetMeResponse> {
-    return this.usersRepository.getById(id);
+  async getMe(@UserId() id: Id): Promise<GetMeResponse> {
+    const user = await this.usersRepository.findById(id);
+
+    if (!user) throw new NotFoundException(UserErrorMessage.USER_NOT_FOUND);
+
+    return UsersMapper.userToPlain(user);
   }
 }

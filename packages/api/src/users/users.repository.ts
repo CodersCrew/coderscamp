@@ -1,26 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import type { User } from '@coderscamp/shared/models/user';
+import type { RegisteredUser, User, UserId } from '@coderscamp/shared/models';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { USER_REPOSITORY_PORT, UserRepositoryPort } from '../contracts/user.repository';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(@Inject(USER_REPOSITORY_PORT) private readonly repository: UserRepositoryPort) {}
 
-  async getAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
+  async findByGithubId(githubId: number): Promise<RegisteredUser | User | null> {
+    return this.repository.findByGithubId(githubId);
   }
 
-  async create(userData: Omit<User, 'id'>): Promise<User> {
-    return this.prisma.user.create({ data: userData });
+  async updateUser(data: Partial<User>): Promise<User> {
+    return this.repository.update(data) as unknown as User;
   }
 
-  async getById(id: number): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+  async findById(id: UserId) {
+    return this.repository.findById(id);
   }
 
-  async getByGithubId(githubId: number): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { githubId } });
+  async create(user: RegisteredUser) {
+    return this.repository.createUser(user);
   }
 }

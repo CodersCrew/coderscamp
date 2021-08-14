@@ -19,4 +19,6 @@ export type User = RegisteredUser & {
 
 export type RegisteredUserDTO = RegisteredUser;
 
+export type UserDTO = User;
+
 export type GetAllUsersResponse = User[];
