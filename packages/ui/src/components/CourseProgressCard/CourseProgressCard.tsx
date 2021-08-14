@@ -10,10 +10,8 @@ interface Statistic {
   max: number;
 }
 
-type Stats = Statistic[];
-
 export interface CourseProgressCardProps extends BoxProps {
-  stats: Stats;
+  stats: Statistic[];
 }
 
 export const CourseProgressCard = ({ stats, ...props }: CourseProgressCardProps) => {
@@ -27,12 +25,12 @@ export const CourseProgressCard = ({ stats, ...props }: CourseProgressCardProps)
           return (
             <Flex direction="column" key={value.name}>
               <Flex justify="space-between" pt="24px">
-                <Typography as="p" weight="medium" size="sm" color="gray.900">
+                <Typography as="p" weight="medium" size="sm" color="gray.900" mb="4px">
                   {value.name}
                 </Typography>
                 <Typography as="p" size="sm" color="gray.400">{`(${value.value}/${value.max})`}</Typography>
               </Flex>
-              <Progress value={value.value} max={value.max} />
+              <Progress value={value.value} max={value.max} borderRadius="2px" />
             </Flex>
           );
         })}
