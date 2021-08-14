@@ -1,26 +1,16 @@
-import type { GithubUser } from '../auth/github/github.types';
-import type { JwtPayload } from '../auth/jwt/jwt.types';
-import type { UserFromGithub, UserFromJwt } from './users.types';
+import type { RegisteredUser, RegisteredUserDTO, User, UserDTO } from '@coderscamp/shared/models';
 
 export class UsersMapper {
-  static fromGithubToDomain(user: GithubUser): UserFromGithub {
-    return {
-      fullName: user.name,
-      email: user.email,
-      image: user.avatar_url,
-      githubId: user.id,
-    };
+  static userToDomain(value: UserDTO): User {
+    return value;
   }
 
-  static fromJwtToDomain(payload: JwtPayload): UserFromJwt {
-    return {
-      id: Number(payload.sub),
-    };
+  static userToPlain(value: RegisteredUser): RegisteredUserDTO;
+  static userToPlain(value: User): UserDTO {
+    return value;
   }
 
-  static fromDomainToJwt(user: UserFromJwt): JwtPayload {
-    return {
-      sub: String(user.id),
-    };
+  static registeredUserToPlain(value: RegisteredUser): RegisteredUserDTO {
+    return value;
   }
 }

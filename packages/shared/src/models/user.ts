@@ -1,11 +1,22 @@
-export type User = {
-  id: number;
+export type UserId = string;
+
+export type RegisteredUser = {
+  id: UserId;
   githubId: number;
-  fullName: string;
-  email: string;
+  fullName: string | null;
+  email: string | null;
   image: string;
 };
 
-export type GetAllUsersResponse = User[];
+export type NotRegisteredUser = Omit<RegisteredUser, 'id'>;
 
-export type GetMeResponse = User | null;
+export type User = RegisteredUser & {
+  gender: string;
+  town: string;
+  birthYear: number;
+  educationStatus: string;
+};
+
+export type RegisteredUserDTO = RegisteredUser;
+
+export type GetAllUsersResponse = User[];
