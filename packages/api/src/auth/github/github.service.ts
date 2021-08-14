@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@coderscamp/shared/models/user';
+import { RegisteredUser, User } from '@coderscamp/shared/models/user';
 
 import { UsersRepository } from '../../users/users.repository';
 import { UserFromGithub } from '../../users/users.types';
@@ -9,7 +9,7 @@ import { UserFromGithub } from '../../users/users.types';
 export class GithubService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async authorizeUser(githubUserData: UserFromGithub): Promise<User> {
+  async authorizeUser(githubUserData: UserFromGithub): Promise<User | RegisteredUser> {
     let user = await this.usersRepository.getByGithubId(githubUserData.githubId);
 
     if (!user) {
