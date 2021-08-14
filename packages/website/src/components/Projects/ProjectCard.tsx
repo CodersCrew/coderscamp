@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button } from '@coderscamp/ui/components/Button';
+import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
@@ -26,7 +27,7 @@ export const ProjectCard = ({ project, isSmallMobile }: ProjectCardProps) => {
   const buttonHasIcon = useBreakpointValue({ base: true, md: false, lg: true });
 
   return (
-    <VStack spacing="32px" p="24px" border="1px solid" borderColor="gray.300" borderRadius="8px">
+    <Flex direction="column" p="24px" h="100%" border="1px solid" borderColor="gray.300" borderRadius="8px">
       <VStack spacing="12px" align="start">
         <Typography size="xl" weight="extrabold" color="gray.900">
           {project.name}
@@ -35,7 +36,7 @@ export const ProjectCard = ({ project, isSmallMobile }: ProjectCardProps) => {
           {project.description}
         </Typography>
       </VStack>
-      <Stack spacing="12px" width="100%" direction={isSmallMobile ? 'column' : 'row'}>
+      <Stack spacing="12px" width="100%" pt="32px" mt="auto" direction={isSmallMobile ? 'column' : 'row'}>
         <Button {...buttonProps} href={project.gitHubUrl} icon={buttonHasIcon ? <SolidGitHubIcon /> : undefined}>
           Zobacz kod
         </Button>
@@ -43,6 +44,6 @@ export const ProjectCard = ({ project, isSmallMobile }: ProjectCardProps) => {
           Otwórz aplikację
         </Button>
       </Stack>
-    </VStack>
+    </Flex>
   );
 };
