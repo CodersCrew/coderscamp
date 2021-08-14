@@ -1,5 +1,6 @@
 import { About } from '@/components/About';
 import { BigNumbers } from '@/components/BigNumbers/BigNumbers';
+import { CurriculumSection } from '@/components/CurriculumSection';
 import { Hero } from '@/components/Hero';
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
       <Hero />
       <About />
       <BigNumbers />
+      <CurriculumSection />
     </>
   );
 };

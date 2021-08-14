@@ -1,0 +1,1 @@
+export { CurriculumSection } from './CurriculumSection';
