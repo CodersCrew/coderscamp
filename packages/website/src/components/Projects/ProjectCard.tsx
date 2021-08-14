@@ -1,14 +1,16 @@
 import React from 'react';
 
 import { Button } from '@coderscamp/ui/components/Button';
-import { HStack, VStack } from '@coderscamp/ui/components/Stack';
+import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
+import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidGitHubIcon, SolidWindowIcon } from '@coderscamp/ui/icons';
 
 import { Project } from './Projects.data';
 
 interface ProjectCardProps {
   project: Project;
+  isSmallMobile: boolean;
 }
 
 const buttonProps = {
@@ -20,25 +22,27 @@ const buttonProps = {
   size: 'sm',
 } as const;
 
-export const ProjectCard = ({ project: { name, description, gitHubUrl, demoUrl } }: ProjectCardProps) => {
+export const ProjectCard = ({ project, isSmallMobile }: ProjectCardProps) => {
+  const buttonHasIcon = useBreakpointValue({ base: true, md: false, lg: true });
+
   return (
-    <VStack spacing="32px" p="24px" border="1px solid" borderColor="gray.300" borderRadius="8px" width="400px">
+    <VStack spacing="32px" p="24px" border="1px solid" borderColor="gray.300" borderRadius="8px">
       <VStack spacing="12px" align="start">
         <Typography size="xl" weight="extrabold" color="gray.900">
-          {name}
+          {project.name}
         </Typography>
         <Typography size="md" color="gray.500">
-          {description}
+          {project.description}
         </Typography>
       </VStack>
-      <HStack spacing="12px" width="100%">
-        <Button {...buttonProps} href={gitHubUrl} icon={<SolidGitHubIcon />}>
+      <Stack spacing="12px" width="100%" direction={isSmallMobile ? 'column' : 'row'}>
+        <Button {...buttonProps} href={project.gitHubUrl} icon={buttonHasIcon ? <SolidGitHubIcon /> : undefined}>
           Zobacz kod
         </Button>
-        <Button {...buttonProps} href={demoUrl} icon={<SolidWindowIcon />}>
+        <Button {...buttonProps} href={project.demoUrl} icon={buttonHasIcon ? <SolidWindowIcon /> : undefined}>
           Otwórz aplikację
         </Button>
-      </HStack>
+      </Stack>
     </VStack>
   );
 };

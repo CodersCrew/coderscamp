@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { ComponentType } from 'react';
+import dynamic from 'next/dynamic';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
-import { HStack, VStack } from '@coderscamp/ui/components/Stack';
+import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-import { ProjectCard } from './ProjectCard';
-import { projects } from './Projects.data';
+const ProjectsCarousel = dynamic(
+  import('./ProjectsCarousel').then((mod) => mod.ProjectsCarousel) as Promise<ComponentType>,
+);
 
 export const Projects = () => {
   return (
-    <Flex justifyContent="center" py={{ base: '40px', lg: '80px' }} px="16px">
-      <VStack spacing={{ base: '32px', lg: '40px' }} w="1280px">
+    <Flex justifyContent="center" py={{ base: '40px', lg: '80px' }} px={{ base: '16px', md: '24px', lg: '64px' }}>
+      <VStack spacing={{ base: '32px', lg: '40px' }} maxW="min(1280px, 100%)">
         <VStack spacing="32px" textAlign="center">
           <Typography size="4xl" color="gray.900" weight="extrabold">
             Przykładowe projekty z poprzedniej edycji
@@ -23,11 +25,7 @@ export const Projects = () => {
             poniżej.
           </Typography>
         </VStack>
-        <HStack spacing="40px">
-          {projects.map((project) => (
-            <ProjectCard key={project.name} project={project} />
-          ))}
-        </HStack>
+        <ProjectsCarousel />
       </VStack>
     </Flex>
   );
