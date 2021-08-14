@@ -1,3 +1,5 @@
+import 'swiper/swiper.scss';
+
 import type { AppProps } from 'next/app';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
