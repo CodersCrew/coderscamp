@@ -15,4 +15,7 @@ module.exports = withPlugins([withTranspileModules(monorepoPackageNames), withIm
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 });
