@@ -10,7 +10,7 @@ import { GithubService } from './github.service';
 import { GithubAuthGuardReq } from './github.types';
 
 const user = {
-  id: 1,
+  id: '1',
   fullName: 'Name',
   githubId: 123,
   email: 'example@test.com',
@@ -37,7 +37,7 @@ describe('Github controller', () => {
       authorizeUser: () => Promise.resolve(user),
     };
     jwtService = {
-      generateToken: (_user: { id: number }) => tokenValue,
+      generateToken: (_user: { id: string }) => tokenValue,
     };
 
     const module = await Test.createTestingModule({
