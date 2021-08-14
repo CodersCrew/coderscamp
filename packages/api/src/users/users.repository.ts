@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { nanoid } from 'nanoid';
 
-import type { RegisteredUser, User, UserId } from '@coderscamp/shared/models';
+import type { NotRegisteredUser, RegisteredUser, User, UserId } from '@coderscamp/shared/models';
 
 import { USER_REPOSITORY_PORT, UserRepositoryPort } from '../contracts/user.repository';
 
@@ -20,7 +21,7 @@ export class UsersRepository {
     return this.repository.findById(id);
   }
 
-  async create(user: RegisteredUser) {
-    return this.repository.createUser(user);
+  async create(user: NotRegisteredUser) {
+    return this.repository.createUser({ ...user, id: nanoid() });
   }
 }

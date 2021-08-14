@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
+import { nanoid } from 'nanoid';
 
-import type { User } from '@coderscamp/shared/models/user';
+import type { NotRegisteredUser, RegisteredUser } from '@coderscamp/shared/models/user';
 import { createObjectMock } from '@coderscamp/shared/utils/test';
 
 import { UsersRepository } from '../../users/users.repository';
-import { UserFromGithub } from '../../users/users.types';
 import { GithubService } from './github.service';
 
-const createUser = (githubId: number): User => ({
-  id: Math.round(Math.random() * 100),
+const createUser = (githubId: number): RegisteredUser => ({
+  id: nanoid(),
   fullName: 'Name',
   githubId,
   email: 'example@test.com',
@@ -21,7 +21,7 @@ describe('Github controller', () => {
 
   beforeEach(async () => {
     usersRepository = {
-      getByGithubId: jest.fn(),
+      findByGithubId: jest.fn(),
       create: jest.fn(),
     };
 
@@ -37,9 +37,9 @@ describe('Github controller', () => {
     it('Returns already existing user when `githubId` matches some record in db', async () => {
       const dbUser = createUser(111);
 
-      usersRepository.getByGithubId = jest.fn().mockResolvedValue(dbUser);
+      usersRepository.findByGithubId = jest.fn().mockResolvedValue(dbUser);
 
-      const githubUser = createObjectMock<UserFromGithub>({ githubId: dbUser.githubId });
+      const githubUser = createObjectMock<NotRegisteredUser>({ githubId: dbUser.githubId });
 
       const result = await service.authorizeUser(githubUser);
 
@@ -50,14 +50,13 @@ describe('Github controller', () => {
     it("Creates and returns a new user when `githubId` doesn't match any record in db", async () => {
       const newUser = createUser(222);
 
-      usersRepository.getByGithubId = jest.fn().mockResolvedValue(null);
+      usersRepository.findByGithubId = jest.fn().mockResolvedValue(null);
       usersRepository.create = jest.fn().mockResolvedValue(newUser);
 
-      const githubUser = createObjectMock<UserFromGithub>({ githubId: newUser.githubId });
-
+      const githubUser = createObjectMock<NotRegisteredUser>({ githubId: newUser.githubId });
       const result = await service.authorizeUser(githubUser);
 
-      expect(usersRepository.getByGithubId).toHaveBeenCalledWith(newUser.githubId);
+      expect(usersRepository.findByGithubId).toHaveBeenCalledWith(newUser.githubId);
       expect(usersRepository.create).toHaveBeenCalledWith(githubUser);
       expect(result).toEqual(newUser);
     });

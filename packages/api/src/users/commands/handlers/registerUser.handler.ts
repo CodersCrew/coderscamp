@@ -1,6 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
-import { nanoid } from 'nanoid';
 
 import { UserErrorMessage } from '@coderscamp/shared/api';
 import type { RegisteredUser } from '@coderscamp/shared/models';
@@ -18,7 +17,7 @@ export class RegisterUserHandler implements ICommandHandler<RegisterUserCommand>
 
     if (userFromDataBase) throw new BadRequestException(UserErrorMessage.USER_ALREADY_EXISTS);
 
-    const user = await this.repository.create({ ...userData, id: nanoid() });
+    const user = await this.repository.create(userData);
 
     this.eventBus.publish(new UserRegisteredEvent(user));
 

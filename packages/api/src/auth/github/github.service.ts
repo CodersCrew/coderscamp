@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { nanoid } from 'nanoid';
 
 import { NotRegisteredUser, RegisteredUser } from '@coderscamp/shared/models/user';
 
@@ -13,7 +12,7 @@ export class GithubService {
     let user = await this.usersRepository.findByGithubId(githubUserData.githubId);
 
     if (!user) {
-      user = await this.usersRepository.create({ ...githubUserData, id: nanoid() });
+      user = await this.usersRepository.create(githubUserData);
     }
 
     return user;
