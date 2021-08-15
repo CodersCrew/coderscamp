@@ -10,8 +10,8 @@ interface ScheduleContainerProps {
 
 export const ScheduleContainer = ({ title, children }: ScheduleContainerProps) => {
   return (
-    <Center flexDirection="column" mx="auto" w="100%" mt="120px" mb="80px">
-      <Typography size="4xl" weight="extrabold" m="64px 0" textAlign="center">
+    <Center flexDirection="column" mx="auto" w="100%" my="80px">
+      <Typography size="4xl" weight="extrabold" mb="64px" textAlign="center" color="gray.900">
         {title}
       </Typography>
       {children}

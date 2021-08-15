@@ -39,7 +39,7 @@ const schedulePlan = [
 
 export const MentorSchedule = () => {
   return (
-    <ScheduleContainer title="Chce zostać mentorem - co dalej?">
+    <ScheduleContainer title="Chcę zostać mentorem - co dalej?">
       <SimpleGrid columns={{ xl: 4, lg: 2, sm: 1 }} spacing="40px" width={{ xl: '1280px', lg: '900px' }} px="12px">
         {schedulePlan.map((item) => (
           <ScheduleItem key={item.index} {...item} />
