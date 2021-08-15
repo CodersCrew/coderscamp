@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -20,6 +20,8 @@ export const FormStepThree: React.FC<FormProps> = ({ setCurrentStep }) => {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
+    getValues,
   } = useForm({
     mode: 'onSubmit',
     resolver: yupResolver(validationSchemaStepThree),
@@ -30,11 +32,51 @@ export const FormStepThree: React.FC<FormProps> = ({ setCurrentStep }) => {
     },
   });
 
-  const onSubmit = (data: any) => console.log({ ...data });
+  // TODO Refactor
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    StorageHelper.getValue('formStepThree').then((res) => {
+      if (res) {
+        const values = getValues();
+
+        Object.keys(JSON.parse(res)).forEach((key) => {
+          setValue(key as keyof typeof values, JSON.parse(res)[key]);
+        });
+      }
+    });
+
+    const saveInterval = setInterval(() => {
+      StorageHelper.setValue('formStepThree', JSON.stringify(getValues()));
+    }, 1000 * 60);
+
+    return () => {
+      clearInterval(saveInterval);
+    };
+  }, []);
+
+  const onSubmit = (data: any) => {
+    StorageHelper.setValue('formStepThree', JSON.stringify(data));
+
+    let newData = {};
+
+    StorageHelper.getValue('formStepOne').then((res) => {
+      if (res) {
+        newData = { ...JSON.parse(res) };
+      }
+
+      StorageHelper.getValue('formStepTwo').then((result) => {
+        if (result) {
+          newData = { ...newData, ...JSON.parse(result), ...data };
+          console.log(newData);
+        }
+      });
+    });
+  };
 
   const goBack = () => {
     setCurrentStep(1);
     StorageHelper.setValue('formStepNumber', 1);
+    StorageHelper.setValue('formStepThree', JSON.stringify(getValues()));
   };
 
   return (

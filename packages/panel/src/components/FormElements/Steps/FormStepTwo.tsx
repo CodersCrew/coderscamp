@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -25,6 +25,8 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
     formState: { errors },
     control,
     watch,
+    getValues,
+    setValue,
   } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(validationSchemaStepTwo),
@@ -33,14 +35,37 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
   const watchPrevParticipation = watch('prevParticipation');
   const watchHours = watch('avgTimeForCamp');
 
+  // TODO Refactor
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    StorageHelper.getValue('formStepTwo').then((res) => {
+      if (res) {
+        const values = getValues();
+
+        Object.keys(JSON.parse(res)).forEach((key) => {
+          setValue(key as keyof typeof values, JSON.parse(res)[key]);
+        });
+      }
+    });
+
+    const saveInterval = setInterval(() => {
+      StorageHelper.setValue('formStepTwo', JSON.stringify(getValues()));
+    }, 1000 * 60);
+
+    return () => {
+      clearInterval(saveInterval);
+    };
+  }, []);
+
   const onSubmit = (data: any) => {
     setCurrentStep(2);
-    console.log({ ...data });
+    StorageHelper.setValue('formStepTwo', JSON.stringify(data));
   };
 
   const goBack = () => {
     setCurrentStep(0);
     StorageHelper.setValue('formStepNumber', 0);
+    StorageHelper.setValue('formStepTwo', JSON.stringify(getValues()));
   };
 
   return (

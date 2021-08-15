@@ -33,8 +33,8 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
     resolver: yupResolver(validationSchemaStepOne),
   });
 
+  // TODO Refactor
   useEffect(() => {
-    // TODO Refactor and extract to custom hook
     window.scrollTo(0, 0);
     StorageHelper.getValue('formStepOne').then((res) => {
       if (res) {
