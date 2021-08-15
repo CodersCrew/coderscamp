@@ -15,7 +15,6 @@ const meta: Meta = {
   title: 'Components / FormControl',
   component: FormControl,
   argTypes: {
-    spacings: { control: false },
     children: { control: false },
   },
 };

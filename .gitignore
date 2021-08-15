@@ -53,5 +53,6 @@ out
 .pnp.*
 
 # Generated
+packages/ui/src/svg
 packages/ui/src/icons
 .cache-loader
