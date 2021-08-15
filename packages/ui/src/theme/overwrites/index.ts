@@ -8,7 +8,7 @@ import { createStyles } from './styles';
 export const createTheme = (globalStyles: Styles['global']) =>
   extendTheme({
     ...foundations,
-    ...createStyles(globalStyles),
+    styles: createStyles(globalStyles),
     components,
     config: {
       initialColorMode: 'light',
