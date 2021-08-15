@@ -19,3 +19,5 @@ export const Input = forwardRef<InputProps, 'input'>(({ size, disabled = false, 
 
   return <ChakraInput size={inputSize} isDisabled={disabled} isInvalid={invalid} ref={ref} {...props} />;
 });
+
+Input.displayName = 'Input';

@@ -2,8 +2,6 @@ const path = require('path');
 
 const findProps = (identifier) => identifier.name === 'props';
 
-const removeSizeInfo = (str) => str.replace(/\d{2}Px/, '');
-
 /* eslint-disable no-param-reassign */
 const setElementName = (jsx) => (elementName) => {
   jsx.openingElement.name.name = elementName;
@@ -60,9 +58,8 @@ const templateFunction = ({ template, types }, opts, { componentName, props, jsx
 const indexTemplateFunction = (filePaths) => {
   const exportEntries = filePaths.map((filePath) => {
     const basename = path.basename(filePath, path.extname(filePath));
-    const name = removeSizeInfo(basename);
 
-    return `export { ${name}Icon } from './${basename}';`;
+    return `export { ${basename}Icon } from './${basename}';`;
   });
 
   return `${exportEntries.join('\n')}\n`;
