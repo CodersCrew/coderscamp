@@ -15,3 +15,6 @@ export const createTheme = (globalStyles: Styles['global']) =>
       useSystemColorMode: false,
     },
   });
+
+// eslint-disable-next-line import/no-default-export
+export default createTheme({});
