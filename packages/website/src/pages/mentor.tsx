@@ -1,6 +1,6 @@
 import { MentorBenefits } from '@/components/MentorBenefits';
 
-const Mentors = () => {
+const Mentor = () => {
   return (
     <>
       <MentorBenefits />
@@ -8,4 +8,4 @@ const Mentors = () => {
   );
 };
 
-export default Mentors;
+export default Mentor;
