@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 import { Survey } from '@coderscamp/shared/models/survey';
+
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class SurveyRepository {

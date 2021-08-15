@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import type { Response } from 'express';
 
-import { SurveyPostRequest, SurveyPostResponse } from '@coderscamp/shared/api';
+import { SurveyPostRequest } from '@coderscamp/shared/api';
 import { UserId as Id } from '@coderscamp/shared/models';
 
 import { UserId } from '../auth/jwt/user-id.decorator';
@@ -15,11 +16,12 @@ export class SurveyController {
   async saveUserSurvey(
     @Body() userSurveyRequest: SurveyPostRequest,
     @UserId() userId: Id,
-  ): Promise<SurveyPostResponse> {
+    @Res() res: Response,
+  ): Promise<void> {
     const data = SurveyMapper.surveyPostRequestToDomain({ ...userSurveyRequest, id: userId });
 
     await this.surveyService.saveUserSurvey(data);
 
-    return { message: 'Operation successful' };
+    res.sendStatus(204);
   }
 }
