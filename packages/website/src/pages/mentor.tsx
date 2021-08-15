@@ -1,7 +1,13 @@
+import { MentorPerspective } from '@/components/MentorPerspective';
 import { MentorRequirements } from '@/components/MentorRequirements';
 
 const Mentor = () => {
-  return <MentorRequirements />;
+  return (
+    <>
+      <MentorPerspective />
+      <MentorRequirements />
+    </>
+  );
 };
 
 export default Mentor;
