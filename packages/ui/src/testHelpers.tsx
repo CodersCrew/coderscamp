@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Queries, queries, render, RenderOptions, RenderResult } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { ThemeProvider } from './theme';
 
@@ -20,13 +18,11 @@ export const withExpectedError =
     return result;
   };
 
-export const renderWithTheme = <
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement,
->(
-  ui: React.ReactElement,
-  options: RenderOptions<Q, Container> = {},
-): RenderResult<Q, Container> => {
-  return render(<ThemeProvider>{ui}</ThemeProvider>, options);
-};
+const withTheme = <Render extends typeof render>(renderFc: Render) =>
+  ((...args: Parameters<Render>) => {
+    const [ui, options] = args;
+
+    return renderFc(<ThemeProvider>{ui}</ThemeProvider>, options);
+  }) as Render;
+
+export const renderWithTheme = withTheme(render);
