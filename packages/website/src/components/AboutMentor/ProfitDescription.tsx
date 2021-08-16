@@ -6,7 +6,7 @@ export interface ProfitDescriptionProps extends FlexProps {
   content: string;
 }
 
-export const ProfitDescription: React.FC<ProfitDescriptionProps> = ({ title, content, ...props }) => {
+export const ProfitDescription = ({ title, content, ...props }: ProfitDescriptionProps) => {
   return (
     <Flex flexDirection="column" textAlign="start" {...props}>
       <Typography size="xl" weight="medium" color="gray.900">
