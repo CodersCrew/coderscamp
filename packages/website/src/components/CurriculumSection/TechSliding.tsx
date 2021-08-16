@@ -2,20 +2,20 @@ import React from 'react';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Flex } from '@coderscamp/ui/components/Flex';
-import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { keyframes } from '@coderscamp/ui/components/Keyframes';
-import { SolidGitHubIcon } from '@coderscamp/ui/icons';
 
-interface TechCarouselProps {
+import { techNames } from './TechIcons';
+
+interface TechSlidingProps {
   direction?: 'normal' | 'reverse';
 }
 
-export const TechCarousel = ({ direction = 'normal' }: TechCarouselProps) => {
-  const spin = keyframes`
+export const TechSliding = ({ direction = 'normal' }: TechSlidingProps) => {
+  const sliding = keyframes`
    0%    { left: 0; }
   100%  { left: -200%; }
 `;
-  const animation = `${spin} infinite 60s linear ${direction}`;
+  const animation = `${sliding} infinite 60s linear ${direction}`;
 
   return (
     <Box
@@ -32,10 +32,11 @@ export const TechCarousel = ({ direction = 'normal' }: TechCarouselProps) => {
         animation={animation}
         sx={{ position: 'absolute', top: 0, left: 0, transform: 'translate3d(0, 0, 0)' }}
       >
-        <IconButton icon={<SolidGitHubIcon />} size="lg" aria-label="Chat Icon Button" />
-        <IconButton icon={<SolidGitHubIcon />} size="lg" aria-label="Chat Icon Button" />
-        <IconButton icon={<SolidGitHubIcon />} size="lg" aria-label="Chat Icon Button" />
-        <IconButton icon={<SolidGitHubIcon />} size="lg" aria-label="Chat Icon Button" />
+        {techNames.map((tech) => (
+          <Box fontSize="78px" key={tech.name}>
+            {tech.value}
+          </Box>
+        ))}
       </Flex>
     </Box>
   );
