@@ -1,10 +1,12 @@
 import React from 'react';
 
 import { Button } from '@coderscamp/ui/components/Button';
-import { Flex } from '@coderscamp/ui/components/Flex';
+// import { Flex } from '@coderscamp/ui/components/Flex';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { SolidDownloadIcon } from '@coderscamp/ui/icons';
+
+import { TechCarousel } from './TechCarousel';
 
 export const CurriculumSection = () => {
   return (
@@ -12,6 +14,7 @@ export const CurriculumSection = () => {
       <Typography size="4xl" weight="bold" color="gray.900">
         Czego nauczysz się na kursie?
       </Typography>
+      <TechCarousel />
       <VStack maxW="min(1280px, 100%)" spacing={8}>
         <Typography as="p" color="gray.500" size="lg" textAlign="center">
           Przygotowaliśmy dla Ciebie pełen wykaz najważniejszych zagadnień, które odnajdziesz w ramach naszego
@@ -31,6 +34,7 @@ export const CurriculumSection = () => {
         >
           Pobierz plan kursu
         </Button>
+        <TechCarousel />
       </VStack>
     </VStack>
   );
