@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactText } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { Badge } from '../Badge';
 import { Flex } from '../Flex';
@@ -17,7 +17,42 @@ export interface SidebarItemProps {
   disabled?: boolean;
 }
 
+const defaultIconButtonStyles = {
+  textColor: 'gray.400',
+  _groupHover: { color: 'gray.500' },
+};
+
+const activeIconButtonStyles = {
+  textColor: 'gray.500',
+};
+
+const defaultTypographyStyles = {
+  color: 'gray.600',
+  _groupHover: { color: 'gray.900' },
+};
+
+const activeTypographyStyles = {
+  color: 'gray.900',
+};
+
+const defaultBadgeStyles = {
+  textColor: 'gray.600',
+  _groupHover: { bg: 'gray.200' },
+};
+
+const activeBadgeStyles = {
+  textColor: 'gray.900',
+  bg: '#FFF',
+};
+
 export const SidebarItem = ({ children, path, count, icon, iconSelected, disabled }: SidebarItemProps) => {
+  // const location = useLocation();
+  const active = useRouteMatch(path);
+
+  const iconButtonStyles = active ? activeIconButtonStyles : defaultIconButtonStyles;
+  const typographyStyles = active ? activeTypographyStyles : defaultTypographyStyles;
+  const badgeStyles = active ? activeBadgeStyles : defaultBadgeStyles;
+
   return (
     <Flex
       w="100%"
@@ -39,38 +74,21 @@ export const SidebarItem = ({ children, path, count, icon, iconSelected, disable
       >
         <HStack h="100%" pr="12px" justify="space-between">
           <HStack spacing="0">
-            {icon && (
+            {icon && iconSelected && (
               <IconButton
-                icon={icon}
+                icon={active ? iconSelected : icon}
                 size="md"
                 variant="link"
                 aria-label=""
-                textColor="gray.400"
                 _focus={{ boxShadow: 'none' }}
-                _groupHover={{ color: 'gray.500' }}
+                {...iconButtonStyles}
               />
             )}
-            <Typography
-              size="sm"
-              weight="medium"
-              color="gray.600"
-              pl={icon ? '4px' : '12px'}
-              _groupHover={{ color: 'gray.900' }}
-              _groupActive={{ color: 'gray.900' }}
-              _groupDisabled={{ color: 'gray.600' }}
-            >
+            <Typography size="sm" weight="medium" pl={icon && iconSelected ? '4px' : '12px'} {...typographyStyles}>
               {children}
             </Typography>
           </HStack>
-          {count && (
-            <Badge
-              textColor="gray.600"
-              _groupHover={{ bg: 'gray.200' }}
-              _groupActive={{ bg: '#FFF', textColor: 'gray.900' }}
-            >
-              {count}
-            </Badge>
-          )}
+          {count && <Badge {...badgeStyles}>{count}</Badge>}
         </HStack>
       </Link>
     </Flex>

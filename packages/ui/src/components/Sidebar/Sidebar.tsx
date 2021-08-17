@@ -3,7 +3,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import {
   OutlinedCalendarIcon,
-  OutlinedChecklistIcon,
   OutlinedDashboardIcon,
   OutlinedRocketIcon,
   OutlinedSelectorIcon,
@@ -27,34 +26,22 @@ export interface SidebarProps {
 
 const SidebarItems = [
   {
-    text: 'Dashboard',
+    title: 'Dashboard',
     path: '/panel',
     icon: <OutlinedDashboardIcon />,
     iconSelected: <SolidDashboardIcon />,
-    count: 5,
   },
   {
-    text: 'Projekty',
+    title: 'Projekty',
     path: '/projekty',
     icon: <OutlinedRocketIcon />,
     iconSelected: <SolidRocketIcon />,
   },
   {
-    text: 'Kalendarz',
+    title: 'Kalendarz',
     path: '/kalendarz',
     icon: <OutlinedCalendarIcon />,
     iconSelected: <SolidCalendarIcon />,
-  },
-  {
-    text: 'TestDisabled',
-    path: 'disabled',
-    icon: <OutlinedChecklistIcon />,
-    disabled: true,
-  },
-  {
-    text: 'TestOneIcon',
-    path: 'whatever',
-    icon: <OutlinedRocketIcon />,
   },
 ];
 
@@ -68,15 +55,8 @@ export const Sidebar = ({ width }: SidebarProps) => {
           </Center>
           <VStack w="100%" p="0 8px" spacing="4px" flexGrow={1}>
             {SidebarItems.map((item) => (
-              <SidebarItem
-                key={item.text}
-                path={item.path}
-                icon={item.icon}
-                iconSelected={item.iconSelected}
-                disabled={item.disabled}
-                count={item.count}
-              >
-                {item.text}
+              <SidebarItem key={item.title} path={item.path} icon={item.icon} iconSelected={item.iconSelected}>
+                {item.title}
               </SidebarItem>
             ))}
           </VStack>
@@ -86,10 +66,10 @@ export const Sidebar = ({ width }: SidebarProps) => {
           <Center w="100%" p="16px">
             <HStack w="100%" spacing="0">
               <HStack w="100%" spacing="12px">
-                {/* dodaj src do avatara */}
+                {/* in the future add src to the avatar */}
                 <Avatar size="sm" />
                 <Stack spacing="0">
-                  {/* zamien na user.name i user.surname */}
+                  {/* in the future add name and surname from user*/}
                   <Typography color="gray.700" size="sm" weight="medium">
                     Christiana
                   </Typography>
