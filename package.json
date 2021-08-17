@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "engines": {
-    "yarn": "3.0.0",
+    "yarn": "3.0.1",
     "node": "14.x"
   },
   "license": "GPL-3.0-only",
@@ -28,17 +28,17 @@
     "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
-    "@types/jest": "26.0.24",
-    "@typescript-eslint/eslint-plugin": "4.29.0",
-    "@typescript-eslint/parser": "4.29.0",
-    "concurrently": "6.2.0",
+    "@types/jest": "27.0.1",
+    "@typescript-eslint/eslint-plugin": "4.29.1",
+    "@typescript-eslint/parser": "4.29.1",
+    "concurrently": "6.2.1",
     "cross-env": "7.0.3",
     "eslint": "7.32.0",
     "eslint-config-airbnb-typescript": "12.3.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-react": "1.1.7",
     "eslint-import-resolver-typescript": "2.4.0",
-    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-import": "2.24.0",
     "eslint-plugin-jest": "24.4.0",
     "eslint-plugin-jest-dom": "3.9.0",
     "eslint-plugin-jest-formatting": "3.0.0",
