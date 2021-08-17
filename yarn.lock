@@ -2769,8 +2769,11 @@ __metadata:
     "@testing-library/user-event": 13.2.1
     "@types/react": 17.0.17
     "@types/react-dom": 17.0.9
+    "@types/react-router-dom": 5.1.8
     framer-motion: 4.1.17
     react: 17.0.2
+    react-router-dom: 5.2.0
+    storybook-react-router: 1.0.8
   peerDependencies:
     react: 17.0.2
   languageName: unknown
@@ -21861,6 +21864,20 @@ resolve@^2.0.0-next.3:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   checksum: 8896a144897ea0e04b5bbaa2ff8e1065009d04b5ee93206396971af0960d470a9de406b9df67016241a02b0fccd4a8de95276ff30165555aca503625aca0283b
+  languageName: node
+  linkType: hard
+
+"storybook-react-router@npm:1.0.8":
+  version: 1.0.8
+  resolution: "storybook-react-router@npm:1.0.8"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@storybook/addon-actions": ^4.0.0||^5.0.0||5.2.0-beta.13
+    react: "*"
+    react-dom: "*"
+    react-router: ^4.0.0||^5.0.0
+  checksum: cfa3a782ec1433b109d5012186f796238898b83cb57200eaa7201c603688b1254d9fffd27cbf7fc48041bbacf5287d674d38384ef833413b6dec25dc00f96b1b
   languageName: node
   linkType: hard
 
