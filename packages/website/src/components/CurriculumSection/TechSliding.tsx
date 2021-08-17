@@ -12,28 +12,24 @@ interface TechSlidingProps {
 
 export const TechSliding = ({ direction = 'normal' }: TechSlidingProps) => {
   const sliding = keyframes`
-   0%    { left: 0; }
-  100%  { left: -200%; }
+   100% {
+    transform: translateX(-66.6666%);
+  }
 `;
   const animation = `${sliding} infinite 60s linear ${direction}`;
 
   return (
-    <Box
-      w="100%"
-      bg="gray.100"
-      h="140px"
-      sx={{ position: 'relative', overflow: 'hidden', transform: 'translate3d(0, 0, 0)' }}
-    >
+    <Box w="100%" bg="gray.100" h="140px" sx={{ position: 'relative', overflow: 'hidden' }}>
       <Flex
         w="300%"
         h="100%"
         align="center"
         justify="space-between"
         animation={animation}
-        sx={{ position: 'absolute', top: 0, left: 0, transform: 'translate3d(0, 0, 0)' }}
+        sx={{ position: 'absolute', top: 0, left: 0, transform: 'translate3d(0,0,0)' }}
       >
         {techNames.map((tech) => (
-          <Box fontSize="78px" key={tech.name}>
+          <Box fontSize={{ base: '52px', lg: '78px' }} px={{ base: '32px', lg: 0 }} key={tech.name}>
             {tech.value}
           </Box>
         ))}

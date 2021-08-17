@@ -9,15 +9,17 @@ import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 import { TechSliding } from './TechSliding';
 
 export const CurriculumSection = () => {
+  const textSize = { base: 'md', md: 'lg' } as const;
+
   return (
     <Flex justify="center" align="center" direction="column" my="80px" width="100%">
-      <Typography size="4xl" weight="bold" color="gray.900" mb="64px">
+      <Typography size="4xl" weight="bold" color="gray.900" p={{ base: '32px 16px 64px' }}>
         Czego nauczysz się na kursie?
       </Typography>
       <TechSliding />
 
       <VStack maxW="min(1280px, 100%)" my="40px">
-        <Typography mb="32px" as="p" color="gray.500" size="lg" textAlign="center">
+        <Typography as="p" p={{ base: '32px 16px 64px' }} color="gray.500" size={textSize} textAlign="center">
           Przygotowaliśmy dla Ciebie pełen wykaz najważniejszych zagadnień, które odnajdziesz w ramach naszego
           interaktywnego planu nauki. Dbamy, abyś podczas kursu zawsze korzystał z najnowszych wersji bibliotek i
           narzędzi, także pamiętaj, że zawartość niektórych sekcji planu może jeszcze lekko ewoluować na przestrzeni
