@@ -26,7 +26,7 @@ export const TechSliding = ({ direction = 'normal' }: TechSlidingProps) => {
         align="center"
         justify="space-between"
         animation={animation}
-        sx={{ position: 'absolute', top: 0, left: 0, transform: 'translate3d(0,0,0)' }}
+        sx={{ position: 'absolute', top: 0, left: 0, transform: 'translateX(0)' }}
       >
         {techNames.map((tech) => (
           <Box fontSize={{ base: '52px', lg: '78px' }} px={{ base: '32px', lg: 0 }} key={tech.name}>
