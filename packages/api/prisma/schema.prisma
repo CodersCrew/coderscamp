@@ -14,3 +14,10 @@ model User {
   email    String
   image    String
 }
+
+model LearningMaterial {
+  id             Int    @id @default(autoincrement())
+  url            String
+  completedCount Int    @default(0)
+  userId         Int    @unique
+}

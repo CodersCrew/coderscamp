@@ -16,6 +16,8 @@ export type Env = Readonly<{
   TOKEN_PREFIX: string;
   TOKEN_COOKIE_NAME: string;
   COOKIE_SECRET: string;
+
+  PROCESS_ST_CHECKLIST_URL: string;
 }>;
 
 const populateEnv = (): NodeJS.ProcessEnv => {
@@ -40,6 +42,8 @@ const validateEnvVariables = (env: NodeJS.ProcessEnv): Env => {
     TOKEN_PREFIX: Joi.string().required(),
     TOKEN_COOKIE_NAME: Joi.string().required(),
     COOKIE_SECRET: Joi.string().required(),
+
+    PROCESS_ST_CHECKLIST_URL: Joi.string().required(),
   });
 
   const validation = schema.validate(env, { stripUnknown: true });
