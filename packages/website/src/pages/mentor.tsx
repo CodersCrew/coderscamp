@@ -1,4 +1,5 @@
 import { AboutMentor } from '@/components/AboutMentor';
+import { MentorBenefits } from '@/components/MentorBenefits';
 import { MentorPerspective } from '@/components/MentorPerspective';
 import { MentorRequirements } from '@/components/MentorRequirements';
 
@@ -7,6 +8,7 @@ const Mentor = () => {
     <>
       <AboutMentor />
       <MentorPerspective />
+      <MentorBenefits />
       <MentorRequirements />
     </>
   );
