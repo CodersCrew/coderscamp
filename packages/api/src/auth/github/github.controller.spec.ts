@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Test } from '@nestjs/testing';
 import httpMocks from 'node-mocks-http';
+import { v4 as uuidv4 } from 'uuid';
 
 import { env } from '@/common/env';
 
@@ -11,7 +12,7 @@ import { GithubService } from './github.service';
 import { GithubAuthGuardReq } from './github.types';
 
 const user = {
-  id: '1',
+  id: uuidv4(),
   fullName: 'Name',
   githubId: 123,
   email: 'example@test.com',

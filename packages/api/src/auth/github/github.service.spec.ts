@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { v4 as uuidv4 } from 'uuid';
 
 import type { User } from '@coderscamp/shared/models/user';
 import { createObjectMock } from '@coderscamp/shared/utils/test';
@@ -9,7 +10,7 @@ import { GithubService } from './github.service';
 import type { GithubId } from './github.types';
 
 const createUser = (githubId: GithubId): User => ({
-  id: String(Math.round(Math.random() * 100)),
+  id: uuidv4(),
   fullName: 'Name',
   githubId,
   email: 'example@test.com',
