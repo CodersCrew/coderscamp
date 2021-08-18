@@ -8,7 +8,7 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   githubId Int    @unique
   fullName String
   email    String
@@ -16,8 +16,8 @@ model User {
 }
 
 model LearningMaterial {
-  id             Int    @id @default(autoincrement())
+  id             String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   url            String
   completedCount Int    @default(0)
-  userId         Int    @unique
+  userId         String @unique @db.Uuid
 }

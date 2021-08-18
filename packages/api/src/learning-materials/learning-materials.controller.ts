@@ -6,7 +6,8 @@ import type {
 } from '@coderscamp/shared/models/learning-material';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
-import { UserId } from '../auth/jwt/user-id.decorator';
+import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
+import type { UserId } from '../users/users.types';
 import { LearningMaterialsService } from './learning-materials.service';
 
 @UseGuards(JwtAuthGuard)
@@ -15,12 +16,12 @@ export class LearningMaterialsController {
   constructor(private readonly learningMaterialsService: LearningMaterialsService) {}
 
   @Get()
-  getLearningMaterial(@UserId() userId: number): Promise<GetLearningMaterialResponse> {
+  getLearningMaterial(@JwtUserId() userId: UserId): Promise<GetLearningMaterialResponse> {
     return this.learningMaterialsService.getLearningMaterialByUserId(userId);
   }
 
   @Post()
-  createLearningMaterial(@UserId() userId: number): Promise<CreateLearningMaterialResponse> {
+  createLearningMaterial(@JwtUserId() userId: UserId): Promise<CreateLearningMaterialResponse> {
     return this.learningMaterialsService.createLearningMaterial(userId);
   }
 }
