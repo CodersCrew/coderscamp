@@ -39,6 +39,9 @@ export const techNames = [
   { name: 'JavascriptIcon', value: <JavascriptIcon /> },
   { name: 'JestIcon', value: <JestIcon /> },
   { name: 'MongodbIcon', value: <MongodbIcon /> },
+];
+
+export const techNamesBottom = [
   { name: 'NestjsIcon', value: <NestjsIcon /> },
   { name: 'NetlifyIcon', value: <NetlifyIcon /> },
   { name: 'NodejsIcon', value: <NodejsIcon /> },

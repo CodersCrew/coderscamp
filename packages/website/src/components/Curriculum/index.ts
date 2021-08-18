@@ -1,0 +1,1 @@
+export { Curriculum } from './Curriculum';
