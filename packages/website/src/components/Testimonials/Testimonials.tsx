@@ -11,7 +11,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ title, children }) =
   return (
     <Center py={{ base: '40px', lg: '80px' }} px={{ base: '16px', md: '24px', lg: '64px' }} bg="gray.50">
       <VStack spacing={{ base: '32px', sm: '64px' }} maxW="min(1280px, 100%)">
-        <Typography size="4xl" color="gray.900" weight="extrabold">
+        <Typography textAlign="center" size="4xl" color="gray.900" weight="extrabold">
           {title}
         </Typography>
         {children}
