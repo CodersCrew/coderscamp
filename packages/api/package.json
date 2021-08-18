@@ -14,8 +14,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config jest-e2e.config.ts",
     "generate": "prisma generate",
-    "synchronize": "prisma db push",
-    "migrate": "prisma migrate dev"
+    "db:sync": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset"
   },
   "dependencies": {
     "@coderscamp/shared": "0.0.1",
