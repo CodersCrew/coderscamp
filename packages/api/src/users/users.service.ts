@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { GithubId } from 'src/auth/github/github.types';
+import type { GithubUserId } from 'src/auth/github/github.types';
 
 import type { User } from '@coderscamp/shared/models/user';
 
@@ -22,7 +22,7 @@ export class UsersService {
     return this.usersRepository.findUnique({ where: { id } });
   }
 
-  getByGithubId(githubId: GithubId): Promise<User | null> {
+  getByGithubId(githubId: GithubUserId): Promise<User | null> {
     return this.usersRepository.findUnique({ where: { githubId } });
   }
 }

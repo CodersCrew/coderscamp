@@ -7,9 +7,9 @@ import { createObjectMock } from '@coderscamp/shared/utils/test';
 import { UsersService } from '../../users/users.service';
 import { UserFromGithub } from '../../users/users.types';
 import { GithubService } from './github.service';
-import type { GithubId } from './github.types';
+import type { GithubUserId } from './github.types';
 
-const createUser = (githubId: GithubId): User => ({
+const createUser = (githubId: GithubUserId): User => ({
   id: uuidv4(),
   fullName: 'Name',
   githubId,
