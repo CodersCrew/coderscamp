@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { UsersModule } from '../users/users.module';
-import { UsersRepository } from '../users/users.repository';
+import { UsersService } from '../users/users.service';
 import { UsersAdapter } from './adapters/users.adapter';
 import { LearningMaterialsController } from './learning-materials.controller';
 import { LearningMaterialsRepository } from './learning-materials.repository';
@@ -16,8 +16,8 @@ import { USERS_PORT } from './ports/users.port';
     LearningMaterialsRepository,
     {
       provide: USERS_PORT,
-      useFactory: (usersRepository: UsersRepository) => new UsersAdapter(usersRepository),
-      inject: [UsersRepository],
+      useFactory: (usersService: UsersService) => new UsersAdapter(usersService),
+      inject: [UsersService],
     },
   ],
 })
