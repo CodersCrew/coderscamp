@@ -3,8 +3,9 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import type { GetAllUsersResponse, GetMeResponse } from '@coderscamp/shared/models/user';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
-import { UserId } from '../auth/jwt/user-id.decorator';
+import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
 import { UsersService } from './users.service';
+import type { UserId } from './users.types';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +18,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  async getMe(@UserId() id: number): Promise<GetMeResponse> {
+  async getMe(@JwtUserId() id: UserId): Promise<GetMeResponse> {
     return this.usersService.getById(id);
   }
 }

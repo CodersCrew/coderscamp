@@ -2,8 +2,10 @@ import type { Request } from 'express';
 
 import type { GithubStrategy } from './github.strategy';
 
+export type GithubId = number;
+
 export interface GithubUser {
-  id: number;
+  id: GithubId;
   name: string;
   email: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention

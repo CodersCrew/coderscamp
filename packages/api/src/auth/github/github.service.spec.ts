@@ -6,9 +6,10 @@ import { createObjectMock } from '@coderscamp/shared/utils/test';
 import { UsersService } from '../../users/users.service';
 import { UserFromGithub } from '../../users/users.types';
 import { GithubService } from './github.service';
+import type { GithubId } from './github.types';
 
-const createUser = (githubId: number): User => ({
-  id: Math.round(Math.random() * 100),
+const createUser = (githubId: GithubId): User => ({
+  id: String(Math.round(Math.random() * 100)),
   fullName: 'Name',
   githubId,
   email: 'example@test.com',

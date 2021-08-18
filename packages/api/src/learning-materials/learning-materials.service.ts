@@ -1,6 +1,7 @@
 import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { LearningMaterial } from '@prisma/client';
 
+import type { UserId } from '../users/users.types';
 import { LearningMaterialsRepository } from './learning-materials.repository';
 import { generateProcessStChecklist } from './learning-materials.utils';
 import { USERS_PORT, UsersPort } from './ports/users.port';
@@ -12,7 +13,7 @@ export class LearningMaterialsService {
     @Inject(USERS_PORT) private readonly usersPort: UsersPort,
   ) {}
 
-  async createLearningMaterial(userId: number): Promise<LearningMaterial> {
+  async createLearningMaterial(userId: UserId): Promise<LearningMaterial> {
     const userName = await this.usersPort.getUserFullNameById(userId);
     const currentLearningMaterials = await this.learningMaterialsRepository.findUnique({ where: { userId } });
 
@@ -25,7 +26,7 @@ export class LearningMaterialsService {
     return this.learningMaterialsRepository.create({ data: { userId, url } });
   }
 
-  async getLearningMaterialByUserId(userId: number): Promise<LearningMaterial | null> {
+  async getLearningMaterialByUserId(userId: UserId): Promise<LearningMaterial | null> {
     return this.learningMaterialsRepository.findUnique({ where: { userId } });
   }
 }

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import type { GithubId } from 'src/auth/github/github.types';
 
 import type { User } from '@coderscamp/shared/models/user';
 
 import { UsersRepository } from './users.repository';
+import type { UserId } from './users.types';
 
 @Injectable()
 export class UsersService {
@@ -16,11 +18,11 @@ export class UsersService {
     return this.usersRepository.create({ data: userData });
   }
 
-  getById(id: number): Promise<User | null> {
+  getById(id: UserId): Promise<User | null> {
     return this.usersRepository.findUnique({ where: { id } });
   }
 
-  getByGithubId(githubId: number): Promise<User | null> {
+  getByGithubId(githubId: GithubId): Promise<User | null> {
     return this.usersRepository.findUnique({ where: { githubId } });
   }
 }

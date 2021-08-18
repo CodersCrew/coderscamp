@@ -4,13 +4,14 @@ import httpMocks from 'node-mocks-http';
 
 import { env } from '@/common/env';
 
+import { UserId } from '../../users/users.types';
 import { JwtService } from '../jwt/jwt.service';
 import { GithubController } from './github.controller';
 import { GithubService } from './github.service';
 import { GithubAuthGuardReq } from './github.types';
 
 const user = {
-  id: 1,
+  id: '1',
   fullName: 'Name',
   githubId: 123,
   email: 'example@test.com',
@@ -37,7 +38,7 @@ describe('Github controller', () => {
       authorizeUser: () => Promise.resolve(user),
     };
     jwtService = {
-      generateToken: (_user: { id: number }) => tokenValue,
+      generateToken: (_user: { id: UserId }) => tokenValue,
     };
 
     const module = await Test.createTestingModule({
