@@ -113,6 +113,15 @@ describe('SliderSteps', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
+  it('displays step number instead of dots when `showDots` prop is `false`', () => {
+    const count = 3;
+    const selectedIndex = 1;
+
+    renderSliderSteps({ count, selectedIndex, showDots: false });
+
+    expect(screen.getByText(`${selectedIndex + 1} / ${count}`)).toBeInTheDocument();
+  });
+
   it('throws when component receives `selectedIndex` grater than the number of rendered dots', () => {
     expect(withExpectedError(() => renderSliderSteps({ count: 3, selectedIndex: 4 }))).toThrow();
   });
