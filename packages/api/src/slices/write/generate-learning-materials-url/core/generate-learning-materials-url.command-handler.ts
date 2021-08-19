@@ -1,20 +1,32 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { ApplicationService } from '../../../shared/core/application-service';
+import {APPLICATION_SERVICE, ApplicationService} from '../../../shared/core/application-service';
 import { EventStreamName } from '../../../shared/core/event-stream-name.valueboject';
-import { IdGenerator } from '../../../shared/core/id-generator';
+import {ID_GENERATOR, IdGenerator} from '../../../shared/core/id-generator';
 import { DomainEvent } from '../../../shared/core/slices';
-import { TimeProvider } from '../../../shared/core/time-provider.port';
+import {TIME_PROVIDER, TimeProvider} from '../../../shared/core/time-provider.port';
 import { GenerateLearningMaterialsUrl } from '../api/generate-learning-materials-url.command';
-import { LearningMaterialsUrlWasGenerated } from '../api/learning-materials-url-was-generated.event';
-import { LearningMaterialsUrl, LearningMaterialsUrlGenerator } from './learning-materials-url-generator';
+import {
+  isLearningMaterialsUrlWasGenerated,
+  LearningMaterialsUrlWasGenerated,
+} from '../api/learning-materials-url-was-generated.event';
+import {
+  LEARNING_MATERIALS_URL_GENERATOR,
+  LearningMaterialsUrl,
+  LearningMaterialsUrlGenerator
+} from './learning-materials-url-generator';
+import {Inject} from "@nestjs/common";
 
 @CommandHandler(GenerateLearningMaterialsUrl)
 export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandler<GenerateLearningMaterialsUrl> {
   constructor(
+    @Inject(LEARNING_MATERIALS_URL_GENERATOR)
     private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
+    @Inject(ID_GENERATOR)
     private readonly idGenerator: IdGenerator,
+    @Inject(TIME_PROVIDER)
     private readonly timeProvider: TimeProvider,
+    @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,
   ) {}
 
@@ -33,12 +45,12 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
     command: GenerateLearningMaterialsUrl,
     learningMaterialsUrl: LearningMaterialsUrl,
   ): DomainEvent[] {
-    const urlAlreadyGenerated = previousEvents.reduce<boolean>(
-      (acc, event) => (event instanceof LearningMaterialsUrlWasGenerated ? true : acc),
-      false,
+    const state = previousEvents.reduce<{ generated: boolean }>(
+      (acc, event) => (isLearningMaterialsUrlWasGenerated(event) ? { generated: true } : acc),
+      { generated: false },
     );
 
-    if (urlAlreadyGenerated) {
+    if (state.generated) {
       throw new Error('Learning resources url was already generated!');
     }
 

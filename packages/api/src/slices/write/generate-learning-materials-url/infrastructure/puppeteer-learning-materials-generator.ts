@@ -33,11 +33,3 @@ export class PuppeteerLearningMaterialsGenerator implements LearningMaterialsUrl
     return generateProcessStChecklist(userFullname);
   }
 }
-
-export class MockedLearningResourcesGenerator implements LearningMaterialsUrlGenerator {
-  async generateUrlFor(userFullname: UserFullname): Promise<LearningMaterialsUrl> {
-    return `https://app.process.st/runs/${encodeURIComponent(
-      userFullname ?? 'No name',
-    )}-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA`;
-  }
-}
