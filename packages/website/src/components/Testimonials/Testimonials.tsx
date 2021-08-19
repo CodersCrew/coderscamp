@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Center } from '@coderscamp/ui/components/Center';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';

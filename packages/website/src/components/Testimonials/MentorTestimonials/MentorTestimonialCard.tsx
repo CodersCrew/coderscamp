@@ -18,10 +18,10 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
             {name}
           </Typography>
           <Typography size="md" color="gray.500">
-            {company}
+            {companyPosition}
           </Typography>
           <Typography size="md" color="gray.500">
-            {companyPosition}
+            {company}
           </Typography>
         </VStack>
       </Center>
