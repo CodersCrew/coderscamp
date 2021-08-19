@@ -21,3 +21,15 @@ model LearningMaterial {
   completedCount Int    @default(0)
   userId         String @unique @db.Uuid
 }
+
+model Event {
+  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type          String
+  streamId      String @db.Uuid
+  streamGroup   String
+  streamVersion Int
+  occurredAt    DateTime
+  data          Json
+  metadata      Json
+  globalOrder   Int @default(autoincrement())
+}

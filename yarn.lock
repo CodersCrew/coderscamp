@@ -2668,6 +2668,7 @@ __metadata:
     "@nestjs/cli": 8.1.1
     "@nestjs/common": 8.0.6
     "@nestjs/core": 8.0.6
+    "@nestjs/cqrs": 8.0.0
     "@nestjs/jwt": 8.0.0
     "@nestjs/passport": 8.0.1
     "@nestjs/platform-express": 8.0.6
@@ -2686,6 +2687,7 @@ __metadata:
     class-transformer: 0.4.0
     class-validator: 0.13.1
     cookie-parser: 1.4.5
+    dayjs: 1.10.6
     dotenv: 10.0.0
     express: 4.17.1
     node-mocks-http: 1.10.1
@@ -4019,6 +4021,18 @@ __metadata:
     "@nestjs/websockets":
       optional: true
   checksum: e2a72a1c705c2b9af351165979cded22df0e783e7b5b44683a4a0754a3bd847cec3244843e22ed30e8fa439e95410c2dc0457b36ab2cadb905d8fd51c71f082a
+  languageName: node
+  linkType: hard
+
+"@nestjs/cqrs@npm:8.0.0":
+  version: 8.0.0
+  resolution: "@nestjs/cqrs@npm:8.0.0"
+  peerDependencies:
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+    reflect-metadata: 0.1.13
+    rxjs: ^7.2.0
+  checksum: 17d249bd540009af8cb0d76a8cba62fa08b7f38705058fb29f2e015905a00873b66c85e81cf23b4698aefd486a53c55043b2bc79e307494c67f9f16fb8505fbc
   languageName: node
   linkType: hard
 
@@ -10416,6 +10430,13 @@ __metadata:
   version: 2.23.0
   resolution: "date-fns@npm:2.23.0"
   checksum: 485216d550255a548552db16379e7a5cd440e262b90fbdc0362f63ee71d0e74bd00ce29ca8d76b343f6df36c1ecb6f22edba0b72848a4c32674e755619695c1f
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:1.10.6":
+  version: 1.10.6
+  resolution: "dayjs@npm:1.10.6"
+  checksum: a79af6d19cf1e3aefc231e480037b37df50701e8d0cdbe1736fc6665b7045a159777215c5c8dd42ede7dd3c4c4f4a174d4ddd5bffca51df2a4ba0e0e25a6163c
   languageName: node
   linkType: hard
 
