@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import dayjs from 'dayjs';
 
 import { PrismaService } from '../../../prisma/prisma.service';
-import { EventStream, EventStreamVersion } from '../core/application-service';
-import { EventStore } from '../core/event-store';
+import { EventRepository } from '../core/event-repository';
 import { EventStreamName } from '../core/event-stream-name.valueboject';
 import { DomainEvent } from '../core/slices';
 import { TIME_PROVIDER, TimeProvider } from '../core/time-provider.port';
+import {EventStream, EventStreamVersion} from "../core/slice.types";
 
 @Injectable()
-export class PrismaEventStore implements EventStore {
+export class PrismaEventRepository implements EventRepository {
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider,

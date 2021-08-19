@@ -1,13 +1,14 @@
 import { Inject } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 
-import { ApplicationService, DomainCommand, EventStreamVersion } from '../core/application-service';
-import { EVENT_STORE, EventStore } from '../core/event-store';
+import { ApplicationService} from '../core/application-service';
+import { EVENT_STORE, EventRepository } from '../core/event-repository';
 import { EventStreamName } from '../core/event-stream-name.valueboject';
 import { DomainEvent } from '../core/slices';
+import {DomainCommand, EventStreamVersion} from "../core/slice.types";
 
 export class EventStoreApplicationService implements ApplicationService {
-  constructor(@Inject(EVENT_STORE) private readonly eventStore: EventStore, private readonly eventBus: EventBus) {}
+  constructor(@Inject(EVENT_STORE) private readonly eventStore: EventRepository, private readonly eventBus: EventBus) {}
 
   async execute(streamName: EventStreamName, command: DomainCommand): Promise<void> {
     const eventStream = await this.eventStore.read(streamName);

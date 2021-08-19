@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { APPLICATION_SERVICE } from './core/application-service';
-import { EVENT_STORE } from './core/event-store';
+import { EVENT_STORE } from './core/event-repository';
 import { ID_GENERATOR } from './core/id-generator';
 import { TIME_PROVIDER } from './core/time-provider.port';
 import { EventStoreApplicationService } from './infrastructure/event-store-application-service';
-import { PrismaEventStore } from './infrastructure/prisma-event-store';
+import { PrismaEventRepository } from './infrastructure/prisma-event-repository.service';
 import { SystemTimeProvider } from './infrastructure/system-time-provider';
 import { UuidGenerator } from './infrastructure/uuid-generator';
 
@@ -23,7 +23,7 @@ import { UuidGenerator } from './infrastructure/uuid-generator';
     },
     {
       provide: EVENT_STORE,
-      useClass: PrismaEventStore,
+      useClass: PrismaEventRepository,
     },
     {
       provide: APPLICATION_SERVICE,
