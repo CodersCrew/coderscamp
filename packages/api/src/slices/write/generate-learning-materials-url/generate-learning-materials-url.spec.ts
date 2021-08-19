@@ -2,8 +2,11 @@ import { CommandBus, EventBus, IEvent, QueryBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { EVENT_STORE } from '../../shared/core/event-repository';
+import { EventStreamName } from '../../shared/core/event-stream-name.valueboject';
 import { ID_GENERATOR, IdGenerator } from '../../shared/core/id-generator';
 import { InMemoryEventRepository } from '../../shared/core/in-memory-event-repository';
+import { EventStreamVersion } from '../../shared/core/slice.types';
+import { DomainEvent } from '../../shared/core/slices';
 import { TIME_PROVIDER } from '../../shared/core/time-provider.port';
 import { FixedTimeProvider } from '../../shared/infrastructure/fixed-time-provider';
 import { GenerateLearningMaterialsUrl } from './api/generate-learning-materials-url.command';
@@ -17,7 +20,7 @@ import {
 import { GenerateLearningMaterialsUrlModule } from './generate-learning-materials-url.module';
 
 describe('Generate Learning Materials URL', () => {
-  it('test', async () => {
+  it('test 1', async () => {
     // given
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const { commandBus, time, getLastPublishedEvents } = await generateLearningMaterialsUrlTestingSlice();
@@ -52,6 +55,42 @@ describe('Generate Learning Materials URL', () => {
       }),
     ]);
   });
+
+  it('test 12', async () => {
+    // given
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    const { commandBus, time, givenEventOccurred } =
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      await generateLearningMaterialsUrlTestingSlice();
+    const userId = 'existing-user-id';
+    const generateAt = new Date();
+    const event = LearningMaterialsUrlWasGenerated.event({
+      id: 'generatedId0',
+      occurredAt: generateAt,
+      data: {
+        userId,
+        materialsUrl:
+          'https://app.process.st/runs/existing-user-id-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+      },
+      metadata: { correlationId: 'correlationId', causationId: 'generateLearningMaterialsUrlCommandId' },
+    });
+
+    await givenEventOccurred(EventStreamName.from('LearningMaterialsUrl', userId), event, 0);
+
+    // when
+
+    const retryGenerate = generateAt;
+
+    time.timeTravelTo(retryGenerate);
+    await commandBus.execute(
+      GenerateLearningMaterialsUrl.command({
+        id: 'generateLearningMaterialsUrlCommandId2',
+        issuedAt: retryGenerate,
+        data: { userId },
+        metadata: { correlationId: 'correlationId2' },
+      }),
+    );
+  });
 });
 
 type EventBusSpy = jest.SpyInstance<void, [IEvent[]]>;
@@ -80,6 +119,7 @@ async function generateLearningMaterialsUrlTestingSlice() {
     generate: jest.fn().mockReturnValue(`generatedId${(generatedIds += 1)}`),
   };
 
+  const eventRepository = new InMemoryEventRepository(testTimeProvider);
   const app: TestingModule = await Test.createTestingModule({
     imports: [GenerateLearningMaterialsUrlModule],
   })
@@ -90,7 +130,7 @@ async function generateLearningMaterialsUrlTestingSlice() {
     .overrideProvider(TIME_PROVIDER)
     .useValue(testTimeProvider)
     .overrideProvider(EVENT_STORE)
-    .useValue(new InMemoryEventRepository(testTimeProvider))
+    .useValue(eventRepository)
     .compile();
 
   await app.init();
@@ -105,5 +145,20 @@ async function generateLearningMaterialsUrlTestingSlice() {
     return eventBusSpy.mock.calls[lastEventIndex][0];
   }
 
-  return { commandBus, queryBus, eventBus: eventBusSpy, time: testTimeProvider, getLastPublishedEvents };
+  async function givenEventOccurred(
+    eventStreamName: EventStreamName,
+    event: DomainEvent,
+    streamVersion: EventStreamVersion,
+  ) {
+    await eventRepository.write(eventStreamName, [event], streamVersion);
+  }
+
+  return {
+    commandBus,
+    queryBus,
+    eventBus: eventBusSpy,
+    time: testTimeProvider,
+    getLastPublishedEvents,
+    givenEventOccurred,
+  };
 }

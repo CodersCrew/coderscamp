@@ -1,4 +1,4 @@
-export const EVENT_STREAM_GROUP_SEPARATOR = '-';
+export const EVENT_STREAM_GROUP_SEPARATOR = '_';
 
 export class EventStreamName {
   private constructor(readonly streamGroup: string, readonly streamId: string) {}

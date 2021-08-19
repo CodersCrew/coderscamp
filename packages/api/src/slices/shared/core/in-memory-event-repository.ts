@@ -27,7 +27,11 @@ export class InMemoryEventRepository implements EventRepository {
     ).then();
   }
 
-  writeOne(streamName: EventStreamName, event: DomainEvent, expectedStreamVersion: EventStreamVersion): Promise<void> {
+  private writeOne(
+    streamName: EventStreamName,
+    event: DomainEvent,
+    expectedStreamVersion: EventStreamVersion,
+  ): Promise<void> {
     const foundStream = this.eventStreams[streamName.raw];
 
     if (foundStream && foundStream.find((e) => e.id === event.id)) {
@@ -49,5 +53,7 @@ export class InMemoryEventRepository implements EventRepository {
 
       this.eventStreams[streamName.raw].push(event);
     }
+
+    return Promise.resolve();
   }
 }
