@@ -5,8 +5,8 @@ import { MentorSchedule } from '@/components/Schedule/MentorSchedule/MentorSched
 const Mentor = () => {
   return (
     <>
+	  <MentorPerspective />
       <MentorRequirements />
-      <MentorPerspective />
       <MentorSchedule />
     </>
   );
