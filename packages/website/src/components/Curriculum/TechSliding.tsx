@@ -8,12 +8,12 @@ import { animation } from './TechSlidingAnimation';
 
 export const TechSlidingTop = () => {
   return (
-    <Box w="100%" bg="gray.100" h="140px" sx={{ position: 'relative', overflow: 'hidden' }}>
+    <Box w="100%" bg="gray.100" h={{ base: '100px', lg: '140px' }} sx={{ position: 'relative', overflow: 'hidden' }}>
       <Flex
-        w="150%"
+        w="300%"
         h="100%"
         align="center"
-        justify="space-between"
+        justify="space-evenly"
         animation={animation}
         sx={{ position: 'absolute', top: 0, left: 0, transform: 'translateX(0)' }}
       >
@@ -29,12 +29,12 @@ export const TechSlidingTop = () => {
 
 export const TechSlidingBottom = () => {
   return (
-    <Box w="100%" bg="gray.100" h="140px" sx={{ position: 'relative', overflow: 'hidden' }}>
+    <Box w="100%" bg="gray.100" h={{ base: '100px', lg: '140px' }} sx={{ position: 'relative', overflow: 'hidden' }}>
       <Flex
-        w="150%"
+        w="300%"
         h="100%"
         align="center"
-        justify="space-between"
+        justify="space-evenly"
         animation={`${animation} reverse`}
         sx={{ position: 'absolute', top: 0, left: 0, transform: 'translateX(0)' }}
       >

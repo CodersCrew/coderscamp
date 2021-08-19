@@ -2,7 +2,7 @@ import { keyframes } from '@coderscamp/ui/components/Keyframes';
 
 const sliding = keyframes`
    100% {
-    transform: translateX(-66.6666%);
+    transform: translateX(-66.66%);
   }
 `;
-export const animation = `${sliding} infinite 20s linear`;
+export const animation = `${sliding} 30s linear infinite`;
