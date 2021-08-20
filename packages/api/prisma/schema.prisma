@@ -9,7 +9,6 @@ generator client {
 
 model User {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  githubId Int    @unique
   fullName String
   email    String
   image    String
