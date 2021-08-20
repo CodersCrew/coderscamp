@@ -13,6 +13,11 @@ export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
   const buttonSize = useBreakpointValue({ base: 'xs', sm: 'md' } as const);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenParticipantModal,
+    onOpen: onOpenParticipantModal,
+    onClose: onCloseParticipantModal,
+  } = useDisclosure();
 
   return (
     <Center width="100%">
@@ -29,11 +34,15 @@ export const Navbar = () => {
           <Button size={buttonSize} mr="12px" onClick={onOpen}>
             Zostań mentorem
           </Button>
-          <RecruitmentModal isOpen={isOpen} onClose={onClose} key="mentors" />
-          <Button size={buttonSize} color="brand" onClick={onOpen}>
+          <RecruitmentModal isOpen={isOpen} onClose={onClose} />
+          <Button size={buttonSize} color="brand" onClick={onOpenParticipantModal}>
             Zapisz się na kurs
           </Button>
-          <RecruitmentModal isOpen={isOpen} onClose={onClose} modalText={forParticipant} key="participant" />
+          <RecruitmentModal
+            isOpen={isOpenParticipantModal}
+            onClose={onCloseParticipantModal}
+            modalText={forParticipant}
+          />
         </Flex>
       </HStack>
     </Center>
