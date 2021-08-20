@@ -18,7 +18,7 @@ const requiredValidator = {
   required: 'To pole nie może być puste',
 };
 
-export const ModalUserDataForm = () => {
+export const ModalForm = () => {
   const {
     register,
     handleSubmit,

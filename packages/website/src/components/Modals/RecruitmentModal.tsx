@@ -11,7 +11,7 @@ import {
 import { Typography } from '@coderscamp/ui/components/Typography';
 
 import { forMentors } from './modal.data';
-import { ModalUserDataForm } from './ModalUserDataForm';
+import { ModalForm } from './ModalForm';
 
 type RecruitmentModalProps = {
   isOpen: boolean;
@@ -54,7 +54,7 @@ export const RecruitmentModal = ({ isOpen, onClose, modalText = forMentors }: Re
             <Typography as="p" size="lg" color="gray.500" textAlign="center" mb="32px" mt="12px">
               {modalText.body}
             </Typography>
-            <ModalUserDataForm />
+            <ModalForm />
           </ModalBody>
           <ModalFooter p={0}>
             <Typography as="p" size="sm" color="gray.500" textAlign="center" mt="24px">
