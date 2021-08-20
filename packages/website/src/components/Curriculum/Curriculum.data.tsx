@@ -15,16 +15,17 @@ import {
   NetlifyIcon,
   NodejsIcon,
   NpmIcon,
+  PassportIcon,
   PostgresqlIcon,
   PrettierIcon,
-  ReactOriginalIcon,
+  ReactIcon,
   ReactRouterIcon,
-  ReduxOriginalIcon,
-  TypescriptPlainIcon,
-  VscodePlainIcon,
-  WebpackPlainIcon,
-  YarnOriginalIcon,
-} from '@coderscamp/ui/icons';
+  ReduxIcon,
+  TypescriptIcon,
+  VscodeIcon,
+  WebpackIcon,
+  YarnIcon,
+} from '@coderscamp/ui/icons/technologies';
 
 export const techNames = [
   { name: 'BabelIcon', value: <BabelIcon /> },
@@ -39,20 +40,21 @@ export const techNames = [
   { name: 'JavascriptIcon', value: <JavascriptIcon /> },
   { name: 'JestIcon', value: <JestIcon /> },
   { name: 'MongodbIcon', value: <MongodbIcon /> },
+  { name: 'NestjsIcon', value: <NestjsIcon /> },
 ];
 
 export const techNamesBottom = [
-  { name: 'NestjsIcon', value: <NestjsIcon /> },
   { name: 'NetlifyIcon', value: <NetlifyIcon /> },
   { name: 'NodejsIcon', value: <NodejsIcon /> },
   { name: 'NpmIcon', value: <NpmIcon /> },
+  { name: 'PassportIcon', value: <PassportIcon /> },
   { name: 'PostgresqlIcon', value: <PostgresqlIcon /> },
   { name: 'PrettierIcon', value: <PrettierIcon /> },
-  { name: 'ReactOriginalIcon', value: <ReactOriginalIcon /> },
+  { name: 'ReactIcon', value: <ReactIcon /> },
   { name: 'ReactRouterIcon', value: <ReactRouterIcon /> },
-  { name: 'ReduxOriginalIcon', value: <ReduxOriginalIcon /> },
-  { name: 'TypescriptPlainIcon', value: <TypescriptPlainIcon /> },
-  { name: 'VscodePlainIcon', value: <VscodePlainIcon /> },
-  { name: 'WebpackPlainIcon', value: <WebpackPlainIcon /> },
-  { name: 'YarnOriginalIcon', value: <YarnOriginalIcon /> },
+  { name: 'ReduxIcon', value: <ReduxIcon /> },
+  { name: 'TypescriptIcon', value: <TypescriptIcon /> },
+  { name: 'VscodeIcon', value: <VscodeIcon /> },
+  { name: 'WebpackIcon', value: <WebpackIcon /> },
+  { name: 'YarnIcon', value: <YarnIcon /> },
 ];
