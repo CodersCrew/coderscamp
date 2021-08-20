@@ -10,8 +10,20 @@ generator client {
 model User {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullName String
-  email    String
-  image    String
+  email    String @unique
+  image    String @default("https://www.gravatar.com/avatar?d=mp")
+}
+
+model AuthUser {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email    String @unique
+  password String
+}
+
+model RegistrationForm {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName String
+  email    String @unique
 }
 
 model LearningMaterial {

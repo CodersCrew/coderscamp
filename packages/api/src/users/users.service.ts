@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 
 import { UsersRepository } from './users.repository';
 import type { UserId } from './users.types';
@@ -10,10 +10,6 @@ export class UsersService {
 
   getAll(): Promise<User[]> {
     return this.usersRepository.findMany();
-  }
-
-  create(userData: Omit<User, 'id'>): Promise<User> {
-    return this.usersRepository.create({ data: userData });
   }
 
   getById(id: UserId): Promise<User | null> {

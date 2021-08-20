@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 
@@ -16,6 +16,7 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api');
     app.use(cookieParser(env.COOKIE_SECRET));
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
     await app.listen(env.PORT);
   } catch (ex) {
