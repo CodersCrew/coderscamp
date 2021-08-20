@@ -25,7 +25,7 @@ export const TechSliding = ({ techIconsArray = techNamesTop, isAnimationReverse 
         h="100%"
         align="center"
         justify="space-evenly"
-        animation={`${animation} ${isLargerThan768 ? '30s ' : '10s'} ${isAnimationReverse} `}
+        animation={`${animation} ${isLargerThan768 ? '20s' : '10s'} ${isAnimationReverse} `}
         sx={{ position: 'absolute', top: 0, left: 0, transform: 'translateX(0)' }}
       >
         {techIconsArray.map((tech) => (
