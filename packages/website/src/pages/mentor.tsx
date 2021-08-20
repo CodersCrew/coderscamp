@@ -1,12 +1,12 @@
 import { AboutMentor } from '@/components/AboutMentor';
 import { MentorPerspective } from '@/components/MentorPerspective';
 import { MentorRequirements } from '@/components/MentorRequirements';
-import { RecruitmentMentorsModal } from '@/components/Modals/RecruitmentMentorsModal';
+import { RecruitmentModal } from '@/components/Modals/RecruitmentModal';
 
 const Mentor = () => {
   return (
     <>
-      <RecruitmentMentorsModal />
+      <RecruitmentModal />
       <AboutMentor />
       <MentorPerspective />
       <MentorRequirements />
