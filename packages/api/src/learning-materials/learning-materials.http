@@ -1,0 +1,7 @@
+# Create learning materials for the current user (request takes up to 10s)
+POST {{serverUrl}}/learning-materials
+
+###
+
+# Get learning materials for the current user
+GET {{serverUrl}}/learning-materials
