@@ -1,24 +1,22 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { FormControl } from '@coderscamp/ui/components/FormControl';
 import { HelperText } from '@coderscamp/ui/components/HelperText';
 import { Input } from '@coderscamp/ui/components/Input';
-import { useToast } from '@coderscamp/ui/hooks/useToast';
 
-type FormValues = {
+import { emailValidator } from '../Contact/Form';
+
+type ModalFormValues = {
   name: string;
   email: string;
 };
 
-const EMAIL_REGEX =
-  // eslint-disable-next-line no-useless-escape
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-const requiredValidator = { required: 'To pole jest wymagane' };
-const emailValidator = { pattern: { value: EMAIL_REGEX, message: 'Niepoprawny adres e-mail' } };
+const requiredValidator = {
+  required: 'To pole nie może być puste',
+};
 
 export const ModalUserDataForm = () => {
   const {
@@ -26,11 +24,16 @@ export const ModalUserDataForm = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>();
-  const toast = useToast();
+  } = useForm<ModalFormValues>();
+
+  const onSubmit: SubmitHandler<ModalFormValues> = (data) => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+    reset();
+  };
 
   return (
-    <Flex w="100%" justify="space-between">
+    <Flex w="100%" justify="space-between" onSubmit={handleSubmit(onSubmit)} as="form">
       <FormControl size="lg" maxW="264px">
         <Input {...register('name', requiredValidator)} invalid={Boolean(errors.name)} placeholder="Imię" />
         {errors.name && <HelperText variant="error">{errors.name.message}</HelperText>}

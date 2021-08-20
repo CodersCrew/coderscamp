@@ -5,6 +5,10 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
+import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
+
+import { forParticipant } from './Modals/modal.data';
+import { RecruitmentModal } from './Modals/RecruitmentModal';
 
 export const Hero = () => {
   const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
@@ -13,6 +17,8 @@ export const Hero = () => {
   const mainHeaderSize = { base: '4xl', sm: '6xl', md: '7xl', xl: '8xl' } as const;
   const subheaderSize = { base: 'md', sm: 'xl', md: '2xl' } as const;
   const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}>
@@ -27,9 +33,10 @@ export const Hero = () => {
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand">
+          <Button {...buttonProps} color="brand" onClick={onOpen}>
             Zapisz się na CodersCamp
           </Button>
+          <RecruitmentModal isOpen={isOpen} onClose={onClose} modalText={forParticipant} />
           <Button {...buttonProps}>Pobierz plan kursu</Button>
         </Stack>
       </VStack>
