@@ -4,7 +4,7 @@ import { Hero } from '@/components/Hero';
 import { LearningSources } from '@/components/LearningSources';
 import { Projects } from '@/components/Projects';
 import { Schedule } from '@/components/Schedule';
-import { Testimonials } from '@/components/Testimonials';
+import { AboutTestimonials } from '@/components/Testimonials';
 
 const Home = () => {
   return (
@@ -14,7 +14,7 @@ const Home = () => {
       <BigNumbers />
       <LearningSources />
       <Projects />
-      <Testimonials />
+      <AboutTestimonials />
       <Schedule />
     </>
   );

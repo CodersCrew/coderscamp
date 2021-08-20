@@ -1,0 +1,1 @@
+export { AboutMentor } from './AboutMentor';

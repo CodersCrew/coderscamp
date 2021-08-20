@@ -5,6 +5,7 @@ import { join } from 'path';
 import { env } from '@/common/env';
 
 import { AuthModule } from './auth/auth.module';
+import { LearningMaterialsModule } from './learning-materials/learning-materials.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 
@@ -18,6 +19,6 @@ const productionImports = [
 ];
 
 @Module({
-  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule, AuthModule],
+  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule, AuthModule, LearningMaterialsModule],
 })
 export class AppModule {}
