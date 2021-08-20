@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import dayjs from 'dayjs';
 
-import { EventRepository } from './event-repository';
-import { EventStreamName } from './event-stream-name.valueboject';
-import { EventStream, EventStreamVersion } from './slice.types';
-import { DomainEvent } from './slices';
-import { TIME_PROVIDER, TimeProvider } from './time-provider.port';
+import { EventRepository } from '../../core/event-repository';
+import { EventStreamName } from '../../core/event-stream-name.valueboject';
+import { EventStream, EventStreamVersion } from '../../core/slice.types';
+import { DomainEvent } from '../../core/slices';
+import { TIME_PROVIDER, TimeProvider } from '../../core/time-provider.port';
 
 @Injectable()
 export class InMemoryEventRepository implements EventRepository {
@@ -14,7 +13,7 @@ export class InMemoryEventRepository implements EventRepository {
   constructor(@Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider) {}
 
   async read(streamName: EventStreamName): Promise<EventStream> {
-    return this.getEventsBy(streamName).filter((it) => dayjs(it.occurredAt).isBefore(this.timeProvider.currentTime()));
+    return this.getEventsBy(streamName).filter((it) => it.occurredAt <= this.timeProvider.currentTime());
   }
 
   private getEventsBy(eventStreamName: EventStreamName): DomainEvent[] {

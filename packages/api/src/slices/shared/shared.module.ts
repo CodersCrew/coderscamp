@@ -5,13 +5,14 @@ import { APPLICATION_SERVICE } from './core/application-service';
 import { EVENT_STORE } from './core/event-repository';
 import { ID_GENERATOR } from './core/id-generator';
 import { TIME_PROVIDER } from './core/time-provider.port';
-import { EventStoreApplicationService } from './infrastructure/event-store-application-service';
-import { PrismaEventRepository } from './infrastructure/prisma-event-repository.service';
-import { SystemTimeProvider } from './infrastructure/system-time-provider';
-import { UuidGenerator } from './infrastructure/uuid-generator';
+import { EventStoreApplicationService } from './infrastructure/application-service/event-store-application-service';
+import { PrismaEventRepository } from './infrastructure/event-repository/prisma-event-repository.service';
+import { SystemTimeProvider } from './infrastructure/time-provider/system-time-provider';
+import { UuidGenerator } from './infrastructure/id-generator/uuid-generator';
+import {PrismaModule} from "../../prisma/prisma.module";
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, PrismaModule],
   providers: [
     {
       provide: TIME_PROVIDER,

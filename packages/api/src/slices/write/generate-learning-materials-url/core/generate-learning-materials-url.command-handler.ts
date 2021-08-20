@@ -1,10 +1,10 @@
+import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import {APPLICATION_SERVICE, ApplicationService} from '../../../shared/core/application-service';
+import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/core/application-service';
 import { EventStreamName } from '../../../shared/core/event-stream-name.valueboject';
-import {ID_GENERATOR, IdGenerator} from '../../../shared/core/id-generator';
+import { ID_GENERATOR, IdGenerator } from '../../../shared/core/id-generator';
 import { DomainEvent } from '../../../shared/core/slices';
-import {TIME_PROVIDER, TimeProvider} from '../../../shared/core/time-provider.port';
 import { GenerateLearningMaterialsUrl } from '../api/generate-learning-materials-url.command';
 import {
   isLearningMaterialsUrlWasGenerated,
@@ -13,9 +13,8 @@ import {
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
-  LearningMaterialsUrlGenerator
+  LearningMaterialsUrlGenerator,
 } from './learning-materials-url-generator';
-import {Inject} from "@nestjs/common";
 
 @CommandHandler(GenerateLearningMaterialsUrl)
 export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandler<GenerateLearningMaterialsUrl> {
@@ -24,8 +23,6 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
     private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
     @Inject(ID_GENERATOR)
     private readonly idGenerator: IdGenerator,
-    @Inject(TIME_PROVIDER)
-    private readonly timeProvider: TimeProvider,
     @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,
   ) {}
@@ -35,13 +32,14 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
 
     const eventStreamName = EventStreamName.from('LearningMaterialsUrl', command.data.userId);
 
-    await this.applicationService.execute(eventStreamName, (previousEvents) =>
-      this.generateLearningMaterials(previousEvents, command, learningMaterialsUrl),
+    await this.applicationService.execute(eventStreamName, (previousEvents, currentTime) =>
+      this.generateLearningMaterials(previousEvents, currentTime, command, learningMaterialsUrl),
     );
   }
 
   generateLearningMaterials(
     previousEvents: DomainEvent[],
+    currentTime: Date,
     command: GenerateLearningMaterialsUrl,
     learningMaterialsUrl: LearningMaterialsUrl,
   ): DomainEvent[] {
@@ -56,7 +54,7 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
 
     const learningMaterialsUrlWasGenerated = LearningMaterialsUrlWasGenerated.event({
       id: this.idGenerator.generate(),
-      occurredAt: this.timeProvider.currentTime(),
+      occurredAt: currentTime,
       data: { userId: command.data.userId, materialsUrl: learningMaterialsUrl },
       metadata: { ...command.metadata, causationId: command.id },
     });

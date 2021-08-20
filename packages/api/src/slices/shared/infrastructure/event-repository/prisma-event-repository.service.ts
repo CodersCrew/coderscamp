@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import dayjs from 'dayjs';
 
-import { PrismaService } from '../../../prisma/prisma.service';
-import { EventRepository } from '../core/event-repository';
-import { EventStreamName } from '../core/event-stream-name.valueboject';
-import { DomainEvent } from '../core/slices';
-import { TIME_PROVIDER, TimeProvider } from '../core/time-provider.port';
-import {EventStream, EventStreamVersion} from "../core/slice.types";
+import { PrismaService } from '../../../../prisma/prisma.service';
+import { EventRepository } from '../../core/event-repository';
+import { EventStreamName } from '../../core/event-stream-name.valueboject';
+import { EventStream, EventStreamVersion } from '../../core/slice.types';
+import { DomainEvent } from '../../core/slices';
+import { TIME_PROVIDER, TimeProvider } from '../../core/time-provider.port';
 
 @Injectable()
 export class PrismaEventRepository implements EventRepository {
@@ -18,7 +17,7 @@ export class PrismaEventRepository implements EventRepository {
   async read(streamName: EventStreamName): Promise<EventStream> {
     const dbEvents = await this.prismaService.event
       .findMany({ where: { streamId: streamName.streamId } })
-      .then((found) => found.filter((it) => dayjs(it.occurredAt).isBefore(dayjs(this.timeProvider.currentTime()))));
+      .then((found) => found.filter((it) => it.occurredAt <= this.timeProvider.currentTime()));
 
     return dbEvents.map((e) => ({
       type: e.type,

@@ -1,4 +1,4 @@
-import { TimeProvider } from '../core/time-provider.port';
+import { TimeProvider } from '../../core/time-provider.port';
 
 export class FixedTimeProvider implements TimeProvider {
   constructor(private time: Date) {}
