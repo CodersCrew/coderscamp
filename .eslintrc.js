@@ -8,6 +8,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/*.stories.tsx',
   '**/setupTests.ts',
   'scripts/*.js',
+  '**/testHelpers.tsx',
 ];
 
 module.exports = {
