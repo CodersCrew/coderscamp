@@ -4,7 +4,7 @@ export interface AuthUser {
   password: string;
 }
 
-export interface RegistrationForm {
+export interface UserRegistration {
   id: string;
   fullName: string;
   email: string;

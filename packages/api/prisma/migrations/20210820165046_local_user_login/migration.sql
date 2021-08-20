@@ -22,7 +22,7 @@ CREATE TABLE "AuthUser" (
 );
 
 -- CreateTable
-CREATE TABLE "RegistrationForm" (
+CREATE TABLE "UserRegistration" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "fullName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE "RegistrationForm" (
 CREATE UNIQUE INDEX "AuthUser.email_unique" ON "AuthUser"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "RegistrationForm.email_unique" ON "RegistrationForm"("email");
+CREATE UNIQUE INDEX "UserRegistration.email_unique" ON "UserRegistration"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");

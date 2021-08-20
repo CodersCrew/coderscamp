@@ -1,5 +1,5 @@
-import type { RegistrationForm } from '@prisma/client';
+import type { UserRegistration } from '@prisma/client';
 
 export class UserRegistrationCompletedEvent {
-  constructor(public readonly payload: RegistrationForm) {}
+  constructor(public readonly payload: UserRegistration) {}
 }

@@ -6,9 +6,9 @@ import { PrismaService } from '../prisma/prisma.service';
 export class AuthRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  createRegistrationForm = this.prisma.registrationForm.create;
+  createUserRegistration = this.prisma.userRegistration.create;
 
-  findRegistrationForm = this.prisma.registrationForm.findUnique;
+  findUserRegistration = this.prisma.userRegistration.findUnique;
 
   createAuthUser = this.prisma.authUser.create;
 

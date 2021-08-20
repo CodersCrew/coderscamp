@@ -1,12 +1,12 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-import type { AuthUser, RegistrationForm } from '.';
+import type { AuthUser, UserRegistration } from '.';
 
 export const registerError = {
   REGISTRATION_FORM_ALREADY_EXISTS: 'REGISTRATION_FORM_ALREADY_EXISTS',
 };
 
-export class RegisterBody implements Omit<RegistrationForm & AuthUser, 'id'> {
+export class RegisterBody implements Omit<UserRegistration & AuthUser, 'id'> {
   @IsString()
   @IsNotEmpty()
   fullName: string;
