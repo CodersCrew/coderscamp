@@ -11,4 +11,6 @@ export class AuthRepository {
   findRegistrationForm = this.prisma.registrationForm.findUnique;
 
   createAuthUser = this.prisma.authUser.create;
+
+  findAuthUser = this.prisma.authUser.findUnique;
 }

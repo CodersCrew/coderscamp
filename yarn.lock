@@ -2682,6 +2682,7 @@ __metadata:
     "@types/node": 16.6.2
     "@types/passport-github2": 1.2.5
     "@types/passport-jwt": 3.0.6
+    "@types/passport-local": 1.0.34
     "@types/supertest": 2.0.11
     "@types/uuid": 8.3.1
     class-transformer: 0.4.0
@@ -2693,6 +2694,7 @@ __metadata:
     passport: 0.4.1
     passport-github2: 0.1.12
     passport-jwt: 4.0.0
+    passport-local: 1.0.0
     prisma: 2.29.1
     puppeteer: 10.2.0
     reflect-metadata: 0.1.13
@@ -2701,6 +2703,7 @@ __metadata:
     ts-loader: 9.2.5
     ts-node: 10.2.1
     tsconfig-paths: 3.10.1
+    type-fest: 2.0.0
     uuid: 8.3.2
   languageName: unknown
   linkType: soft
@@ -6230,6 +6233,17 @@ __metadata:
     "@types/jsonwebtoken": "*"
     "@types/passport-strategy": "*"
   checksum: aa1e89b30bf77e1147bd5d47118fec38705246d6789b687d7385f037fdc01bed4d1e222e9d3c5c04e871c9a06474853090c17968434f9affefc53bed4dfad32b
+  languageName: node
+  linkType: hard
+
+"@types/passport-local@npm:1.0.34":
+  version: 1.0.34
+  resolution: "@types/passport-local@npm:1.0.34"
+  dependencies:
+    "@types/express": "*"
+    "@types/passport": "*"
+    "@types/passport-strategy": "*"
+  checksum: c8e162f571c8685344f4496b1473645eb1244a2ecb1c810854d43ac8897145083ac7412b8d3a3231f72f27a22d57e526fc8421d8208c18cdff8f83266e875f37
   languageName: node
   linkType: hard
 
@@ -18384,6 +18398,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"passport-local@npm:1.0.0":
+  version: 1.0.0
+  resolution: "passport-local@npm:1.0.0"
+  dependencies:
+    passport-strategy: 1.x.x
+  checksum: 86dc08b12f05f0ce1bb109780ccb0377eff45bbba70aa9c0d65f092b3ef476d344c0443517db2e9f3e5ec0ca849171ab25fb622164e0f69a677173af42b9bba7
+  languageName: node
+  linkType: hard
+
 "passport-oauth2@npm:1.x.x":
   version: 1.6.0
   resolution: "passport-oauth2@npm:1.6.0"
@@ -23366,6 +23389,13 @@ resolve@^2.0.0-next.3:
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 62b5628bff67c0eb0b66afa371bd73e230399a8d2ad30d852716efcc4656a7516904570cd8631a49a3ce57c10225adf5d0cbdcb47f6b0255fe6557c453925a15
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:2.0.0":
+  version: 2.0.0
+  resolution: "type-fest@npm:2.0.0"
+  checksum: 9c7ab00b0b594426710233b6d3d112e2bb5b23a523fed4b3272e76dde36b1b78a5691ea20a40332490d3bd46455d0ad67a51ce2271f90c0ae2309861ca01e20d
   languageName: node
   linkType: hard
 

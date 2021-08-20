@@ -17,9 +17,19 @@ const scrypt = (
   });
 };
 
+const HASH_LENGTH = 32;
+
 export const hashPassword = async (password: string): Promise<string> => {
   const salt = randomBytes(8).toString('hex');
-  const hash = await scrypt(password, salt, 32);
+  const hash = await scrypt(password, salt, HASH_LENGTH);
 
   return `${salt}.${hash.toString('hex')}`;
+};
+
+export const checkPassword = async (password: string, hashedPassword: string): Promise<boolean> => {
+  const [salt, storedHash] = hashedPassword.split('.');
+
+  const hash = await scrypt(password, salt, HASH_LENGTH);
+
+  return storedHash === hash.toString('hex');
 };

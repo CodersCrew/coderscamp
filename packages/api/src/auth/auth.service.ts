@@ -6,8 +6,8 @@ import { registerError } from '@coderscamp/shared/models/auth/register';
 import { pick } from '@coderscamp/shared/utils/object';
 
 import { AuthRepository } from './auth.repository';
-import { hashPassword } from './auth.utils';
 import { UserRegistrationCompletedEvent } from './events/user-registration-completed.event';
+import { hashPassword } from './local/local.utils';
 
 @Injectable()
 export class AuthService {
@@ -22,12 +22,18 @@ export class AuthService {
 
     const password = await hashPassword(data.password);
 
-    const registrationForm = await this.authRepository.createRegistrationForm({
+    await this.authRepository.createRegistrationForm({
       data: pick(data, ['fullName', 'email']),
     });
 
-    await this.authRepository.createAuthUser({ data: { email: data.email, password } });
+    const authUser = await this.authRepository.createAuthUser({ data: { email: data.email, password } });
 
-    this.eventBus.publish(new UserRegistrationCompletedEvent(registrationForm));
+    this.eventBus.publish(
+      new UserRegistrationCompletedEvent({
+        id: authUser.id,
+        fullName: data.fullName,
+        email: data.email,
+      }),
+    );
   }
 }
