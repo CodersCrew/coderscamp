@@ -6,12 +6,20 @@ import { SliderSteps, SliderStepsProps } from '@coderscamp/ui/components/SliderS
 import { VStack } from '@coderscamp/ui/components/Stack';
 
 import { useRerender } from '../../hooks/useRerender';
-import { TestimonialCard } from './TestimonialCard';
-import { testimonials } from './Testimonials.data';
+import { Testimonial } from './Testimonials.data';
 
 type SwiperProps = ComponentProps<typeof Swiper>;
 
-export const TestimonialsCarousel = () => {
+export interface TestimonialsCarouselProps {
+  testimonials: Testimonial[];
+  Component: React.ComponentType<Testimonial>;
+}
+
+export const TestimonialsCarousel = ({
+  testimonials,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  Component,
+}: TestimonialsCarouselProps) => {
   const ref = useRef<Parameters<NonNullable<SwiperProps['onInit']>>[0]>();
   const rerender = useRerender();
 
@@ -40,7 +48,7 @@ export const TestimonialsCarousel = () => {
         >
           {testimonials.map((testimonial) => (
             <SwiperSlide key={testimonial.name}>
-              <TestimonialCard testimonial={testimonial} />
+              <Component {...testimonial} />
             </SwiperSlide>
           ))}
         </Swiper>

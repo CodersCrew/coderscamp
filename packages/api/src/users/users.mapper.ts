@@ -14,13 +14,13 @@ export class UsersMapper {
 
   static fromJwtToDomain(payload: JwtPayload): UserFromJwt {
     return {
-      id: Number(payload.sub),
+      id: payload.sub,
     };
   }
 
   static fromDomainToJwt(user: UserFromJwt): JwtPayload {
     return {
-      sub: String(user.id),
+      sub: user.id,
     };
   }
 }

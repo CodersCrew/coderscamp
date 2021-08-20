@@ -16,11 +16,11 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
     <Center
       bg="gray.50"
       borderRadius="8px"
-      pt="52px"
-      pb="80px"
+      pt={{ base: '44px', md: '52px' }}
+      pb={{ base: '40px', md: '80px' }}
       px="24px"
       w="100%"
-      minHeight="248px"
+      maxWidth="400px"
       flexDirection="column"
       textAlign="center"
       pos="relative"
@@ -32,21 +32,21 @@ export const BenefitCard = ({ icon, title, subtitle, ...props }: BenefitCardProp
         bg="brand.500"
         color="white"
         borderRadius="6px"
-        w="56px"
-        h="56px"
+        w={{ base: '48px', md: '56px' }}
+        h={{ base: '48px', md: '56px' }}
         pos="absolute"
         top="-26px"
-        fontSize="32px"
+        fontSize={{ base: '24px', md: '32px' }}
         boxShadow={hovered ? 'lg' : 'none'}
         transition="ease-in-out"
         transitionDuration="0.3s"
       >
         {icon}
       </Center>
-      <Typography size="lg" color="gray.900" weight="medium" mb="16px">
+      <Typography size={{ base: 'md', md: 'lg' }} color="gray.900" weight="medium" mb="16px">
         {title}
       </Typography>
-      <Typography size="md" color="gray.700">
+      <Typography size={{ base: 'sm', md: 'md' }} color="gray.700">
         {subtitle}
       </Typography>
     </Center>
