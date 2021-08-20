@@ -30,11 +30,11 @@ export const RecruitmentModal = ({ isOpen, onClose, modalText = forMentors }: Re
         <ModalOverlay />
 
         <ModalContent
-          p="56px 64px 64px 64px"
+          p={{ base: '32px 16px 16px 32px', md: '56px 64px 64px 64px' }}
           borderRadius="8px"
           maxWidth={800}
           width={800}
-          maxHeight={448}
+          minHeight={448}
           boxShadow="large"
         >
           <ModalHeader p={0}>
@@ -51,7 +51,14 @@ export const RecruitmentModal = ({ isOpen, onClose, modalText = forMentors }: Re
           </ModalHeader>
 
           <ModalBody p={0}>
-            <Typography as="p" size="lg" color="gray.500" textAlign="center" mb="32px" mt="12px">
+            <Typography
+              as="p"
+              size="lg"
+              color="gray.500"
+              textAlign="center"
+              mb={{ base: '16px', lg: '32px' }}
+              mt="12px"
+            >
               {modalText.body}
             </Typography>
             <ModalForm />
