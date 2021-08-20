@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Flex } from '@coderscamp/ui/components/Flex';
-import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
+import { keyframes } from '@coderscamp/ui/components/Keyframes';
+import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
 import { techNamesTop } from './Curriculum.data';
-import { animation } from './TechSlidingAnimation';
 
 type TechSlidingProps = {
   techIconsArray?: {
@@ -15,8 +15,15 @@ type TechSlidingProps = {
   isAnimationReverse?: 'reverse' | 'normal';
 };
 
+const sliding = keyframes`
+   100% {
+    transform: translateX(-66.66%);
+  }
+`;
+const animation = `${sliding} linear infinite`;
+
 export const TechSliding = ({ techIconsArray = techNamesTop, isAnimationReverse = 'normal' }: TechSlidingProps) => {
-  const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
+  const animationDuration = useBreakpointValue({ base: '10s', md: '20s' });
 
   return (
     <Box w="100%" bg="gray.100" h={{ base: '90px', lg: '140px' }} sx={{ position: 'relative', overflow: 'hidden' }}>
@@ -25,7 +32,7 @@ export const TechSliding = ({ techIconsArray = techNamesTop, isAnimationReverse 
         h="100%"
         align="center"
         justify="space-evenly"
-        animation={`${animation} ${isLargerThan768 ? '20s' : '10s'} ${isAnimationReverse} `}
+        animation={`${animation} ${animationDuration} ${isAnimationReverse} `}
         sx={{ position: 'absolute', top: 0, left: 0, transform: 'translateX(0)' }}
       >
         {techIconsArray.map((tech) => (
