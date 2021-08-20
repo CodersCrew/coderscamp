@@ -1,1 +1,2 @@
-export { Benefits } from './Benefits';
+export { AboutBenefits } from './AboutBenefits/AboutBenefits';
+export { MentorBenefits } from './MentorBenefits/MentorBenefits';

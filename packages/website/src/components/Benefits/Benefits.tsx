@@ -1,36 +1,47 @@
-import { BenefitCard } from '@coderscamp/ui/components/BenefitCard';
+import { BenefitCard, BenefitCardProps } from '@coderscamp/ui/components/BenefitCard';
 import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
-import { VStack } from '@coderscamp/ui/components/Stack';
+import { Grid } from '@coderscamp/ui/components/Grid';
 import { Typography } from '@coderscamp/ui/components/Typography';
+import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidArrowDownIcon } from '@coderscamp/ui/icons';
 
-import { benefitItems } from './BenefitItems';
+export interface BenefitsProps {
+  title: string;
+  benefitItems: BenefitCardProps[];
+  showExpandProfitButton?: boolean;
+}
 
-export const Benefits = () => {
+export const Benefits = ({ title, benefitItems, showExpandProfitButton = false }: BenefitsProps) => {
+  const columnsCount = useBreakpointValue({ base: 1, md: 2, xl: 3 } as const);
+  const profitButtonSize = useBreakpointValue({ base: 'sm', md: 'lg' } as const);
+
   return (
-    <Center justify="center" pt="40px" pb="80px" textAlign="center" flexDirection="column" px="12px">
-      <VStack maxWidth="1280px">
-        <Typography size="4xl" weight="extrabold">
-          Co wyróżnia CodersCamp?
-        </Typography>
-        <Center pt="60px" pb="12px" flexWrap="wrap" justifyContent={{ base: 'space-around', xl: 'space-between' }}>
-          {benefitItems.map((benefit) => (
-            <BenefitCard
-              key={benefit.title}
-              {...benefit}
-              width={{ base: 'min(100%, 400px)', md: '320px', lg: '400px' }}
-              backgroundColor="gray.200"
-              my="32px"
-              mx="4px"
-              pb="6px"
-            />
-          ))}
-        </Center>
-        <Button size="lg" color="brand" icon={<SolidArrowDownIcon />}>
-          Rozwiń listę zalet
+    <Center
+      flexDirection="column"
+      bg="white"
+      py={{ base: '40px', lg: '80px' }}
+      px={{ base: '16px', sm: '32px', lg: '64px' }}
+      textAlign="center"
+    >
+      <Typography
+        size={{ base: '3xl', lg: '4xl' }}
+        color="gray.900"
+        weight="extrabold"
+        mb={{ base: '80px', lg: '92px' }}
+      >
+        {title}
+      </Typography>
+      <Grid templateColumns={`repeat(${columnsCount}, 1fr)`} gap="64px 40px">
+        {benefitItems.map(({ ...props }) => (
+          <BenefitCard key={props.title} {...props} />
+        ))}
+      </Grid>
+      {showExpandProfitButton && (
+        <Button mt="48px" size={profitButtonSize} color="brand" icon={<SolidArrowDownIcon />}>
+          Rozwiń listę zalet CodersCamp
         </Button>
-      </VStack>
+      )}
     </Center>
   );
 };
