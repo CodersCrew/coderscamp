@@ -20,20 +20,13 @@ export class AuthService {
       throw new ConflictException(registerError.REGISTRATION_FORM_ALREADY_EXISTS);
     }
 
+    const registrationFormData = pick(data, ['fullName', 'email']);
     const password = await hashPassword(data.password);
 
-    await this.authRepository.createRegistrationForm({
-      data: pick(data, ['fullName', 'email']),
-    });
+    const { id } = await this.authRepository.createRegistrationForm({ data: registrationFormData });
 
-    const authUser = await this.authRepository.createAuthUser({ data: { email: data.email, password } });
+    await this.authRepository.createAuthUser({ data: { id, email: data.email, password } });
 
-    this.eventBus.publish(
-      new UserRegistrationCompletedEvent({
-        id: authUser.id,
-        fullName: data.fullName,
-        email: data.email,
-      }),
-    );
+    this.eventBus.publish(new UserRegistrationCompletedEvent({ id, ...registrationFormData }));
   }
 }
