@@ -6,7 +6,8 @@ import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
-import { TechSlidingBottom, TechSlidingTop } from './TechSliding';
+import { techNamesBottom } from './Curriculum.data';
+import { TechSliding } from './TechSliding';
 
 export const Curriculum = () => {
   const textSize = { base: 'md', md: 'lg' } as const;
@@ -16,7 +17,7 @@ export const Curriculum = () => {
       <Typography size="4xl" weight="bold" color="gray.900" p={{ base: '32px 16px 64px' }}>
         Czego nauczysz się na kursie?
       </Typography>
-      <TechSlidingTop />
+      <TechSliding />
 
       <VStack maxW="min(1280px, 100%)" my="40px">
         <Typography as="p" p="0 16px 32px" color="gray.500" size={textSize} textAlign="center">
@@ -39,7 +40,7 @@ export const Curriculum = () => {
         </Button>
       </VStack>
 
-      <TechSlidingBottom />
+      <TechSliding techIconsArray={techNamesBottom} isAnimationReverse="reverse" />
     </Flex>
   );
 };

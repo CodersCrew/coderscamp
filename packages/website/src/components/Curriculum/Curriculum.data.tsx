@@ -27,7 +27,7 @@ import {
   YarnIcon,
 } from '@coderscamp/ui/icons/technologies';
 
-export const techNames = [
+export const techNamesTop = [
   { name: 'BabelIcon', value: <BabelIcon /> },
   { name: 'BootstrapIcon', value: <BootstrapIcon /> },
   { name: 'Css3Icon', value: <Css3Icon /> },

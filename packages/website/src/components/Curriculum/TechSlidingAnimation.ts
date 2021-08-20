@@ -5,4 +5,4 @@ const sliding = keyframes`
     transform: translateX(-66.66%);
   }
 `;
-export const animation = `${sliding} 30s linear infinite`;
+export const animation = `${sliding} linear infinite`;
