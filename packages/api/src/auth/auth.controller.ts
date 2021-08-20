@@ -20,7 +20,7 @@ export class AuthController {
   @Post('register')
   @HttpCode(204)
   async register(@Body() body: RegisterBody): Promise<RegisterResponse> {
-    return this.authService.register(body);
+    this.authService.register(body);
   }
 
   @UseGuards(LocalAuthGuard)
