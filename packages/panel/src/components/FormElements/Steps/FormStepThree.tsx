@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { setFormValues } from 'src/helpers/getFormValue';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Checkbox } from '@coderscamp/ui/components/Checkbox';
@@ -10,7 +11,7 @@ import { FormField } from '@coderscamp/ui/components/FormField';
 import { Grid } from '@coderscamp/ui/components/Grid';
 
 import { StorageHelper } from '../../../helpers/storageHelper';
-import { FormProps } from '../../../types/formTypes';
+import { FormProps, FormStepThreeData } from '../../../types/formTypes';
 import { FormFooter } from '../../FormUI/FormFooter';
 import { FormHeader } from '../../FormUI/FormHeader';
 import { validationSchemaStepThree } from '../validationSchemas';
@@ -35,18 +36,11 @@ export const FormStepThree: React.FC<FormProps> = ({ setCurrentStep }) => {
   // TODO Refactor
   useEffect(() => {
     window.scrollTo(0, 0);
-    StorageHelper.getValue('formStepThree').then((res) => {
-      if (res) {
-        const values = getValues();
 
-        Object.keys(JSON.parse(res)).forEach((key) => {
-          setValue(key as keyof typeof values, JSON.parse(res)[key]);
-        });
-      }
-    });
+    setFormValues('formStepThree', setValue as any);
 
     const saveInterval = setInterval(() => {
-      StorageHelper.setValue('formStepThree', JSON.stringify(getValues()));
+      StorageHelper.setValue('formStepThree', getValues() as FormStepThreeData);
     }, 1000 * 60);
 
     return () => {
@@ -54,29 +48,25 @@ export const FormStepThree: React.FC<FormProps> = ({ setCurrentStep }) => {
     };
   }, []);
 
-  const onSubmit = (data: any) => {
-    StorageHelper.setValue('formStepThree', JSON.stringify(data));
+  const getAllValues = async (currentData: FormStepThreeData) => {
+    try {
+      const firstStep = await StorageHelper.getValue('formStepOne');
+      const secondStep = await StorageHelper.getValue('formStepTwo');
 
-    let newData = {};
+      return { ...firstStep, ...secondStep, ...currentData };
+    } catch {
+      return {};
+    }
+  };
 
-    StorageHelper.getValue('formStepOne').then((res) => {
-      if (res) {
-        newData = { ...JSON.parse(res) };
-      }
-
-      StorageHelper.getValue('formStepTwo').then((result) => {
-        if (result) {
-          newData = { ...newData, ...JSON.parse(result), ...data };
-          console.log(newData);
-        }
-      });
-    });
+  const onSubmit = async (data: FormStepThreeData) => {
+    console.log(await getAllValues(data));
   };
 
   const goBack = () => {
     setCurrentStep(1);
     StorageHelper.setValue('formStepNumber', 1);
-    StorageHelper.setValue('formStepThree', JSON.stringify(getValues()));
+    StorageHelper.setValue('formStepThree', getValues() as FormStepThreeData);
   };
 
   return (

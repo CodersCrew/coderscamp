@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { setFormValues } from 'src/helpers/getFormValue';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Checkbox } from '@coderscamp/ui/components/Checkbox';
@@ -14,7 +15,7 @@ import { Radio } from '@coderscamp/ui/components/Radio';
 import { RadioGroup } from '@coderscamp/ui/components/RadioGroup';
 
 import { StorageHelper } from '../../../helpers/storageHelper';
-import { FormProps } from '../../../types/formTypes';
+import { FormProps, FormStepOneData } from '../../../types/formTypes';
 import { FormFooter } from '../../FormUI/FormFooter';
 import { FormHeader } from '../../FormUI/FormHeader';
 import { validationSchemaStepOne } from '../validationSchemas';
@@ -36,18 +37,11 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
   // TODO Refactor
   useEffect(() => {
     window.scrollTo(0, 0);
-    StorageHelper.getValue('formStepOne').then((res) => {
-      if (res) {
-        const values = getValues();
 
-        Object.keys(JSON.parse(res)).forEach((key) => {
-          setValue(key as keyof typeof values, JSON.parse(res)[key]);
-        });
-      }
-    });
+    setFormValues('formStepOne', setValue);
 
     const saveInterval = setInterval(() => {
-      StorageHelper.setValue('formStepOne', JSON.stringify(getValues()));
+      StorageHelper.setValue('formStepOne', getValues() as FormStepOneData);
     }, 1000 * 60);
 
     return () => {
@@ -57,10 +51,10 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
 
   const watchSource: string[] = watch('fromWhere');
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormStepOneData) => {
     setCurrentStep(1);
     StorageHelper.setValue('formStepNumber', 1);
-    StorageHelper.setValue('formStepOne', JSON.stringify(data));
+    StorageHelper.setValue('formStepOne', data);
   };
 
   return (
@@ -71,8 +65,8 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
         subtitle="Dzięki znajomości najczęściej występujących sylwetek kandydatów możemy lepiej zaplanować nasz marketing oraz przebieg kursu."
       />
       <Grid gap="32px" padding="32px 24px">
-        <FormField label="Imię i nazwisko" required error={errors.name?.message}>
-          <Input {...register('name')} />
+        <FormField label="Imię i nazwisko" required error={errors.fullName?.message}>
+          <Input {...register('fullName')} />
         </FormField>
         <FormField label="Adres e-mail" required error={errors.email?.message}>
           <Input {...register('email')} />
@@ -82,9 +76,9 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
         </FormField>
         <Controller
           control={control}
-          name="yearOfBirth"
+          name="birthYear"
           render={({ field }) => (
-            <FormField label="Rok urodzenia" required error={errors.yearOfBirth?.message}>
+            <FormField label="Rok urodzenia" required error={errors.birthYear?.message}>
               <NumberInput {...field} />
             </FormField>
           )}
@@ -143,23 +137,31 @@ export const FormStepOne: React.FC<FormProps> = ({ setCurrentStep }) => {
           <FormField
             label="Podaj źródło, z którego dowiedziałeś się o CodersCamp"
             required
-            error={errors.source?.message}
+            error={errors.fromWhereSource?.message}
           >
-            <Input {...register('source')} isInvalid={errors.source} />
+            <Input {...register('fromWhereSource')} />
           </FormField>
         )}
 
-        <FormField
-          label="Wymień 5 skojarzeń z CodersCamp, które przychodzą Ci do głowy"
-          required
-          error={errors.thoughts?.message}
-        >
-          <Input
-            {...register('thoughts')}
-            placeholder="Oddziel poszczególne skojarzenia za pomocą przecinków"
-            isInvalid={errors.name}
-          />
-        </FormField>
+        <Controller
+          name="associatedWords"
+          control={control}
+          render={({ field }) => (
+            <FormField
+              label="Wymień 5 skojarzeń z CodersCamp, które przychodzą Ci do głowy"
+              required
+              error={errors.associatedWords?.message}
+            >
+              <Input
+                {...field}
+                onChange={(event) =>
+                  field.onChange(event.target.value.length > 0 ? event.target.value.split(',') : null)
+                }
+                placeholder="Oddziel poszczególne skojarzenia za pomocą przecinków"
+              />
+            </FormField>
+          )}
+        />
       </Grid>
       <FormFooter>
         <Flex justifyContent="flex-end">

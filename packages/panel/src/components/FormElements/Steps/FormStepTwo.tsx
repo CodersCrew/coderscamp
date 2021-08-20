@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { setFormValues } from 'src/helpers/getFormValue';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
@@ -13,7 +14,7 @@ import { RadioGroup } from '@coderscamp/ui/components/RadioGroup';
 import { Textarea } from '@coderscamp/ui/components/Textarea';
 
 import { StorageHelper } from '../../../helpers/storageHelper';
-import { FormProps } from '../../../types/formTypes';
+import { FormProps, FormStepTwoData } from '../../../types/formTypes';
 import { FormFooter } from '../../FormUI/FormFooter';
 import { FormHeader } from '../../FormUI/FormHeader';
 import { validationSchemaStepTwo } from '../validationSchemas';
@@ -33,23 +34,16 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
   });
 
   const watchPrevParticipation = watch('prevParticipation');
-  const watchHours = watch('avgTimeForCamp');
+  const watchHours = watch('averageTime');
 
   // TODO Refactor
   useEffect(() => {
     window.scrollTo(0, 0);
-    StorageHelper.getValue('formStepTwo').then((res) => {
-      if (res) {
-        const values = getValues();
 
-        Object.keys(JSON.parse(res)).forEach((key) => {
-          setValue(key as keyof typeof values, JSON.parse(res)[key]);
-        });
-      }
-    });
+    setFormValues('formStepTwo', setValue);
 
     const saveInterval = setInterval(() => {
-      StorageHelper.setValue('formStepTwo', JSON.stringify(getValues()));
+      StorageHelper.setValue('formStepTwo', getValues() as FormStepTwoData);
     }, 1000 * 60);
 
     return () => {
@@ -57,15 +51,15 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
     };
   }, []);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormStepTwoData) => {
     setCurrentStep(2);
-    StorageHelper.setValue('formStepTwo', JSON.stringify(data));
+    StorageHelper.setValue('formStepTwo', data);
   };
 
   const goBack = () => {
     setCurrentStep(0);
     StorageHelper.setValue('formStepNumber', 0);
-    StorageHelper.setValue('formStepTwo', JSON.stringify(getValues()));
+    StorageHelper.setValue('formStepTwo', getValues() as FormStepTwoData);
   };
 
   return (
@@ -76,8 +70,8 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
         subtitle="W tej sekcji znajdziesz pytania dotyczące Ciebie oraz Twoich planów odnośnie CodersCamp. Odpowiedzi nie mają wpływu na dostanie się na kurs, jednak będą brane pod uwagę przez mentorów podczas kompletowania zespołów. "
       />
       <Grid gap="32px" padding="32px 24px">
-        <FormField label="Napisz kilka zdań o sobie" required error={errors.aboutYourself?.message}>
-          <Textarea {...register('aboutYourself')} />
+        <FormField label="Napisz kilka zdań o sobie" required error={errors.description?.message}>
+          <Textarea {...register('description')} />
         </FormField>
 
         <Controller
@@ -103,25 +97,21 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
           <FormField
             label="Dlaczego chciałbyś/aś ponownie wziąć udział w kursie?"
             required
-            error={errors.againParticipationReason?.message}
+            error={errors.reasonForRetakingCourse?.message}
           >
-            <Input {...register('againParticipationReason')} isInvalid={errors.againParticipationReason} />
+            <Input {...register('reasonForRetakingCourse')} />
           </FormField>
         )}
 
-        <FormField
-          label="Jakie są Twoje oczekiwania wobec CodersCamp?"
-          required
-          error={errors.campExpectations?.message}
-        >
-          <Textarea {...register('campExpectations')} invalid={errors.campExpectations} />
+        <FormField label="Jakie są Twoje oczekiwania wobec CodersCamp?" required error={errors.expectations?.message}>
+          <Textarea {...register('expectations')} invalid={errors.expectations} />
         </FormField>
 
         <FormField
           label="Jeśli masz już jakieś doświadczenia z programowaniem, opisz je poniżej"
-          error={errors.programmingExp?.message}
+          error={errors.experience?.message}
         >
-          <Textarea {...register('programmingExp')} invalid={errors.programmingExp} />
+          <Textarea {...register('programmingExp')} invalid={errors.experience} />
         </FormField>
 
         <FormField
@@ -135,9 +125,9 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
         <FormField
           label="Jakie kolejne kroki planujesz podjąć po ukończeniu kursu?"
           required
-          error={errors.furtherStepsAfterCamp?.message}
+          error={errors.plans?.message}
         >
-          <Textarea {...register('furtherStepsAfterCamp')} invalid={errors.furtherStepsAfterCamp} />
+          <Textarea {...register('plans')} />
         </FormField>
 
         <Controller
@@ -160,20 +150,20 @@ export const FormStepTwo: React.FC<FormProps> = ({ setCurrentStep }) => {
 
         <Controller
           control={control}
-          name="avgTimeForCamp"
+          name="averageTime"
           render={({ field }) => (
             <FormField
               label="Ile średnio czasu (w godzinach) będziesz w stanie poświęcić w ciągu tygodnia na naukę i realizację
               projektów w ramach CodersCamp?"
               required
-              error={errors.avgTimeForCamp?.message}
+              error={errors.averageTime?.message}
               warning={
                 watchHours < 20
                   ? 'CodersCamp jest intensywnym kursem i może być Ci ciężko go ukończyć jeśli nie przeznaczysz na niego co najmniej 20 godzin tygodniowo'
                   : null
               }
             >
-              <NumberInput {...field} isInvalid={errors.avgTimeForCamp} />
+              <NumberInput {...field} />
             </FormField>
           )}
         />
