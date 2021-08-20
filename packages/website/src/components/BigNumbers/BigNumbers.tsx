@@ -1,4 +1,5 @@
 import React from 'react';
+import { PLACES_COUNT } from 'src/constants';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { VStack } from '@coderscamp/ui/components/Stack';
@@ -8,7 +9,7 @@ import { StatsWithTitle } from './StatsWithTitle';
 const currentEdition = [
   { amount: '7.', label: 'edycja' },
   { amount: '1 516', label: 'zadań i materiałów' },
-  { amount: '200', label: 'miejsc na kurs' },
+  { amount: String(PLACES_COUNT), label: 'miejsc na kursie' },
   { amount: '6', label: 'projektów do stworzenia' },
 ];
 

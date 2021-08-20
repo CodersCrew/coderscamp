@@ -3,11 +3,9 @@ import { Accordion, AccordionProps } from '@chakra-ui/react';
 
 import { Question, QuestionProps } from './Question';
 
-export type QuestionsAccordionProps = {
+export interface QuestionsAccordionProps extends AccordionProps {
   questions: QuestionProps[];
-  allowToggle?: boolean;
-  allowMultiple?: boolean;
-} & AccordionProps;
+}
 
 export const QuestionsAccordion = ({
   questions,
