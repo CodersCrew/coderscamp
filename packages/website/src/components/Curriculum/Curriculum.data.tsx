@@ -1,3 +1,5 @@
+import type { ReactElement } from 'react';
+
 import {
   BabelIcon,
   BootstrapIcon,
@@ -26,6 +28,11 @@ import {
   WebpackIcon,
   YarnIcon,
 } from '@coderscamp/ui/icons/technologies';
+
+export interface TechIcon {
+  name: string;
+  value: ReactElement;
+}
 
 export const techNamesTop = [
   { name: 'BabelIcon', value: <BabelIcon /> },

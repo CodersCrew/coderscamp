@@ -1,42 +1,54 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useWindowDimensions } from 'src/hooks/useWindowDimensions';
 
 import { Box } from '@coderscamp/ui/components/Box';
+import { Center } from '@coderscamp/ui/components/Center';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { keyframes } from '@coderscamp/ui/components/Keyframes';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
-type TechSlidingProps = {
-  techIconsArray: {
-    name: string;
-    value: JSX.Element;
-  }[];
-  isAnimationReverse?: 'reverse' | 'normal';
-};
+import type { TechIcon } from './Curriculum.data';
+
+export interface TechSlidingProps {
+  techIcons: TechIcon[];
+  reverse?: boolean;
+}
 
 const sliding = keyframes`
-   100% {
-    transform: translateX(-66.66%);
+  100% {
+    transform: translateX(-50%);
   }
 `;
-const animation = `${sliding} linear infinite`;
+const animation = `${sliding} linear infinite 25s`;
 
-export const TechSliding = ({ techIconsArray, isAnimationReverse = 'normal' }: TechSlidingProps) => {
-  const animationDuration = useBreakpointValue({ base: '10s', md: '20s' });
+export const TechSliding = ({ techIcons, reverse }: TechSlidingProps) => {
+  const { width } = useWindowDimensions();
+  const iconSize = useBreakpointValue({ base: 48, lg: 80 }) ?? 80;
+  const icons = useMemo(
+    () => [...techIcons, ...techIcons].map((icon, i) => ({ ...icon, key: icon.name + i })),
+    [techIcons],
+  );
+
+  const gapSize = iconSize;
+  const sliderWidth = Math.round((100 * (iconSize * icons.length + gapSize * (icons.length - 1))) / (width ?? 1920));
 
   return (
-    <Box w="100%" bg="gray.100" h={{ base: '90px', lg: '140px' }} sx={{ position: 'relative', overflow: 'hidden' }}>
+    <Box w="100%" bg="gray.100" h={{ base: '96px', lg: '160px' }} position="relative" overflow="hidden">
       <Flex
-        w="300%"
+        style={{ width: `${sliderWidth}%` }}
         h="100%"
         align="center"
-        justify="space-evenly"
-        animation={`${animation} ${animationDuration} ${isAnimationReverse} `}
-        sx={{ position: 'absolute', top: 0, left: 0, transform: 'translateX(0)' }}
+        justify="space-around"
+        animation={`${animation} ${reverse ? 'reverse' : 'normal'}`}
+        position="absolute"
+        top={0}
+        left={0}
+        transform="translate3d(0, 0, 0)"
       >
-        {techIconsArray.map((tech) => (
-          <Flex fontSize={{ base: '52px', lg: '78px' }} px={{ base: '32px', lg: 0 }} key={tech.name}>
+        {icons.map((tech) => (
+          <Center fontSize={`${iconSize}px`} key={tech.key}>
             {tech.value}
-          </Flex>
+          </Center>
         ))}
       </Flex>
     </Box>
