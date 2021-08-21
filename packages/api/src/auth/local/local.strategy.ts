@@ -5,7 +5,7 @@ import { IStrategyOptions, Strategy } from 'passport-local';
 import type { LoginBody } from '@coderscamp/shared/models/auth/login';
 import { omit } from '@coderscamp/shared/utils/object';
 
-import { AuthRepository } from '../auth.repository';
+import { AuthUserRepository } from '../auth-user.repository';
 import { checkPassword } from './local.utils';
 
 const strategyOptions: IStrategyOptions & Record<string, keyof LoginBody> = {
@@ -15,12 +15,12 @@ const strategyOptions: IStrategyOptions & Record<string, keyof LoginBody> = {
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authRepository: AuthRepository) {
+  constructor(private readonly authUserRepository: AuthUserRepository) {
     super(strategyOptions);
   }
 
   async validate(email: string, password: string) {
-    const user = await this.authRepository.findAuthUser({ where: { email } });
+    const user = await this.authUserRepository.findAuthUser({ where: { email } });
 
     if (!user) {
       throw new UnauthorizedException();
