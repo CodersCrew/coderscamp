@@ -1,13 +1,24 @@
-import { Body, Controller, HttpCode, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  InternalServerErrorException,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { Response } from 'express';
 
 import type { LogoutResponse } from '@coderscamp/shared/models/auth';
 import { LoginResponse } from '@coderscamp/shared/models/auth/login';
-import { RegisterBody, RegisterResponse } from '@coderscamp/shared/models/auth/register';
+import { RegisterBody, registerError, RegisterResponse } from '@coderscamp/shared/models/auth/register';
 
 import { env } from '@/common/env';
 
+import { isUniqueConstraintError } from '../prisma/prisma.errors';
 import { fromUserToJwt } from './jwt/jwt.utils';
 import { LocalGuardRequest } from './local/local.types';
 import { LocalAuthGuard } from './local/local-auth.guard';
@@ -23,7 +34,15 @@ export class AuthController {
   @Post('register')
   @HttpCode(204)
   async register(@Body() body: RegisterBody): Promise<RegisterResponse> {
-    return this.userRegistrationService.register(body);
+    try {
+      await this.userRegistrationService.register(body);
+    } catch (ex) {
+      if (isUniqueConstraintError(ex)) {
+        throw new ConflictException(registerError.REGISTRATION_FORM_ALREADY_EXISTS);
+      }
+
+      throw new InternalServerErrorException(ex);
+    }
   }
 
   @UseGuards(LocalAuthGuard)
