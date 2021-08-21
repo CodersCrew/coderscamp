@@ -1,6 +1,5 @@
 export type User = {
   id: string;
-  githubId: number;
   fullName: string;
   email: string;
   image: string;

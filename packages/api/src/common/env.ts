@@ -29,21 +29,6 @@ class EnvVariables {
   @Expose()
   @IsString()
   @IsNotEmpty()
-  GITHUB_CLIENT_ID: string;
-
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  GITHUB_CLIENT_SECRET: string;
-
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  GITHUB_CALLBACK_URL: string;
-
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
   JWT_SECRET: string;
 
   @Expose()
