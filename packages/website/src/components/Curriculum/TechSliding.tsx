@@ -5,10 +5,8 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { keyframes } from '@coderscamp/ui/components/Keyframes';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
-import { techNamesTop } from './Curriculum.data';
-
 type TechSlidingProps = {
-  techIconsArray?: {
+  techIconsArray: {
     name: string;
     value: JSX.Element;
   }[];
@@ -22,7 +20,7 @@ const sliding = keyframes`
 `;
 const animation = `${sliding} linear infinite`;
 
-export const TechSliding = ({ techIconsArray = techNamesTop, isAnimationReverse = 'normal' }: TechSlidingProps) => {
+export const TechSliding = ({ techIconsArray, isAnimationReverse = 'normal' }: TechSlidingProps) => {
   const animationDuration = useBreakpointValue({ base: '10s', md: '20s' });
 
   return (
