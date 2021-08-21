@@ -9,6 +9,8 @@ import { FormField } from '@coderscamp/ui/components/FormField';
 import { Input } from '@coderscamp/ui/components/Input';
 import { VStack } from '@coderscamp/ui/components/Stack';
 
+import { useUserActions } from '@/modules/user';
+
 const resolver = classValidatorResolver(RegisterBody);
 
 export const Register = () => {
@@ -17,9 +19,10 @@ export const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterBody>({ resolver });
+  const authActions = useUserActions();
 
   const onSubmit: SubmitHandler<RegisterBody> = (values) => {
-    console.log(values);
+    authActions.register({ body: values });
   };
 
   return (

@@ -9,6 +9,8 @@ import { FormField } from '@coderscamp/ui/components/FormField';
 import { Input } from '@coderscamp/ui/components/Input';
 import { VStack } from '@coderscamp/ui/components/Stack';
 
+import { useUserActions } from '@/modules/user';
+
 const resolver = classValidatorResolver(LoginBody);
 
 export const Login = () => {
@@ -17,9 +19,10 @@ export const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginBody>({ resolver });
+  const authActions = useUserActions();
 
   const onSubmit: SubmitHandler<LoginBody> = (values) => {
-    console.log(values);
+    authActions.login({ body: values });
   };
 
   return (
