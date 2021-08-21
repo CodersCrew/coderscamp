@@ -42,7 +42,7 @@ export const Login = () => {
         >
           <VStack spacing="16px" width="100%">
             <FormField size="lg" label="Adres e-mail" error={errors.email?.message}>
-              <Input {...register('email')} />
+              <Input {...register('email')} autoFocus />
             </FormField>
             <FormField size="lg" label="Hasło" error={errors.password?.message}>
               <Input {...register('password')} />

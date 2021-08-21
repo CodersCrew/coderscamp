@@ -1,6 +1,6 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { classValidatorResolver } from '@hookform/resolvers/class-validator';
 
 import { RegisterBody } from '@coderscamp/shared/models/auth/register';
@@ -22,9 +22,11 @@ export const Register = () => {
     formState: { errors },
   } = useForm<RegisterBody>({ resolver });
   const authActions = useUserActions();
+  const history = useHistory();
 
-  const onSubmit: SubmitHandler<RegisterBody> = (values) => {
-    authActions.register({ body: values });
+  const onSubmit: SubmitHandler<RegisterBody> = async (values) => {
+    await authActions.register({ body: values });
+    history.push('/login');
   };
 
   return (
@@ -42,7 +44,7 @@ export const Register = () => {
         >
           <VStack spacing="16px" width="100%">
             <FormField size="lg" label="Imię i nazwisko" error={errors.fullName?.message}>
-              <Input {...register('fullName')} />
+              <Input {...register('fullName')} autoFocus />
             </FormField>
             <FormField size="lg" label="Adres e-mail" error={errors.email?.message}>
               <Input {...register('email')} />
