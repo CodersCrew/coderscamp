@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { env } from '@/common/env';
 
 import { AuthController } from './auth.controller';
-import { UserRegistrationService } from './user-registration.service';
 import type { LocalGuardRequest } from './local/local.types';
+import { UserRegistrationService } from './user-registration.service';
 
 describe('Auth controller', () => {
   let controller: AuthController;
