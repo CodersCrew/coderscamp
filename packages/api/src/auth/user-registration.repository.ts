@@ -7,6 +7,4 @@ export class UserRegistrationRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   createUserRegistration = this.prisma.userRegistration.create;
-
-  findUserRegistration = this.prisma.userRegistration.findUnique;
 }
