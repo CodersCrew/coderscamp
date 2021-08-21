@@ -1,3 +1,13 @@
+export type RecruitmentModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  modalText: {
+    header: string;
+    body: string;
+    footer: string;
+  };
+};
+
 export const forMentors = {
   header: 'Rekrutacja mentorów rusza \n już 1 września',
   body: 'Zostaw nam swoje imię oraz adres e-mail. Damy Ci znać, kiedy tylko dostępny będzie formularz zgłoszeniowy dla mentorów.',

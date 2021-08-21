@@ -6,7 +6,7 @@ import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 
-import { forParticipant } from '../Modals/modal.data';
+import { forParticipant } from '../Modals/Modal.data';
 import { RecruitmentModal } from '../Modals/RecruitmentModal';
 import { ScheduleItem } from './ScheduleItem';
 

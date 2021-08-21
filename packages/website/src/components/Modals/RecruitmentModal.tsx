@@ -10,20 +10,10 @@ import {
 } from '@coderscamp/ui/components/Modal';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-import { forMentors } from './modal.data';
+import { RecruitmentModalProps } from './Modal.data';
 import { ModalForm } from './ModalForm';
 
-type RecruitmentModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  modalText?: {
-    header: string;
-    body: string;
-    footer: string;
-  };
-};
-
-export const RecruitmentModal = ({ isOpen, onClose, modalText = forMentors }: RecruitmentModalProps) => {
+export const RecruitmentModal = ({ isOpen, onClose, modalText }: RecruitmentModalProps) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -36,35 +26,22 @@ export const RecruitmentModal = ({ isOpen, onClose, modalText = forMentors }: Re
           width={800}
           minHeight={448}
           boxShadow="large"
+          textAlign="center"
         >
           <ModalHeader p={0}>
-            <Typography
-              as="h2"
-              size="4xl"
-              weight="extrabold"
-              color="gray.900"
-              textAlign="center"
-              style={{ whiteSpace: 'pre-line' }}
-            >
+            <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" style={{ whiteSpace: 'pre-line' }}>
               {modalText.header}
             </Typography>
           </ModalHeader>
 
           <ModalBody p={0}>
-            <Typography
-              as="p"
-              size="lg"
-              color="gray.500"
-              textAlign="center"
-              mb={{ base: '16px', lg: '32px' }}
-              mt="12px"
-            >
+            <Typography as="p" size="lg" color="gray.500" mb={{ base: '16px', lg: '32px' }} mt="12px">
               {modalText.body}
             </Typography>
             <ModalForm />
           </ModalBody>
           <ModalFooter p={0}>
-            <Typography as="p" size="sm" color="gray.500" textAlign="center" mt="24px">
+            <Typography as="p" size="sm" color="gray.500" mt="24px">
               {modalText.footer}
             </Typography>
           </ModalFooter>

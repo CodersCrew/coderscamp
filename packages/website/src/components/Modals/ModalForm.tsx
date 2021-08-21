@@ -8,15 +8,11 @@ import { HelperText } from '@coderscamp/ui/components/HelperText';
 import { Input } from '@coderscamp/ui/components/Input';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
-import { emailValidator } from '../Contact/Form';
+import { emailValidator, requiredValidator } from '../Contact/Form';
 
 type ModalFormValues = {
   name: string;
   email: string;
-};
-
-const requiredValidator = {
-  required: 'To pole nie może być puste',
 };
 
 export const ModalForm = () => {
@@ -55,7 +51,7 @@ export const ModalForm = () => {
         />
         {errors.email && <HelperText variant="error">{errors.email.message}</HelperText>}
       </FormControl>
-      <Button type="submit" color="brand" variant="solid" size={size} weight="medium" p="10px 24px">
+      <Button type="submit" color="brand" variant="solid" size={size}>
         Wyślij
       </Button>
     </Flex>

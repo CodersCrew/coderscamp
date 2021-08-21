@@ -5,7 +5,7 @@ import { HStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 
-import { forParticipant } from '../Modals/modal.data';
+import { forMentors, forParticipant } from '../Modals/Modal.data';
 import { RecruitmentModal } from '../Modals/RecruitmentModal';
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
@@ -34,7 +34,7 @@ export const Navbar = () => {
           <Button size={buttonSize} mr="12px" onClick={onOpen}>
             Zostań mentorem
           </Button>
-          <RecruitmentModal isOpen={isOpen} onClose={onClose} />
+          <RecruitmentModal modalText={forMentors} isOpen={isOpen} onClose={onClose} />
           <Button size={buttonSize} color="brand" onClick={onOpenParticipantModal}>
             Zapisz się na kurs
           </Button>
