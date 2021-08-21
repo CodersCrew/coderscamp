@@ -9,8 +9,5 @@ function* refetchMe() {
 }
 
 export function* userRootSaga() {
-  yield takeEvery(
-    [userActions.login.fulfilled.type, userActions.logout.fulfilled.type, storeInitialized.type],
-    refetchMe,
-  );
+  yield takeEvery([userActions.login.fulfilled.type, storeInitialized.type], refetchMe);
 }

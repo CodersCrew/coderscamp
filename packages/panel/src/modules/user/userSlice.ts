@@ -31,20 +31,20 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(logout.fulfilled, (state) => {
+      state.user = null;
+    });
     builder.addCase(getMe.pending, (state) => {
-      state.status = 'loading';
+      if (state.status === 'idle') {
+        state.status = 'loading';
+      }
     });
     builder.addCase(getMe.fulfilled, (state, { payload }) => {
       state.status = 'success';
       state.user = payload;
     });
     builder.addCase(getMe.rejected, (state, action) => {
-      if (action.error.code === '401') {
-        state.status = 'success';
-        state.user = null;
-      } else {
-        state.status = 'failure';
-      }
+      state.status = action.error.code === '401' ? 'success' : 'failure';
     });
   },
 });
