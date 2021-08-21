@@ -1,6 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 
+import { AuthorizedRoute, Redirect404, UnauthorizedRoute } from './components/RoutingAuth';
+import { WaitForUser } from './components/WaitForUser';
 import { CalendarPage } from './screens/CalendarPage';
 import { Dashboard } from './screens/Dashboard';
 import { GoToFormPage } from './screens/GoToFormPage';
@@ -10,19 +12,20 @@ import { SignUpPageForCandidates } from './screens/SignUpPageForCandidates';
 
 export const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/sign-up-old" exact>
-          <SignUpPageForCandidates />
-          <GoToFormPage />
-        </Route>
-        <Route path="/kalendarz" exact>
-          <CalendarPage />
-        </Route>
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/" component={Dashboard} />
-      </Switch>
-    </Router>
+    <WaitForUser>
+      <BrowserRouter>
+        <Switch>
+          <UnauthorizedRoute exact path="/sign-up-old">
+            <SignUpPageForCandidates />
+            <GoToFormPage />
+          </UnauthorizedRoute>
+          <UnauthorizedRoute exact path="/register" component={Register} />
+          <UnauthorizedRoute exact path="/login" component={Login} />
+          <AuthorizedRoute exact path="/calendar" component={CalendarPage} />
+          <AuthorizedRoute exact path="/dashboard" component={Dashboard} />
+          <Redirect404 />
+        </Switch>
+      </BrowserRouter>
+    </WaitForUser>
   );
 };

@@ -10,4 +10,6 @@ export const useUserActions = () => {
   return bindActionCreators(userActions, dispatch);
 };
 
-export const useUserState = () => useSelector((state) => state.user);
+export const useIsUserAuthorized = () => useSelector((state) => Boolean(state.user.user));
+
+export const useUserStatus = () => useSelector((state) => state.user.status);

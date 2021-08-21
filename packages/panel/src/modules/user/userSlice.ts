@@ -51,5 +51,5 @@ export const userSlice = createSlice({
 
 export const userActions = { login, logout, register, getMe };
 export const userReducer = {
-  [userSlice.name]: userSlice.reducer,
+  [SLICE_NAME]: userSlice.reducer,
 };

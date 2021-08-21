@@ -12,6 +12,7 @@
       "@coderscamp/shared/*": ["../shared/src/*"],
       "@coderscamp/ui/*": ["../ui/src/*"],
       "@/common/*": ["src/common/*"],
+      "@/components/*": ["src/components/*"],
       "@/modules/*": ["src/modules/*"],
       "@/services/*": ["src/services/*"]
     },

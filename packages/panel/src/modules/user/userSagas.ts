@@ -4,15 +4,13 @@ import { putThunk, storeInitialized } from '@/services/store';
 
 import { userActions } from './userSlice';
 
-function* storeInitializedHandler() {
-  yield putThunk(userActions.getMe());
-}
-
-function* loginFulfilledHandler() {
+function* refetchMe() {
   yield putThunk(userActions.getMe());
 }
 
 export function* userRootSaga() {
-  yield takeEvery(userActions.login.fulfilled.type, loginFulfilledHandler);
-  yield takeEvery(storeInitialized.type, storeInitializedHandler);
+  yield takeEvery(
+    [userActions.login.fulfilled.type, userActions.logout.fulfilled.type, storeInitialized.type],
+    refetchMe,
+  );
 }
