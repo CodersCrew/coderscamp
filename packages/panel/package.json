@@ -12,6 +12,7 @@
     "@coderscamp/shared": "0.0.1",
     "@coderscamp/ui": "0.0.1",
     "@toast-ui/react-calendar": "1.0.5",
+    "axios": "0.21.1",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
     "dotenv": "10.0.0",
