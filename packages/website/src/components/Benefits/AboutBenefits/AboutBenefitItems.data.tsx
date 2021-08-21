@@ -1,9 +1,20 @@
+import React from 'react';
+
 import { BenefitCardProps } from '@coderscamp/ui/components/BenefitCard';
 import {
   BallotCheckIcon,
   BooksIcon,
+  CalendarStarIcon,
+  CodeIcon,
+  DiplomaIcon,
+  FaceGlassesIcon,
+  GiftCardIcon,
+  GlobeIcon,
+  HandHoldingHeartIcon,
   MessagesIcon,
+  SignsPostIcon,
   SparklesIcon,
+  ToolboxIcon,
   UserGroupCrownIcon,
   UsersIcon,
 } from '@coderscamp/ui/icons';
@@ -44,5 +55,60 @@ export const aboutBenefitItems: BenefitCardProps[] = [
     title: 'Różnorodność materiałów',
     subtitle:
       'Artykuły, prezentacje, podcasty, filmiki, kursy, gry, interaktywne zadania, sandbox’y – to tylko niektóre spośród kilkudziesięciu form materiałów, z jakimi spotkasz się na kursie.',
+  },
+  {
+    icon: <HandHoldingHeartIcon />,
+    title: 'Inicjatywa non-profit',
+    subtitle:
+      'Naszą siłą napędową jest kilkadziesiąt osób, które po godzinach postanowiły wspierać innych we wchodzeniu w świat IT. Dzięki nim CodersCamp jest w pełni darmowy.',
+  },
+  {
+    icon: <ToolboxIcon />,
+    title: 'Praktyczne narzędzia',
+    subtitle:
+      'Na kursie spotkasz się z dziesiątkami narzędzi używanych na co dzień w branży IT. Będziesz miał także okazję lepiej je poznać dzięki specjalnym materiałom dodatkowym.',
+  },
+
+  {
+    icon: <SignsPostIcon />,
+    title: 'Drogowskazy kariery',
+    subtitle:
+      'Bliżej końca kursu pośród materiałów odnajdziesz wiele dodatkowych źródeł i porad, dzięki którym będziesz mógł zaplanować swój dalszy rozwój po zakończeniu CodersCamp.',
+  },
+  {
+    icon: <GlobeIcon />,
+    title: 'Kurs online +',
+    subtitle:
+      'Jeśli chcesz, możesz ukończyć CodersCamp bez wychodzenia z domu. Niemniej dzięki dobieraniu zespołów wedle miejscowości zyskasz także szansę zintegrowania się z zespołem w formie offline.',
+  },
+  {
+    icon: <CalendarStarIcon />,
+    title: 'Elastyczny harmonogram',
+    subtitle:
+      'U nas możesz swobodnie planować swoją naukę i dowolnie ustalać z zespołem czas spotkań. Jedyne wiążące terminy, to daty zakończenia poszczególnych modułów kursu.',
+  },
+  {
+    icon: <FaceGlassesIcon />,
+    title: 'Zgłębianie tematów',
+    subtitle:
+      'Większość materiałów podzielona jest na 3 części, z których jedynie pierwsza jest obowiązkowa. Pozostałe umożliwią Ci zgłębienie tematów, które najbardziej Cię interesują.',
+  },
+  {
+    icon: <DiplomaIcon />,
+    title: 'Dyplom i certyfikat',
+    subtitle:
+      'Kończąc CodersCamp, otrzymasz od nas dyplom potwierdzający przejście kursu. Jeżeli znajdziesz się pośród najlepszych uczestników, zamiast niego wręczymy Ci imienny certyfikat, powtierdzający Twoją wiedzę.',
+  },
+  {
+    icon: <CodeIcon />,
+    title: 'Testy i zadania praktyczne',
+    subtitle:
+      'Każda spośród kilkudziesięciu sekcji kursu kończy się testem, a większość z nich posiada małe zadania praktyczne. Dzięki temu zawsze możesz sprawdzać, jak dobrze opanowałeś dany materiał.',
+  },
+  {
+    icon: <GiftCardIcon />,
+    title: 'Dodatkowe wsparcie',
+    subtitle:
+      'W CodersCamp warto się angażować. Osoby i zespoły wyróżniające się w każdym z etapów mogą liczyć na dodatkowe wsparcie w postaci książek, próbnych rozmowów rekrutacyjnych, konsultacji CV itp.',
   },
 ];
