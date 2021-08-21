@@ -7,12 +7,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { env } from '@/common/env';
 
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { UserRegistrationService } from './user-registration.service';
 import type { LocalGuardRequest } from './local/local.types';
 
 describe('Auth controller', () => {
   let controller: AuthController;
-  let authService: Partial<AuthService>;
+  let authService: Partial<UserRegistrationService>;
   let jwtService: Partial<JwtService>;
 
   const mockedJwt = 'some token value';
@@ -28,7 +28,7 @@ describe('Auth controller', () => {
     const module = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: UserRegistrationService, useValue: authService },
         { provide: JwtService, useValue: jwtService },
       ],
     }).compile();

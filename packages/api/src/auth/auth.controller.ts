@@ -8,19 +8,22 @@ import { RegisterBody, RegisterResponse } from '@coderscamp/shared/models/auth/r
 
 import { env } from '@/common/env';
 
-import { AuthService } from './auth.service';
 import { fromUserToJwt } from './jwt/jwt.utils';
 import { LocalGuardRequest } from './local/local.types';
 import { LocalAuthGuard } from './local/local-auth.guard';
+import { UserRegistrationService } from './user-registration.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly userRegistrationService: UserRegistrationService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post('register')
   @HttpCode(204)
   async register(@Body() body: RegisterBody): Promise<RegisterResponse> {
-    return this.authService.register(body);
+    return this.userRegistrationService.register(body);
   }
 
   @UseGuards(LocalAuthGuard)

@@ -1,35 +1,39 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
-import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { prismaErrors } from 'src/prisma/prisma.errors';
 
 import { registerError } from '@coderscamp/shared/models/auth/register';
 import { pick } from '@coderscamp/shared/utils/object';
 
-import { AuthUserRepository } from './auth-user.repository';
+import { prismaErrors } from '../prisma/prisma.errors';
 import { UserRegistrationCompletedEvent } from './events/user-registration-completed.event';
+import { UserRegistrationStartedEvent } from './events/user-registration-started.event';
 import { hashPassword } from './local/local.utils';
 import { UserRegistrationRepository } from './user-registration.repository';
 
+interface RegisterData {
+  fullName: string;
+  email: string;
+  password: string;
+}
+
 @Injectable()
-export class AuthService {
+export class UserRegistrationService {
   constructor(
     private readonly eventBus: EventBus,
-    private readonly authUserRepository: AuthUserRepository,
     private readonly userRegistrationRepository: UserRegistrationRepository,
   ) {}
 
-  async register(data: Prisma.UserRegistrationCreateInput & Prisma.AuthUserCreateInput) {
+  async register(data: RegisterData) {
     try {
-      const userRegistrationData = pick(data, ['fullName', 'email']);
       const password = await hashPassword(data.password);
 
-      const { id } = await this.userRegistrationRepository.createUserRegistration({ data: userRegistrationData });
+      const userRegistration = await this.userRegistrationRepository.createUserRegistration({
+        data: pick(data, ['fullName', 'email']),
+      });
 
-      await this.authUserRepository.createAuthUser({ data: { id, email: data.email, password } });
-
-      this.eventBus.publish(new UserRegistrationCompletedEvent({ id, ...userRegistrationData }));
+      this.eventBus.publish(new UserRegistrationStartedEvent({ ...userRegistration, password }));
+      this.eventBus.publish(new UserRegistrationCompletedEvent(userRegistration));
     } catch (ex) {
       if (ex instanceof PrismaClientKnownRequestError && ex.code === prismaErrors.UNIQUE_CONSTRAINT) {
         throw new ConflictException(registerError.REGISTRATION_FORM_ALREADY_EXISTS);
