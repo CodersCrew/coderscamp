@@ -38,8 +38,13 @@ export const userSlice = createSlice({
       state.status = 'success';
       state.user = payload;
     });
-    builder.addCase(getMe.rejected, (state) => {
-      state.status = 'failure';
+    builder.addCase(getMe.rejected, (state, action) => {
+      if (action.error.code === '401') {
+        state.status = 'success';
+        state.user = null;
+      } else {
+        state.status = 'failure';
+      }
     });
   },
 });
