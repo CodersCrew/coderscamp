@@ -2731,6 +2731,7 @@ __metadata:
   dependencies:
     "@coderscamp/shared": 0.0.1
     "@coderscamp/ui": 0.0.1
+    "@hookform/resolvers": 2.8.0
     "@toast-ui/react-calendar": 1.0.5
     "@types/react": 17.0.19
     "@types/react-dom": 17.0.9
@@ -2742,6 +2743,7 @@ __metadata:
     dotenv: 10.0.0
     react: 17.0.2
     react-dom: 17.0.2
+    react-hook-form: 7.12.2
     react-router-dom: 5.2.0
     react-use: 17.2.4
     reflect-metadata: 0.1.13
@@ -3594,6 +3596,15 @@ __metadata:
   dependencies:
     "@hapi/hoek": ^9.0.0
   checksum: 604dfd5dde76d5c334bd03f9001fce69c7ce529883acf92da96f4fe7e51221bf5e5110e964caca287a6a616ba027c071748ab636ff178ad750547fba611d6014
+  languageName: node
+  linkType: hard
+
+"@hookform/resolvers@npm:2.8.0":
+  version: 2.8.0
+  resolution: "@hookform/resolvers@npm:2.8.0"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 05d472875c371cbac33e44da1da5983c85cd2facd473cd56be7db8a0e6c99522d1e17495ca107d60a1c2563c19196c894408b0a0457c589637e35f6906034402
   languageName: node
   linkType: hard
 
