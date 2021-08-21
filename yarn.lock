@@ -467,7 +467,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-imports@npm:^7.0.0, @babel/helper-module-imports@npm:^7.12.1, @babel/helper-module-imports@npm:^7.12.13, @babel/helper-module-imports@npm:^7.14.5":
+"@babel/helper-module-imports@npm:^7.0.0, @babel/helper-module-imports@npm:^7.12.13, @babel/helper-module-imports@npm:^7.14.5":
   version: 7.14.5
   resolution: "@babel/helper-module-imports@npm:7.14.5"
   dependencies:
@@ -2751,7 +2751,6 @@ __metadata:
     redux-saga: 1.1.3
     reflect-metadata: 0.1.13
     tui-calendar: 1.13.1
-    typed-redux-saga: 1.3.1
     vite: 2.5.0
     vite-tsconfig-paths: 3.3.13
   languageName: unknown
@@ -23615,23 +23614,6 @@ resolve@^2.0.0-next.3:
     media-typer: 0.3.0
     mime-types: ~2.1.24
   checksum: 2c8e47675d55f8b4e404bcf529abdf5036c537a04c2b20177bcf78c9e3c1da69da3942b1346e6edb09e823228c0ee656ef0e033765ec39a70d496ef601a0c657
-  languageName: node
-  linkType: hard
-
-"typed-redux-saga@npm:1.3.1":
-  version: 1.3.1
-  resolution: "typed-redux-saga@npm:1.3.1"
-  dependencies:
-    "@babel/helper-module-imports": ^7.12.1
-    babel-plugin-macros: ^2.8.0
-  peerDependencies:
-    redux-saga: ^1.1.3
-  dependenciesMeta:
-    "@babel/helper-module-imports":
-      optional: true
-    babel-plugin-macros:
-      optional: true
-  checksum: ec437050e169125bec10ab8affafae4cc98bed80f07fb5e30c72970e5671f83e37b8fab977c28bfad79bc7f5a8042c0a34bae176a7246d2901a0ac69389d4b87
   languageName: node
   linkType: hard
 
