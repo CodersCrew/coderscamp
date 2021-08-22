@@ -29,7 +29,7 @@ const rolledUpProfitButton = {
   text: 'Rozwiń listę zalet CodersCamp',
 } as const;
 
-const NO_OF_SHRINKED_BENEFITS = 6;
+const BENEFITS_AFTER_SHRINKAGE = 6;
 
 export const Benefits = ({ title, benefitItems, showExpandProfitButton = false }: BenefitsProps) => {
   const columnsCount = useBreakpointValue({ base: 1, md: 2, xl: 3 } as const);
@@ -42,7 +42,7 @@ export const Benefits = ({ title, benefitItems, showExpandProfitButton = false }
   };
 
   const displayedBenefitItems =
-    showExpandProfitButton && !isExpanded ? benefitItems.slice(0, NO_OF_SHRINKED_BENEFITS) : benefitItems;
+    showExpandProfitButton && !isExpanded ? benefitItems.slice(0, BENEFITS_AFTER_SHRINKAGE) : benefitItems;
 
   return (
     <Center
