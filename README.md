@@ -17,4 +17,4 @@ CodersCamp is a 6 month long, free, and open web development bootcamp organized 
   - Advanced back-end development with Nest.js.
   - Advanced front-end development with Redux.js.
 
-CodersCamp students work in 6-people teams guided by an experienced mentor. After each module, each team creates a fully-featured web application. As a result, each student has a portfolio of 5 practical projects with live demos at the end of the course. The entire bootcamp ends with a 24h hackathon where participants create an application that meets business requirements specified by the hackathon's partner.
+CodersCamp students work in 6-people teams guided by an experienced mentor. After the end of the module, the team creates a fully-featured web application and presents it during a demo session. As a result, each student has a portfolio of 5 practical projects with live demos at the end of the course. The entire bootcamp ends with a 24h hackathon where participants create an application that meets business requirements specified by the hackathon's partner.
