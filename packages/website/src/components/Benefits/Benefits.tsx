@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { BenefitCard, BenefitCardProps } from '@coderscamp/ui/components/BenefitCard';
 import { Button } from '@coderscamp/ui/components/Button';
@@ -11,38 +11,37 @@ import { SolidArrowDownIcon, SolidArrowUpIcon } from '@coderscamp/ui/icons';
 export interface BenefitsProps {
   title: string;
   benefitItems: BenefitCardProps[];
-  showExpandProfitButton?: boolean;
+  shrinkSize?: number;
 }
 
 const expandedProfitButton = {
-  props: {
-    position: 'sticky',
-    bottom: '20px',
-    icon: <SolidArrowUpIcon />,
-  },
+  icon: <SolidArrowUpIcon />,
   text: 'Zwiń listę zalet CodersCamp',
 } as const;
+
 const rolledUpProfitButton = {
-  props: {
-    icon: <SolidArrowDownIcon />,
-  },
+  icon: <SolidArrowDownIcon />,
   text: 'Rozwiń listę zalet CodersCamp',
 } as const;
 
-const BENEFITS_AFTER_SHRINKAGE = 6;
-
-export const Benefits = ({ title, benefitItems, showExpandProfitButton = false }: BenefitsProps) => {
+export const Benefits = ({ title, benefitItems, shrinkSize }: BenefitsProps) => {
   const columnsCount = useBreakpointValue({ base: 1, md: 2, xl: 3 } as const);
   const profitButtonSize = useBreakpointValue({ base: 'sm', md: 'lg' } as const);
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const benefitTitleRef = useRef<HTMLDivElement>(null);
 
   const profitButtonValues = isExpanded ? expandedProfitButton : rolledUpProfitButton;
-  const handleProfitList = () => {
+
+  const handleExpandButtonClick = () => {
     setIsExpanded((prev) => !prev);
+
+    if (isExpanded) benefitTitleRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const showExpandProfitButton = shrinkSize !== undefined && benefitItems.length > shrinkSize;
   const displayedBenefitItems =
-    showExpandProfitButton && !isExpanded ? benefitItems.slice(0, BENEFITS_AFTER_SHRINKAGE) : benefitItems;
+    showExpandProfitButton && !isExpanded ? benefitItems.slice(0, shrinkSize) : benefitItems;
 
   return (
     <Center
@@ -53,6 +52,7 @@ export const Benefits = ({ title, benefitItems, showExpandProfitButton = false }
       textAlign="center"
     >
       <Typography
+        ref={benefitTitleRef}
         size={{ base: '3xl', lg: '4xl' }}
         color="gray.900"
         weight="extrabold"
@@ -68,10 +68,10 @@ export const Benefits = ({ title, benefitItems, showExpandProfitButton = false }
       {showExpandProfitButton && (
         <Button
           mt="48px"
+          icon={profitButtonValues.icon}
           size={profitButtonSize}
           color="brand"
-          onClick={handleProfitList}
-          {...profitButtonValues.props}
+          onClick={handleExpandButtonClick}
         >
           {profitButtonValues.text}
         </Button>
