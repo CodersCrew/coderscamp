@@ -6,15 +6,15 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidFacebookIcon, SolidMailIcon } from '@coderscamp/ui/icons';
 
+import { CONTACT_EMAIL } from '../../constants';
 import { ContactLink } from './ContactLink';
 
 const CODERSCREW_FB_URL = 'facebook.com/ccrew18';
-const CODERSCAMP_MAIL = 'kontakt@coderscamp.pl';
 
 export const Heading = () => {
   const stackDirection = useBreakpointValue({ base: 'column', sm: 'row' } as const);
 
-  const mailLinkHref = `mailto:${CODERSCAMP_MAIL}?subject=${encodeURIComponent('Pytanie o CodersCamp')}`;
+  const mailLinkHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Pytanie o CodersCamp')}`;
   const facebookHref = `https://www.${CODERSCREW_FB_URL}`;
 
   return (
@@ -36,7 +36,7 @@ export const Heading = () => {
       </Typography>
       <Stack direction={stackDirection} spacing={{ base: '32px', sm: '40px' }} justify="center">
         <ContactLink href={mailLinkHref} icon={<SolidMailIcon color="#FBBF24" />}>
-          {CODERSCAMP_MAIL}
+          {CONTACT_EMAIL}
         </ContactLink>
         <ContactLink href={facebookHref} icon={<SolidFacebookIcon color="#4064AC" />}>
           {CODERSCREW_FB_URL}
