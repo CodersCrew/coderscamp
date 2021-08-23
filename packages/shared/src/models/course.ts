@@ -1,16 +1,14 @@
-// import { Type } from 'class-transformer';
-// import { IsDate } from 'class-validator';
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate } from 'class-validator';
 
 export class CourseBody {
-  // @Type(() => Date)
-  // @IsDate()
-  @IsString()
-  dateStart: string;
+  @Type(() => Date)
+  @IsDate()
+  dateStart: Date;
 
-  // @IsDate()
-  @IsString()
-  dateEnd: string;
+  @Type(() => Date)
+  @IsDate()
+  dateEnd: Date;
 }
 
 export type Course = {

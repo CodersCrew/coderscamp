@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
-export class CourseRepository {
+export class CoursesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   findMany = this.prisma.course.findMany;
