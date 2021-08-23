@@ -4,9 +4,7 @@ import { ExtractJwt, JwtFromRequestFunction, Strategy, StrategyOptions } from 'p
 
 import { env } from '@/common/env';
 
-import { UsersMapper } from '../../users/users.mapper';
-import type { UserFromJwt } from '../../users/users.types';
-import type { JwtPayload } from './jwt.types';
+import { fromJwtToUser } from './jwt.utils';
 
 export const getTokenFromCookies: JwtFromRequestFunction = (req) => {
   let token: string | null = null;
@@ -38,7 +36,5 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super(strategyOptions);
   }
 
-  validate(payload: JwtPayload): UserFromJwt {
-    return UsersMapper.fromJwtToDomain(payload);
-  }
+  validate = fromJwtToUser;
 }

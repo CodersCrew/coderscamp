@@ -15,14 +15,12 @@ jobs:
       APP_ENV: review
       DATABASE_URL: db
       PORT: 4000
-      GITHUB_CLIENT_ID: ID
-      GITHUB_CLIENT_SECRET: Secret
-      GITHUB_CALLBACK_URL: URL
       JWT_SECRET: kljsr89qwh89YT89gvedstfg
       TOKEN_EXPIRATION_TIME: 3600
       TOKEN_PREFIX: Bearer
       TOKEN_COOKIE_NAME: access_token
       COOKIE_SECRET: 786Tgiu3564Rti8oh89YG6re6
+      PROCESS_ST_CHECKLIST_URL: test_url
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
