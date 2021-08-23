@@ -4,11 +4,12 @@ import type { AuthUser } from '.';
 
 export class LoginBody implements Pick<AuthUser, 'email' | 'password'> {
   @IsString()
-  @IsEmail()
+  @IsEmail({}, { message: 'Niepoprawny format adresu e-mail' })
+  @IsNotEmpty({ message: 'To pole jest wymagane' })
   email: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'To pole jest wymagane' })
   password: string;
 }
 

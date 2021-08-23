@@ -6,15 +6,16 @@ export const registerError = {
 
 export class RegisterBody {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'To pole jest wymagane' })
   fullName: string;
 
   @IsString()
-  @IsEmail()
+  @IsEmail({}, { message: 'Niepoprawny format adresu e-mail' })
+  @IsNotEmpty({ message: 'To pole jest wymagane' })
   email: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'To pole jest wymagane' })
   password: string;
 }
 
