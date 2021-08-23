@@ -1,5 +1,5 @@
 import { AboutMentor } from '@/components/AboutMentor';
-import { MentorBenefits } from '@/components/MentorBenefits';
+import { MentorBenefits } from '@/components/Benefits';
 import { MentorPerspective } from '@/components/MentorPerspective';
 import { MentorRequirements } from '@/components/MentorRequirements';
 import { MentorTestimonials } from '@/components/Testimonials';

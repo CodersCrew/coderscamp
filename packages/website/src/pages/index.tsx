@@ -1,4 +1,5 @@
 import { About } from '@/components/About';
+import { AboutBenefits } from '@/components/Benefits';
 import { BigNumbers } from '@/components/BigNumbers/BigNumbers';
 import { Curriculum } from '@/components/Curriculum';
 import { Hero } from '@/components/Hero';
@@ -16,6 +17,7 @@ const Home = () => {
       <Curriculum />
       <LearningSources />
       <Projects />
+      <AboutBenefits />
       <AboutTestimonials />
       <Schedule />
     </>
