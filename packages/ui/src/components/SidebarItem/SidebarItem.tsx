@@ -46,7 +46,6 @@ const activeBadgeStyles = {
 };
 
 export const SidebarItem = ({ children, path, count, icon, iconSelected, disabled }: SidebarItemProps) => {
-  // const location = useLocation();
   const active = useRouteMatch(path);
 
   const iconButtonStyles = active ? activeIconButtonStyles : defaultIconButtonStyles;

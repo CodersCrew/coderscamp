@@ -26,20 +26,20 @@ export interface SidebarProps {
 
 const SidebarItems = [
   {
-    title: 'Dashboard',
-    path: '/panel',
+    title: 'Panel kursu',
+    path: '/dashboard',
     icon: <OutlinedDashboardIcon />,
     iconSelected: <SolidDashboardIcon />,
   },
   {
     title: 'Projekty',
-    path: '/projekty',
+    path: '/projects',
     icon: <OutlinedRocketIcon />,
     iconSelected: <SolidRocketIcon />,
   },
   {
     title: 'Kalendarz',
-    path: '/kalendarz',
+    path: '/calendar',
     icon: <OutlinedCalendarIcon />,
     iconSelected: <SolidCalendarIcon />,
   },
