@@ -1,9 +1,20 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  ConflictException,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  NotFoundException,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
-import type {
+import {
   CreateLearningMaterialResponse,
   GetLearningMaterialResponse,
+  learningMaterialError,
 } from '@coderscamp/shared/models/learning-material';
+
+import { ResourceAlreadyExistsException, ResourceNotFoundException } from '@/common/exceptions';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
@@ -21,7 +32,19 @@ export class LearningMaterialsController {
   }
 
   @Post()
-  createLearningMaterial(@JwtUserId() userId: UserId): Promise<CreateLearningMaterialResponse> {
-    return this.learningMaterialsService.createLearningMaterial(userId);
+  async createLearningMaterial(@JwtUserId() userId: UserId): Promise<CreateLearningMaterialResponse> {
+    try {
+      return await this.learningMaterialsService.createLearningMaterial(userId);
+    } catch (ex) {
+      if (ex instanceof ResourceNotFoundException) {
+        throw new NotFoundException(learningMaterialError.USER_NOT_FOUND);
+      }
+
+      if (ex instanceof ResourceAlreadyExistsException) {
+        throw new ConflictException(learningMaterialError.MATERIAL_ALREADY_EXISTS);
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 }

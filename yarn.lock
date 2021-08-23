@@ -2665,6 +2665,7 @@ __metadata:
   resolution: "@coderscamp/api@workspace:packages/api"
   dependencies:
     "@coderscamp/shared": 0.0.1
+    "@nestjs-architects/typed-cqrs": 0.1.1
     "@nestjs/cli": 8.1.1
     "@nestjs/common": 8.0.6
     "@nestjs/core": 8.0.6
@@ -3939,6 +3940,19 @@ __metadata:
   version: 1.0.3
   resolution: "@napi-rs/triples@npm:1.0.3"
   checksum: c83a4cc55f69115bf4ce1d5924efce7f5faf2dc79fd52257385559f668ce91a03c5d7d004df01ebba56028a9b663955eb97f31b65ac0acff7a93c143f0d809af
+  languageName: node
+  linkType: hard
+
+"@nestjs-architects/typed-cqrs@npm:0.1.1":
+  version: 0.1.1
+  resolution: "@nestjs-architects/typed-cqrs@npm:0.1.1"
+  peerDependencies:
+    "@nestjs/common": ^7.6.0
+    "@nestjs/core": ^7.6.0
+    "@nestjs/cqrs": ^7.0.1
+    reflect-metadata: ^0.1.13
+    rxjs: ^6.4.0
+  checksum: d631af14752527cd22fccf2a2fead4459a02327114ed89f1141b7608657a9d5a59dae826845550d6f1d88cf2ca1b0d404e6a3fbeae7788528363696c65a4ad56
   languageName: node
   linkType: hard
 

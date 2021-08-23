@@ -41,7 +41,7 @@ export class AuthController {
         throw new ConflictException(registerError.REGISTRATION_FORM_ALREADY_EXISTS);
       }
 
-      throw new InternalServerErrorException(ex);
+      throw new InternalServerErrorException();
     }
   }
 

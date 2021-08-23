@@ -1,24 +1,16 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
-import { UsersModule } from '../users/users.module';
-import { UsersService } from '../users/users.service';
-import { UsersAdapter } from './adapters/users.adapter';
 import { LearningMaterialsController } from './learning-materials.controller';
 import { LearningMaterialsRepository } from './learning-materials.repository';
 import { LearningMaterialsService } from './learning-materials.service';
-import { USERS_PORT } from './ports/users.port';
+import { WhatIsUserNameQuery } from './queries/what-is-user-name.query';
+
+const queries = [WhatIsUserNameQuery];
 
 @Module({
-  imports: [UsersModule],
+  imports: [CqrsModule],
   controllers: [LearningMaterialsController],
-  providers: [
-    LearningMaterialsService,
-    LearningMaterialsRepository,
-    {
-      provide: USERS_PORT,
-      useFactory: (usersService: UsersService) => new UsersAdapter(usersService),
-      inject: [UsersService],
-    },
-  ],
+  providers: [LearningMaterialsService, LearningMaterialsRepository, ...queries],
 })
 export class LearningMaterialsModule {}
