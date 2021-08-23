@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
 
+import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/Navbar';
 
 const globalStyles: Record<string, CSSProperties> = {
@@ -19,6 +20,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ThemeProvider globalStyles={globalStyles}>
       <Navbar />
       <Component {...pageProps} />
+      <Footer />
     </ThemeProvider>
   );
 };
