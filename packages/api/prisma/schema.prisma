@@ -32,3 +32,9 @@ model LearningMaterial {
   completedCount Int    @default(0)
   userId         String @unique @db.Uuid
 }
+
+model Course {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dateStart DateTime
+  dateEnd   DateTime
+}

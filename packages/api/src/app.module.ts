@@ -6,6 +6,7 @@ import { join } from 'path';
 import { env } from '@/common/env';
 
 import { AuthModule } from './auth/auth.module';
+import { CourseModule } from './courses/course.module';
 import { LearningMaterialsModule } from './learning-materials/learning-materials.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
@@ -24,6 +25,7 @@ const productionImports = [
     ...(isProduction ? productionImports : []),
     PrismaModule,
     UsersModule,
+    CourseModule,
     AuthModule,
     LearningMaterialsModule,
     CqrsModule,
