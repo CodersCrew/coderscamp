@@ -21,9 +21,9 @@ export const footerNav = [
     title: 'Nawigacja',
     items: [
       { urlPath: '/', name: 'Strona główna' },
-      { urlPath: '/', name: '' },
-      { urlPath: '/', name: '' },
-      { urlPath: '/', name: '' },
+      { urlPath: '/', name: 'Dla mentorów' },
+      { urlPath: '/', name: 'FAQ' },
+      { urlPath: '/', name: 'Kontakt' },
     ],
   },
   {
