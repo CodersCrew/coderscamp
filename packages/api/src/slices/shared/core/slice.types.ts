@@ -1,5 +1,5 @@
-import { DomainEvent } from './slices';
+import { ApplicationEvent } from './slices';
 
-export type DomainCommand = (previousEvents: DomainEvent[], currentTime: Date) => DomainEvent[];
-export type EventStream<EventType extends DomainEvent = DomainEvent> = EventType[];
+export type DomainCommand = (previousEvents: ApplicationEvent[], currentTime: Date) => ApplicationEvent[];
+export type EventStream<EventType extends ApplicationEvent = ApplicationEvent> = EventType[];
 export type EventStreamVersion = number;

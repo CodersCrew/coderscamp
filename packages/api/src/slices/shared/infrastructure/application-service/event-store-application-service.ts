@@ -5,7 +5,7 @@ import { ApplicationService } from '../../core/application-service';
 import { EVENT_STORE, EventRepository } from '../../core/event-repository';
 import { EventStreamName } from '../../core/event-stream-name.valueboject';
 import { DomainCommand, EventStreamVersion } from '../../core/slice.types';
-import { DomainEvent } from '../../core/slices';
+import { ApplicationEvent } from '../../core/slices';
 import { TIME_PROVIDER, TimeProvider } from '../../core/time-provider.port';
 
 // todo: try to hide most of the logic (id, causation correlation etc here). Maybe some Message wrapper object?
@@ -24,7 +24,7 @@ export class EventStoreApplicationService implements ApplicationService {
     this.eventBus.publishAll(uncommitedChanges);
   }
 
-  private static streamVersion(eventStream?: DomainEvent[]): EventStreamVersion {
+  private static streamVersion(eventStream?: ApplicationEvent[]): EventStreamVersion {
     return eventStream?.length ?? 0;
   }
 }

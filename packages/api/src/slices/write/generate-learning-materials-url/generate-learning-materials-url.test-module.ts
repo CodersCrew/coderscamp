@@ -6,7 +6,7 @@ import { EventStreamName } from '../../shared/core/event-stream-name.valueboject
 import { ID_GENERATOR, IdGenerator } from '../../shared/core/id-generator';
 import { InMemoryEventRepository } from '../../shared/infrastructure/event-repository/in-memory-event-repository';
 import { EventStreamVersion } from '../../shared/core/slice.types';
-import { DomainEvent } from '../../shared/core/slices';
+import { ApplicationEvent } from '../../shared/core/slices';
 import { TIME_PROVIDER } from '../../shared/core/time-provider.port';
 import { FixedTimeProvider } from '../../shared/infrastructure/time-provider/fixed-time-provider';
 import {
@@ -68,7 +68,7 @@ export async function generateLearningMaterialsUrlTestModule() {
 
   async function givenEventOccurred(
     eventStreamName: EventStreamName,
-    event: DomainEvent,
+    event: ApplicationEvent,
     streamVersion: EventStreamVersion,
   ) {
     await eventRepository.write(eventStreamName, [event], streamVersion);

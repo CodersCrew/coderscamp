@@ -1,10 +1,10 @@
-import { DefaultEventMetadata, DomainEvent } from '../../../shared/core/slices';
+import { DefaultEventMetadata, ApplicationEvent } from '../../../shared/core/slices';
 import { UserId } from '../../../shared/core/user-id';
 
 export type LearningMaterialsUrlWasGeneratedData = { userId: UserId; materialsUrl: string };
 
 export const LEARNING_MATERIALS_URL_WAS_GENERATED = 'LearningMaterialsUrlWasGenerated';
-export class LearningMaterialsUrlWasGenerated implements DomainEvent<LearningMaterialsUrlWasGeneratedData> {
+export class LearningMaterialsUrlWasGenerated implements ApplicationEvent<LearningMaterialsUrlWasGeneratedData> {
   readonly type: string = LEARNING_MATERIALS_URL_WAS_GENERATED;
 
   readonly id: string;
@@ -19,7 +19,7 @@ export class LearningMaterialsUrlWasGenerated implements DomainEvent<LearningMat
     return new LearningMaterialsUrlWasGenerated(props.id, props.occurredAt, props.data, props.metadata);
   }
 
-  private constructor(
+  constructor(
     id: string,
     occurredAt: Date,
     data: LearningMaterialsUrlWasGeneratedData,
@@ -32,6 +32,6 @@ export class LearningMaterialsUrlWasGenerated implements DomainEvent<LearningMat
   }
 }
 
-export function isLearningMaterialsUrlWasGenerated(event: DomainEvent): event is LearningMaterialsUrlWasGenerated{
+export function isLearningMaterialsUrlWasGenerated(event: ApplicationEvent): event is LearningMaterialsUrlWasGenerated{
   return event.type === LEARNING_MATERIALS_URL_WAS_GENERATED;
 }

@@ -1,7 +1,7 @@
 export type DefaultCommandMetadata = { correlationId: string; causationId?: string };
 export type DefaultEventMetadata = { correlationId: string; causationId: string };
 
-export interface DomainCommand<
+export interface ApplicationCommand<
   CommandData extends Record<string, unknown> = Record<string, unknown>,
   CommandMetadata extends DefaultCommandMetadata = DefaultCommandMetadata,
 > {
@@ -12,7 +12,7 @@ export interface DomainCommand<
   readonly metadata: CommandMetadata;
 }
 
-export interface DomainEvent<
+export interface ApplicationEvent<
   EventData extends Record<string, unknown> = Record<string, unknown>,
   EventMetadata extends DefaultEventMetadata = DefaultEventMetadata,
 > {

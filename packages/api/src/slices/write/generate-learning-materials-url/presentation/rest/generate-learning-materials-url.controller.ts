@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '../../../../../auth/jwt/jwt-auth.guard';
 import { JwtUserId } from '../../../../../auth/jwt/jwt-user-id.decorator';
 import { UserId } from '../../../../../users/users.types';
 import { ID_GENERATOR, IdGenerator } from '../../../../shared/core/id-generator';
-import { DomainCommand } from '../../../../shared/core/slices';
+import { ApplicationCommand } from '../../../../shared/core/slices';
 import { TIME_PROVIDER, TimeProvider } from '../../../../shared/core/time-provider.port';
 import { GenerateLearningMaterialsUrl } from '../../api/generate-learning-materials-url.command';
 
@@ -32,7 +32,7 @@ export class LearningMaterialsUrlController {
     );
   }
 
-  command<CommandType extends DomainCommand>(builder: CommandBuilder<CommandType>): CommandType {
+  command<CommandType extends ApplicationCommand>(builder: CommandBuilder<CommandType>): CommandType {
     return plainToClass(builder.type, {
       id: this.idGenerator.generate(),
       issuedAt: this.timeProvider.currentTime(),
@@ -42,7 +42,7 @@ export class LearningMaterialsUrlController {
   }
 }
 
-export type CommandBuilder<CommandType extends DomainCommand> = {
+export type CommandBuilder<CommandType extends ApplicationCommand> = {
   type: Type<CommandType>;
   data: CommandType['data'];
 };

@@ -1,11 +1,11 @@
 import {Inject, Type} from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 
-import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/core/application-service';
-import { EventStreamName } from '../../../shared/core/event-stream-name.valueboject';
-import { ID_GENERATOR, IdGenerator } from '../../../shared/core/id-generator';
-import {DomainCommand, DomainEvent} from '../../../shared/core/slices';
-import { GenerateLearningMaterialsUrl } from '../api/generate-learning-materials-url.command';
+import {APPLICATION_SERVICE, ApplicationService} from '../../../shared/core/application-service';
+import {EventStreamName} from '../../../shared/core/event-stream-name.valueboject';
+import {ID_GENERATOR, IdGenerator} from '../../../shared/core/id-generator';
+import {ApplicationEvent} from '../../../shared/core/slices';
+import {GenerateLearningMaterialsUrl} from '../api/generate-learning-materials-url.command';
 import {
   isLearningMaterialsUrlWasGenerated,
   LearningMaterialsUrlWasGenerated,
@@ -15,8 +15,6 @@ import {
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
 } from './learning-materials-url-generator';
-import {plainToClass} from "class-transformer";
-import {CommandBuilder} from "../presentation/rest/generate-learning-materials-url.controller";
 
 @CommandHandler(GenerateLearningMaterialsUrl)
 export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandler<GenerateLearningMaterialsUrl> {
@@ -40,11 +38,11 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
   }
 
   generateLearningMaterials(
-    previousEvents: DomainEvent[],
+    previousEvents: ApplicationEvent[],
     currentTime: Date,
     command: GenerateLearningMaterialsUrl,
     learningMaterialsUrl: LearningMaterialsUrl,
-  ): DomainEvent[] {
+  ): ApplicationEvent[] {
     const state = previousEvents.reduce<{ generated: boolean }>(
       (acc, event) => (isLearningMaterialsUrlWasGenerated(event) ? { generated: true } : acc),
       { generated: false },
@@ -74,7 +72,7 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
   // }
 }
 
-export type EventBuilder<EventType extends DomainEvent> = {
+export type EventBuilder<EventType extends ApplicationEvent> = {
   type: Type<EventType>;
   data: EventType['data'];
 };
@@ -85,4 +83,5 @@ export type EventBuilder<EventType extends DomainEvent> = {
 //a reszta bylaby dla ich klasy! Kurde dobre...
 //to sa integration event, a tamte domenowe eventy.
 //domenowe eventy to wewnatrz to co maja, czy da sie typ wyliczyc? Jesli tak to mega!
-
+//ApplicationEvent<EventType>;
+//DomainEvent = ApplicationEvent['type'] / ApplicationEvent['data']

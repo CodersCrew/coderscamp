@@ -4,7 +4,7 @@ import { PrismaService } from '../../../../prisma/prisma.service';
 import { EventRepository } from '../../core/event-repository';
 import { EventStreamName } from '../../core/event-stream-name.valueboject';
 import { EventStream, EventStreamVersion } from '../../core/slice.types';
-import { DomainEvent } from '../../core/slices';
+import { ApplicationEvent } from '../../core/slices';
 import { TIME_PROVIDER, TimeProvider } from '../../core/time-provider.port';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class PrismaEventRepository implements EventRepository {
 
   async write(
     streamName: EventStreamName,
-    events: DomainEvent[],
+    events: ApplicationEvent[],
     expectedStreamVersion: EventStreamVersion,
   ): Promise<void> {
     // todo: do it in transaction!

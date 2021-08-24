@@ -3,12 +3,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventRepository } from '../../core/event-repository';
 import { EventStreamName } from '../../core/event-stream-name.valueboject';
 import { EventStream, EventStreamVersion } from '../../core/slice.types';
-import { DomainEvent } from '../../core/slices';
+import { ApplicationEvent } from '../../core/slices';
 import { TIME_PROVIDER, TimeProvider } from '../../core/time-provider.port';
 
 @Injectable()
 export class InMemoryEventRepository implements EventRepository {
-  private eventStreams: { [key: string]: DomainEvent[] } = {};
+  private eventStreams: { [key: string]: ApplicationEvent[] } = {};
 
   constructor(@Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider) {}
 
@@ -16,11 +16,11 @@ export class InMemoryEventRepository implements EventRepository {
     return this.getEventsBy(streamName).filter((it) => it.occurredAt <= this.timeProvider.currentTime());
   }
 
-  private getEventsBy(eventStreamName: EventStreamName): DomainEvent[] {
+  private getEventsBy(eventStreamName: EventStreamName): ApplicationEvent[] {
     return this.eventStreams[eventStreamName.raw] || [];
   }
 
-  write(streamName: EventStreamName, events: DomainEvent[], expectedStreamVersion: EventStreamVersion): Promise<void> {
+  write(streamName: EventStreamName, events: ApplicationEvent[], expectedStreamVersion: EventStreamVersion): Promise<void> {
     return Promise.all(
       events.map((value, index) => this.writeOne(streamName, value, expectedStreamVersion + index)),
     ).then();
@@ -28,7 +28,7 @@ export class InMemoryEventRepository implements EventRepository {
 
   private writeOne(
     streamName: EventStreamName,
-    event: DomainEvent,
+    event: ApplicationEvent,
     expectedStreamVersion: EventStreamVersion,
   ): Promise<void> {
     const foundStream = this.eventStreams[streamName.raw];

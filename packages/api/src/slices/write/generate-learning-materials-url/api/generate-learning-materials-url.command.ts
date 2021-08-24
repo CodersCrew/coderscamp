@@ -1,9 +1,9 @@
-import { DefaultCommandMetadata, DomainCommand } from '../../../shared/core/slices';
+import { DefaultCommandMetadata, ApplicationCommand } from '../../../shared/core/slices';
 import { UserId } from '../../../shared/core/user-id';
 
 export type GenerateLearningMaterialsData = { userId: UserId };
 
-export class GenerateLearningMaterialsUrl implements DomainCommand<GenerateLearningMaterialsData> {
+export class GenerateLearningMaterialsUrl implements ApplicationCommand<GenerateLearningMaterialsData> {
   readonly type: string = 'GenerateLearningMaterialsUrl';
 
   readonly id: string;
