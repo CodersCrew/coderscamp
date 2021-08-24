@@ -18,7 +18,7 @@ export class GenerateLearningMaterialsUrl implements DomainCommand<GenerateLearn
     return new GenerateLearningMaterialsUrl(props.id, props.issuedAt, props.data, props.metadata);
   }
 
-  private constructor(
+  constructor(
     id: string,
     issuedAt: Date,
     data: GenerateLearningMaterialsData,

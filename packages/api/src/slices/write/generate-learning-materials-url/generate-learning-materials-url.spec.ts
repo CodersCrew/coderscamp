@@ -1,12 +1,12 @@
 import { EventStreamName } from '../../shared/core/event-stream-name.valueboject';
 import { GenerateLearningMaterialsUrl } from './api/generate-learning-materials-url.command';
 import { LearningMaterialsUrlWasGenerated } from './api/learning-materials-url-was-generated.event';
-import { generateLearningMaterialsUrlTesModule } from './generate-learning-materials-url.test-module';
+import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
 
 describe('Generate Learning Materials URL', () => {
   it('test 1', async () => {
     // given
-    const { commandBus, time, getLastPublishedEvents } = await generateLearningMaterialsUrlTesModule();
+    const { commandBus, time, getLastPublishedEvents } = await generateLearningMaterialsUrlTestModule();
 
     // when
     const userId = 'existing-user-id';
@@ -41,8 +41,8 @@ describe('Generate Learning Materials URL', () => {
 
   it('test 12', async () => {
     // given
-    const { commandBus, time, givenEventOccurred } = await generateLearningMaterialsUrlTesModule();
-    const userId = 'existing-user-id'; //fixme: not uuid - cannot run with prisma
+    const { commandBus, time, givenEventOccurred } = await generateLearningMaterialsUrlTestModule();
+    const userId = 'existing-user-id'; // fixme: not uuid - cannot run with prisma
     const generateAt = new Date();
     const event = LearningMaterialsUrlWasGenerated.event({
       id: 'generatedId0',
@@ -70,6 +70,9 @@ describe('Generate Learning Materials URL', () => {
       metadata: { correlationId: 'correlationId2' },
     });
 
-    await expect(() => commandBus.execute(command)).rejects.toStrictEqual(new Error('Learning resources url was already generated!'));
+    //then
+    await expect(() => commandBus.execute(command)).rejects.toStrictEqual(
+      new Error('Learning resources url was already generated!'),
+    );
   });
 });

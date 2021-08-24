@@ -1,10 +1,10 @@
-import { Inject } from '@nestjs/common';
+import {Inject, Type} from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/core/application-service';
 import { EventStreamName } from '../../../shared/core/event-stream-name.valueboject';
 import { ID_GENERATOR, IdGenerator } from '../../../shared/core/id-generator';
-import { DomainEvent } from '../../../shared/core/slices';
+import {DomainCommand, DomainEvent} from '../../../shared/core/slices';
 import { GenerateLearningMaterialsUrl } from '../api/generate-learning-materials-url.command';
 import {
   isLearningMaterialsUrlWasGenerated,
@@ -15,6 +15,8 @@ import {
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
 } from './learning-materials-url-generator';
+import {plainToClass} from "class-transformer";
+import {CommandBuilder} from "../presentation/rest/generate-learning-materials-url.controller";
 
 @CommandHandler(GenerateLearningMaterialsUrl)
 export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandler<GenerateLearningMaterialsUrl> {
@@ -61,4 +63,26 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
 
     return [learningMaterialsUrlWasGenerated];
   }
+
+  // event<EventType extends DomainEvent>(builder: EventBuilder<EventType>): EventType {
+  //   return plainToClass(builder.type, {
+  //     id: this.idGenerator.generate(),
+  //     issuedAt: this.timeProvider.currentTime(),
+  //     data: builder.data,
+  //     metadata: { correlationId: this.idGenerator.generate() },
+  //   });
+  // }
 }
+
+export type EventBuilder<EventType extends DomainEvent> = {
+  type: Type<EventType>;
+  data: EventType['data'];
+};
+
+
+//domain event to integration event
+// i wtedy to bylyby typy tylko type data.
+//a reszta bylaby dla ich klasy! Kurde dobre...
+//to sa integration event, a tamte domenowe eventy.
+//domenowe eventy to wewnatrz to co maja, czy da sie typ wyliczyc? Jesli tak to mega!
+

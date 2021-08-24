@@ -33,7 +33,7 @@ class MockedLearningResourcesGenerator implements LearningMaterialsUrlGenerator 
   }
 }
 
-export async function generateLearningMaterialsUrlTesModule() {
+export async function generateLearningMaterialsUrlTestModule() {
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
   let generatedIds = 0;
   const mockedIdGenerator: IdGenerator = {
