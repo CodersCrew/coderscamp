@@ -1,11 +1,11 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 import type {
   CreateLearningMaterialResponse,
   GetLearningMaterialResponse,
 } from '@coderscamp/shared/models/learning-material';
 
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
 import type { UserId } from '../users/users.types';
 import { LearningMaterialsService } from './learning-materials.service';
