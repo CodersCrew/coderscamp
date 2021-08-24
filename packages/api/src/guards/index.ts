@@ -1,1 +1,1 @@
-export { RolesGuard, ForAdmin, ForAll } from './roles.Guard';
+export { RolesGuard, ForAdmin, ForAll } from './roles.guard';
