@@ -1,9 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 import { CourseBody, CreateCourseResponse, GetAllCoursesResponse } from '@coderscamp/shared/models/course';
 
+import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { ForAdmin, RolesGuard } from '../guards';
 import { CoursesService } from './courses.service';
 
+@ForAdmin()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
