@@ -13,20 +13,27 @@ describe('Generate Learning Materials URL', () => {
     const generateAt = new Date();
 
     time.timeTravelTo(generateAt);
-    await commandBus.execute(
-      GenerateLearningMaterialsUrl.command({
-        id: 'generateLearningMaterialsUrlCommandId',
-        issuedAt: generateAt,
-        data: { userId },
-        metadata: { correlationId: 'correlationId' },
-      }),
-    );
+
+    const prop = {
+      type: 'GenerateLearningMaterialsUrl',
+      id: 'generateLearningMaterialsUrlCommandId',
+      issuedAt: generateAt,
+      data: { userId },
+      metadata: { correlationId: 'correlationId' },
+    };
+
+    prop.constructor = { name: 'GenerateLearningMaterialsUrl' }; //todo: use types as command / event! Introduce special command / event bus for that
+
+    const command = Object.assign(Object.create(prop), prop);
+
+    await commandBus.execute(command);
 
     // then
     const lastPublishedEvents = await getLastPublishedEvents();
 
     expect(lastPublishedEvents).toStrictEqual([
-      LearningMaterialsUrlWasGenerated.event({
+      {
+        type: 'LearningMaterialsUrlWasGenerated',
         id: 'generatedId1',
         occurredAt: generateAt,
         data: {
@@ -35,7 +42,7 @@ describe('Generate Learning Materials URL', () => {
             'https://app.process.st/runs/existing-user-id-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
         },
         metadata: { correlationId: 'correlationId', causationId: 'generateLearningMaterialsUrlCommandId' },
-      }),
+      },
     ]);
   });
 

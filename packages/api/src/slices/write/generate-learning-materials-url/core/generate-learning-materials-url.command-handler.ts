@@ -25,8 +25,10 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
 
     const eventStreamName = EventStreamName.from('LearningMaterialsUrl', command.data.userId);
 
-    await this.applicationService.execute(eventStreamName, { ...command.metadata }, (previousEvents) =>
-      this.generateLearningMaterials(previousEvents, command, learningMaterialsUrl),
+    await this.applicationService.execute(
+      eventStreamName,
+      { causationId: command.id, correlationId: command.metadata.correlationId },
+      (previousEvents) => this.generateLearningMaterials(previousEvents, command, learningMaterialsUrl),
     );
   }
 
@@ -74,3 +76,19 @@ export type DomainEvent<Type = string, Data = Record<string, unknown>> = {
 // domenowe eventy to wewnatrz to co maja, czy da sie typ wyliczyc? Jesli tak to mega!
 // ApplicationEvent<EventType>;
 // DomainEvent = ApplicationEvent['type'] / ApplicationEvent['data']
+/**
+ *
+ @Injectable()
+ export class DeserializedEventFactory {
+    public createFromEvent(eventName: string, event: any): OutgoingEvent {
+        event.constructor = { name: eventName };
+
+        return Object.assign(Object.create(event), event);
+    }
+    public createFromEventEntities(events: Event[]): OutgoingEvent[] {
+        return events.map(event =>
+            this.createFromEvent(event.eventName, event.event),
+        );
+    }
+}
+ */

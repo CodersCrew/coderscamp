@@ -6,5 +6,5 @@ export const APPLICATION_SERVICE = Symbol('APPLICATION_SERVICE');
 export type ApplicationExecutionContext = { correlationId: string; causationId?: string };
 
 export interface ApplicationService {
-  execute(streamName: EventStreamName, context: ApplicationExecutionContext, command: DomainLogic): Promise<void>;
+  execute(streamName: EventStreamName, context: ApplicationExecutionContext, domainLogic: DomainLogic): Promise<void>;
 }

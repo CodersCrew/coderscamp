@@ -24,22 +24,23 @@ export class LearningMaterialsUrlController {
   @Post('/')
   @HttpCode(204)
   async generateUserLearningResourcesUrl(@JwtUserId() userId: UserId): Promise<void> {
-    await this.commandBus.execute(
-      this.command({
-        type: GenerateLearningMaterialsUrl,
-        data: { userId },
-      }),
-    );
-  }
-
-  command<CommandType extends ApplicationCommand>(builder: CommandBuilder<CommandType>): CommandType {
-    return plainToClass(builder.type, {
+    await this.commandBus.execute({
+      type: 'GenerateLearningMaterialsUrl',
       id: this.idGenerator.generate(),
       issuedAt: this.timeProvider.currentTime(),
-      data: builder.data,
+      data: { userId },
       metadata: { correlationId: this.idGenerator.generate() },
     });
   }
+
+  // command<CommandType extends ApplicationCommand>(builder: CommandBuilder<CommandType>): CommandType {
+  //   return plainToClass(builder.type, {
+  //     id: this.idGenerator.generate(),
+  //     issuedAt: this.timeProvider.currentTime(),
+  //     data: builder.data,
+  //     metadata: { correlationId: this.idGenerator.generate() },
+  //   });
+  // }
 }
 
 export type CommandBuilder<CommandType extends ApplicationCommand> = {
