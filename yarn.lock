@@ -2798,11 +2798,13 @@ __metadata:
   resolution: "@coderscamp/website@workspace:packages/website"
   dependencies:
     "@coderscamp/ui": 0.0.1
+    "@types/nodemailer": 6.4.4
     "@types/react": 17.0.19
     next: 11.1.0
     next-compose-plugins: 2.2.1
     next-images: 1.8.1
     next-transpile-modules: 8.0.0
+    nodemailer: 6.6.3
     react: 17.0.2
     react-dom: 17.0.2
     react-hook-form: 7.12.2
@@ -6268,6 +6270,15 @@ __metadata:
   version: 15.14.7
   resolution: "@types/node@npm:15.14.7"
   checksum: 9622cc3d46cbc434f690c0d086ca61fa43df1bbc28276b857452ea56a33e1b61345d4bd6c9393cd73dd9c3b78222ca86e1b96d0c5e37b6edac98fa21f8482ba0
+  languageName: node
+  linkType: hard
+
+"@types/nodemailer@npm:6.4.4":
+  version: 6.4.4
+  resolution: "@types/nodemailer@npm:6.4.4"
+  dependencies:
+    "@types/node": "*"
+  checksum: 16ed1bad2cd8471fd3b026471e234da33ba3b65935dc44b31be3145eff7bdb067eb4d08ec4b41d23339b988075299abc1a0c0fe77b99f04ca235827bca95af81
   languageName: node
   linkType: hard
 
@@ -17733,6 +17744,13 @@ fsevents@^1.2.7:
   version: 1.1.74
   resolution: "node-releases@npm:1.1.74"
   checksum: 3dde058c30f34bda66e11821a3d6a110deb5dd3abe8b5113cf88d88344f02c7a3b4599e92fd6b1f67fff4df6c70edc23543d3138033c0f32514401438d58a933
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:6.6.3":
+  version: 6.6.3
+  resolution: "nodemailer@npm:6.6.3"
+  checksum: c1b267a5de2d61947fc922fad81c10c7c65e2b71c4e0979eec833666efd7dc403039e03cec6f6fc201a82221def28b686833d2d06c2c27194ee270d98604b676
   languageName: node
   linkType: hard
 
