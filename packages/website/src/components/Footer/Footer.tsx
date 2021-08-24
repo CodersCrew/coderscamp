@@ -5,21 +5,8 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Logo } from '@coderscamp/ui/components/Logo';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import {
-  SolidFacebookIcon,
-  SolidGitHubIcon,
-  SolidGlobalIcon,
-  SolidInstagramIcon,
-  SolidLinkedinIcon,
-} from '@coderscamp/ui/icons';
 
-export const socialMediaIcons = [
-  { name: 'FacebookIcon', component: <SolidFacebookIcon /> },
-  { name: 'InstagramIcon', component: <SolidInstagramIcon /> },
-  { name: 'LinkedinIcon', component: <SolidLinkedinIcon /> },
-  { name: 'GitHubIcon', component: <SolidGitHubIcon /> },
-  { name: 'GlobalIcon', component: <SolidGlobalIcon /> },
-];
+import { socialMediaIcons } from './Footer.data';
 
 export const Footer = () => {
   const footerStyles = {
