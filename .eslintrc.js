@@ -160,6 +160,11 @@ module.exports = {
       rules: { 'import/no-default-export': 0 },
     },
     {
+      // Redux slices.
+      files: ['**/*Slice.ts'],
+      rules: { 'no-param-reassign': 0 },
+    },
+    {
       // Enable plugins rules only for test files.
       files: ['**/?(*.)+(spec|test).ts?(x)'],
       extends: [

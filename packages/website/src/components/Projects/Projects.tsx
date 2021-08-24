@@ -7,6 +7,7 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 
 const ProjectsCarousel = dynamic(
   import('./ProjectsCarousel').then((mod) => mod.ProjectsCarousel) as Promise<ComponentType>,
+  { ssr: false },
 );
 
 export const Projects = () => {

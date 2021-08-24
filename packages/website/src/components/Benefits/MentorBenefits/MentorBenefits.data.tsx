@@ -14,7 +14,7 @@ import {
   UserTieIcon,
 } from '@coderscamp/ui/icons';
 
-export const benefits: BenefitCardProps[] = [
+export const mentorBenefitItems: BenefitCardProps[] = [
   {
     icon: <UserTieIcon height="32px" />,
     title: 'Staniesz się lepszym liderem',

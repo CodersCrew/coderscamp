@@ -37,8 +37,10 @@ export const NavbarItem = ({ text, href }: NavbarItemProps) => {
   const usedTypographyStyles = route === href ? selectedTypographyStyles : baseTypographyStyles;
 
   return (
-    <Typography {...usedTypographyStyles} {...commonStyle}>
-      <Link href={href}>{text}</Link>
-    </Typography>
+    <Link href={href}>
+      <Typography {...usedTypographyStyles} {...commonStyle}>
+        {text}
+      </Typography>
+    </Link>
   );
 };

@@ -18,6 +18,7 @@ model AuthUser {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email    String @unique
   password String
+  role     Role   @default(User)
 }
 
 model UserRegistration {
@@ -37,4 +38,9 @@ model Course {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   dateStart DateTime
   dateEnd   DateTime
+}
+
+enum Role {
+  Admin
+  User
 }
