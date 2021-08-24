@@ -1,18 +1,8 @@
-import { LearningMaterialsUrlWasGenerated } from './learning-materials-url-was-generated.event';
+import { UserId } from '../../../shared/core/user-id';
 
-type Values<T> = T[keyof T];
-
-export const LearningMaterialsApplicationEvent = {
-  LEARNING_MATERIALS_URL_WAS_GENERATED: LearningMaterialsUrlWasGenerated,
+export type LearningMaterialsUrlWasGenerated = {
+  type: 'LearningMaterialsUrlWasGenerated';
+  data: { userId: UserId; materialsUrl: string };
 };
 
-export type LearningMaterialsDomainEvent = Values<
-  {
-    [Property in keyof typeof LearningMaterialsApplicationEvent]: {
-      type: Property;
-      data: typeof LearningMaterialsApplicationEvent[Property]['prototype']['data'];
-    };
-  }
->;
-
-// todo: A moze w druga strone? Zrobic klase, ktora zawiera event domenowy. I wtedy po prostu ta klase tworzyc z eventu!?
+export type LearningMaterialsDomainEvent = LearningMaterialsUrlWasGenerated;

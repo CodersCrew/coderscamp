@@ -32,6 +32,3 @@ export class LearningMaterialsUrlWasGenerated implements ApplicationEvent<Learni
   }
 }
 
-export function isLearningMaterialsUrlWasGenerated(event: ApplicationEvent): event is LearningMaterialsUrlWasGenerated {
-  return event.type === LEARNING_MATERIALS_URL_WAS_GENERATED;
-}

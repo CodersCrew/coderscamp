@@ -24,6 +24,7 @@ export class LearningMaterialsUrlController {
   @Post('/')
   @HttpCode(204)
   async generateUserLearningResourcesUrl(@JwtUserId() userId: UserId): Promise<void> {
+    //this.commandBus.register()
     await this.commandBus.execute({
       type: 'GenerateLearningMaterialsUrl',
       id: this.idGenerator.generate(),

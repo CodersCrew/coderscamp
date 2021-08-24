@@ -8,6 +8,7 @@ import { ID_GENERATOR, IdGenerator } from '../../core/id-generator';
 import { DomainLogic, EventStreamVersion } from '../../core/slice.types';
 import { ApplicationEvent } from '../../core/slices';
 import { TIME_PROVIDER, TimeProvider } from '../../core/time-provider.port';
+import {DomainEvent} from "../../../write/generate-learning-materials-url/core/generate-learning-materials-url.command-handler";
 
 // todo: try to hide most of the logic (id, causation correlation etc here). Maybe some Message wrapper object?
 export class EventStoreApplicationService implements ApplicationService {
@@ -18,13 +19,17 @@ export class EventStoreApplicationService implements ApplicationService {
     private readonly eventBus: EventBus,
   ) {}
 
-  async execute(
+  async execute<EventType extends DomainEvent>(
     streamName: EventStreamName,
     context: ApplicationExecutionContext,
-    domainLogic: DomainLogic,
+    domainLogic: DomainLogic<EventType>,
   ): Promise<void> {
     const eventStream = await this.eventStore.read(streamName);
-    const resultDomainEvents = domainLogic(eventStream);
+    const resultDomainEvents = domainLogic(
+      eventStream.map((e) => {
+        return { type: e.type, data: e.data } as EventType;
+      }),
+    );
 
     const uncommitedChanges: ApplicationEvent[] = resultDomainEvents.map((e) => ({
       data: e.data,

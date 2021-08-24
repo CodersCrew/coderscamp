@@ -1,17 +1,17 @@
-import {Inject} from '@nestjs/common';
-import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
+import { Inject } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import {APPLICATION_SERVICE, ApplicationService} from '../../../shared/core/application-service';
-import {EventStreamName} from '../../../shared/core/event-stream-name.valueboject';
-import {GenerateLearningMaterialsUrl} from '../api/generate-learning-materials-url.command';
-import {LEARNING_MATERIALS_URL_WAS_GENERATED,} from '../api/learning-materials-url-was-generated.event';
+import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/core/application-service';
+import { EventStreamName } from '../../../shared/core/event-stream-name.valueboject';
+import { LearningMaterialsDomainEvent } from '../api/events';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
 } from './learning-materials-url-generator';
+import {GenerateLearningMaterialsUrl} from "../api/commands";
 
-@CommandHandler(GenerateLearningMaterialsUrl)
+@CommandHandler({name: 'as'})
 export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandler<GenerateLearningMaterialsUrl> {
   constructor(
     @Inject(LEARNING_MATERIALS_URL_GENERATOR)
@@ -25,7 +25,7 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
 
     const eventStreamName = EventStreamName.from('LearningMaterialsUrl', command.data.userId);
 
-    await this.applicationService.execute(
+    await this.applicationService.execute<LearningMaterialsDomainEvent>(
       eventStreamName,
       { causationId: command.id, correlationId: command.metadata.correlationId },
       (previousEvents) => this.generateLearningMaterials(previousEvents, command, learningMaterialsUrl),
@@ -33,14 +33,14 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
   }
 
   generateLearningMaterials(
-    previousEvents: DomainEvent[],
+    previousEvents: LearningMaterialsDomainEvent[],
     command: GenerateLearningMaterialsUrl,
     learningMaterialsUrl: LearningMaterialsUrl,
-  ): DomainEvent[] {
+  ): LearningMaterialsDomainEvent[] {
     const state = previousEvents.reduce<{ generated: boolean }>(
       (acc, event) => {
         switch (event.type) {
-          case LEARNING_MATERIALS_URL_WAS_GENERATED: {
+          case 'LearningMaterialsUrlWasGenerated': {
             return { generated: true };
           }
           default: {
@@ -55,12 +55,12 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
       throw new Error('Learning resources url was already generated!');
     }
 
-    const learningMaterialsUrlWasGenerated = {
-      type: LEARNING_MATERIALS_URL_WAS_GENERATED,
-      data: { userId: command.data.userId, materialsUrl: learningMaterialsUrl },
-    };
-
-    return [learningMaterialsUrlWasGenerated];
+    return [
+      {
+        type: 'LearningMaterialsUrlWasGenerated',
+        data: { userId: command.data.userId, materialsUrl: learningMaterialsUrl },
+      },
+    ];
   }
 }
 
