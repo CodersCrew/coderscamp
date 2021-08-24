@@ -1,12 +1,14 @@
 import React from 'react';
+import { Image as ChakraImage } from '@chakra-ui/react';
 import Link from 'next/link';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Flex } from '@coderscamp/ui/components/Flex';
-import { Logo } from '@coderscamp/ui/components/Logo';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
+import logoCodersCrew from '../../assets/footer/CodersCrewLogo.svg';
+import logoVercel from '../../assets/footer/VercelLogo.svg';
 import { footerNav, socialMediaIcons } from './Footer.data';
 
 export const Footer = () => {
@@ -34,7 +36,7 @@ export const Footer = () => {
           mb={[0, 0, 0, 0, '32px']}
         >
           <Box maxW="384px" direction="column" mb="56px">
-            <Logo color="black" w="291px" h="32px" />
+            <ChakraImage alt="Logo CodersCrew" src={logoCodersCrew} />
 
             <Typography w="100%" pt="20px" size="md">
               Organizatorem CodersCamp jest Stowarzyszenie CodersCrew - organizacja non-profit zrzeszająca pasjonatów
@@ -75,20 +77,15 @@ export const Footer = () => {
           </Flex>
         </Flex>
 
-        <Flex
-          justify="space-between"
-          borderTop="1px"
-          borderColor="gray.200"
-          minH="70px"
-          align="flex-end"
-          direction={footerStyles.lowerFooter.direction}
-        >
-          <Typography size="lg" color="gray.400" pt="24px">
-            © CodersCamp 2021, wszelkie prawa zastrzeżone.
-          </Typography>
-          <Box pt="24px" order={footerStyles.lowerFooter.order}>
-            PRZYCISK
-          </Box>
+        <Flex borderTop="1px" borderColor="gray.200" minH="70px" align="flex-end">
+          <Flex justify="space-between" align="center" direction={footerStyles.lowerFooter.direction} width="100%">
+            <Typography size="lg" color="gray.400" pt="24px">
+              © CodersCamp 2021, wszelkie prawa zastrzeżone.
+            </Typography>
+            <Box pt="24px" order={footerStyles.lowerFooter.order}>
+              <ChakraImage alt="Logo Vercel" src={logoVercel} />
+            </Box>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
