@@ -1,4 +1,4 @@
-import { DefaultEventMetadata, ApplicationEvent } from '../../../shared/core/slices';
+import { ApplicationEvent, DefaultEventMetadata } from '../../../shared/core/slices';
 import { UserId } from '../../../shared/core/user-id';
 
 export type LearningMaterialsUrlWasGeneratedData = { userId: UserId; materialsUrl: string };
@@ -32,6 +32,6 @@ export class LearningMaterialsUrlWasGenerated implements ApplicationEvent<Learni
   }
 }
 
-export function isLearningMaterialsUrlWasGenerated(event: ApplicationEvent): event is LearningMaterialsUrlWasGenerated{
+export function isLearningMaterialsUrlWasGenerated(event: ApplicationEvent): event is LearningMaterialsUrlWasGenerated {
   return event.type === LEARNING_MATERIALS_URL_WAS_GENERATED;
 }

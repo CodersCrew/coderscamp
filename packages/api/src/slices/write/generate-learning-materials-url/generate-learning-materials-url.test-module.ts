@@ -4,10 +4,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EVENT_STORE } from '../../shared/core/event-repository';
 import { EventStreamName } from '../../shared/core/event-stream-name.valueboject';
 import { ID_GENERATOR, IdGenerator } from '../../shared/core/id-generator';
-import { InMemoryEventRepository } from '../../shared/infrastructure/event-repository/in-memory-event-repository';
 import { EventStreamVersion } from '../../shared/core/slice.types';
 import { ApplicationEvent } from '../../shared/core/slices';
 import { TIME_PROVIDER } from '../../shared/core/time-provider.port';
+import { InMemoryEventRepository } from '../../shared/infrastructure/event-repository/in-memory-event-repository';
 import { FixedTimeProvider } from '../../shared/infrastructure/time-provider/fixed-time-provider';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,

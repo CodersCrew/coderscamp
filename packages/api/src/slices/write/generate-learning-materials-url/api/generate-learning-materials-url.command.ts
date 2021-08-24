@@ -1,4 +1,4 @@
-import { DefaultCommandMetadata, ApplicationCommand } from '../../../shared/core/slices';
+import { ApplicationCommand, DefaultCommandMetadata } from '../../../shared/core/slices';
 import { UserId } from '../../../shared/core/user-id';
 
 export type GenerateLearningMaterialsData = { userId: UserId };
@@ -18,12 +18,7 @@ export class GenerateLearningMaterialsUrl implements ApplicationCommand<Generate
     return new GenerateLearningMaterialsUrl(props.id, props.issuedAt, props.data, props.metadata);
   }
 
-  constructor(
-    id: string,
-    issuedAt: Date,
-    data: GenerateLearningMaterialsData,
-    metadata: DefaultCommandMetadata,
-  ) {
+  constructor(id: string, issuedAt: Date, data: GenerateLearningMaterialsData, metadata: DefaultCommandMetadata) {
     this.id = id;
     this.issuedAt = issuedAt;
     this.data = data;

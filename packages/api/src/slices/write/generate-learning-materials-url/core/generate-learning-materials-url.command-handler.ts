@@ -1,15 +1,10 @@
-import {Inject, Type} from '@nestjs/common';
+import {Inject} from '@nestjs/common';
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 
 import {APPLICATION_SERVICE, ApplicationService} from '../../../shared/core/application-service';
 import {EventStreamName} from '../../../shared/core/event-stream-name.valueboject';
-import {ID_GENERATOR, IdGenerator} from '../../../shared/core/id-generator';
-import {ApplicationEvent} from '../../../shared/core/slices';
 import {GenerateLearningMaterialsUrl} from '../api/generate-learning-materials-url.command';
-import {
-  isLearningMaterialsUrlWasGenerated,
-  LearningMaterialsUrlWasGenerated,
-} from '../api/learning-materials-url-was-generated.event';
+import {LEARNING_MATERIALS_URL_WAS_GENERATED,} from '../api/learning-materials-url-was-generated.event';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
@@ -21,8 +16,6 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
   constructor(
     @Inject(LEARNING_MATERIALS_URL_GENERATOR)
     private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
-    @Inject(ID_GENERATOR)
-    private readonly idGenerator: IdGenerator,
     @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,
   ) {}
@@ -32,19 +25,27 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
 
     const eventStreamName = EventStreamName.from('LearningMaterialsUrl', command.data.userId);
 
-    await this.applicationService.execute(eventStreamName, (previousEvents, currentTime) =>
-      this.generateLearningMaterials(previousEvents, currentTime, command, learningMaterialsUrl),
+    await this.applicationService.execute(eventStreamName, { ...command.metadata }, (previousEvents) =>
+      this.generateLearningMaterials(previousEvents, command, learningMaterialsUrl),
     );
   }
 
   generateLearningMaterials(
-    previousEvents: ApplicationEvent[],
-    currentTime: Date,
+    previousEvents: DomainEvent[],
     command: GenerateLearningMaterialsUrl,
     learningMaterialsUrl: LearningMaterialsUrl,
-  ): ApplicationEvent[] {
+  ): DomainEvent[] {
     const state = previousEvents.reduce<{ generated: boolean }>(
-      (acc, event) => (isLearningMaterialsUrlWasGenerated(event) ? { generated: true } : acc),
+      (acc, event) => {
+        switch (event.type) {
+          case LEARNING_MATERIALS_URL_WAS_GENERATED: {
+            return { generated: true };
+          }
+          default: {
+            return acc;
+          }
+        }
+      },
       { generated: false },
     );
 
@@ -52,36 +53,24 @@ export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandl
       throw new Error('Learning resources url was already generated!');
     }
 
-    const learningMaterialsUrlWasGenerated = LearningMaterialsUrlWasGenerated.event({
-      id: this.idGenerator.generate(),
-      occurredAt: currentTime,
+    const learningMaterialsUrlWasGenerated = {
+      type: LEARNING_MATERIALS_URL_WAS_GENERATED,
       data: { userId: command.data.userId, materialsUrl: learningMaterialsUrl },
-      metadata: { ...command.metadata, causationId: command.id },
-    });
+    };
 
     return [learningMaterialsUrlWasGenerated];
   }
-
-  // event<EventType extends DomainEvent>(builder: EventBuilder<EventType>): EventType {
-  //   return plainToClass(builder.type, {
-  //     id: this.idGenerator.generate(),
-  //     issuedAt: this.timeProvider.currentTime(),
-  //     data: builder.data,
-  //     metadata: { correlationId: this.idGenerator.generate() },
-  //   });
-  // }
 }
 
-export type EventBuilder<EventType extends ApplicationEvent> = {
-  type: Type<EventType>;
-  data: EventType['data'];
+export type DomainEvent<Type = string, Data = Record<string, unknown>> = {
+  type: Type;
+  data: Data;
 };
 
-
-//domain event to integration event
+// domain event to integration event
 // i wtedy to bylyby typy tylko type data.
-//a reszta bylaby dla ich klasy! Kurde dobre...
-//to sa integration event, a tamte domenowe eventy.
-//domenowe eventy to wewnatrz to co maja, czy da sie typ wyliczyc? Jesli tak to mega!
-//ApplicationEvent<EventType>;
-//DomainEvent = ApplicationEvent['type'] / ApplicationEvent['data']
+// a reszta bylaby dla ich klasy! Kurde dobre...
+// to sa integration event, a tamte domenowe eventy.
+// domenowe eventy to wewnatrz to co maja, czy da sie typ wyliczyc? Jesli tak to mega!
+// ApplicationEvent<EventType>;
+// DomainEvent = ApplicationEvent['type'] / ApplicationEvent['data']

@@ -70,7 +70,7 @@ describe('Generate Learning Materials URL', () => {
       metadata: { correlationId: 'correlationId2' },
     });
 
-    //then
+    // then
     await expect(() => commandBus.execute(command)).rejects.toStrictEqual(
       new Error('Learning resources url was already generated!'),
     );
