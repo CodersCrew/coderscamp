@@ -12,7 +12,6 @@ import {
   SolidInstagramIcon,
   SolidLinkedinIcon,
 } from '@coderscamp/ui/icons';
-import { colors } from '@coderscamp/ui/theme/overwrites/foundations/colors';
 
 export const socialMediaIcons = [
   { name: 'FacebookIcon', component: <SolidFacebookIcon /> },
@@ -34,21 +33,25 @@ export const Footer = () => {
   } as const;
 
   return (
-    <Flex w="100%" direction="column" align="center" bg={colors.gray['50']} color={colors.gray['500']} fontSize="16px">
+    <Flex w="100%" direction="column" align="center" bg="gray.50" color="gray.500">
       <Flex maxW="1280px" w="80%" direction="column" pt="80px" pb="80px">
         <Flex w="100%" direction={footerStyles.upperFooter.direction} align="center" justify="space-between">
           <Box maxW="384px" direction="column" pb="88px">
             <Logo color="black" w="291px" h="32px" />
 
-            <Typography w="100%" pt={5} lineHeight="24px">
+            <Typography w="100%" pt="20px" size="md">
               Organizatorem CodersCamp jest Stowarzyszenie CodersCrew - organizacja non-profit zrzeszająca pasjonatów
               dziedzin związanych z IT.
             </Typography>
 
-            <Flex pt={8}>
+            <Flex pt="32px">
               {socialMediaIcons.map((socialMediaIcon, index) => (
                 <Box key={socialMediaIcon.name}>
-                  {React.cloneElement(socialMediaIcon.component, { h: 6, w: 6, ml: index === 0 ? 0 : 7 })}
+                  {React.cloneElement(socialMediaIcon.component, {
+                    h: '24px',
+                    w: '24px',
+                    ml: index === 0 ? 0 : '28px',
+                  })}
                 </Box>
               ))}
             </Flex>
@@ -82,12 +85,12 @@ export const Footer = () => {
         <Flex
           justify="space-between"
           borderTop="1px"
-          borderColor={colors.gray['200']}
+          borderColor="gray.200"
           minH="70px"
           align="flex-end"
           direction={footerStyles.lowerFooter.direction}
         >
-          <Typography fontSizes="18px" lineHeight="28px" color={colors.gray['400']} pt="24px">
+          <Typography size="lg" color="gray.400" pt="24px">
             © CodersCamp 2021, wszelkie prawa zastrzeżone.
           </Typography>
           <Box pt="24px" order={footerStyles.lowerFooter.order}>
