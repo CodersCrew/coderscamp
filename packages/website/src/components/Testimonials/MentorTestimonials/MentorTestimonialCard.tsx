@@ -12,7 +12,7 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
         {content}
       </Typography>
       <Center>
-        <Avatar src={image} size="lg" mr="16px" />
+        <Avatar src={image} size="lg" mr="16px" borderWidth="1px" borderColor="gray.300" />
         <VStack alignItems="flex-start" spacing="0px">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}
