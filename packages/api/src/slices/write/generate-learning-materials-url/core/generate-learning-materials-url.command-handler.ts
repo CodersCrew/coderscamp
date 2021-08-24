@@ -4,14 +4,14 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/core/application-service';
 import { EventStreamName } from '../../../shared/core/event-stream-name.valueboject';
 import { LearningMaterialsDomainEvent } from '../api/events';
+import { GenerateLearningMaterialsUrl } from '../api/generate-learning-materials-url.command';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
 } from './learning-materials-url-generator';
-import {GenerateLearningMaterialsUrl} from "../api/commands";
 
-@CommandHandler({name: 'as'})
+@CommandHandler(GenerateLearningMaterialsUrl)
 export class GenerateLearningMaterialsUrlCommandHandler implements ICommandHandler<GenerateLearningMaterialsUrl> {
   constructor(
     @Inject(LEARNING_MATERIALS_URL_GENERATOR)
