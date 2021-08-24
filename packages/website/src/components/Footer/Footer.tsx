@@ -59,13 +59,13 @@ export const Footer = () => {
           <Flex mb="56px" ml={footerStyles.navSection.marginLeft}>
             <Flex wrap="wrap">
               {footerNav.map(({ title, items }) => (
-                <Flex direction="column" key={title} pl="80px" mb="28px">
+                <Flex direction="column" key={title} pl="80px" mb="16px">
                   {/* TODO: Brak czcionki z bold 600*/}
-                  <Typography size="sm" color="gray.400" weight="bold" letterSpacing="0.05em">
+                  <Typography size="sm" color="gray.400" weight="bold" letterSpacing="0.05em" mb="16px">
                     {title.toUpperCase()}
                   </Typography>
                   {items.map(({ name, urlPath }) => (
-                    <Typography size="md" color="gray.500" key={name}>
+                    <Typography size="md" color="gray.500" key={name} mb="16px">
                       <Link key={name} href={urlPath}>
                         {name}
                       </Link>
