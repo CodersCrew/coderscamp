@@ -8,11 +8,11 @@ import { ApplicationCommandFactory } from '../../../common/application/applicati
 import { GenerateLearningMaterialsUrlApplicationCommand } from '../../application/api/generate-learning-materials-url.application-command';
 
 @Controller('learning-materials')
-export class LearningMaterialsUrlController {
+export class LearningMaterialsUrlRestController {
   constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('/url')
+  @Post('')
   @HttpCode(204)
   async generateUserLearningResourcesUrl(@JwtUserId() userId: UserId): Promise<void> {
     const command = this.commandFactory.applicationCommand({

@@ -206,7 +206,47 @@ Read doesn't belong to certain stream, but can be.
 Previously you didn't have requirement to read some data.
 It's strictly related to event store, so we will be testing it e2e and architecture will be without so much layers. 
 
+Simples part
+```ts
+@Module({
+  imports: [SharedModule],
+})
+export class LearningMaterialsReadModule {
+  constructor(private readonly prismaService: PrismaService) {}
 
+  //todo: recovering from failures - reprocessing events:
+  // -  Saving streamVersion in readmodel.
+  // - catchup on start.
+  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
+  onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
+    this.prismaService.learningMaterial.create({ data: { userId: event.data.userId, url: event.data.materialsUrl } });
+  }
+}
+```
+
+Just subscribe for the event and read data needed to be read. 
+After all introduce REST Controller. 
+Green card on Event Modeling is a read model - what you can read from controller.
+Read can be, but it's not a must 1:1 with Write.
+Read may accummulate many needs. Or events from more than one stream.
+
+Where is Query and QueryBus? 
+No question between modules = no queries.
+
+Controller may strictly reach database. Here we don't care about ports & adapters etc. 
+No abstractions. 
+We want to have fully access over how we read.
+```ts
+@Controller('learning-materials')
+export class LearningMaterialsRestController {
+  constructor(private readonly prismaService: PrismaService) {}
+
+  @Get()
+  getLearningMaterial(@JwtUserId() userId: UserId): Promise<GetLearningMaterialResponse> {
+    return this.prismaService.learningMaterial.findUnique({ where: { userId } });
+  }
+}
+```
 
 
 # ADR - Architecture Decision Records

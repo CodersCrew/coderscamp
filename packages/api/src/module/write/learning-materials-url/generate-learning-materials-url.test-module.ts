@@ -17,7 +17,7 @@ import {
   LearningMaterialsUrlGenerator,
   UserFullname,
 } from './application/learning-materials-url-generator';
-import {LearningMaterialsUrlModule} from './learning-materials-url.module';
+import {LearningMaterialsUrlWriteModule} from "./learning-materials-url.write-module";
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 
@@ -44,7 +44,7 @@ export async function generateLearningMaterialsUrlTestModule() {
 
   const eventRepository = new InMemoryEventRepository(testTimeProvider);
   const app: TestingModule = await Test.createTestingModule({
-    imports: [LearningMaterialsUrlModule],
+    imports: [LearningMaterialsUrlWriteModule],
   })
     .overrideProvider(ID_GENERATOR)
     .useValue(mockedIdGenerator)

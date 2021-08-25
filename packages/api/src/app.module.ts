@@ -6,7 +6,8 @@ import { env } from '@/common/env';
 
 import { AuthModule } from './auth/auth.module';
 import { LearningMaterialsModule } from './learning-materials/learning-materials.module';
-import { LearningMaterialsUrlModule } from './module/write/learning-materials-url/learning-materials-url.module';
+import { AutomationModule } from './module/automation/automation.module';
+import { LearningMaterialsUrlWriteModule } from './module/write/learning-materials-url/learning-materials-url.write-module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 
@@ -21,12 +22,10 @@ const productionImports = [
   UsersModule,
   AuthModule,
   LearningMaterialsModule,
+  AutomationModule,
 ];
 
 @Module({
-  imports: [
-    ...(isProduction ? productionImports : []),
-    LearningMaterialsUrlModule,
-  ],
+  imports: [...(isProduction ? productionImports : []), LearningMaterialsUrlWriteModule],
 })
 export class AppModule {}
