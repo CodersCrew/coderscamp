@@ -259,7 +259,12 @@ Support for types as events.
 No need for classes.
 
 
-
+## Do not use CommandBus? Just something like Taka fasada, zamiast CommandBus? 
+## Jak tutaj dodawac zachowanie do wszystkich? Cos w stylu ApplicationService? 
+## Composition, moeze jakas klasa nadrzedna.
+LearningMaterialsCommandGateway<DomainCommand>{
+    execute(switch on type)
+}
 
 ## Events definitions in shared instead of certain module.
 Easier - just commit with event to be able to pararrelize work.
