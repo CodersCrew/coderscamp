@@ -4036,6 +4036,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/event-emitter@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@nestjs/event-emitter@npm:1.0.0"
+  dependencies:
+    eventemitter2: 6.4.4
+  peerDependencies:
+    "@nestjs/common": ^7.0.0 || ^8.0.0
+    "@nestjs/core": ^7.0.0 || ^8.0.0
+    reflect-metadata: ^0.1.12
+  checksum: 4a066e5caa1172d83383064d303ae721978dd4a0bbef8c0e4f28f9d349f63e3864fe96ffe8e06695243428472c14803de37e38ca0e0cc52e286a9911d42c9282
+  languageName: node
+  linkType: hard
+
 "@nestjs/jwt@npm:8.0.0":
   version: 8.0.0
   resolution: "@nestjs/jwt@npm:8.0.0"
@@ -9329,6 +9342,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "coderscamp@workspace:."
   dependencies:
+    "@nestjs/event-emitter": 1.0.0
     "@types/jest": 27.0.1
     "@typescript-eslint/eslint-plugin": 4.29.1
     "@typescript-eslint/parser": 4.29.1
@@ -11954,6 +11968,13 @@ __metadata:
   dependencies:
     require-like: ">= 0.1.1"
   checksum: 0e9246bb16256eef07afa7f31408310a784407d2fec2ddd2d7fe1f885a45b7cf37e30739e658a65d000c3dcff8d5b5c96f9819188b00e1f667b6638e75eaf23c
+  languageName: node
+  linkType: hard
+
+"eventemitter2@npm:6.4.4":
+  version: 6.4.4
+  resolution: "eventemitter2@npm:6.4.4"
+  checksum: b5e707039973d5a770bc4c64255604df66df3a1f63389dccb7118af163b9f790ca7596463d7868426339301ad9de5ef1c3f4a9c7ac3b93874c5ca792916dede1
   languageName: node
   linkType: hard
 
