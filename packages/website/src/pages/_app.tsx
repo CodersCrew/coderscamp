@@ -5,9 +5,8 @@ import type { AppProps } from 'next/app';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
 
-import { ModalProvider } from '@/components/Modal/ModalProvider';
-import { RecruitmentModal } from '@/components/Modal/RecruitmentModal';
 import { Navbar } from '@/components/Navbar';
+import { RecruitmentModalProvider } from '@/components/RecruitmentModal';
 
 const globalStyles: Record<string, CSSProperties> = {
   'html, body': { backgroundColor: 'white' },
@@ -19,11 +18,10 @@ const globalStyles: Record<string, CSSProperties> = {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider globalStyles={globalStyles}>
-      <ModalProvider>
+      <RecruitmentModalProvider>
         <Navbar />
         <Component {...pageProps} />
-        <RecruitmentModal />
-      </ModalProvider>
+      </RecruitmentModalProvider>
     </ThemeProvider>
   );
 };

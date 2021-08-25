@@ -48,7 +48,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     image: 'https://randomuser.me/api/portraits/women/88.jpg',
-    name: 'Darlene Mccoy',
+    name: 'Darlene Maccoy',
     company: 'Troslo',
     companyPosition: 'java developer',
     role: 'mentor',

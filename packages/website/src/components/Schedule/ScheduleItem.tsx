@@ -1,15 +1,9 @@
-import React, { ReactElement } from 'react';
-
 import { Center } from '@coderscamp/ui/components/Center';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-interface ScheduleItemProps {
-  index: number;
-  date: string;
-  description: string | ReactElement;
-}
+import type { ScheduleListItem } from './useSchedule';
 
-export const ScheduleItem = ({ index, date, description }: ScheduleItemProps) => {
+export const ScheduleItem = ({ index, date, description }: ScheduleListItem) => {
   return (
     <Center
       flexDirection="column"

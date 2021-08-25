@@ -1,19 +1,17 @@
-import { useContext } from 'react';
-
 import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { HStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
-import { forMentors, forParticipant, ModalContextType } from '../Modal/Modal.data';
-import { ModalContext } from '../Modal/ModalProvider';
+import { useRecruitmentModal } from '@/components/RecruitmentModal';
+
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
   const buttonSize = useBreakpointValue({ base: 'xs', sm: 'md' } as const);
-  const { handleModalContent } = useContext(ModalContext) as NonNullable<ModalContextType>;
+  const { openModal } = useRecruitmentModal();
 
   return (
     <Center width="100%">
@@ -27,10 +25,10 @@ export const Navbar = () => {
       >
         {baseNavbar}
         <Flex>
-          <Button size={buttonSize} mr="12px" onClick={() => handleModalContent(forMentors)}>
+          <Button size={buttonSize} mr="12px" onClick={() => openModal('mentor')}>
             Zostań mentorem
           </Button>
-          <Button size={buttonSize} color="brand" onClick={() => handleModalContent(forParticipant)}>
+          <Button size={buttonSize} color="brand" onClick={() => openModal('participant')}>
             Zapisz się na kurs
           </Button>
         </Flex>

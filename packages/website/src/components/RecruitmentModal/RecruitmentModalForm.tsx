@@ -1,4 +1,3 @@
-import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Button } from '@coderscamp/ui/components/Button';
@@ -8,10 +7,14 @@ import { Input } from '@coderscamp/ui/components/Input';
 import { Stack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
-import { emailValidator, requiredValidator } from '../Contact/Form';
-import { ModalFormValues } from './Modal.data';
+import { emailValidator, requiredValidator } from '@/components/Contact/Form';
 
-export const ModalForm = () => {
+interface RecruitmentModalFormValues {
+  name: string;
+  email: string;
+}
+
+export const RecruitmentModalForm = () => {
   const size = useBreakpointValue({ base: 'md', sm: 'lg' } as const);
   const flexDirection = useBreakpointValue({ base: 'column', lg: 'row' } as const);
   const inputMaxWidth = useBreakpointValue({ base: '100%', lg: '264px' } as const);
@@ -20,9 +23,9 @@ export const ModalForm = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ModalFormValues>();
+  } = useForm<RecruitmentModalFormValues>();
 
-  const onSubmit: SubmitHandler<ModalFormValues> = (data) => {
+  const onSubmit: SubmitHandler<RecruitmentModalFormValues> = (data) => {
     // eslint-disable-next-line no-console
     console.log(data);
     reset();
