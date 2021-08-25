@@ -1,6 +1,6 @@
 import { GenerateLearningMaterialsUrlApplicationCommand } from './application/api/generate-learning-materials-url.application-command';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
-import {EventStreamName} from "../../shared/application/event-stream-name.valueboject";
+import {EventStreamName} from "../common/application/event-stream-name.valueboject";
 
 const scheduler = typeof setImmediate === 'function' ? setImmediate : setTimeout;
 export function flushPromises() {

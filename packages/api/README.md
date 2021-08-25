@@ -170,12 +170,6 @@ export class GenerateLearningMaterialsUrlController {
 ```
 
 
-
-## Read Slice
-Read doesn't belong to certain stream, but can be. 
-
-
-
 ## Automation Slice
 The simples one. It's a event handler where you can react for something which happened.
 Automation it's place where you automate reaction on certain event.
@@ -207,8 +201,23 @@ export class SendEmailWhenLearningMaterialsUrlWasGenerated {
 ```
 
 
+## Read Slice
+Read doesn't belong to certain stream, but can be.
+Previously you didn't have requirement to read some data.
+It's strictly related to event store, so we will be testing it e2e and architecture will be without so much layers. 
+
+
+
+
 # ADR - Architecture Decision Records
+
 
 ## Use EventEmitter2 instead of CQRS EventBus
 Support for types as events.
 No need for classes.
+
+
+
+
+## Events definitions in shared instead of certain module.
+Easier - just commit with event to be able to pararrelize work.

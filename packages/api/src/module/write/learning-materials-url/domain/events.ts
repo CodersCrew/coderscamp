@@ -1,4 +1,4 @@
-import { UserId } from '../../../shared/application/user-id';
+import { UserId } from '../../common/application/user-id';
 
 export type LearningMaterialsUrlWasGenerated = {
   type: 'LearningMaterialsUrlWasGenerated';

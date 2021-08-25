@@ -1,5 +1,5 @@
-import { DomainCommand } from '../domain/domain.command';
-import { DomainEvent } from '../domain/domain.event';
+import { DomainCommand } from '../../../shared/domain.command';
+import { DomainEvent } from '../../../shared/domain.event';
 import { EventStreamName } from './event-stream-name.valueboject';
 import { EventStreamVersion } from './slice.types';
 

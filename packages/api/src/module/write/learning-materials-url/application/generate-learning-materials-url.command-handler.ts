@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/application/application-service';
+import { APPLICATION_SERVICE, ApplicationService } from '../../common/application/application-service';
 import { LearningMaterialsUrlDomainEvent } from '../domain/events';
 import { generateLearningMaterialsUrl } from '../domain/generateLearningMaterialsUrl';
-import { learningMaterialsUrlEventStreamName } from '../learning-materials-url.module';
 import { GenerateLearningMaterialsUrlApplicationCommand } from './api/generate-learning-materials-url.application-command';
 import { LEARNING_MATERIALS_URL_GENERATOR, LearningMaterialsUrlGenerator } from './learning-materials-url-generator';
+import {learningMaterialsUrlEventStreamName} from "./learning-materials.event-stream-name";
 
 @CommandHandler(GenerateLearningMaterialsUrlApplicationCommand)
 export class GenerateLearningMaterialsUrlCommandHandler

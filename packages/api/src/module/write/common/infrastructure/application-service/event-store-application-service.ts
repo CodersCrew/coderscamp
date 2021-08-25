@@ -8,7 +8,7 @@ import { EventStreamName } from '../../application/event-stream-name.valueboject
 import { ID_GENERATOR, IdGenerator } from '../../application/id-generator';
 import { DomainLogic, EventStreamVersion } from '../../application/slice.types';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
-import { DomainEvent } from '../../domain/domain.event';
+import { DomainEvent } from '../../../../shared/domain.event';
 
 export class EventStoreApplicationService implements ApplicationService {
   constructor(

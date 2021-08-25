@@ -1,4 +1,4 @@
-import { DomainEvent } from '../domain/domain.event';
+import { DomainEvent } from '../../../shared/domain.event';
 import { EventStreamName } from './event-stream-name.valueboject';
 import { DomainLogic } from './slice.types';
 

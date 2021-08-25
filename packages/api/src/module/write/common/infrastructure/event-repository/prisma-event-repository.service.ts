@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { PrismaService } from '../../../../prisma/prisma.service';
+import { PrismaService } from '../../../../../prisma/prisma.service';
 import { ApplicationEvent } from '../../application/application-command-events';
 import { EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.valueboject';

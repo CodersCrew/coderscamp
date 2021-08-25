@@ -4,7 +4,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from '../../../../../auth/jwt/jwt-auth.guard';
 import { JwtUserId } from '../../../../../auth/jwt/jwt-user-id.decorator';
 import { UserId } from '../../../../../users/users.types';
-import { ApplicationCommandFactory } from '../../../../shared/application/application-command.factory';
+import { ApplicationCommandFactory } from '../../../common/application/application-command.factory';
 import { GenerateLearningMaterialsUrlApplicationCommand } from '../../application/api/generate-learning-materials-url.application-command';
 
 @Controller('learning-materials')

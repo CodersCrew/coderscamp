@@ -1,4 +1,4 @@
-import { DomainEvent } from '../domain/domain.event';
+import { DomainEvent } from '../../../shared/domain.event';
 import { ApplicationEvent } from './application-command-events';
 
 export type DomainLogic<EventType extends DomainEvent> = (previousEvents: EventType[]) => EventType[];
