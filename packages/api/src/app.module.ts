@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -19,6 +20,13 @@ const productionImports = [
 ];
 
 @Module({
-  imports: [...(isProduction ? productionImports : []), PrismaModule, UsersModule, AuthModule, LearningMaterialsModule],
+  imports: [
+    ...(isProduction ? productionImports : []),
+    PrismaModule,
+    UsersModule,
+    AuthModule,
+    LearningMaterialsModule,
+    CqrsModule,
+  ],
 })
 export class AppModule {}

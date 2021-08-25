@@ -15,9 +15,6 @@ jobs:
       APP_ENV: review
       DATABASE_URL: db
       PORT: 4000
-      GITHUB_CLIENT_ID: ID
-      GITHUB_CLIENT_SECRET: Secret
-      GITHUB_CALLBACK_URL: URL
       JWT_SECRET: kljsr89qwh89YT89gvedstfg
       TOKEN_EXPIRATION_TIME: 3600
       TOKEN_PREFIX: Bearer

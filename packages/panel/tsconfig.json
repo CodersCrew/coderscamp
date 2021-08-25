@@ -11,7 +11,10 @@
     "paths": {
       "@coderscamp/shared/*": ["../shared/src/*"],
       "@coderscamp/ui/*": ["../ui/src/*"],
-      "@/hooks/*": ["src/hooks/*"]
+      "@/common/*": ["src/common/*"],
+      "@/components/*": ["src/components/*"],
+      "@/modules/*": ["src/modules/*"],
+      "@/services/*": ["src/services/*"]
     },
     "target": "ESNext"
   },

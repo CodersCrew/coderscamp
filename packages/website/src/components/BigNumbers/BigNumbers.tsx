@@ -3,12 +3,13 @@ import React from 'react';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { VStack } from '@coderscamp/ui/components/Stack';
 
+import { PLACES_COUNT } from '../../constants';
 import { StatsWithTitle } from './StatsWithTitle';
 
 const currentEdition = [
   { amount: '7.', label: 'edycja' },
   { amount: '1 516', label: 'zadań i materiałów' },
-  { amount: '200', label: 'miejsc na kurs' },
+  { amount: String(PLACES_COUNT), label: 'miejsc na kursie' },
   { amount: '6', label: 'projektów do stworzenia' },
 ];
 
