@@ -2,21 +2,19 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Button } from '@coderscamp/ui/components/Button';
-import { Flex } from '@coderscamp/ui/components/Flex';
 import { FormControl } from '@coderscamp/ui/components/FormControl';
 import { HelperText } from '@coderscamp/ui/components/HelperText';
 import { Input } from '@coderscamp/ui/components/Input';
+import { Stack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
 import { emailValidator, requiredValidator } from '../Contact/Form';
-
-type ModalFormValues = {
-  name: string;
-  email: string;
-};
+import { ModalFormValues } from './Modal.data';
 
 export const ModalForm = () => {
   const size = useBreakpointValue({ base: 'md', sm: 'lg' } as const);
+  const flexDirection = useBreakpointValue({ base: 'column', lg: 'row' } as const);
+  const inputMaxWidth = useBreakpointValue({ base: '100%', lg: '264px' } as const);
   const {
     register,
     handleSubmit,
@@ -31,19 +29,12 @@ export const ModalForm = () => {
   };
 
   return (
-    <Flex
-      w="100%"
-      h={{ base: '150px', lg: '100%' }}
-      justify="space-between"
-      direction={{ base: 'column', lg: 'row' }}
-      onSubmit={handleSubmit(onSubmit)}
-      as="form"
-    >
-      <FormControl size={size} maxW={{ base: '100%', lg: '264px' }}>
+    <Stack spacing="16px" w="100%" direction={flexDirection} onSubmit={handleSubmit(onSubmit)} as="form">
+      <FormControl size={size} maxW={inputMaxWidth}>
         <Input {...register('name', requiredValidator)} invalid={Boolean(errors.name)} placeholder="Imię" />
         {errors.name && <HelperText variant="error">{errors.name.message}</HelperText>}
       </FormControl>
-      <FormControl size={size} maxW={{ base: '100%', lg: '264px' }}>
+      <FormControl size={size} maxW={inputMaxWidth}>
         <Input
           {...register('email', { ...requiredValidator, ...emailValidator })}
           invalid={Boolean(errors.email)}
@@ -54,6 +45,6 @@ export const ModalForm = () => {
       <Button type="submit" color="brand" variant="solid" size={size}>
         Wyślij
       </Button>
-    </Flex>
+    </Stack>
   );
 };

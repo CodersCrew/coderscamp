@@ -1,28 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
 import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { Typography } from '@coderscamp/ui/components/Typography';
-import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 
-import { forParticipant } from '../Modals/Modal.data';
-import { RecruitmentModal } from '../Modals/RecruitmentModal';
+import { forParticipant, ModalContextType } from '../Modal/Modal.data';
+import { ModalContext } from '../Modal/ModalProvider';
 import { ScheduleItem } from './ScheduleItem';
 
 export const Schedule = () => {
-  const {
-    isOpen: isOpenParticipantModal,
-    onOpen: onOpenParticipantModal,
-    onClose: onCloseParticipantModal,
-  } = useDisclosure();
+  const { handleModalContent } = useContext(ModalContext) as NonNullable<ModalContextType>;
   const schedulePlan = [
     {
       index: 0,
       date: 'W każdej chwili',
       description: (
         <>
-          <Button size="lg" variant="link" onClick={onOpenParticipantModal}>
+          <Button size="lg" variant="link" onClick={() => handleModalContent(forParticipant)}>
             Kliknij tutaj,
           </Button>{' '}
           aby zostawić nam swoje imię i adres e-mail. Damy Ci znać kiedy tylko rozpoczną się zapisy na kurs.
@@ -68,11 +63,6 @@ export const Schedule = () => {
         {schedulePlan.map((item) => (
           <ScheduleItem key={item.index} {...item} />
         ))}
-        <RecruitmentModal
-          isOpen={isOpenParticipantModal}
-          onClose={onCloseParticipantModal}
-          modalText={forParticipant}
-        />
       </SimpleGrid>
     </Center>
   );

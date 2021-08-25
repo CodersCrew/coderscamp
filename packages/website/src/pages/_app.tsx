@@ -5,6 +5,8 @@ import type { AppProps } from 'next/app';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
 
+import { ModalProvider } from '@/components/Modal/ModalProvider';
+import { RecruitmentModal } from '@/components/Modal/RecruitmentModal';
 import { Navbar } from '@/components/Navbar';
 
 const globalStyles: Record<string, CSSProperties> = {
@@ -17,8 +19,11 @@ const globalStyles: Record<string, CSSProperties> = {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider globalStyles={globalStyles}>
-      <Navbar />
-      <Component {...pageProps} />
+      <ModalProvider>
+        <Navbar />
+        <Component {...pageProps} />
+        <RecruitmentModal />
+      </ModalProvider>
     </ThemeProvider>
   );
 };

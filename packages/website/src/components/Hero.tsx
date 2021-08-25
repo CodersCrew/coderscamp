@@ -7,8 +7,8 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 
-import { forParticipant } from './Modals/Modal.data';
-import { RecruitmentModal } from './Modals/RecruitmentModal';
+import { forParticipant } from './Modal/Modal.data';
+import { RecruitmentModal } from './Modal/RecruitmentModal';
 
 export const Hero = () => {
   const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
