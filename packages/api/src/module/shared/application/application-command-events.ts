@@ -49,53 +49,14 @@ export abstract class AbstractApplicationCommand<
 }
 
 export interface ApplicationEvent<
-  EventType extends string = string,
-  EventData extends Record<string, unknown> = Record<string, unknown>,
-  EventMetadata extends DefaultEventMetadata = DefaultEventMetadata,
-> {
-  readonly type: EventType;
-  readonly id: string;
-  readonly occurredAt: Date;
-  readonly data: EventData;
-  readonly metadata: EventMetadata;
-  readonly streamVersion: EventStreamVersion;
-  readonly streamName: EventStreamName;
-}
-
-export abstract class AbstractApplicationEvent<
   DomainEventType extends DomainEvent = DomainEvent,
   EventMetadata extends DefaultEventMetadata = DefaultEventMetadata,
-> implements ApplicationEvent<DomainEventType['type'], DomainEventType['data'], EventMetadata>
-{
+> {
   readonly type: DomainEventType['type'];
-
   readonly id: string;
-
   readonly occurredAt: Date;
-
   readonly data: DomainEventType['data'];
-
   readonly metadata: EventMetadata;
-
   readonly streamVersion: EventStreamVersion;
-
   readonly streamName: EventStreamName;
-
-  constructor(
-    type: DomainEventType['type'],
-    id: string,
-    occurredAt: Date,
-    data: DomainEventType['data'],
-    metadata: EventMetadata,
-    streamVersion: EventStreamVersion,
-    streamName: EventStreamName,
-  ) {
-    this.data = data;
-    this.id = id;
-    this.occurredAt = occurredAt;
-    this.metadata = metadata;
-    this.type = type;
-    this.streamVersion = streamVersion;
-    this.streamName = streamName;
-  }
 }

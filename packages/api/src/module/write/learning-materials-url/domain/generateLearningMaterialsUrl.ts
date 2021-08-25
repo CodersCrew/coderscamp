@@ -8,12 +8,11 @@ import { LearningMaterialsUrlDomainEvent } from './events';
  * @param command - arguments
  * @param learningMaterialsUrl - additional properties
  */
-export function generateLearningMaterials(
+export function generateLearningMaterialsUrl(
   previousEvents: LearningMaterialsUrlDomainEvent[],
   command: GenerateLearningMaterialsUrl,
   learningMaterialsUrl: LearningMaterialsUrl,
 ): LearningMaterialsUrlDomainEvent[] {
-  // read from previous events what you needed
   const state = previousEvents.reduce<{ generated: boolean }>(
     (acc, event) => {
       switch (event.type) {
@@ -28,12 +27,10 @@ export function generateLearningMaterials(
     { generated: false },
   );
 
-  // validate if state is valid to execute the command
   if (state.generated) {
     throw new Error('Learning resources url was already generated!');
   }
 
-  // return new changes
   return [
     {
       type: 'LearningMaterialsUrlWasGenerated',

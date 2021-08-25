@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { APPLICATION_SERVICE, ApplicationService } from '../../../shared/application/application-service';
 import { LearningMaterialsUrlDomainEvent } from '../domain/events';
-import { generateLearningMaterials } from '../domain/generateLearningMaterials';
+import { generateLearningMaterialsUrl } from '../domain/generateLearningMaterialsUrl';
 import { learningMaterialsUrlEventStreamName } from '../learning-materials-url.module';
 import { GenerateLearningMaterialsUrlApplicationCommand } from './api/generate-learning-materials-url.application-command';
 import { LEARNING_MATERIALS_URL_GENERATOR, LearningMaterialsUrlGenerator } from './learning-materials-url-generator';
@@ -13,10 +13,10 @@ export class GenerateLearningMaterialsUrlCommandHandler
   implements ICommandHandler<GenerateLearningMaterialsUrlApplicationCommand>
 {
   constructor(
-    @Inject(LEARNING_MATERIALS_URL_GENERATOR)
-    private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
     @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,
+    @Inject(LEARNING_MATERIALS_URL_GENERATOR)
+    private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
   ) {}
 
   async execute(command: GenerateLearningMaterialsUrlApplicationCommand): Promise<void> {
@@ -25,7 +25,7 @@ export class GenerateLearningMaterialsUrlCommandHandler
     await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(
       learningMaterialsUrlEventStreamName({ userId: command.data.userId }),
       { causationId: command.id, correlationId: command.metadata.correlationId },
-      (previousEvents) => generateLearningMaterials(previousEvents, command, learningMaterialsUrl),
+      (previousEvents) => generateLearningMaterialsUrl(previousEvents, command, learningMaterialsUrl),
     );
   }
 }
