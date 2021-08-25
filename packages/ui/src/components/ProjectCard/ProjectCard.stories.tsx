@@ -7,6 +7,7 @@ import { ProjectCard } from './ProjectCard';
 
 const title = 'Zaawansowany React i Node';
 const dateProps = new Date();
+const goToPage = (_url: string) => {};
 const image =
   'https://images.unsplash.com/photo-1579820010410-c10411aaaa88?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1548&q=80';
 
@@ -48,9 +49,17 @@ Playground.args = {
 
 export const Variants = () => (
   <SimpleGrid columns={4} spacing={5} h="444px">
-    <ProjectCard status="idle" image={image} title={title} url="test" date={dateProps} />
-    <ProjectCard status="doing" image={image} title={title} url="test" date={dateProps} />
-    <ProjectCard status="review" image={image} title={title} url="test" date={dateProps} />
-    <ProjectCard status="done" image={image} title={title} url="test" points={100} pointsMax={200} />
+    <ProjectCard status="idle" image={image} title={title} url="test" date={dateProps} onButtonClick={goToPage} />
+    <ProjectCard status="doing" image={image} title={title} url="test" date={dateProps} onButtonClick={goToPage} />
+    <ProjectCard status="review" image={image} title={title} url="test" date={dateProps} onButtonClick={goToPage} />
+    <ProjectCard
+      status="done"
+      image={image}
+      title={title}
+      url="test"
+      points={100}
+      pointsMax={200}
+      onButtonClick={goToPage}
+    />
   </SimpleGrid>
 );

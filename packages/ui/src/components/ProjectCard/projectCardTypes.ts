@@ -18,7 +18,7 @@ type CommonProps = {
   image: string;
   title: string;
   url: string;
-  onButtonClick?: (url: string) => void;
+  onButtonClick: (url: string) => void;
 };
 
 type ProjectCardStatus = 'idle' | 'doing' | 'review' | 'done';

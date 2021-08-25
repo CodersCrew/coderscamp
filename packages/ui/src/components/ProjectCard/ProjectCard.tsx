@@ -16,8 +16,6 @@ export const ProjectCard = ({
   onButtonClick,
   ...props
 }: ProjectCardProps) => {
-  const goToProjectPage = () => onButtonClick && onButtonClick(url);
-
   return (
     <Box w="100%" boxShadow="base" borderRadius="8px" {...props}>
       <Grid templateRows="min-content 1fr" h="100%">
@@ -49,7 +47,7 @@ export const ProjectCard = ({
               {status !== 'done' && date ? new Date(date).toLocaleDateString() : `${points}/${pointsMax}`}
             </Typography>
           </Flex>
-          <Button disabled={status === 'idle'} onClick={goToProjectPage}>
+          <Button disabled={status === 'idle'} onClick={() => onButtonClick(url)}>
             Przejdź do projektu
           </Button>
         </Grid>
