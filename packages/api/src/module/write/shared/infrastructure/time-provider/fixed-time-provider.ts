@@ -7,7 +7,7 @@ export class FixedTimeProvider implements TimeProvider {
     return this.time;
   }
 
-  timeTravelTo(newTime: Date) {
+  travelTo(newTime: Date) {
     this.time = newTime;
   }
 }

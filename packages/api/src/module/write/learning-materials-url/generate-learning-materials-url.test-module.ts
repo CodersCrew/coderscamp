@@ -1,23 +1,23 @@
-import {CommandBus, QueryBus} from '@nestjs/cqrs';
-import {Test, TestingModule} from '@nestjs/testing';
+import { CommandBus } from '@nestjs/cqrs';
+import { Test, TestingModule } from '@nestjs/testing';
 
-import {ApplicationEventBus} from '../common/application/application.event-bus';
-import {ApplicationCommandFactory} from '../common/application/application-command.factory';
-import {ApplicationEvent} from '../../shared/application-command-events';
-import {EVENT_STORE} from '../common/application/event-repository';
-import {EventStreamName} from '../common/application/event-stream-name.valueboject';
-import {ID_GENERATOR, IdGenerator} from '../common/application/id-generator';
-import {EventStreamVersion} from '../common/application/slice.types';
-import {TIME_PROVIDER} from '../common/application/time-provider.port';
-import {InMemoryEventRepository} from '../common/infrastructure/event-repository/in-memory-event-repository';
-import {FixedTimeProvider} from '../common/infrastructure/time-provider/fixed-time-provider';
+import { ApplicationEvent } from '../../shared/application-command-events';
+import { ApplicationEventBus } from '../shared/application/application.event-bus';
+import { ApplicationCommandFactory, CommandBuilder } from '../shared/application/application-command.factory';
+import { EventStreamVersion } from '../shared/application/application-service';
+import { EVENT_REPOSITORY } from '../shared/application/event-repository';
+import { EventStreamName } from '../shared/application/event-stream-name.valueboject';
+import { ID_GENERATOR, IdGenerator } from '../shared/application/id-generator';
+import { TIME_PROVIDER } from '../shared/application/time-provider.port';
+import { InMemoryEventRepository } from '../shared/infrastructure/event-repository/in-memory-event-repository';
+import { FixedTimeProvider } from '../shared/infrastructure/time-provider/fixed-time-provider';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
   UserFullname,
 } from './application/learning-materials-url-generator';
-import {LearningMaterialsUrlWriteModule} from "./learning-materials-url.write-module";
+import { LearningMaterialsUrlWriteModule } from './learning-materials-url.write-module';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 
@@ -52,14 +52,13 @@ export async function generateLearningMaterialsUrlTestModule() {
     .useValue(new MockedLearningResourcesGenerator())
     .overrideProvider(TIME_PROVIDER)
     .useValue(testTimeProvider)
-    .overrideProvider(EVENT_STORE)
+    .overrideProvider(EVENT_REPOSITORY)
     .useValue(eventRepository)
     .compile();
 
   await app.init();
 
   const commandBus = app.get<CommandBus>(CommandBus);
-  const queryBus = app.get<QueryBus>(QueryBus);
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
 
@@ -69,7 +68,7 @@ export async function generateLearningMaterialsUrlTestModule() {
     return eventBusSpy.mock.calls[lastEventIndex][0];
   }
 
-  async function givenEventOccurred(
+  async function eventOccurred(
     eventStreamName: EventStreamName,
     event: ApplicationEvent,
     streamVersion: EventStreamVersion,
@@ -77,13 +76,21 @@ export async function generateLearningMaterialsUrlTestModule() {
     await eventRepository.write(eventStreamName, [event], streamVersion);
   }
 
+  function timeTravelTo(time: Date) {
+    testTimeProvider.travelTo(time);
+  }
+
+  async function executeCommand(builder: CommandBuilder) {
+    const command = commandFactory.applicationCommand(builder);
+
+    await commandBus.execute(command);
+  }
+
   return {
-    commandBus,
-    queryBus,
+    executeCommand,
     eventBus: eventBusSpy,
-    time: testTimeProvider,
+    timeTravelTo,
     getLastPublishedEvents,
-    givenEventOccurred,
-    commandFactory,
+    eventOccurred,
   };
 }

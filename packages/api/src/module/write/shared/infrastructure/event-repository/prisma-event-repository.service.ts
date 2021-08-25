@@ -4,8 +4,8 @@ import { PrismaService } from '../../../../../prisma/prisma.service';
 import { ApplicationEvent } from '../../../../shared/application-command-events';
 import { EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.valueboject';
-import { EventStream, EventStreamVersion } from '../../application/slice.types';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
+import {EventStream, EventStreamVersion} from "../../application/application-service";
 
 @Injectable()
 export class PrismaEventRepository implements EventRepository {

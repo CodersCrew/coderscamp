@@ -1,8 +1,8 @@
 import { ApplicationEvent } from '../../../shared/application-command-events';
 import { EventStreamName } from './event-stream-name.valueboject';
-import { EventStream, EventStreamVersion } from './slice.types';
+import {EventStream, EventStreamVersion} from "./application-service";
 
-export const EVENT_STORE = Symbol('EVENT_STORE');
+export const EVENT_REPOSITORY = Symbol('EVENT_REPOSITORY');
 
 export interface EventRepository {
   read(streamName: EventStreamName): Promise<EventStream>;

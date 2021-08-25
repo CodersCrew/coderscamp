@@ -5,7 +5,7 @@ import { ApplicationCommand } from '../../../shared/application-command-events';
 import { ID_GENERATOR, IdGenerator } from './id-generator';
 import { TIME_PROVIDER, TimeProvider } from './time-provider.port';
 
-export type CommandBuilder<CommandType extends ApplicationCommand> = {
+export type CommandBuilder<CommandType extends ApplicationCommand = ApplicationCommand> = {
   class: Type<CommandType>;
   type: CommandType['type'];
   data: CommandType['data'];

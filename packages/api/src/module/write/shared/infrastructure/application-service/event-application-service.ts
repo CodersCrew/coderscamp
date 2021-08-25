@@ -2,17 +2,20 @@ import { Inject } from '@nestjs/common';
 
 import { ApplicationEventBus } from '../../application/application.event-bus';
 import { ApplicationEvent } from '../../../../shared/application-command-events';
-import { ApplicationExecutionContext, ApplicationService } from '../../application/application-service';
-import { EVENT_STORE, EventRepository } from '../../application/event-repository';
+import {
+  ApplicationExecutionContext,
+  ApplicationService, DomainLogic,
+  EventStreamVersion
+} from '../../application/application-service';
+import { EVENT_REPOSITORY, EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.valueboject';
 import { ID_GENERATOR, IdGenerator } from '../../application/id-generator';
-import { DomainLogic, EventStreamVersion } from '../../application/slice.types';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
 import { DomainEvent } from '../../../../shared/domain.event';
 
-export class EventStoreApplicationService implements ApplicationService {
+export class EventApplicationService implements ApplicationService {
   constructor(
-    @Inject(EVENT_STORE) private readonly eventStore: EventRepository,
+    @Inject(EVENT_REPOSITORY) private readonly eventRepository: EventRepository,
     @Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider,
     @Inject(ID_GENERATOR) private readonly idGenerator: IdGenerator,
     private readonly eventBus: ApplicationEventBus,
@@ -23,8 +26,8 @@ export class EventStoreApplicationService implements ApplicationService {
     context: ApplicationExecutionContext,
     domainLogic: DomainLogic<DomainEventType>,
   ): Promise<void> {
-    const eventStream = await this.eventStore.read(streamName);
-    const streamVersion = EventStoreApplicationService.streamVersion(eventStream);
+    const eventStream = await this.eventRepository.read(streamName);
+    const streamVersion = EventApplicationService.streamVersion(eventStream);
 
     const resultDomainEvents = domainLogic(
       eventStream.map((e) => {
@@ -42,7 +45,7 @@ export class EventStoreApplicationService implements ApplicationService {
       streamName,
     }));
 
-    await this.eventStore.write(streamName, uncommitedEvents, streamVersion);
+    await this.eventRepository.write(streamName, uncommitedEvents, streamVersion);
 
     await this.eventBus.publishAll(uncommitedEvents);
   }

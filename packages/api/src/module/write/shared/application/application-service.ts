@@ -1,10 +1,14 @@
+import { ApplicationEvent } from '../../../shared/application-command-events';
 import { DomainEvent } from '../../../shared/domain.event';
 import { EventStreamName } from './event-stream-name.valueboject';
-import { DomainLogic } from './slice.types';
 
 export const APPLICATION_SERVICE = Symbol('APPLICATION_SERVICE');
 
 export type ApplicationExecutionContext = { correlationId: string; causationId?: string };
+
+export type DomainLogic<EventType extends DomainEvent> = (previousEvents: EventType[]) => EventType[];
+export type EventStream<EventType extends ApplicationEvent = ApplicationEvent> = EventType[];
+export type EventStreamVersion = number;
 
 export interface ApplicationService {
   execute<DomainEventType extends DomainEvent>(
