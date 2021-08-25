@@ -23,9 +23,9 @@ model LearningMaterial {
 }
 
 model Event {
-  id            String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            String @id
   type          String
-  streamId      String @db.Uuid
+  streamId      String
   streamGroup   String
   streamVersion Int
   occurredAt    DateTime
