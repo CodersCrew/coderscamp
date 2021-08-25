@@ -221,3 +221,12 @@ No need for classes.
 
 ## Events definitions in shared instead of certain module.
 Easier - just commit with event to be able to pararrelize work.
+
+
+# TODO from infrastructure
+
+1. Swagger for REST API
+2. Publishing certain events via WebSocket for frontend
+3. WebSocket documentation with AsyncAPI
+4. Monitoring with Grafana 
+5. Rebuilding read projections from events

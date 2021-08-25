@@ -5,8 +5,8 @@ import { APPLICATION_SERVICE, ApplicationService } from '../../common/applicatio
 import { LearningMaterialsUrlDomainEvent } from '../domain/events';
 import { generateLearningMaterialsUrl } from '../domain/generateLearningMaterialsUrl';
 import { GenerateLearningMaterialsUrlApplicationCommand } from './api/generate-learning-materials-url.application-command';
+import { learningMaterialsUrlEventStreamName } from './learning-materials.event-stream-name';
 import { LEARNING_MATERIALS_URL_GENERATOR, LearningMaterialsUrlGenerator } from './learning-materials-url-generator';
-import {learningMaterialsUrlEventStreamName} from "./learning-materials.event-stream-name";
 
 @CommandHandler(GenerateLearningMaterialsUrlApplicationCommand)
 export class GenerateLearningMaterialsUrlCommandHandler
