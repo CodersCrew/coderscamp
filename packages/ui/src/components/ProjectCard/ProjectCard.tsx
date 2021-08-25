@@ -30,19 +30,19 @@ export const ProjectCard = ({
         />
 
         <Grid templateRows="repeat(4, 1fr)" padding="24px">
-          <Typography as="p" fontWeight="700" size="lg">
+          <Typography as="p" weight="bold" size="lg">
             {title}
           </Typography>
 
           <Flex justifyContent="space-between" alignSelf="end">
-            <Typography fontWeight="500" as="span">
+            <Typography weight="medium" as="span">
               Status:
             </Typography>
             <Typography as="span">{ProjectCardText[status].statusText}</Typography>
           </Flex>
 
           <Flex justifyContent="space-between" alignSelf="start">
-            <Typography fontWeight="500" as="span">
+            <Typography weight="medium" as="span">
               {ProjectCardText[status].timeStatus}:
             </Typography>
             <Typography as="span">
