@@ -1,7 +1,6 @@
 import { CommandBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { UsersService } from '../../../users/users.service';
 import { ApplicationEvent } from '../../shared/application-command-events';
 import { ApplicationEventBus } from '../shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '../shared/application/application-command.factory';
@@ -22,7 +21,6 @@ import {
 } from './application/learning-materials-url-generator';
 import { USERS_PORT, UsersPort } from './application/users.port';
 import { PuppeteerLearningMaterialsGenerator } from './infrastructure/puppeteer-learning-materials-generator';
-import { UsersAdapter } from './infrastructure/users.adapter';
 import { LearningMaterialsUrlRestController } from './presentation/rest/learning-materials-url.rest-controller';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
