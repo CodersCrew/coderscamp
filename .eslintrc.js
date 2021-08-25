@@ -8,6 +8,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/*.stories.tsx',
   '**/setupTests.ts',
   'scripts/*.js',
+  '**/testHelpers.tsx',
 ];
 
 module.exports = {
@@ -157,6 +158,11 @@ module.exports = {
       // Files that should contain a default export.
       files: ['*.config.[tj]s', 'packages/website/src/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
+    },
+    {
+      // Redux slices.
+      files: ['**/*Slice.ts'],
+      rules: { 'no-param-reassign': 0 },
     },
     {
       // Enable plugins rules only for test files.

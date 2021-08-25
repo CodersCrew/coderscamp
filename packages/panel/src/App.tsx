@@ -1,13 +1,31 @@
 import React from 'react';
+import { BrowserRouter, Switch } from 'react-router-dom';
 
-import { GoToFormPage } from './GoToFormPage/GoToFormPage';
-import { SignUpPageForCandidates } from './SignUpPageForCandidates/SignUpPageForCandidates';
+import { AuthorizedRoute, Redirect404, UnauthorizedRoute } from './components/RoutingAuth';
+import { WaitForUser } from './components/WaitForUser';
+import { CalendarPage } from './screens/CalendarPage';
+import { Dashboard } from './screens/Dashboard';
+import { GoToFormPage } from './screens/GoToFormPage';
+import { Login } from './screens/Login';
+import { Register } from './screens/Register';
+import { SignUpPageForCandidates } from './screens/SignUpPageForCandidates';
 
 export const App = () => {
   return (
-    <>
-      <SignUpPageForCandidates />
-      <GoToFormPage />
-    </>
+    <WaitForUser>
+      <BrowserRouter>
+        <Switch>
+          <UnauthorizedRoute exact path="/sign-up-old">
+            <SignUpPageForCandidates />
+            <GoToFormPage />
+          </UnauthorizedRoute>
+          <UnauthorizedRoute exact path="/register" component={Register} />
+          <UnauthorizedRoute exact path="/login" component={Login} />
+          <AuthorizedRoute exact path="/calendar" component={CalendarPage} />
+          <AuthorizedRoute exact path="/dashboard" component={Dashboard} />
+          <Redirect404 />
+        </Switch>
+      </BrowserRouter>
+    </WaitForUser>
   );
 };

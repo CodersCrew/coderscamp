@@ -8,9 +8,33 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  githubId Int    @unique
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullName String
-  email    String
-  image    String
+  email    String @unique
+  image    String @default("https://www.gravatar.com/avatar?d=mp")
+}
+
+model AuthUser {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email    String @unique
+  password String
+  role     Role   @default(User)
+}
+
+model UserRegistration {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName String
+  email    String @unique
+}
+
+model LearningMaterial {
+  id             String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url            String
+  completedCount Int    @default(0)
+  userId         String @unique @db.Uuid
+}
+
+enum Role {
+  Admin
+  User
 }

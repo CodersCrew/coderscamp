@@ -30,3 +30,15 @@ import * as icons from '../../src/icons';
       ))}
   </IconsTable>
 </ThemeProvider>
+
+# Benefit icons
+
+<ThemeProvider>
+  <IconsTable>
+    {Object.values(icons)
+      .filter(({ displayName }) => !displayName.includes('Solid') && !displayName.includes('Outlined'))
+      .map((icon) => (
+        <IconCell key={icon.displayName} icon={icon} />
+      ))}
+  </IconsTable>
+</ThemeProvider>
