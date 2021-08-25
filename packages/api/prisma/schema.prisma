@@ -20,16 +20,17 @@ model LearningMaterial {
   url            String
   completedCount Int    @default(0)
   userId         String @unique @db.Uuid
+  version        Int
 }
 
 model Event {
-  id            String @id
-  type          String
-  streamId      String
-  streamGroup   String
-  streamVersion Int
-  occurredAt    DateTime
-  data          Json
-  metadata      Json
-  globalOrder   Int @default(autoincrement())
+  id             String @id
+  type           String
+  streamId       String
+  streamCategory String
+  streamVersion  Int
+  occurredAt     DateTime
+  data           Json
+  metadata       Json
+  globalOrder    Int @default(autoincrement())
 }
