@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../../../../../auth/jwt/jwt-auth.guard';
 import { JwtUserId } from '../../../../../auth/jwt/jwt-user-id.decorator';
 import { UserId } from '../../../../../users/users.types';
 import { ApplicationCommandFactory } from '../../../common/application/application-command.factory';
-import { GenerateLearningMaterialsUrlApplicationCommand } from '../../application/api/generate-learning-materials-url.application-command';
+import { GenerateLearningMaterialsUrlApplicationCommand } from '../../../../shared/commands/generate-learning-materials-url.application-command';
 
 @Controller('learning-materials')
 export class LearningMaterialsUrlRestController {

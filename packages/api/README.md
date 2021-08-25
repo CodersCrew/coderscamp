@@ -249,6 +249,8 @@ export class LearningMaterialsRestController {
 ```
 
 
+There should be no relations between read/write/automation just throught events and command in shared.
+
 # ADR - Architecture Decision Records
 
 

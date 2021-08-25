@@ -1,8 +1,3 @@
-import { UserId } from '../../common/application/user-id';
-
-export type LearningMaterialsUrlWasGenerated = {
-  type: 'LearningMaterialsUrlWasGenerated';
-  data: { userId: UserId; materialsUrl: string };
-};
+import { LearningMaterialsUrlWasGenerated } from '../../../shared/events/learning-materials-url-was-generated.domain-event';
 
 export type LearningMaterialsUrlDomainEvent = LearningMaterialsUrlWasGenerated;

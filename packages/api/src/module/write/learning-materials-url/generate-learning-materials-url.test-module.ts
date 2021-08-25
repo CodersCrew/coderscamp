@@ -3,7 +3,7 @@ import {Test, TestingModule} from '@nestjs/testing';
 
 import {ApplicationEventBus} from '../common/application/application.event-bus';
 import {ApplicationCommandFactory} from '../common/application/application-command.factory';
-import {ApplicationEvent} from '../common/application/application-command-events';
+import {ApplicationEvent} from '../../shared/application-command-events';
 import {EVENT_STORE} from '../common/application/event-repository';
 import {EventStreamName} from '../common/application/event-stream-name.valueboject';
 import {ID_GENERATOR, IdGenerator} from '../common/application/id-generator';

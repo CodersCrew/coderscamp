@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { ApplicationEvent } from '../write/common/application/application-command-events';
-import {
-  LearningMaterialsUrlWasGenerated
-} from '../write/learning-materials-url/domain/events';
+import { ApplicationEvent } from '../shared/application-command-events';
+import {LearningMaterialsUrlWasGenerated} from "../shared/events/learning-materials-url-was-generated.domain-event";
 
 @Injectable()
 export class SendEmailWhenLearningMaterialsWereGeneratedAutomation {

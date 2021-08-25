@@ -1,4 +1,4 @@
-import { ApplicationEvent } from './application-command-events';
+import { ApplicationEvent } from '../../../shared/application-command-events';
 import { EventStreamName } from './event-stream-name.valueboject';
 import { EventStream, EventStreamVersion } from './slice.types';
 

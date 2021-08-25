@@ -1,7 +1,7 @@
 import { Inject, Injectable, Type } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 
-import { ApplicationCommand } from './application-command-events';
+import { ApplicationCommand } from '../../../shared/application-command-events';
 import { ID_GENERATOR, IdGenerator } from './id-generator';
 import { TIME_PROVIDER, TimeProvider } from './time-provider.port';
 

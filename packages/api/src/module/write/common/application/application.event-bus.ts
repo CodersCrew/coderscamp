@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { ApplicationEvent } from './application-command-events';
+import { ApplicationEvent } from '../../../shared/application-command-events';
 
 @Injectable()
 export class ApplicationEventBus {

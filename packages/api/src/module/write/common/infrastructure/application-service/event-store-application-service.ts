@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 
 import { ApplicationEventBus } from '../../application/application.event-bus';
-import { ApplicationEvent } from '../../application/application-command-events';
+import { ApplicationEvent } from '../../../../shared/application-command-events';
 import { ApplicationExecutionContext, ApplicationService } from '../../application/application-service';
 import { EVENT_STORE, EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.valueboject';

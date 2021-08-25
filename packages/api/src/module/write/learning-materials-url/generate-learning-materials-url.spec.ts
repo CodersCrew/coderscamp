@@ -1,4 +1,4 @@
-import { GenerateLearningMaterialsUrlApplicationCommand } from './application/api/generate-learning-materials-url.application-command';
+import { GenerateLearningMaterialsUrlApplicationCommand } from '../../shared/commands/generate-learning-materials-url.application-command';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
 import {EventStreamName} from "../common/application/event-stream-name.valueboject";
 

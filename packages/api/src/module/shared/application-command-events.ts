@@ -1,7 +1,7 @@
-import { DomainCommand } from '../../../shared/domain.command';
-import { DomainEvent } from '../../../shared/domain.event';
-import { EventStreamName } from './event-stream-name.valueboject';
-import { EventStreamVersion } from './slice.types';
+import { DomainCommand } from './domain.command';
+import { DomainEvent } from './domain.event';
+import { EventStreamName } from '../write/common/application/event-stream-name.valueboject';
+import { EventStreamVersion } from '../write/common/application/slice.types';
 
 export type DefaultCommandMetadata = { correlationId: string; causationId?: string };
 export type DefaultEventMetadata = { correlationId: string; causationId?: string };
