@@ -29,6 +29,7 @@
     "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
+    "@nestjs/testing": "8.0.6",
     "@types/jest": "27.0.1",
     "@typescript-eslint/eslint-plugin": "4.29.2",
     "@typescript-eslint/parser": "4.29.2",

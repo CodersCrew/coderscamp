@@ -1,4 +1,4 @@
-import { UserId } from '../../write/shared/application/user-id';
+import { UserId } from '../../../users/users.types';
 
 export type GenerateLearningMaterialsUrl = {
   type: 'GenerateLearningMaterialsUrl';

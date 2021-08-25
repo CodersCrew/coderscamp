@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { UsersModule } from '../users/users.module';
 import { UsersService } from '../users/users.service';
 import { UsersAdapter } from './adapters/users.adapter';
 import { LearningMaterialsController } from './learning-materials.controller';
@@ -9,7 +8,7 @@ import { LearningMaterialsService } from './learning-materials.service';
 import { USERS_PORT } from './ports/users.port';
 
 @Module({
-  imports: [UsersModule],
+  imports: [],
   controllers: [LearningMaterialsController],
   providers: [
     LearningMaterialsService,

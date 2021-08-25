@@ -1,6 +1,7 @@
 import { CommandBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { UsersService } from '../../../users/users.service';
 import { ApplicationEvent } from '../../shared/application-command-events';
 import { ApplicationEventBus } from '../shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '../shared/application/application-command.factory';
@@ -11,13 +12,18 @@ import { ID_GENERATOR, IdGenerator } from '../shared/application/id-generator';
 import { TIME_PROVIDER } from '../shared/application/time-provider.port';
 import { InMemoryEventRepository } from '../shared/infrastructure/event-repository/in-memory-event-repository';
 import { FixedTimeProvider } from '../shared/infrastructure/time-provider/fixed-time-provider';
+import { SharedModule } from '../shared/shared.module';
+import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
   UserFullname,
 } from './application/learning-materials-url-generator';
-import { LearningMaterialsUrlWriteModule } from './learning-materials-url.write-module';
+import { USERS_PORT, UsersPort } from './application/users.port';
+import { PuppeteerLearningMaterialsGenerator } from './infrastructure/puppeteer-learning-materials-generator';
+import { UsersAdapter } from './infrastructure/users.adapter';
+import { LearningMaterialsUrlRestController } from './presentation/rest/learning-materials-url.rest-controller';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 
@@ -35,7 +41,7 @@ class MockedLearningResourcesGenerator implements LearningMaterialsUrlGenerator 
   }
 }
 
-export async function generateLearningMaterialsUrlTestModule() {
+export async function generateLearningMaterialsUrlTestModule(usersPort: UsersPort) {
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
   let generatedIds = 0;
   const mockedIdGenerator: IdGenerator = {
@@ -43,8 +49,19 @@ export async function generateLearningMaterialsUrlTestModule() {
   };
 
   const eventRepository = new InMemoryEventRepository(testTimeProvider);
+
+  // fixme: use imports: [LearningMaterialsUrlWriteModule] currently repeated module setup - without user
   const app: TestingModule = await Test.createTestingModule({
-    imports: [LearningMaterialsUrlWriteModule],
+    imports: [SharedModule],
+    controllers: [LearningMaterialsUrlRestController],
+    providers: [
+      {
+        provide: USERS_PORT,
+        useValue: usersPort,
+      },
+      GenerateLearningMaterialsUrlCommandHandler,
+      { provide: LEARNING_MATERIALS_URL_GENERATOR, useClass: PuppeteerLearningMaterialsGenerator },
+    ],
   })
     .overrideProvider(ID_GENERATOR)
     .useValue(mockedIdGenerator)
@@ -86,11 +103,16 @@ export async function generateLearningMaterialsUrlTestModule() {
     await commandBus.execute(command);
   }
 
+  function currentTime() {
+    return testTimeProvider.currentTime();
+  }
+
   return {
     executeCommand,
     eventBus: eventBusSpy,
     timeTravelTo,
     getLastPublishedEvents,
     eventOccurred,
+    currentTime,
   };
 }
