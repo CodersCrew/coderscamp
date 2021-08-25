@@ -5,4 +5,4 @@ export type LearningMaterialsUrlWasGenerated = {
   data: { userId: UserId; materialsUrl: string };
 };
 
-export type LearningMaterialsDomainEvent = LearningMaterialsUrlWasGenerated;
+export type LearningMaterialsUrlDomainEvent = LearningMaterialsUrlWasGenerated;

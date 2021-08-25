@@ -7,9 +7,9 @@ export const APPLICATION_SERVICE = Symbol('APPLICATION_SERVICE');
 export type ApplicationExecutionContext = { correlationId: string; causationId?: string };
 
 export interface ApplicationService {
-  execute<EventType extends DomainEvent>(
+  execute<DomainEventType extends DomainEvent>(
     streamName: EventStreamName,
     context: ApplicationExecutionContext,
-    domainLogic: DomainLogic<EventType>,
+    domainLogic: DomainLogic<DomainEventType>,
   ): Promise<void>;
 }

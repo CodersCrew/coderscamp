@@ -1,5 +1,6 @@
 import { DomainCommand } from '../domain/domain.command';
 import { DomainEvent } from '../domain/domain.event';
+import { EventStreamName } from './event-stream-name.valueboject';
 import { EventStreamVersion } from './slice.types';
 
 export type DefaultCommandMetadata = { correlationId: string; causationId?: string };
@@ -58,6 +59,7 @@ export interface ApplicationEvent<
   readonly data: EventData;
   readonly metadata: EventMetadata;
   readonly streamVersion: EventStreamVersion;
+  readonly streamName: EventStreamName;
 }
 
 export abstract class AbstractApplicationEvent<
@@ -77,6 +79,8 @@ export abstract class AbstractApplicationEvent<
 
   readonly streamVersion: EventStreamVersion;
 
+  readonly streamName: EventStreamName;
+
   constructor(
     type: DomainEventType['type'],
     id: string,
@@ -84,6 +88,7 @@ export abstract class AbstractApplicationEvent<
     data: DomainEventType['data'],
     metadata: EventMetadata,
     streamVersion: EventStreamVersion,
+    streamName: EventStreamName,
   ) {
     this.data = data;
     this.id = id;
@@ -91,5 +96,6 @@ export abstract class AbstractApplicationEvent<
     this.metadata = metadata;
     this.type = type;
     this.streamVersion = streamVersion;
+    this.streamName = streamName;
   }
 }

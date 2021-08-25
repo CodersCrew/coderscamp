@@ -7,6 +7,7 @@ import { GeneratedEventHandler } from './application/generated.event-handler';
 import { LEARNING_MATERIALS_URL_GENERATOR } from './application/learning-materials-url-generator';
 import { PuppeteerLearningMaterialsGenerator } from './infrastructure/puppeteer-learning-materials-generator';
 import { LearningMaterialsUrlController } from './presentation/rest/learning-materials-url.controller';
+import {TypeHandler} from "./application/type.handler";
 
 export const learningMaterialsUrlEventStreamName = (props: { userId: string }) =>
   EventStreamName.from('LearningMaterialsUrl', props.userId);
@@ -18,6 +19,7 @@ export const learningMaterialsUrlEventStreamName = (props: { userId: string }) =
     GenerateLearningMaterialsUrlCommandHandler,
     { provide: LEARNING_MATERIALS_URL_GENERATOR, useClass: PuppeteerLearningMaterialsGenerator },
     GeneratedEventHandler,
+    TypeHandler,
   ],
 })
 export class LearningMaterialsUrlModule {}

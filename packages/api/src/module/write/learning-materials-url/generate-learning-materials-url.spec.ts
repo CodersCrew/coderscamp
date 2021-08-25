@@ -1,5 +1,6 @@
 import { GenerateLearningMaterialsUrlApplicationCommand } from './application/api/generate-learning-materials-url.application-command';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
+import {EventStreamName} from "../../shared/application/event-stream-name.valueboject";
 
 const scheduler = typeof setImmediate === 'function' ? setImmediate : setTimeout;
 export function flushPromises() {
@@ -7,7 +8,7 @@ export function flushPromises() {
 }
 
 describe('Generate Learning Materials URL', () => {
-  it('test 1', async () => {
+  it('test 1', async (done) => {
     // given
     const { commandBus, time, getLastPublishedEvents, commandFactory } = await generateLearningMaterialsUrlTestModule();
 
@@ -40,6 +41,7 @@ describe('Generate Learning Materials URL', () => {
         },
         metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
         streamVersion: 0,
+        streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id')
       },
     ]);
 

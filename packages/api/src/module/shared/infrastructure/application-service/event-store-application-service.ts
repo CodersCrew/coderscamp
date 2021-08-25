@@ -18,17 +18,17 @@ export class EventStoreApplicationService implements ApplicationService {
     private readonly eventBus: ApplicationEventBus,
   ) {}
 
-  async execute<EventType extends DomainEvent>(
+  async execute<DomainEventType extends DomainEvent>(
     streamName: EventStreamName,
     context: ApplicationExecutionContext,
-    domainLogic: DomainLogic<EventType>,
+    domainLogic: DomainLogic<DomainEventType>,
   ): Promise<void> {
     const eventStream = await this.eventStore.read(streamName);
     const streamVersion = EventStoreApplicationService.streamVersion(eventStream);
 
     const resultDomainEvents = domainLogic(
       eventStream.map((e) => {
-        return { type: e.type, data: e.data } as EventType;
+        return { type: e.type, data: e.data } as DomainEventType;
       }),
     );
 
@@ -39,6 +39,7 @@ export class EventStoreApplicationService implements ApplicationService {
       occurredAt: this.timeProvider.currentTime(),
       metadata: { correlationId: context.correlationId, causationId: context.causationId },
       streamVersion: streamVersion + index,
+      streamName,
     }));
 
     await this.eventStore.write(streamName, uncommitedEvents, streamVersion);

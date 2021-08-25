@@ -1,6 +1,6 @@
 import { LearningMaterialsUrl } from '../application/learning-materials-url-generator';
 import { GenerateLearningMaterialsUrl } from './commands';
-import { LearningMaterialsDomainEvent } from './events';
+import { LearningMaterialsUrlDomainEvent } from './events';
 
 /**
  * Business logic in your domain is pure function. It's accept previous events, new command and return new changes - events.
@@ -9,10 +9,10 @@ import { LearningMaterialsDomainEvent } from './events';
  * @param learningMaterialsUrl - additional properties
  */
 export function generateLearningMaterials(
-  previousEvents: LearningMaterialsDomainEvent[],
+  previousEvents: LearningMaterialsUrlDomainEvent[],
   command: GenerateLearningMaterialsUrl,
   learningMaterialsUrl: LearningMaterialsUrl,
-): LearningMaterialsDomainEvent[] {
+): LearningMaterialsUrlDomainEvent[] {
   // read from previous events what you needed
   const state = previousEvents.reduce<{ generated: boolean }>(
     (acc, event) => {

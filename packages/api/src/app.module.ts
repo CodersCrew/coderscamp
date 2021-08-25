@@ -22,10 +22,10 @@ const productionImports = [
 @Module({
   imports: [
     ...(isProduction ? productionImports : []),
-    PrismaModule,
-    UsersModule,
-    AuthModule,
-    LearningMaterialsModule,
+    // PrismaModule,
+    // UsersModule,
+    // AuthModule,
+    // LearningMaterialsModule,
     LearningMaterialsUrlModule,
   ],
 })

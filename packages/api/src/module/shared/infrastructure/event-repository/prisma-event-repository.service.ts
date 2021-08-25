@@ -47,7 +47,7 @@ export class PrismaEventRepository implements EventRepository {
       id: e.id,
       type: e.type,
       streamId: streamName.streamId,
-      streamGroup: streamName.streamGroup,
+      streamGroup: streamName.streamCategory,
       streamVersion: e.streamVersion,
       occurredAt: e.occurredAt,
       data: JSON.stringify(e.data),
