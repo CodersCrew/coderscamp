@@ -6,10 +6,6 @@ import { ApplicationEvent } from '../write/common/application/application-comman
 import { SharedModule } from '../write/common/shared.module';
 import { LearningMaterialsUrlWasGenerated } from '../write/learning-materials-url/domain/events';
 
-export class LearningResourcesRestController {
-
-}
-
 @Module({
   imports: [SharedModule],
 })
