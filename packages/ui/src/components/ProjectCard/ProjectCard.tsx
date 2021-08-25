@@ -46,7 +46,7 @@ export const ProjectCard = ({
               {ProjectCardText[status].timeStatus}:
             </Typography>
             <Typography as="span">
-              {status !== 'done' && date ? date.toLocaleDateString() : `${points}/${pointsMax}`}
+              {status !== 'done' && date ? new Date(date).toLocaleDateString() : `${points}/${pointsMax}`}
             </Typography>
           </Flex>
           <Button disabled={status === 'idle'} onClick={goToProjectPage}>
