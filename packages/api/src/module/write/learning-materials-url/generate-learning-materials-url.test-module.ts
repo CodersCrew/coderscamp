@@ -1,23 +1,23 @@
-import { CommandBus, EventBus, IEvent, QueryBus } from '@nestjs/cqrs';
-import { Test, TestingModule } from '@nestjs/testing';
+import {CommandBus, QueryBus} from '@nestjs/cqrs';
+import {Test, TestingModule} from '@nestjs/testing';
 
-import { ApplicationEventBus } from '../../shared/application/application.event-bus';
-import { ApplicationCommandFactory } from '../../shared/application/application-command.factory';
-import { ApplicationEvent } from '../../shared/application/application-command-events';
-import { EVENT_STORE } from '../../shared/application/event-repository';
-import { EventStreamName } from '../../shared/application/event-stream-name.valueboject';
-import { ID_GENERATOR, IdGenerator } from '../../shared/application/id-generator';
-import { EventStreamVersion } from '../../shared/application/slice.types';
-import { TIME_PROVIDER } from '../../shared/application/time-provider.port';
-import { InMemoryEventRepository } from '../../shared/infrastructure/event-repository/in-memory-event-repository';
-import { FixedTimeProvider } from '../../shared/infrastructure/time-provider/fixed-time-provider';
+import {ApplicationEventBus} from '../../shared/application/application.event-bus';
+import {ApplicationCommandFactory} from '../../shared/application/application-command.factory';
+import {ApplicationEvent} from '../../shared/application/application-command-events';
+import {EVENT_STORE} from '../../shared/application/event-repository';
+import {EventStreamName} from '../../shared/application/event-stream-name.valueboject';
+import {ID_GENERATOR, IdGenerator} from '../../shared/application/id-generator';
+import {EventStreamVersion} from '../../shared/application/slice.types';
+import {TIME_PROVIDER} from '../../shared/application/time-provider.port';
+import {InMemoryEventRepository} from '../../shared/infrastructure/event-repository/in-memory-event-repository';
+import {FixedTimeProvider} from '../../shared/infrastructure/time-provider/fixed-time-provider';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
   LearningMaterialsUrlGenerator,
   UserFullname,
 } from './application/learning-materials-url-generator';
-import { LearningMaterialsUrlModule } from './learning-materials-url.module';
+import {LearningMaterialsUrlModule} from './learning-materials-url.module';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 

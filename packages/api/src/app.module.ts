@@ -17,15 +17,15 @@ const productionImports = [
     rootPath: join(__dirname, '../../../../panel/dist'),
     exclude: ['/api/*'],
   }),
+  PrismaModule,
+  UsersModule,
+  AuthModule,
+  LearningMaterialsModule,
 ];
 
 @Module({
   imports: [
     ...(isProduction ? productionImports : []),
-    // PrismaModule,
-    // UsersModule,
-    // AuthModule,
-    // LearningMaterialsModule,
     LearningMaterialsUrlModule,
   ],
 })

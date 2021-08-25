@@ -5,7 +5,7 @@ import { LearningMaterialsUrlDomainEvent } from '../domain/events';
 
 @Injectable()
 export class TypeHandler {
-  @OnEvent('LearningMaterialsUrl.*')
+  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   handleLearningMaterialsUrlDomainEvent(event: LearningMaterialsUrlDomainEvent) {
     console.log('EVENT HANDLED', event);
   }

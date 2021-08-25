@@ -8,7 +8,7 @@ export function flushPromises() {
 }
 
 describe('Generate Learning Materials URL', () => {
-  it('test 1', async (done) => {
+  it('test 1', async () => {
     // given
     const { commandBus, time, getLastPublishedEvents, commandFactory } = await generateLearningMaterialsUrlTestModule();
 

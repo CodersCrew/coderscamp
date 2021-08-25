@@ -9,7 +9,10 @@ export class ApplicationEventBus {
   constructor(private readonly eventBus: EventBus, private readonly eventEmitter: EventEmitter2) {}
 
   publishAll<EventType extends ApplicationEvent>(events: EventType[]): void {
-    events.map((e) => this.eventEmitter.emit(`${e.streamName.streamCategory}.${e.type}`, e));
+    console.log('Publishing events', events);
+    events.map((e) => {
+      this.eventEmitter.emit(`${e.streamName.streamCategory}.${e.type}`, e)
+    });
     this.eventBus.publishAll(events);
   }
 }

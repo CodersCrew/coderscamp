@@ -26,6 +26,7 @@ export class PrismaEventRepository implements EventRepository {
       data: JSON.parse(e.data as string),
       metadata: JSON.parse(e.metadata as string),
       streamVersion: e.streamVersion,
+      streamName,
     }));
   }
 

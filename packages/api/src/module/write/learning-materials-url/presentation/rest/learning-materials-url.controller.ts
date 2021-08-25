@@ -1,4 +1,4 @@
-import { Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { JwtAuthGuard } from '../../../../../auth/jwt/jwt-auth.guard';
@@ -22,5 +22,18 @@ export class LearningMaterialsUrlController {
     });
 
     await this.commandBus.execute(command);
+  }
+
+  @Get('/test')
+  async test() {
+    const command = this.commandFactory.applicationCommand({
+      class: GenerateLearningMaterialsUrlApplicationCommand,
+      type: 'GenerateLearningMaterialsUrl',
+      data: { userId: 'someUser' },
+    });
+
+    await this.commandBus.execute(command);
+
+    return { message: command.id };
   }
 }
