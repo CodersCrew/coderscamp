@@ -277,3 +277,4 @@ Easier - just commit with event to be able to pararrelize work.
 3. WebSocket documentation with AsyncAPI
 4. Monitoring with Grafana 
 5. Rebuilding read projections from events
+6. How to test e2e? Generate valid JWT...
