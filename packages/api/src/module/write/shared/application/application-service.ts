@@ -6,7 +6,7 @@ export const APPLICATION_SERVICE = Symbol('APPLICATION_SERVICE');
 
 export type ApplicationExecutionContext = { correlationId: string; causationId?: string };
 
-export type DomainLogic<EventType extends DomainEvent> = (previousEvents: EventType[]) => EventType[];
+export type DomainLogic<EventType extends DomainEvent> = (pastEvents: EventType[]) => EventType[];
 export type EventStream<EventType extends ApplicationEvent = ApplicationEvent> = EventType[];
 export type EventStreamVersion = number;
 

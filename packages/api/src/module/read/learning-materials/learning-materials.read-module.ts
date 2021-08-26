@@ -6,6 +6,7 @@ import { ApplicationEvent } from '../../shared/application-command-events';
 import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-materials-url-was-generated.domain-event';
 import { SharedModule } from '../../write/shared/shared.module';
 
+// todo: increatese completedCount on event like LearningMaterialsTaskCompleted
 @Module({
   imports: [SharedModule],
 })
@@ -17,8 +18,8 @@ export class LearningMaterialsReadModule {
    * @param event
    */
   @OnEvent('LearningMaterialsUrl.*')
-  onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    this.prismaService.learningMaterial.create({
+  async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
+    await this.prismaService.learningMaterial.create({
       data: {
         userId: event.data.userId,
         url: event.data.materialsUrl,

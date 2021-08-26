@@ -29,7 +29,7 @@ export class LearningMaterialsUrlRestController {
     const command = this.commandFactory.applicationCommand({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { userId: 'anotherUser211' },
+      data: { userId: 'ece93730-939e-4637-a56e-8daf2969e214' },
     });
 
     await this.commandBus.execute(command);

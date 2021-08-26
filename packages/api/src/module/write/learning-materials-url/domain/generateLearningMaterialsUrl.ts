@@ -4,16 +4,16 @@ import { LearningMaterialsUrlDomainEvent } from './events';
 
 /**
  * Business logic in your domain is pure function. It's accept previous events, new command and return new changes - events.
- * @param previousEvents - history of the stream
+ * @param pastEvents - history of the stream
  * @param command - arguments
  * @param learningMaterialsUrl - additional properties
  */
 export function generateLearningMaterialsUrl(
-  previousEvents: LearningMaterialsUrlDomainEvent[],
+  pastEvents: LearningMaterialsUrlDomainEvent[],
   command: GenerateLearningMaterialsUrl,
   learningMaterialsUrl: LearningMaterialsUrl,
 ): LearningMaterialsUrlDomainEvent[] {
-  const state = previousEvents.reduce<{ generated: boolean }>(
+  const state = pastEvents.reduce<{ generated: boolean }>(
     (acc, event) => {
       switch (event.type) {
         case 'LearningMaterialsUrlWasGenerated': {

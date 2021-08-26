@@ -1,23 +1,45 @@
-# How to EventModeling -> NestJS Code
+# Backend Architecture (How to EventModeling -> NestJS Code)
 
-## Write Slice
+Architectural drivers are: fast introducing of new features and parallelization of development streams.
 
-The example is so simple, but will be good solution for more complex business logic.
-It's where it sits, so write slice is the most complex part.
-But during the whole implementation you don't need to think about data persistence / data models / database etc.
-everything is at your disposal.
+
+
+# Step-by-step implementation instructions
+
+## Write Slice.
+Write Slice is a command (blue sticky-note) connected to an event (orange sticky-note).
+
+**Testing strategy:** unit tests on application layer (given past events, when execute command, then published events) and unit test for controller (if appropriate command executed)
+
+The example with generating learning materials url is so simple, but the solution will fit more complex business logic.
+Write slice, it's where the business logic sits, so write slice is the most complex part, with layered architecture.
+During developing of this layer you don't need to think about database / persistence / read etc. Leave it for Read Slice.
+You have prepared SDK which will lead you during development of this part.
 
 ### Domain Layer
 
 #### Start from Event & Command
-It's pretty simple. Just type from MIRO and data with types: 
+
+Event (code snippet below)
+1. Find miro orange sticky-note
+2. Read bolded name - it's name of your type. Create type with that name and place it in `modules/shared/event` directory. Add `type` property with the same name.
+3. Add properties from sticky-note to the type and assign types to them. It's `data` property in the type.
+
 ```ts
 export type LearningMaterialsUrlWasGenerated = {
   type: 'LearningMaterialsUrlWasGenerated';
   data: { userId: UserId; materialsUrl: string };
 };
+
+// Group in one type events which will have impact on that part of the system. 
+// On EventModeling you will find them in the same horizontal line
+export type LearningMaterialsUrlDomainEvent = LearningMaterialsUrlWasGenerated
 ```
-Create a command, which is a cause of the event:
+
+Command (code snippet below)
+1. Find a cause of previously created event (blue sticky-note connected with event). It's a command.
+2. Repeat steps 2 and 3 from event. But place file with the type in `modules/shared/command` directory.
+
 ```ts
 export type GenerateLearningMaterialsUrl = {
   type: 'GenerateLearningMaterialsUrl';
@@ -25,16 +47,21 @@ export type GenerateLearningMaterialsUrl = {
 };
 ```
 
-#### Connect them with business logic
+#### Connect Command & Event by domain logic
 
-Implement business logic. Your logic is: how to react on user request (command)
-Business logic is a function, which always takes two params: 
-list of previous events and the command.
-Optionally it takes some other params if required. 
-In this case we need learningMaterialsUrl, which are not come from command.
+Domain logic is: how to react for certain user or external system action (command), based on info, which you have from past events.
+It's a [PURE function](https://enterprisecraftsmanship.com/posts/what-is-functional-programming/). 
+Extremely easy for testing, because it's output depends on the output. No external dependencies and side effects.
+
+Domain Logic:
+1. Create a function with parameters:
+    1. pastEvents - events which occurred before in the stream. You don't care how to read them. It's responsibility of application layer.
+    2. command - user or external system action (what you want to do)
+    3. (optional) additional parameters needed to fulfill domain logic, but are not part of the command (learningMaterialsUrl in this case)
+2. Return decision from the function is a list of events (in most cases one event). On next invocation this event will come in pastEvents list.
 ```ts
 export function generateLearningMaterialsUrl(
-  previousEvents: LearningMaterialsUrlDomainEvent[],
+  pastEvents: LearningMaterialsUrlDomainEvent[],
   command: GenerateLearningMaterialsUrl,
   learningMaterialsUrl: LearningMaterialsUrl,
 ): LearningMaterialsUrlDomainEvent[] {
@@ -47,13 +74,20 @@ export function generateLearningMaterialsUrl(
 }
 ```
 
+_Congratulations! That's it! You have completed the simplest domain layer!_
+
+#### Domain Invariants based on past events
+
 But, where are business rules? There are ifs in our code. 
 We need to consider previous steps, if the command is OK, or should be rejected. 
 Let's do that. 
 
-It's always the same. Make reduce on previousEvents and read from them whatever you want to determine if command is OK.
+It's always the same. Make reduce on pastEvents and read from them whatever you want to determine if command is OK.
+Think like human brain.
+1. You have some observations (pastEvents)
+2. Interprete them for some 
 ```ts
-  const state = previousEvents.reduce<{ generated: boolean }>(
+  const state = pastEvents.reduce<{ generated: boolean }>(
     (acc, event) => {
       switch (event.type) {
         case 'LearningMaterialsUrlWasGenerated': {
@@ -132,7 +166,7 @@ export class GenerateLearningMaterialsUrlCommandHandler
     await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(
         eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId }, //metadata - for tracking and monitoring
-      (previousEvents) => generateLearningMaterialsUrl(previousEvents, command, learningMaterialsUrl), //load events and pass them to business logic
+      (pastEvents) => generateLearningMaterialsUrl(pastEvents, command, learningMaterialsUrl), //load events and pass them to business logic
     );
   }
 }

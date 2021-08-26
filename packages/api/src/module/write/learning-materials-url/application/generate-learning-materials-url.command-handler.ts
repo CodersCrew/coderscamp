@@ -22,15 +22,18 @@ export class GenerateLearningMaterialsUrlCommandHandler
   ) {}
 
   async execute(command: GenerateLearningMaterialsUrlApplicationCommand): Promise<void> {
-    const userFullName = await this.usersPort.getUserFullNameById(command.data.userId);
-    const learningMaterialsUrl = await this.learningMaterialsUrlGenerator.generateUrlFor(userFullName);
+    console.log(this.learningMaterialsUrlGenerator, this.usersPort)
+    // const userFullName = await this.usersPort.getUserFullNameById(command.data.userId);
+    // const learningMaterialsUrl = await this.learningMaterialsUrlGenerator.generateUrlFor(userFullName);
+    //
+    // console.log(userFullName, learningMaterialsUrl);
 
     const eventStream = EventStreamName.from('LearningMaterialsUrl', command.data.userId);
 
     await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(
       eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId },
-      (previousEvents) => generateLearningMaterialsUrl(previousEvents, command, learningMaterialsUrl),
+      (pastEvents) => generateLearningMaterialsUrl(pastEvents, command, 'sampleUrl'),
     );
   }
 }
