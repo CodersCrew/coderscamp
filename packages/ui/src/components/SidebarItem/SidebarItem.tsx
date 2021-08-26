@@ -45,7 +45,7 @@ const activeBadgeStyles = {
   bg: '#FFF',
 };
 
-export const SidebarItem = ({ children, path, count, icon, iconSelected, disabled }: SidebarItemProps) => {
+export const SidebarItem = ({ children, path, count, icon, iconSelected, disabled, ...rest }: SidebarItemProps) => {
   const active = useRouteMatch(path);
 
   const iconButtonStyles = active ? activeIconButtonStyles : defaultIconButtonStyles;
@@ -60,6 +60,7 @@ export const SidebarItem = ({ children, path, count, icon, iconSelected, disable
       disabled={disabled}
       _disabled={{ pointerEvents: 'none', opacity: '0.6' }}
       role="group"
+      {...rest}
     >
       <Link
         as={NavLink}
@@ -78,7 +79,7 @@ export const SidebarItem = ({ children, path, count, icon, iconSelected, disable
                 icon={active ? iconSelected : icon}
                 size="md"
                 variant="link"
-                aria-label=""
+                aria-label={`${children}`}
                 _focus={{ boxShadow: 'none' }}
                 {...iconButtonStyles}
               />

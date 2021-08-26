@@ -44,9 +44,19 @@ const SidebarItems = [
   },
 ];
 
-export const Sidebar = ({ width }: SidebarProps) => {
+export const Sidebar = ({ width, ...rest }: SidebarProps) => {
   return (
-    <Flex w={width} h="100vh" pos="relative" top="0" left="0" bottom="0" flexDir="column" justify="space-between">
+    <Flex
+      w={width}
+      h="100vh"
+      pos="relative"
+      top="0"
+      left="0"
+      bottom="0"
+      flexDir="column"
+      justify="space-between"
+      {...rest}
+    >
       <VStack h="max" p="20px 0 16px" spacing="20px">
         <Center p="0 12px">
           <Logo color="black" />
