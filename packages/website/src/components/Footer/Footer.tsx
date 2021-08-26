@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image as ChakraImage } from '@chakra-ui/react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Box } from '@coderscamp/ui/components/Box';
@@ -36,7 +36,9 @@ export const Footer = () => {
           mb={[0, 0, 0, 0, '32px']}
         >
           <Box maxW="384px" direction="column" mb="56px">
-            <ChakraImage alt="Logo CodersCrew" src={logoCodersCrew} />
+            <Box position="relative" display="block" w="291px" h="32px">
+              <Image alt="Logo CodersCrew" src={logoCodersCrew} layout="fill" />
+            </Box>
 
             <Typography w="100%" pt="20px" size="md">
               Organizatorem CodersCamp jest Stowarzyszenie CodersCrew - organizacja non-profit zrzeszająca pasjonatów
@@ -82,8 +84,15 @@ export const Footer = () => {
             <Typography size="lg" color="gray.400" pt="24px">
               © CodersCamp 2021, wszelkie prawa zastrzeżone.
             </Typography>
-            <Box pt="24px" order={footerStyles.lowerFooter.order}>
-              <ChakraImage alt="Logo Vercel" src={logoVercel} />
+            <Box
+              order={footerStyles.lowerFooter.order}
+              position="relative"
+              display="block"
+              w="212px"
+              h="44px"
+              mt="24px"
+            >
+              <Image layout="fill" alt="Logo Vercel" src={logoVercel} />
             </Box>
           </Flex>
         </Flex>
