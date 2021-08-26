@@ -2,19 +2,23 @@
 
 Architectural drivers are: fast introducing of new features and parallelization of development streams.
 
-
+Useful materials to grasp following concepts:
+- [DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
+- DDD Booklet
 
 # Step-by-step implementation instructions
+
+![CodersCamp EventModeling](../../.github/images/CodersCampEventModelingLearningMaterialsUrl.jpg)
 
 ## Write Slice.
 Write Slice is a command (blue sticky-note) connected to an event (orange sticky-note).
 
-**Testing strategy:** unit tests on application layer (given past events, when execute command, then published events) and unit test for controller (if appropriate command executed)
+**Testing strategy:** unit tests on application layer (given past events, when execute command, then published events) and unit test for controller (if appropriate command executed). Optionally testing on domain layer.
 
 The example with generating learning materials url is so simple, but the solution will fit more complex business logic.
 Write slice, it's where the business logic sits, so write slice is the most complex part, with layered architecture.
 During developing of this layer you don't need to think about database / persistence / read etc. Leave it for Read Slice.
-You have prepared SDK which will lead you during development of this part.
+You have prepared SDK (provided by SharedModule from `module/write/shared`) which will lead you during development of this part.
 
 ### Domain Layer
 
@@ -24,11 +28,13 @@ Event (code snippet below)
 1. Find miro orange sticky-note
 2. Read bolded name - it's name of your type. Create type with that name and place it in `modules/shared/event` directory. Add `type` property with the same name.
 3. Add properties from sticky-note to the type and assign types to them. It's `data` property in the type.
+4. Create a commit with just an event (if someone needs to use it, now can do they work without waiting for full domain logic)
 
 ```ts
+// file: module/shared/events/learning-materials-url-was-generated.domain-event.ts
 export type LearningMaterialsUrlWasGenerated = {
   type: 'LearningMaterialsUrlWasGenerated';
-  data: { userId: UserId; materialsUrl: string };
+  data: { learningMaterialsId: string; userId: UserId; materialsUrl: string };
 };
 
 // Group in one type events which will have impact on that part of the system. 
@@ -38,19 +44,19 @@ export type LearningMaterialsUrlDomainEvent = LearningMaterialsUrlWasGenerated
 
 Command (code snippet below)
 1. Find a cause of previously created event (blue sticky-note connected with event). It's a command.
-2. Repeat steps 2 and 3 from event. But place file with the type in `modules/shared/command` directory.
+2. Repeat steps 2 and 3 from event. But place file with the type in `module/shared/commands` directory.
+3. Create a commit with just a command.
 
 ```ts
 export type GenerateLearningMaterialsUrl = {
   type: 'GenerateLearningMaterialsUrl';
-  data: { userId: UserId };
+  data: { learningMaterialsId: string; userId: UserId };
 };
 ```
 
 #### Connect Command & Event by domain logic
 
 Domain logic is: how to react for certain user or external system action (command), based on info, which you have from past events.
-It's a [PURE function](https://enterprisecraftsmanship.com/posts/what-is-functional-programming/). 
 Extremely easy for testing, because it's output depends on the output. No external dependencies and side effects.
 
 Domain Logic:
@@ -59,6 +65,7 @@ Domain Logic:
     2. command - user or external system action (what you want to do)
     3. (optional) additional parameters needed to fulfill domain logic, but are not part of the command (learningMaterialsUrl in this case)
 2. Return decision from the function is a list of events (in most cases one event). On next invocation this event will come in pastEvents list.
+
 ```ts
 export function generateLearningMaterialsUrl(
   pastEvents: LearningMaterialsUrlDomainEvent[],
@@ -78,45 +85,107 @@ _Congratulations! That's it! You have completed the simplest domain layer!_
 
 #### Domain Invariants based on past events
 
-But, where are business rules? There are ifs in our code. 
-We need to consider previous steps, if the command is OK, or should be rejected. 
-Let's do that. 
+But... domain have no sense without business logic. The logic are "ifs" - conditions in our code.
+Simple invariant is: "You cannot generate learning resource url twice".
 
-It's always the same. Make reduce on pastEvents and read from them whatever you want to determine if command is OK.
-Think like human brain.
-1. You have some observations (pastEvents)
-2. Interprete them for some 
+In order to extend your domain logic to keep this rule, first: describe it with test.
+Tests always follows same pattern:
+1. Given some past events
+2. When execute a command
+3. Then assert if certain events were published, or an error was thrown
+
 ```ts
-  const state = pastEvents.reduce<{ generated: boolean }>(
-    (acc, event) => {
-      switch (event.type) {
-        case 'LearningMaterialsUrlWasGenerated': {
-          return { generated: true };
-        }
-        default: {
-          return acc;
-        }
-      }
-    },
-    { generated: false },
-  );
+  it('given was generated before, then should not be generated', () => {
+    // Given
+    const pastEvents: LearningMaterialsUrlDomainEvent[] = [
+      {
+        type: 'LearningMaterialsUrlWasGenerated',
+        data: {
+          learningMaterialsId: '50fbf496-de23-4a50-9a72-7caea934f42f',
+          userId: 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab',
+          materialsUrl:
+            'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+        },
+      },
+    ];
+
+    // When
+    const command: GenerateLearningMaterialsUrl = {
+      type: 'GenerateLearningMaterialsUrl',
+      data: {
+        learningMaterialsId: 'c76db1cd-809f-4014-932c-fa970b1b379e',
+        userId: 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab',
+      },
+    };
+    const learningMaterialsUrl =
+      'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
+    const domainLogic = () => generateLearningMaterialsUrl(pastEvents, command, learningMaterialsUrl);
+
+    // Then
+    expect(domainLogic).toThrow(new Error('Learning resources url was already generated!'));
+  });
 ```
-There you are only interested in if url was generated. 
 
-For example, if you also need generation date:
-//todo: MORE
+After, create an implementation to fulfill the test.
+You always follow the same pattern, and try to reflect how our brain works.
+1. Make some observations (pastEvents)
+2. Make some conclusions based on observations (reduce on events). Here your conclusion is if learning materials url was generated or not.
+Business logic, is that - if was generated, you reject the command by throwing an Error.
+It's always the same. Make reduce on pastEvents and read from them whatever you want to determine if command is OK.
+You care about only about information (distilled from events), which may change answer for your question. You can ignore everything else.
 
-It's whole your business logic, you place it in the DOMAIN 
+Domain logic extended by some rule:
+```ts
+export function generateLearningMaterialsUrl(
+    pastEvents: LearningMaterialsUrlDomainEvent[],
+    command: GenerateLearningMaterialsUrl,
+    learningMaterialsUrl: LearningMaterialsUrl,
+): LearningMaterialsUrlDomainEvent[] {
+  const state = pastEvents.reduce<{ generated: boolean }>(
+      (acc, event) => {
+        switch (event.type) {
+          case 'LearningMaterialsUrlWasGenerated': {
+            return { generated: true };
+          }
+          default: {
+            return acc;
+          }
+        }
+      },
+      { generated: false },
+  );
 
-Test your business logic. It's extreamly testable, because it's just pure function (no external dependencies).
+  if (state.generated) {
+    throw new Error('Learning resources url was already generated!');
+  }
+
+  return [
+    {
+      type: 'LearningMaterialsUrlWasGenerated',
+      data: {
+        learningMaterialsId: command.data.learningMaterialsId,
+        userId: command.data.userId,
+        materialsUrl: learningMaterialsUrl,
+      },
+    },
+  ];
+}
+```
+
+It's whole your business logic, you place it in the DOMAIN.
+
+Test your business logic carefully. It's extremely testable, because it's just [pure function](https://enterprisecraftsmanship.com/posts/what-is-functional-programming/) (no external dependencies).
 Output depends only on input.
 
 ### Application Layer
-Now you need to connect your business logic with external services and dependencies. 
-Also it's a place to communicate somehow with another modules. 
+Now you need to connect your business logic with external services and dependencies like database / process.st. 
+Also it's a place to communicate somehow with another modules (slices). 
+In NestJS we treat every slice from Event Modeling as separate module. 
+We can communicate with each other only by events and commands.
+In some cases we can use Ports & Adapters to communicate with external world.
 
 #### Application Command
-Define how we can communicate with your module.
+Define how we can interact with your module.
 Because NestJS support CommandBus just for classes, we need to create class from our domain command type.
 Let's call it ApplicationCommand.
 ```ts
@@ -125,21 +194,23 @@ export class GenerateLearningMaterialsUrlApplicationCommand extends AbstractAppl
 It's part of your module API (do not misunderstand as REST API). An input into your write module.
 If someone wants to do some action inside your module should execute a command. 
 External issuer may be REST API / WebSocket etc. or another module (commonly - automation slice).
+Command reflect certain application use case. **AVOID COMMANDS LIKE CREATE/UPDATE/DELETE.**
+You'r application has business logic, so it's not only an explorer for database.
 
 #### CommandHandler
-You need a handler for your command
+You need a handler for your command, which coordinate domain and external dependencies to fulfilll application's usecases.
 
 CommandHandler code is described in NestJS documentation here: `https://github.com/nestjs/cqrs`
-Ignore events part because, we will use a little bit differnt soluion.
+Ignore events part because, we will use different solution, which less overhead.
 
-Read comments about this code: 
+Read comments about this code below. This pattern repeats with every command.
 ```ts
 @CommandHandler(GenerateLearningMaterialsUrlApplicationCommand)
 export class GenerateLearningMaterialsUrlCommandHandler
   implements ICommandHandler<GenerateLearningMaterialsUrlApplicationCommand>
 {
   constructor(
-      /*You always inject ApplicationService. It execute method it's a place where: 
+      /*You always inject ApplicationService. It works in such way: 
        - all previous events will be loaded
        - your domain logic (passed as third argument) will be executed with loaded events
        - new events (returned from your business logic) will be stored
@@ -160,29 +231,30 @@ export class GenerateLearningMaterialsUrlCommandHandler
     const learningMaterialsUrl = await this.learningMaterialsUrlGenerator.generateUrlFor(command.data.userId);
 
     /**
-     * EventStream - you can read it from Event Modeling. 
+     * EventStream - you can read it from Event Modeling - it's the name on horizontal lane. 
+     * Events from one stream will be read and passed as pastEvents to your domain logic. After domain logic execution new events will be appended to the stream.
      */
     const eventStream = `LearningMaterialsUrl_${command.data.userId}`
     await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(
         eventStream,
-      { causationId: command.id, correlationId: command.metadata.correlationId }, //metadata - for tracking and monitoring
+      { causationId: command.id, correlationId: command.metadata.correlationId }, //metadata - for tracking and monitoring. May be extended by issuerId etc.
       (pastEvents) => generateLearningMaterialsUrl(pastEvents, command, learningMaterialsUrl), //load events and pass them to business logic
     );
   }
 }
 ```
 
-This pattern repeats with every command.
-
 ### Infrastructure Layer 
-Here you implement interfaces for external dependencies.
+Here you implement interfaces for application layer dependencies.
+In application layer you define by interfaces what is needed, for example: "LearningMaterialsUrlGenerator".
+By implementing the interface you communicate with some external dependencies to provide what is needed.
 
 ### Presentation Layer
 #### REST API
 One of possibilities to interact with your app it's an REST API.
 It's just need to create command and execute it.
-ApplicationCommandFactory class is helful - you don't need to think how generate commandId, tracking metadata etc. 
-Just use it for new command, by passing Application Command class, domain command type and required data.
+ApplicationCommandFactory class is helpful - you don't need to think how generate commandId, tracking metadata etc. 
+Just use it for new command, by passing Application Command class, domain command type and required data. As follows.
 ```ts
 @Controller('learning-materials')
 export class GenerateLearningMaterialsUrlController {
@@ -192,11 +264,11 @@ export class GenerateLearningMaterialsUrlController {
   @Post('/url')
   @HttpCode(204)
   async generateUserLearningResourcesUrl(@JwtUserId() userId: UserId): Promise<void> {
-    const command = this.commandFactory.applicationCommand({
+    const command = this.commandFactory.applicationCommand((idGenerator) => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { userId },
-    });
+      data: { learningMaterialsId: idGenerator.generated(), userId },
+    }));
 
     await this.commandBus.execute(command);
   }
@@ -205,16 +277,24 @@ export class GenerateLearningMaterialsUrlController {
 
 
 ## Automation Slice
-The simples one. It's a event handler where you can react for something which happened.
-Automation it's place where you automate reaction on certain event.
+
+**Testing strategy:** unit tests (when publish events, then assert if certain command executed)
+
+
+It's a robot (R2-D2) from the event modeling. 
+It takes some events as an input (one or more), prepare tasks (green sticky-note) and execute them by issuing a command.
+
+It's an event handler where you can react for something which happened.
+Automation it's place where you automate reaction on certain events.
 We're using EventEmitter with NestJS instead of EventBus from CQRS, because it's allow for simple usage of 
-types (without classes) as events. Also have more options for subscriptions (wildcards etc.)
+types (without classes) as events. So we don't need wrapper like for application command. Also have more options for subscriptions (wildcards etc.)
+You can read about it in NestJS documentation: [NestJS | Techniques | Events](https://docs.nestjs.com/techniques/events)
 
 ```ts
 @Injectable()
 export class SendEmailWhenLearningMaterialsUrlWasGenerated {
   
-  constructor(private commandBus: CommandBus)
+  constructor(private readonly commandBus: CommandBus){}
   
   @OnEvent('LearningMaterialsUrl.*')
   handleLearningMaterialsUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlDomainEvent>) {
@@ -234,42 +314,42 @@ export class SendEmailWhenLearningMaterialsUrlWasGenerated {
 }
 ```
 
+Of course if you need to react after some sequence of events, you need to keep some state in database between those events.
+
 
 ## Read Slice
-Read doesn't belong to certain stream, but can be.
-Previously you didn't have requirement to read some data.
-It's strictly related to event store, so we will be testing it e2e and architecture will be without so much layers. 
 
-Simples part
+**Testing strategy:** e2e testing with docker for data storage
+
+On EventModeling it's a green sticky-note, connected with REST API.
+
+Read doesn't belong to certain stream. It's a perfect model for your needs. You can accumulate even events from many streams.
+Previously you didn't have requirement to read some data.
+It's strictly related to storage technology (sql, graph, elastic search, files, amazon), so we will be testing it e2e and architecture will be without so much layers.
+Controller may strictly reach database. Here we don't care about ports & adapters etc.
+No abstractions.
+We want to have fully access over how we read.
+
 ```ts
 @Module({
   imports: [SharedModule],
 })
 export class LearningMaterialsReadModule {
   constructor(private readonly prismaService: PrismaService) {}
-
-  //todo: recovering from failures - reprocessing events:
-  // -  Saving streamVersion in readmodel.
-  // - catchup on start.
+  
+  // define certain type in the @OnEvent or use wildcards and switch-case inside the handler like in domain logic
   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    this.prismaService.learningMaterial.create({ data: { userId: event.data.userId, url: event.data.materialsUrl } });
+    this.prismaService.learningMaterial.create({ data: { id: event.data.learningMaterialsId, userId: event.data.userId, url: event.data.materialsUrl } });
   }
 }
 ```
 
-Just subscribe for the event and read data needed to be read. 
-After all introduce REST Controller. 
-Green card on Event Modeling is a read model - what you can read from controller.
-Read can be, but it's not a must 1:1 with Write.
-Read may accummulate many needs. Or events from more than one stream.
+Just subscribe for certain events (one or many) and collect data needed to be read after by REST API. 
+Every handler read some data from event and create/update an entity in the database.
+This database is denormalized and prepared for fast reads. No complex queries with many joins anymore!
 
-Where is Query and QueryBus? 
-No question between modules = no queries.
-
-Controller may strictly reach database. Here we don't care about ports & adapters etc. 
-No abstractions. 
-We want to have fully access over how we read.
+After all introduce REST Controller.
 ```ts
 @Controller('learning-materials')
 export class LearningMaterialsRestController {
@@ -283,32 +363,28 @@ export class LearningMaterialsRestController {
 ```
 
 
-There should be no relations between read/write/automation just throught events and command in shared.
+There should be no relations / communication between read/write/automation just throughout events and command in `module/shared` directory.
+
 
 # ADR - Architecture Decision Records
 
 
 ## Use EventEmitter2 instead of CQRS EventBus
-Support for types as events.
-No need for classes.
++ Support for types as events.
++ No need for classes.
+- Mixed @nestjs/cqrs (commands) with @nestjs/event-emitter (events)
 
-
-## Do not use CommandBus? Just something like Taka fasada, zamiast CommandBus? 
-## Jak tutaj dodawac zachowanie do wszystkich? Cos w stylu ApplicationService? 
-## Composition, moeze jakas klasa nadrzedna.
-LearningMaterialsCommandGateway<DomainCommand>{
-    execute(switch on type)
-}
 
 ## Events definitions in shared instead of certain module.
-Easier - just commit with event to be able to pararrelize work.
+- no clear event origin
++ easier to make small commits and for development parallelization
 
 
-# TODO from infrastructure
+# TODO in infrastructure
 
 1. Swagger for REST API
 2. Publishing certain events via WebSocket for frontend
 3. WebSocket documentation with AsyncAPI
-4. Monitoring with Grafana 
-5. Rebuilding read projections from events
-6. How to test e2e? Generate valid JWT...
+4. Rebuilding read slices state (database) from events.
+5. How to test e2e? Generate valid JWT...
+6. Monitoring with Grafana 

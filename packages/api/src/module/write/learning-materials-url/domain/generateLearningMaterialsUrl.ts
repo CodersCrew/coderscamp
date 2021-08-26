@@ -34,7 +34,11 @@ export function generateLearningMaterialsUrl(
   return [
     {
       type: 'LearningMaterialsUrlWasGenerated',
-      data: { userId: command.data.userId, materialsUrl: learningMaterialsUrl },
+      data: {
+        learningMaterialsId: command.data.learningMaterialsId,
+        userId: command.data.userId,
+        materialsUrl: learningMaterialsUrl,
+      },
     },
   ];
 }

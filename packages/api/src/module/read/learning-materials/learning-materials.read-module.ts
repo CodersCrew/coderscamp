@@ -21,6 +21,7 @@ export class LearningMaterialsReadModule {
   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
     await this.prismaService.learningMaterial.create({
       data: {
+        id: event.data.learningMaterialsId,
         userId: event.data.userId,
         url: event.data.materialsUrl,
         version: event.streamVersion,

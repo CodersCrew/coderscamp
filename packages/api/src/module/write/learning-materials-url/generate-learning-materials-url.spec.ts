@@ -22,14 +22,15 @@ describe('Generate Learning Materials URL', () => {
 
     // When
     const userId = 'existing-user-id';
+    const learningMaterialsId = 'learningMaterialsId';
     const generateAt = new Date();
 
     testModule.timeTravelTo(generateAt);
-    await testModule.executeCommand({
+    await testModule.executeCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { userId },
-    });
+      data: { learningMaterialsId, userId },
+    }));
 
     // Then
     const lastPublishedEvents = await testModule.getLastPublishedEvents();
@@ -39,6 +40,7 @@ describe('Generate Learning Materials URL', () => {
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
+        learningMaterialsId,
         userId,
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
@@ -54,12 +56,14 @@ describe('Generate Learning Materials URL', () => {
     // Given
     const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
     const userId = 'existing-user-id';
+    const learningMaterialsId = 'learningMaterialsId';
     const generateAt = new Date();
     const learningMaterialsUrlWasGenerated = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
+        learningMaterialsId,
         userId,
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
@@ -82,11 +86,11 @@ describe('Generate Learning Materials URL', () => {
 
     // Then
     await expect(() =>
-      testModule.executeCommand({
+      testModule.executeCommand((idGenerator) => ({
         class: GenerateLearningMaterialsUrlApplicationCommand,
         type: 'GenerateLearningMaterialsUrl',
-        data: { userId },
-      }),
+        data: { learningMaterialsId: idGenerator.generate(), userId },
+      })),
     ).rejects.toStrictEqual(new Error('Learning resources url was already generated!'));
   });
 
@@ -118,11 +122,11 @@ describe('Generate Learning Materials URL', () => {
     const generateAt = new Date();
 
     testModule.timeTravelTo(generateAt);
-    await testModule.executeCommand({
+    await testModule.executeCommand((idGenerator) => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { userId },
-    });
+      data: { learningMaterialsId: idGenerator.generate(), userId },
+    }));
 
     // Then
     const lastPublishedEvents = await testModule.getLastPublishedEvents();
@@ -132,6 +136,7 @@ describe('Generate Learning Materials URL', () => {
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
+        learningMaterialsId: 'generatedId1',
         userId,
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },

@@ -5,7 +5,9 @@ import { ApplicationCommand } from '../../../shared/application-command-events';
 import { ID_GENERATOR, IdGenerator } from './id-generator';
 import { TIME_PROVIDER, TimeProvider } from './time-provider.port';
 
-export type CommandBuilder<CommandType extends ApplicationCommand = ApplicationCommand> = {
+export type CommandBuilder<CommandType extends ApplicationCommand = ApplicationCommand> = (
+  idGenerator: IdGenerator,
+) => {
   class: Type<CommandType>;
   type: CommandType['type'];
   data: CommandType['data'];
@@ -24,11 +26,13 @@ export class ApplicationCommandFactory {
     const generateId = () => this.idGenerator.generate();
     const currentTime = () => this.timeProvider.currentTime();
 
-    return plainToClass(builder.class, {
-      type: builder.type,
+    const command = builder(this.idGenerator);
+
+    return plainToClass(command.class, {
+      type: command.type,
       id: generateId(),
       issuedAt: currentTime(),
-      data: builder.data,
+      data: command.data,
       metadata: { correlationId: generateId() },
     });
   }
