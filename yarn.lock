@@ -2790,6 +2790,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-hook-form: 7.12.2
+    react-in-viewport: 1.0.0-alpha.19
     sass: 1.37.5
     swiper: 6.8.1
   languageName: unknown
@@ -13630,7 +13631,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
+"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -19907,6 +19908,18 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.8.0 || ^17
   checksum: 77779cc10f2a8024b2b96cdea6398ec311dc23768f084d0175f53b6632f221a9e2966fb5ab27cf00b6670dfb4a5754990809f2949ffd41c4a910eabe66000c98
+  languageName: node
+  linkType: hard
+
+"react-in-viewport@npm:1.0.0-alpha.19":
+  version: 1.0.0-alpha.19
+  resolution: "react-in-viewport@npm:1.0.0-alpha.19"
+  dependencies:
+    hoist-non-react-statics: ^3.0.0
+  peerDependencies:
+    react: ^16.8.3 || ^17.0.0
+    react-dom: ^16.8.3 || ^17.0.0
+  checksum: daad57374a4d35a0fd03a4058b6c35081947ac6ff729244998d5ce46ab57855b877fd4105f6d71a29b60d262e1a81c5760f01421952ffd820aa45be3d4417615
   languageName: node
   linkType: hard
 
