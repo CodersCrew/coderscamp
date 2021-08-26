@@ -37,17 +37,20 @@ export const RecruitmentModalContext = createContext<RecruitmentModalContextType
 
 export const RecruitmentModalProvider = ({ children }: { children: ReactNode }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [config, setConfig] = useState<ModalConfig>(modalConfigs.mentor);
+  const [state, setState] = useState<{ config: ModalConfig; type: ModalType }>({
+    config: modalConfigs.mentor,
+    type: 'mentor',
+  });
 
   const openModal: RecruitmentModalContextType['openModal'] = (type) => {
-    setConfig(modalConfigs[type]);
+    setState({ config: modalConfigs[type], type });
     onOpen();
   };
 
   return (
     <RecruitmentModalContext.Provider value={{ openModal }}>
       {children}
-      <RecruitmentModal isOpen={isOpen} onClose={onClose} config={config} />
+      <RecruitmentModal isOpen={isOpen} onClose={onClose} config={state.config} modalType={state.type} />
     </RecruitmentModalContext.Provider>
   );
 };

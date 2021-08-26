@@ -1,20 +1,35 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Button } from '@coderscamp/ui/components/Button';
-import { FormControl } from '@coderscamp/ui/components/FormControl';
-import { HelperText } from '@coderscamp/ui/components/HelperText';
+import { FormField } from '@coderscamp/ui/components/FormField';
 import { Input } from '@coderscamp/ui/components/Input';
 import { Stack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
 import { emailValidator, requiredValidator } from '@/components/Contact/Form';
 
-interface RecruitmentModalFormValues {
+import type { ModalType } from './RecruitmentModalProvider';
+import { useSendRecruitmentForm } from './useSendRecruitmentForm';
+
+interface FormValues {
   name: string;
   email: string;
 }
 
-export const RecruitmentModalForm = () => {
+interface Honeypot {
+  repeat: string;
+}
+
+export interface RecruitmentModalData extends FormValues {
+  type: ModalType;
+}
+
+interface RecruitmentModalFormProps {
+  modalType: ModalType;
+  onClose: () => void;
+}
+
+export const RecruitmentModalForm = ({ modalType, onClose }: RecruitmentModalFormProps) => {
   const size = useBreakpointValue({ base: 'md', sm: 'lg' } as const);
   const flexDirection = useBreakpointValue({ base: 'column', lg: 'row' } as const);
   const inputMaxWidth = useBreakpointValue({ base: '100%', lg: '264px' } as const);
@@ -23,29 +38,39 @@ export const RecruitmentModalForm = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<RecruitmentModalFormValues>();
+  } = useForm<FormValues & Honeypot>();
+  const { send, isSending } = useSendRecruitmentForm();
 
-  const onSubmit: SubmitHandler<RecruitmentModalFormValues> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
-    reset();
+  const onSubmit: SubmitHandler<FormValues & Honeypot> = ({ repeat, ...values }) => {
+    if (!repeat) {
+      send({ ...values, type: modalType }, () => {
+        onClose();
+        reset();
+      });
+    }
   };
 
   return (
     <Stack spacing="16px" w="100%" direction={flexDirection} onSubmit={handleSubmit(onSubmit)} as="form">
-      <FormControl size={size} maxW={inputMaxWidth}>
-        <Input {...register('name', requiredValidator)} invalid={Boolean(errors.name)} placeholder="Imię" />
-        {errors.name && <HelperText variant="error">{errors.name.message}</HelperText>}
-      </FormControl>
-      <FormControl size={size} maxW={inputMaxWidth}>
+      <FormField size={size} maxW={inputMaxWidth} error={errors.name?.message}>
+        <Input
+          {...register('name', requiredValidator)}
+          disabled={isSending}
+          invalid={Boolean(errors.name)}
+          placeholder="Imię"
+        />
+      </FormField>
+      <FormField size={size} maxW={inputMaxWidth} error={errors.email?.message}>
         <Input
           {...register('email', { ...requiredValidator, ...emailValidator })}
-          invalid={Boolean(errors.email)}
+          disabled={isSending}
           placeholder="Adres e-mail"
         />
-        {errors.email && <HelperText variant="error">{errors.email.message}</HelperText>}
-      </FormControl>
-      <Button type="submit" color="brand" variant="solid" size={size}>
+      </FormField>
+      <FormField size={size} maxW={inputMaxWidth} error={errors.email?.message} position="absolute" visibility="hidden">
+        <Input {...register('repeat')} disabled={isSending} placeholder="Powtórz adres e-mail" />
+      </FormField>
+      <Button type="submit" color="brand" variant="solid" size={size} isLoading={isSending}>
         Wyślij
       </Button>
     </Stack>
