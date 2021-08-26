@@ -62,7 +62,6 @@ export const Footer = () => {
             <Flex wrap="wrap">
               {footerNav.map(({ title, items }) => (
                 <Flex direction="column" key={title} pl="80px" mb="16px">
-                  {/* TODO: Brak czcionki z bold 600*/}
                   <Typography size="sm" color="gray.400" weight="bold" letterSpacing="0.05em" mb="16px">
                     {title.toUpperCase()}
                   </Typography>
