@@ -1,4 +1,5 @@
 import { CommandBus } from '@nestjs/cqrs';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { ApplicationEvent } from '../../shared/application-command-events';
@@ -50,7 +51,18 @@ export async function generateLearningMaterialsUrlTestModule(usersPort: UsersPor
 
   // fixme: use imports: [LearningMaterialsUrlWriteModule] currently repeated module setup - without user
   const app: TestingModule = await Test.createTestingModule({
-    imports: [SharedModule],
+    imports: [
+      SharedModule,
+      EventEmitterModule.forRoot({
+        wildcard: true,
+        delimiter: '.',
+        newListener: false,
+        removeListener: false,
+        maxListeners: 40,
+        verboseMemoryLeak: false,
+        ignoreErrors: false,
+      }),
+    ],
     controllers: [LearningMaterialsUrlRestController],
     providers: [
       {

@@ -1,6 +1,6 @@
+import { GenerateLearningMaterialsUrl } from '../../../shared/commands/generate-learning-materials-url.domain-command';
 import { LearningMaterialsUrl } from '../application/learning-materials-url-generator';
 import { LearningMaterialsUrlDomainEvent } from './events';
-import {GenerateLearningMaterialsUrl} from "../../../shared/commands/generate-learning-materials-url.domain-command";
 
 /**
  * Business logic in your domain is pure function. It's accept previous events, new command and return new changes - events.

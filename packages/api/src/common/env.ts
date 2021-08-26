@@ -6,7 +6,7 @@ dotenv.config();
 
 const NODE_ENV_VALUES = ['development', 'test', 'production'] as const;
 const APP_ENV_VALUES = ['local', 'review', 'staging', 'production'] as const;
-const EVENT_REPOSITORY_VALUES = ['InMemory', 'Prisma'] as const;
+const EVENT_REPOSITORY_VALUES = ['in-memory', 'prisma'] as const;
 
 class EnvVariables {
   @Expose()
@@ -56,6 +56,7 @@ class EnvVariables {
   @IsUrl()
   PROCESS_ST_CHECKLIST_URL: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   @IsIn(EVENT_REPOSITORY_VALUES)

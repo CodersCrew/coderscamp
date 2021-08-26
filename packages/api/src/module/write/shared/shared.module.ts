@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { CqrsModule } from '@nestjs/cqrs';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { env } from '@/common/env';
 
@@ -19,18 +18,10 @@ import { UuidGenerator } from './infrastructure/id-generator/uuid-generator';
 import { SystemTimeProvider } from './infrastructure/time-provider/system-time-provider';
 
 const imports: ModuleMetadata['imports'] = [
-  CqrsModule,
-  EventEmitterModule.forRoot({
-    wildcard: true,
-    delimiter: '.',
-    newListener: false,
-    removeListener: false,
-    verboseMemoryLeak: true,
-    ignoreErrors: true,
-  }),
+  CqrsModule
 ];
 
-if (env.EVENT_REPOSITORY === 'Prisma') {
+if (env.EVENT_REPOSITORY === 'prisma') {
   imports.push(PrismaModule);
 }
 
@@ -46,7 +37,7 @@ if (env.EVENT_REPOSITORY === 'Prisma') {
       provide: ID_GENERATOR,
       useClass: UuidGenerator,
     },
-    env.EVENT_REPOSITORY === 'Prisma'
+    env.EVENT_REPOSITORY === 'prisma'
       ? {
           provide: EVENT_REPOSITORY,
           useClass: PrismaEventRepository,
@@ -61,6 +52,13 @@ if (env.EVENT_REPOSITORY === 'Prisma') {
     },
     ApplicationCommandFactory,
   ],
-  exports: [CqrsModule, ApplicationCommandFactory, TIME_PROVIDER, ID_GENERATOR, APPLICATION_SERVICE],
+  exports: [
+    CqrsModule,
+    ApplicationCommandFactory,
+    ApplicationEventBus,
+    TIME_PROVIDER,
+    ID_GENERATOR,
+    APPLICATION_SERVICE,
+  ],
 })
 export class SharedModule {}

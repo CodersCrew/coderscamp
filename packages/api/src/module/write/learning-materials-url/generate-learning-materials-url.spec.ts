@@ -43,7 +43,7 @@ describe('Generate Learning Materials URL', () => {
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-      streamVersion: 0,
+      streamVersion: 1,
       streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
     };
 
@@ -64,7 +64,7 @@ describe('Generate Learning Materials URL', () => {
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-      streamVersion: 0,
+      streamVersion: 1,
       streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
     };
 
@@ -136,7 +136,7 @@ describe('Generate Learning Materials URL', () => {
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-      streamVersion: 0,
+      streamVersion: 1,
       streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
     };
 

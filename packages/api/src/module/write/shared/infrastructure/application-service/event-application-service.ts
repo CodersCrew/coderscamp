@@ -1,17 +1,18 @@
 import { Inject } from '@nestjs/common';
 
-import { ApplicationEventBus } from '../../application/application.event-bus';
 import { ApplicationEvent } from '../../../../shared/application-command-events';
+import { DomainEvent } from '../../../../shared/domain.event';
+import { ApplicationEventBus } from '../../application/application.event-bus';
 import {
   ApplicationExecutionContext,
-  ApplicationService, DomainLogic,
-  EventStreamVersion
+  ApplicationService,
+  DomainLogic,
+  EventStreamVersion,
 } from '../../application/application-service';
 import { EVENT_REPOSITORY, EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.valueboject';
 import { ID_GENERATOR, IdGenerator } from '../../application/id-generator';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
-import { DomainEvent } from '../../../../shared/domain.event';
 
 export class EventApplicationService implements ApplicationService {
   constructor(
@@ -41,7 +42,7 @@ export class EventApplicationService implements ApplicationService {
       id: this.idGenerator.generate(),
       occurredAt: this.timeProvider.currentTime(),
       metadata: { correlationId: context.correlationId, causationId: context.causationId },
-      streamVersion: streamVersion + index,
+      streamVersion: streamVersion + 1 + index,
       streamName,
     }));
 

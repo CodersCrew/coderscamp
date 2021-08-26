@@ -18,8 +18,7 @@ export class GenerateLearningMaterialsUrlCommandHandler
     private readonly applicationService: ApplicationService,
     @Inject(LEARNING_MATERIALS_URL_GENERATOR)
     private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
-    @Inject(USERS_PORT)
-    private readonly usersPort: UsersPort,
+    @Inject(USERS_PORT) private readonly usersPort: UsersPort,
   ) {}
 
   async execute(command: GenerateLearningMaterialsUrlApplicationCommand): Promise<void> {

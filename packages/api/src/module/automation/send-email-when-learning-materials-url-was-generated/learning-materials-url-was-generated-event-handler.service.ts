@@ -6,7 +6,7 @@ import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-m
 
 @Injectable()
 export class LearningMaterialsUrlWasGeneratedEventHandler {
-  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
+  @OnEvent('LearningMaterialsUrl.*')
   handleLearningMaterialsUrlDomainEvent(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
     console.log('TODO: Send Email', event);
   }
