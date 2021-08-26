@@ -30,7 +30,7 @@ export const Hero = () => {
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
           <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
-            Zapisz się na CodersCamp
+            Zapisz się na kurs
           </Button>
           <Button {...buttonProps}>Pobierz plan kursu</Button>
         </Stack>
