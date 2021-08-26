@@ -8,7 +8,6 @@ export type ApplicationExecutionContext = { correlationId: string; causationId?:
 
 export type DomainLogic<EventType extends DomainEvent> = (pastEvents: EventType[]) => EventType[];
 export type EventStream<EventType extends ApplicationEvent = ApplicationEvent> = EventType[];
-export type EventStreamVersion = number;
 
 export interface ApplicationService {
   execute<DomainEventType extends DomainEvent>(

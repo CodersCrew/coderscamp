@@ -22,7 +22,7 @@ export class GenerateLearningMaterialsUrlCommandHandler
   ) {}
 
   async execute(command: GenerateLearningMaterialsUrlApplicationCommand): Promise<void> {
-    //console.log(this.learningMaterialsUrlGenerator, this.usersPort)
+    // console.log(this.learningMaterialsUrlGenerator, this.usersPort)
     const userFullName = await this.usersPort.getUserFullNameById(command.data.userId);
     const learningMaterialsUrl = await this.learningMaterialsUrlGenerator.generateUrlFor(userFullName);
 

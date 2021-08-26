@@ -2,10 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../../../../../prisma/prisma.service';
 import { ApplicationEvent } from '../../../../shared/application-command-events';
+import { EventStream } from '../../application/application-service';
 import { EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.valueboject';
+import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
-import {EventStream, EventStreamVersion} from "../../application/application-service";
 
 @Injectable()
 export class PrismaEventRepository implements EventRepository {
