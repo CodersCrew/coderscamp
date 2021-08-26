@@ -4,11 +4,14 @@ Architectural drivers are: fast introducing of new features and parallelization 
 
 Useful materials to grasp following concepts:
 - [DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
-- DDD Booklet
+- [DDDEU Booklet](https://drive.google.com/file/d/164be-M0MtV-nHuOZ1VlOyTYnzAFdFb8R/view?usp=sharing)
 
 # Step-by-step implementation instructions
 
 ![CodersCamp EventModeling](../../.github/images/CodersCampEventModelingLearningMaterialsUrl.jpg)
+
+Just after defining events and commands you can split entire work by write/read and automation slices (module).
+Follow instruction to see how to do that.
 
 ## Write Slice.
 Write Slice is a command (blue sticky-note) connected to an event (orange sticky-note).
