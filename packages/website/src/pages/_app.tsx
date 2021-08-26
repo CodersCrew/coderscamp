@@ -7,6 +7,7 @@ import { ThemeProvider } from '@coderscamp/ui/theme';
 
 import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/Navbar';
+import { RecruitmentModalProvider } from '@/components/RecruitmentModal';
 
 const globalStyles: Record<string, CSSProperties> = {
   'html, body': { backgroundColor: 'white' },
@@ -18,9 +19,11 @@ const globalStyles: Record<string, CSSProperties> = {
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider globalStyles={globalStyles}>
-      <Navbar />
-      <Component {...pageProps} />
-      <Footer />
+      <RecruitmentModalProvider>
+        <Navbar />
+        <Component {...pageProps} />
+        <Footer />
+      </RecruitmentModalProvider>
     </ThemeProvider>
   );
 };

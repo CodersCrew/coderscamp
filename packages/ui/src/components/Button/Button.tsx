@@ -31,6 +31,10 @@ export interface ButtonProps extends HTMLChakraProps<'button'> {
    */
   isLoading?: boolean;
   /**
+   * Text to show when Button is in the loading state
+   */
+  loadingText?: string;
+  /**
    * If `true`, the button will be disabled
    */
   disabled?: boolean;

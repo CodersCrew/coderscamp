@@ -1,9 +1,9 @@
 import React from 'react';
-import { PLACES_COUNT } from 'src/constants';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { VStack } from '@coderscamp/ui/components/Stack';
 
+import { PLACES_COUNT } from '../../constants';
 import { StatsWithTitle } from './StatsWithTitle';
 
 const currentEdition = [
