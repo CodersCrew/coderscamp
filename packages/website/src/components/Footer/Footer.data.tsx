@@ -9,11 +9,15 @@ import {
 } from '@coderscamp/ui/icons';
 
 export const socialMediaIcons = [
-  { name: 'FacebookIcon', component: <SolidFacebookIcon /> },
-  { name: 'InstagramIcon', component: <SolidInstagramIcon /> },
-  { name: 'LinkedinIcon', component: <SolidLinkedinIcon /> },
-  { name: 'GitHubIcon', component: <SolidGitHubIcon /> },
-  { name: 'GlobalIcon', component: <SolidGlobalIcon /> },
+  { name: 'FacebookIcon', component: <SolidFacebookIcon />, urlPath: 'https://www.facebook.com/ccrew18' },
+  { name: 'InstagramIcon', component: <SolidInstagramIcon />, urlPath: 'https://www.instagram.com/coderscrew.pl/' },
+  {
+    name: 'LinkedinIcon',
+    component: <SolidLinkedinIcon />,
+    urlPath: 'https://www.linkedin.com/company/coderscrew/mycompany/',
+  },
+  { name: 'GitHubIcon', component: <SolidGitHubIcon />, urlPath: 'https://github.com/CodersCrew' },
+  { name: 'GlobalIcon', component: <SolidGlobalIcon />, urlPath: 'https://coderscrew.pl/' },
 ];
 
 export const footerNav = [

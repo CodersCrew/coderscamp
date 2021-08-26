@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Flex } from '@coderscamp/ui/components/Flex';
+import { IconButton } from '@coderscamp/ui/components/IconButton';
+import { HStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
@@ -45,17 +47,19 @@ export const Footer = () => {
               dziedzin związanych z IT.
             </Typography>
 
-            <Flex pt="32px">
-              {socialMediaIcons.map((socialMediaIcon, index) => (
-                <Box key={socialMediaIcon.name}>
-                  {React.cloneElement(socialMediaIcon.component, {
-                    h: '24px',
-                    w: '24px',
-                    ml: index === 0 ? 0 : '28px',
-                  })}
-                </Box>
+            <HStack pt="32px" spacing="24px">
+              {socialMediaIcons.map((socialMediaIcon) => (
+                <IconButton
+                  icon={socialMediaIcon.component}
+                  size="md"
+                  variant="link"
+                  aria-label={socialMediaIcon.name}
+                  href={socialMediaIcon.urlPath}
+                  as="a"
+                  key={socialMediaIcon.name}
+                />
               ))}
-            </Flex>
+            </HStack>
           </Box>
 
           <Flex mb="56px" ml={footerStyles.navSection.marginLeft}>
@@ -67,9 +71,7 @@ export const Footer = () => {
                   </Typography>
                   {items.map(({ name, urlPath }) => (
                     <Typography size="md" color="gray.500" key={name} mb="16px">
-                      <Link key={name} href={urlPath}>
-                        {name}
-                      </Link>
+                      <Link href={urlPath}>{name}</Link>
                     </Typography>
                   ))}
                 </Flex>
@@ -91,7 +93,9 @@ export const Footer = () => {
               h="44px"
               mt="24px"
             >
-              <Image layout="fill" alt="Logo Vercel" src={logoVercel} />
+              <Link href="https://vercel.com/?utm_source=coderscamp&utm_campaign=oss">
+                <Image layout="fill" alt="Logo Vercel" src={logoVercel} />
+              </Link>
             </Box>
           </Flex>
         </Flex>
