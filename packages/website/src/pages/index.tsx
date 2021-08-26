@@ -1,3 +1,5 @@
+import type { InferGetStaticPropsType } from 'next';
+
 import { About } from '@/components/About';
 import { AboutBenefits } from '@/components/Benefits';
 import { BigNumbers } from '@/components/BigNumbers/BigNumbers';
@@ -8,7 +10,9 @@ import { Projects } from '@/components/Projects';
 import { Schedule } from '@/components/Schedule';
 import { AboutTestimonials } from '@/components/Testimonials';
 
-const Home = () => {
+import { getTestimonialsStaticProps } from '../getTestimonialsStaticProps';
+
+const Home = ({ testimonials }: InferGetStaticPropsType<typeof getTestimonialsStaticProps>) => {
   return (
     <>
       <Hero />
@@ -18,10 +22,12 @@ const Home = () => {
       <LearningSources />
       <Projects />
       <AboutBenefits />
-      <AboutTestimonials />
+      <AboutTestimonials testimonials={testimonials} />
       <Schedule />
     </>
   );
 };
+
+export const getStaticProps = getTestimonialsStaticProps;
 
 export default Home;

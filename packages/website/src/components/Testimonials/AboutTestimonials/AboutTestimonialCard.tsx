@@ -20,7 +20,7 @@ export const AboutTestimonialCard = ({ name, role, company, companyPosition, con
         {content}
       </Typography>
       <VStack spacing="8px">
-        <Avatar src={image} size="lg" />
+        <Avatar src={image} size="lg" borderWidth="1px" borderColor="gray.300" />
         <Center flexDirection="column">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}
