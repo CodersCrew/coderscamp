@@ -18,6 +18,7 @@ model AuthUser {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email    String @unique
   password String
+  role     Role   @default(User)
 }
 
 model UserRegistration {
@@ -31,4 +32,9 @@ model LearningMaterial {
   url            String
   completedCount Int    @default(0)
   userId         String @unique @db.Uuid
+}
+
+enum Role {
+  Admin
+  User
 }
