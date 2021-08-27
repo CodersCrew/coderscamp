@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { UsersService } from '../../users/users.service';
-import type { UserId } from '../../users/users.types';
-import type { UsersPort } from '../ports/users.port';
+import { UsersService } from '@/users/users.service';
+import type { UserId } from '@/users/users.types';
+
+import { UsersPort } from '../application/users.port';
 
 @Injectable()
 export class UsersAdapter implements UsersPort {
