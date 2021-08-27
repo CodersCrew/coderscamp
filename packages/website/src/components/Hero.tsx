@@ -15,7 +15,7 @@ export const Hero = () => {
 
   const mainHeaderSize = { base: '4xl', sm: '6xl', md: '7xl', xl: '8xl' } as const;
   const subheaderSize = { base: 'md', sm: 'xl', md: '2xl' } as const;
-  const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)', icon: <SolidDownloadIcon /> } as const;
+  const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
 
   return (
     <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}>
@@ -33,7 +33,9 @@ export const Hero = () => {
           <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
             Zapisz się na kurs
           </Button>
-          <Button {...buttonProps}>Pobierz plan kursu</Button>
+          <Button {...buttonProps} icon={<SolidDownloadIcon />}>
+            Pobierz plan kursu
+          </Button>
         </Stack>
       </VStack>
     </Flex>
