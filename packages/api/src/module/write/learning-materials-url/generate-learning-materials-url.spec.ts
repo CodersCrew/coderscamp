@@ -1,53 +1,51 @@
+import { Unwrap } from '@coderscamp/shared/utils/lang';
+
 import { GenerateLearningMaterialsUrlApplicationCommand } from '@/commands/generate-learning-materials-url.application-command';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
-import { UserId } from '@/users/users.types';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
-import { UsersPort } from './application/users.port';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
 
 describe('Generate Learning Materials URL', () => {
-  const userToFullName: { [id in string]: UserId } = {
-    'existing-user-id': 'Piotr Nowak',
-    'another-user-id': 'Jan Kowalski',
-  };
-  const usersPortMock: UsersPort = {
-    async getUserFullNameById(userId: UserId): Promise<string> {
-      return userToFullName[userId];
-    },
-  };
+  let moduleUnderTest: Unwrap<ReturnType<typeof generateLearningMaterialsUrlTestModule>>;
+
+  beforeEach(async () => {
+    moduleUnderTest = await generateLearningMaterialsUrlTestModule();
+  });
+
+  afterEach(async () => {
+    await moduleUnderTest.close();
+  });
 
   it('given learning materials url was NOT generated before for the user, then should be generated', async () => {
     // Given
-    const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
-
-    // When
-    const courseUserId = 'existing-user-id';
+    const courseUserId = moduleUnderTest.randomUserId();
     const generateAt = new Date();
 
-    testModule.timeTravelTo(generateAt);
-    await testModule.executeCommand(() => ({
+    // When
+    moduleUnderTest.timeTravelTo(generateAt);
+    await moduleUnderTest.executeCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
       data: { courseUserId },
     }));
 
     // Then
-    const lastPublishedEvents = await testModule.getLastPublishedEvents();
+    const lastPublishedEvents = await moduleUnderTest.getLastPublishedEvents();
 
     const learningMaterialsUrlWasGenerated = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
-        learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
+        learningMaterialsId: 'generatedProcessStId_1',
         courseUserId,
-        materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+        materialsUrl: 'https://app.process.st/runs/generatedProcessStId_1/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
       streamVersion: 1,
-      streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
+      streamName: EventStreamName.from('LearningMaterialsUrl', courseUserId),
     };
 
     expect(lastPublishedEvents).toStrictEqual([learningMaterialsUrlWasGenerated]);
@@ -55,8 +53,7 @@ describe('Generate Learning Materials URL', () => {
 
   it('given learning materials url was generated before for the user, then should not be generated', async () => {
     // Given
-    const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
-    const courseUserId = 'existing-user-id';
+    const courseUserId = moduleUnderTest.randomUserId();
     const learningMaterialsId = 'sbAPITNMsl2wW6j2cg1H2A';
     const generateAt = new Date();
     const learningMaterialsUrlWasGenerated: ApplicationEvent<LearningMaterialsUrlWasGenerated> = {
@@ -66,28 +63,27 @@ describe('Generate Learning Materials URL', () => {
       data: {
         learningMaterialsId,
         courseUserId,
-        materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+        materialsUrl: 'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
       streamVersion: 1,
       streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
     };
 
-    await testModule.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
       learningMaterialsUrlWasGenerated,
       0,
     );
 
     // When
-
     const retryGenerateAt = new Date();
 
-    testModule.timeTravelTo(retryGenerateAt);
+    moduleUnderTest.timeTravelTo(retryGenerateAt);
 
     // Then
     await expect(() =>
-      testModule.executeCommand(() => ({
+      moduleUnderTest.executeCommand(() => ({
         class: GenerateLearningMaterialsUrlApplicationCommand,
         type: 'GenerateLearningMaterialsUrl',
         data: { courseUserId },
@@ -97,12 +93,11 @@ describe('Generate Learning Materials URL', () => {
 
   it('given learning materials url was generated before for another user, then should be generated', async () => {
     // Given
-    const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
-    const anotherUserId = 'another-user-id';
+    const anotherUserId = moduleUnderTest.randomUserId();
     const learningMaterialsUrlWasGeneratedForAnotherUser: ApplicationEvent<LearningMaterialsUrlWasGenerated> = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'another-user-learning-materials-was-generated-event-id',
-      occurredAt: testModule.currentTime(),
+      occurredAt: moduleUnderTest.currentTime(),
       data: {
         courseUserId: anotherUserId,
         learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
@@ -110,41 +105,41 @@ describe('Generate Learning Materials URL', () => {
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
       streamVersion: 0,
-      streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
+      streamName: EventStreamName.from('LearningMaterialsUrl', anotherUserId),
     };
 
-    await testModule.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       EventStreamName.from('LearningMaterialsUrl', anotherUserId),
       learningMaterialsUrlWasGeneratedForAnotherUser,
       0,
     );
 
     // When
-    const userId = 'existing-user-id';
+    const userId = moduleUnderTest.randomUserId();
     const generateAt = new Date();
 
-    testModule.timeTravelTo(generateAt);
-    await testModule.executeCommand(() => ({
+    moduleUnderTest.timeTravelTo(generateAt);
+    await moduleUnderTest.executeCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
       data: { courseUserId: userId },
     }));
 
     // Then
-    const lastPublishedEvents = await testModule.getLastPublishedEvents();
+    const lastPublishedEvents = await moduleUnderTest.getLastPublishedEvents();
 
     const learningMaterialsUrlWasGenerated: ApplicationEvent<LearningMaterialsUrlWasGenerated> = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
-        learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
+        learningMaterialsId: 'generatedProcessStId_1',
         courseUserId: userId,
-        materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+        materialsUrl: 'https://app.process.st/runs/generatedProcessStId_1/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
       streamVersion: 1,
-      streamName: EventStreamName.from('LearningMaterialsUrl', 'existing-user-id'),
+      streamName: EventStreamName.from('LearningMaterialsUrl', userId),
     };
 
     expect(lastPublishedEvents).toStrictEqual([learningMaterialsUrlWasGenerated]);

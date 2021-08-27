@@ -3,6 +3,9 @@ import { LearningMaterials } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
+import { Unwrap } from '@coderscamp/shared/utils/lang';
+
+import { cleanupDatabase } from '@/common/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -24,6 +27,8 @@ async function learningMaterialsTestModule() {
 
   const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
   const prismaService = app.get<PrismaService>(PrismaService);
+
+  await cleanupDatabase(prismaService);
 
   function eventOccurred(event: ApplicationEvent): void {
     eventBus.publishAll([event]);
@@ -63,9 +68,18 @@ function learningMaterialsUrlWasGeneratedForUser(
 }
 
 describe('Read Slice | Learning Materials', () => {
+  let moduleUnderTest: Unwrap<ReturnType<typeof learningMaterialsTestModule>>;
+
+  beforeEach(async () => {
+    moduleUnderTest = await learningMaterialsTestModule();
+  });
+
+  afterEach(async () => {
+    await moduleUnderTest.close();
+  });
+
   it('when LearningMaterialsUrlWasGenerated occurred, then read model should be updated', async () => {
     // Given
-    const moduleUnderTest = await learningMaterialsTestModule();
     const userId1 = uuid();
     const userId2 = uuid();
 
@@ -98,8 +112,5 @@ describe('Read Slice | Learning Materials', () => {
         courseUserId: userId2,
       },
     });
-
-    // Cleanup
-    await moduleUnderTest.close();
   });
 });
