@@ -3,6 +3,7 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
+import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
 
@@ -14,7 +15,7 @@ export const Hero = () => {
 
   const mainHeaderSize = { base: '4xl', sm: '6xl', md: '7xl', xl: '8xl' } as const;
   const subheaderSize = { base: 'md', sm: 'xl', md: '2xl' } as const;
-  const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
+  const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)', icon: <SolidDownloadIcon /> } as const;
 
   return (
     <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}>
