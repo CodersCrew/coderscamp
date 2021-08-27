@@ -14,10 +14,6 @@ import { LearningMaterialsRestController } from './learning-materials.rest-contr
 export class LearningMaterialsReadModule {
   constructor(private readonly prismaService: PrismaService) {}
 
-  /**
-   * todo: recovering from failures - reprocessing events: saving last processed event globalOrder and catchup on start.
-   * @param event
-   */
   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
     await this.prismaService.learningMaterials.create({
