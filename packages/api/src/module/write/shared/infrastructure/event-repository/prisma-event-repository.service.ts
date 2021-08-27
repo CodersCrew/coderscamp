@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { ApplicationEvent } from '@/module/application-command-events';
+import { ApplicationEvent, DefaultCommandMetadata } from '@/module/application-command-events';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import { EventStream } from '../../application/application-service';
@@ -8,6 +8,20 @@ import { EventRepository } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
+
+const parseData = (value: unknown): Record<string, unknown> => JSON.parse(typeof value === 'string' ? value : '{}');
+const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, unknown> => {
+  const metadata = JSON.parse(typeof value === 'string' ? value : '{}');
+
+  const hasCorrectCorelationId = 'correlationId' in metadata && typeof metadata.correlationId === 'string';
+  const hasCorrectCausationId = !('causationId' in metadata) || typeof metadata.causationId === 'string';
+
+  if (!hasCorrectCorelationId || !hasCorrectCausationId) {
+    throw new Error('Wrong format of the metadata JSON');
+  }
+
+  return metadata;
+};
 
 @Injectable()
 export class PrismaEventRepository implements EventRepository {
@@ -25,8 +39,8 @@ export class PrismaEventRepository implements EventRepository {
       type: e.type,
       id: e.id,
       occurredAt: e.occurredAt,
-      data: JSON.parse(e.data as string),
-      metadata: JSON.parse(e.metadata as string),
+      data: parseData(e.data),
+      metadata: parseMetadata(e.metadata),
       streamVersion: e.streamVersion,
       streamName,
     }));
