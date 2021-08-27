@@ -1,5 +1,4 @@
 import { CommandBus } from '@nestjs/cqrs';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -12,9 +11,7 @@ import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generat
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { InMemoryEventRepository } from '@/write/shared/infrastructure/event-repository/in-memory-event-repository';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
-import { SharedModule } from '@/write/shared/shared.module';
 
-import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
@@ -22,8 +19,7 @@ import {
   UserFullname,
 } from './application/learning-materials-url-generator';
 import { USERS_PORT, UsersPort } from './application/users.port';
-import { PuppeteerLearningMaterialsGenerator } from './infrastructure/puppeteer-learning-materials-generator';
-import { LearningMaterialsUrlRestController } from './presentation/rest/learning-materials-url.rest-controller';
+import { AppModule } from '../../../app.module';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 
@@ -55,27 +51,7 @@ export async function generateLearningMaterialsUrlTestModule(usersPort: UsersPor
 
   // fixme: use imports: [LearningMaterialsUrlWriteModule] currently repeated module setup - without user
   const app: TestingModule = await Test.createTestingModule({
-    imports: [
-      SharedModule,
-      EventEmitterModule.forRoot({
-        wildcard: true,
-        delimiter: '.',
-        newListener: false,
-        removeListener: false,
-        maxListeners: 40,
-        verboseMemoryLeak: false,
-        ignoreErrors: false,
-      }),
-    ],
-    controllers: [LearningMaterialsUrlRestController],
-    providers: [
-      {
-        provide: USERS_PORT,
-        useValue: usersPort,
-      },
-      GenerateLearningMaterialsUrlCommandHandler,
-      { provide: LEARNING_MATERIALS_URL_GENERATOR, useClass: PuppeteerLearningMaterialsGenerator },
-    ],
+    imports: [AppModule],
   })
     .overrideProvider(ID_GENERATOR)
     .useValue(mockedIdGenerator)
@@ -85,6 +61,8 @@ export async function generateLearningMaterialsUrlTestModule(usersPort: UsersPor
     .useValue(testTimeProvider)
     .overrideProvider(EVENT_REPOSITORY)
     .useValue(eventRepository)
+    .overrideProvider(USERS_PORT)
+    .useValue(usersPort)
     .compile();
 
   await app.init();

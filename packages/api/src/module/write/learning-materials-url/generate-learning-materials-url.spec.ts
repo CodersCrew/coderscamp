@@ -7,7 +7,6 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 import { UsersPort } from './application/users.port';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
 
-// fixme: cannot test with Port&Adapter - import UsersModule
 describe('Generate Learning Materials URL', () => {
   const userToFullName: { [id in string]: UserId } = {
     'existing-user-id': 'Piotr Nowak',
