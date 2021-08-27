@@ -17,15 +17,13 @@ export class LearningMaterialsReadModule {
    * todo: recovering from failures - reprocessing events: Saving streamVersion in readmodel, catchup on start.
    * @param event
    */
-  @OnEvent('LearningMaterialsUrl.*')
+  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    await this.prismaService.learningMaterial.create({
+    await this.prismaService.learningMaterials.create({
       data: {
         id: event.data.learningMaterialsId,
-        userId: event.data.courseUserId,
+        courseUserId: event.data.courseUserId,
         url: event.data.materialsUrl,
-        version: event.streamVersion,
-        completedCount: 0,
       },
     });
   }
