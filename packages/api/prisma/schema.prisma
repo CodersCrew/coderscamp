@@ -27,12 +27,10 @@ model UserRegistration {
   email    String @unique
 }
 
-model LearningMaterial {
-  id             String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+model LearningMaterials {
+  id             String @id
   url            String
-  completedCount Int    @default(0)
-  userId         String @unique @db.Uuid
-  version        Int
+  courseUserId   String @unique
 }
 
 model Event {
@@ -45,9 +43,18 @@ model Event {
   data           Json
   metadata       Json
   globalOrder    Int @default(autoincrement())
+
+  @@unique(fields: [streamId, streamCategory], name: "streamName")
 }
 
 enum Role {
   Admin
   User
+}
+
+model CourseProgress {
+  id             String @id
+  courseUserId   String @unique
+  learningMaterialsId   String @unique
+  learningMaterialsCompletedCount Int
 }

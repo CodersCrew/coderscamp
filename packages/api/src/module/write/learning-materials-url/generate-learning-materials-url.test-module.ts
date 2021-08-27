@@ -33,10 +33,13 @@ function getEventBusSpy(app: TestingModule): EventBusSpy {
 }
 
 class MockedLearningResourcesGenerator implements LearningMaterialsUrlGenerator {
-  async generateUrlFor(userFullname: UserFullname): Promise<LearningMaterialsUrl> {
-    return `https://app.process.st/runs/${encodeURIComponent(
-      userFullname ?? 'No name',
+  async generateUrlFor(userFullName: UserFullname): Promise<{ id: string; url: LearningMaterialsUrl }> {
+    const url = `https://app.process.st/runs/${encodeURIComponent(
+      userFullName ?? 'No name',
     )}-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA`;
+    const id = 'sbAPITNMsl2wW6j2cg1H2A';
+
+    return { id, url };
   }
 }
 

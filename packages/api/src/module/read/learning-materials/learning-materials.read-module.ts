@@ -22,7 +22,7 @@ export class LearningMaterialsReadModule {
     await this.prismaService.learningMaterial.create({
       data: {
         id: event.data.learningMaterialsId,
-        userId: event.data.userId,
+        userId: event.data.courseUserId,
         url: event.data.materialsUrl,
         version: event.streamVersion,
         completedCount: 0,

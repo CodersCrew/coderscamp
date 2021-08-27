@@ -1,5 +1,7 @@
 import { UserId } from '../../../users/users.types';
+import { ApplicationEvent } from '../../shared/application-command-events';
 import { GenerateLearningMaterialsUrlApplicationCommand } from '../../shared/commands/generate-learning-materials-url.application-command';
+import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-materials-url-was-generated.domain-event';
 import { EventStreamName } from '../shared/application/event-stream-name.valueboject';
 import { UsersPort } from './application/users.port';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
@@ -21,15 +23,14 @@ describe('Generate Learning Materials URL', () => {
     const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
 
     // When
-    const userId = 'existing-user-id';
-    const learningMaterialsId = 'learningMaterialsId';
+    const courseUserId = 'existing-user-id';
     const generateAt = new Date();
 
     testModule.timeTravelTo(generateAt);
     await testModule.executeCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { learningMaterialsId, userId },
+      data: { courseUserId },
     }));
 
     // Then
@@ -40,8 +41,8 @@ describe('Generate Learning Materials URL', () => {
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
-        learningMaterialsId,
-        userId,
+        learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
+        courseUserId,
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
@@ -55,16 +56,16 @@ describe('Generate Learning Materials URL', () => {
   it('given learning materials url was generated before for the user, then should not be generated', async () => {
     // Given
     const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
-    const userId = 'existing-user-id';
-    const learningMaterialsId = 'learningMaterialsId';
+    const courseUserId = 'existing-user-id';
+    const learningMaterialsId = 'sbAPITNMsl2wW6j2cg1H2A';
     const generateAt = new Date();
-    const learningMaterialsUrlWasGenerated = {
+    const learningMaterialsUrlWasGenerated: ApplicationEvent<LearningMaterialsUrlWasGenerated> = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
         learningMaterialsId,
-        userId,
+        courseUserId,
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
@@ -73,7 +74,7 @@ describe('Generate Learning Materials URL', () => {
     };
 
     await testModule.eventOccurred(
-      EventStreamName.from('LearningMaterialsUrl', userId),
+      EventStreamName.from('LearningMaterialsUrl', courseUserId),
       learningMaterialsUrlWasGenerated,
       0,
     );
@@ -86,10 +87,10 @@ describe('Generate Learning Materials URL', () => {
 
     // Then
     await expect(() =>
-      testModule.executeCommand((idGenerator) => ({
+      testModule.executeCommand(() => ({
         class: GenerateLearningMaterialsUrlApplicationCommand,
         type: 'GenerateLearningMaterialsUrl',
-        data: { learningMaterialsId: idGenerator.generate(), userId },
+        data: { courseUserId },
       })),
     ).rejects.toStrictEqual(new Error('Learning resources url was already generated!'));
   });
@@ -98,12 +99,13 @@ describe('Generate Learning Materials URL', () => {
     // Given
     const testModule = await generateLearningMaterialsUrlTestModule(usersPortMock);
     const anotherUserId = 'another-user-id';
-    const learningMaterialsUrlWasGeneratedForAnotherUser = {
+    const learningMaterialsUrlWasGeneratedForAnotherUser: ApplicationEvent<LearningMaterialsUrlWasGenerated> = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'another-user-learning-materials-was-generated-event-id',
       occurredAt: testModule.currentTime(),
       data: {
-        anotherUserId,
+        courseUserId: anotherUserId,
+        learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
         materialsUrl: 'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
@@ -122,22 +124,22 @@ describe('Generate Learning Materials URL', () => {
     const generateAt = new Date();
 
     testModule.timeTravelTo(generateAt);
-    await testModule.executeCommand((idGenerator) => ({
+    await testModule.executeCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { learningMaterialsId: idGenerator.generate(), userId },
+      data: { courseUserId: userId },
     }));
 
     // Then
     const lastPublishedEvents = await testModule.getLastPublishedEvents();
 
-    const learningMaterialsUrlWasGenerated = {
+    const learningMaterialsUrlWasGenerated: ApplicationEvent<LearningMaterialsUrlWasGenerated> = {
       type: 'LearningMaterialsUrlWasGenerated',
       id: 'generatedId1',
       occurredAt: generateAt,
       data: {
-        learningMaterialsId: 'generatedId1',
-        userId,
+        learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
+        courseUserId: userId,
         materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
       },
       metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },

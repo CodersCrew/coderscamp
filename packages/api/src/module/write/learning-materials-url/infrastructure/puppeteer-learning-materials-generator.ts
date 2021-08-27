@@ -21,15 +21,16 @@ const generateProcessStChecklist = async (name: string) => {
   await page.goto(url);
   await page.waitForSelector('.steps-header');
 
-  const result = page.url();
+  const generatedUrl = page.url();
+  const generatedId = url.split('/')[4];
 
   await browser.close();
 
-  return result;
+  return { url: generatedUrl, id: generatedId };
 };
 
 export class PuppeteerLearningMaterialsGenerator implements LearningMaterialsUrlGenerator {
-  async generateUrlFor(userFullname: UserFullname): Promise<LearningMaterialsUrl> {
+  async generateUrlFor(userFullname: UserFullname): Promise<{ id: string; url: LearningMaterialsUrl }> {
     return generateProcessStChecklist(userFullname);
   }
 }
