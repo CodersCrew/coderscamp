@@ -2,6 +2,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LearningMaterials } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
+import waitForExpect from 'wait-for-expect';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -11,6 +12,9 @@ import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-
 import { UserId } from '@/users/users.types';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+
+const SAMPLE_MATERIALS_URL =
+  'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
 
 async function learningMaterialsTestModule() {
   const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +33,8 @@ async function learningMaterialsTestModule() {
     ],
   }).compile();
 
+  await module.init();
+
   const eventBus = module.get<ApplicationEventBus>(ApplicationEventBus);
   const prismaService = module.get<PrismaService>(PrismaService);
 
@@ -36,15 +42,20 @@ async function learningMaterialsTestModule() {
     eventBus.publishAll([event]);
   }
 
-  function readModelForCourseUser(courseUserId: UserId): Promise<LearningMaterials | null> {
-    return prismaService.learningMaterials.findUnique({ where: { courseUserId } });
+  async function expectReadModel(expectation: { courseUserId: UserId; readModel: LearningMaterials | null }) {
+    await waitForExpect(() =>
+      expect(
+        prismaService.learningMaterials.findUnique({ where: { courseUserId: expectation.courseUserId } }),
+      ).resolves.toStrictEqual(expectation.readModel),
+    );
   }
 
-  return { eventOccurred, readModelForCourseUser };
-}
+  async function close() {
+    await module.close();
+  }
 
-const SAMPLE_MATERIALS_URL =
-  'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
+  return { eventOccurred, expectReadModel, close };
+}
 
 function learningMaterialsUrlWasGeneratedForUser(
   courseUserId: UserId,
@@ -72,25 +83,36 @@ describe('Read Slice | Learning Materials', () => {
     const userId2 = uuid();
 
     // When
-
     moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
 
     // Then
-    await expect(moduleUnderTest.readModelForCourseUser(userId1)).resolves.toStrictEqual({
-      id: `learningMaterialsId-${userId1}`,
-      url: SAMPLE_MATERIALS_URL,
+    await moduleUnderTest.expectReadModel({
       courseUserId: userId1,
+      readModel: {
+        id: `learningMaterialsId-${userId1}`,
+        url: SAMPLE_MATERIALS_URL,
+        courseUserId: userId1,
+      },
     });
-    await expect(moduleUnderTest.readModelForCourseUser(userId2)).resolves.toBeNull();
+    await moduleUnderTest.expectReadModel({
+      courseUserId: userId2,
+      readModel: null,
+    });
 
     // When
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
+    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId2));
 
     // Then
-    await expect(moduleUnderTest.readModelForCourseUser(userId2)).resolves.toStrictEqual({
-      id: `learningMaterialsId-${userId2}`,
-      url: SAMPLE_MATERIALS_URL,
+    await moduleUnderTest.expectReadModel({
       courseUserId: userId2,
+      readModel: {
+        id: `learningMaterialsId-${userId2}`,
+        url: SAMPLE_MATERIALS_URL,
+        courseUserId: userId2,
+      },
     });
+
+    // Cleanup
+    await moduleUnderTest.close();
   });
 });
