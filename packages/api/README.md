@@ -23,6 +23,7 @@ Sometimes there is also REST API endpoint and UI mockup for context.
 
 
 **Testing strategy:** unit tests on application layer (given past events, when execute command, then published events) and unit test for controller (if appropriate command executed). Optionally testing on domain layer.
+**Reminder** First, read whole instruction, and after use this (graphical form) as a reminder: https://miro.com/app/board/o9J_lQvnN28=/?moveToWidget=3074457363092869959&cot=14
 
 The example with generating learning materials url is so simple, but the solution will fit more complex business logic.
 Write slice, it's where the business logic sits, so write slice is the most complex part, with layered architecture.
@@ -45,9 +46,13 @@ export type LearningMaterialsUrlWasGenerated = {
   type: 'LearningMaterialsUrlWasGenerated';
   data: { learningMaterialsId: string; courseUserId: UserId; materialsUrl: string };
 };
+```
+
+```ts
+// file: module/write/learning-materials-url/domain/events.ts
 
 // Group in one type events which will have impact on that part of the system. 
-// On EventModeling you will find them in the same horizontal line
+// On EventModeling you will find them in the same horizontal line with event stream name
 export type LearningMaterialsUrlDomainEvent = LearningMaterialsUrlWasGenerated
 ```
 

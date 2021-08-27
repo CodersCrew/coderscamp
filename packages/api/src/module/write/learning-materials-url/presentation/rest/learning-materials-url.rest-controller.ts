@@ -14,11 +14,11 @@ export class LearningMaterialsUrlRestController {
   @UseGuards(JwtAuthGuard)
   @Post('')
   @HttpCode(204)
-  async generateUserLearningResourcesUrl(@JwtUserId() userId: UserId): Promise<void> {
-    const command = this.commandFactory.applicationCommand((idGenerator) => ({
+  async generateUserLearningResourcesUrl(@JwtUserId() courseUserId: UserId): Promise<void> {
+    const command = this.commandFactory.applicationCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { learningMaterialsId: idGenerator.generate(), userId },
+      data: { courseUserId },
     }));
 
     await this.commandBus.execute(command);
@@ -26,10 +26,10 @@ export class LearningMaterialsUrlRestController {
 
   @Get('/test')
   async test() {
-    const command = this.commandFactory.applicationCommand((idGenerator) => ({
+    const command = this.commandFactory.applicationCommand(() => ({
       class: GenerateLearningMaterialsUrlApplicationCommand,
       type: 'GenerateLearningMaterialsUrl',
-      data: { learningMaterialsId: idGenerator.generate(), userId: 'ece93730-939e-4637-a56e-8daf2969e214' },
+      data: { courseUserId: 'ece93730-939e-4637-a56e-8daf2969e214' },
     }));
 
     await this.commandBus.execute(command);
