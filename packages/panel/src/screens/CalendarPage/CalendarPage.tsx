@@ -12,7 +12,7 @@ import { Spinner } from '@coderscamp/ui/components/Spinner';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '@coderscamp/ui/icons';
 
-import { useCalendar } from '@/hooks/useCalendar';
+import { useCalendar } from './useCalendar';
 
 // Related issue: https://github.com/vitejs/vite/issues/2139#issuecomment-802981228
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

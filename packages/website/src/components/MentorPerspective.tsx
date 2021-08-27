@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
 import { VStack } from '@coderscamp/ui/components/Stack';

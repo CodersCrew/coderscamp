@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { AccordionButton, AccordionItem, AccordionItemProps, AccordionPanel } from '@chakra-ui/react';
 
 import { OutlinedArrowDownIcon } from '../../icons';
 import { Typography } from '../Typography';
 
-export type QuestionProps = {
+export interface QuestionProps extends AccordionItemProps {
   title: string;
-  content: string;
-} & AccordionItemProps;
+  content: ReactNode;
+}
 
 export const Question = ({ title, content }: QuestionProps) => {
   return (
@@ -15,7 +15,7 @@ export const Question = ({ title, content }: QuestionProps) => {
       {({ isExpanded }) => (
         <>
           <h2>
-            <AccordionButton m="8px 0px" p="0px">
+            <AccordionButton>
               <Typography flex="1" textAlign="left" size="lg" weight="medium" color="gray.900">
                 {title}
               </Typography>
@@ -28,7 +28,7 @@ export const Question = ({ title, content }: QuestionProps) => {
               />
             </AccordionButton>
           </h2>
-          <AccordionPanel p="0px 48px 0px 0px">
+          <AccordionPanel pb={0}>
             <Typography as="p" size="md" weight="normal" color="gray.500">
               {content}
             </Typography>
