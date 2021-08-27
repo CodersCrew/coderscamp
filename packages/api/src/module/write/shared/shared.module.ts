@@ -3,8 +3,8 @@ import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadat
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { env } from '@/common/env';
+import { PrismaModule } from '@/prisma/prisma.module';
 
-import { PrismaModule } from '../../../prisma/prisma.module';
 import { ApplicationEventBus } from './application/application.event-bus';
 import { ApplicationCommandFactory } from './application/application-command.factory';
 import { APPLICATION_SERVICE } from './application/application-service';

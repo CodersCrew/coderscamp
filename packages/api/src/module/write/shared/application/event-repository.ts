@@ -1,6 +1,7 @@
-import { ApplicationEvent } from '../../../shared/application-command-events';
+import { ApplicationEvent } from '@/module/application-command-events';
+
 import { EventStream } from './application-service';
-import { EventStreamName } from './event-stream-name.valueboject';
+import { EventStreamName } from './event-stream-name.value-object';
 import { EventStreamVersion } from './event-stream-version';
 
 export const EVENT_REPOSITORY = Symbol('EVENT_REPOSITORY');

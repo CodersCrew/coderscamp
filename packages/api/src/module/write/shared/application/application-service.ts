@@ -1,6 +1,7 @@
-import { ApplicationEvent } from '../../../shared/application-command-events';
-import { DomainEvent } from '../../../shared/domain.event';
-import { EventStreamName } from './event-stream-name.valueboject';
+import { ApplicationEvent } from '@/module/application-command-events';
+import { DomainEvent } from '@/module/domain.event';
+
+import { EventStreamName } from './event-stream-name.value-object';
 
 export const APPLICATION_SERVICE = Symbol('APPLICATION_SERVICE');
 

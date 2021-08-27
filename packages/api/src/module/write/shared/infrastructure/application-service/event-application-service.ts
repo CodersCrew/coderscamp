@@ -1,11 +1,12 @@
 import { Inject } from '@nestjs/common';
 
-import { ApplicationEvent } from '../../../../shared/application-command-events';
-import { DomainEvent } from '../../../../shared/domain.event';
+import { ApplicationEvent } from '@/module/application-command-events';
+import { DomainEvent } from '@/module/domain.event';
+
 import { ApplicationEventBus } from '../../application/application.event-bus';
 import { ApplicationExecutionContext, ApplicationService, DomainLogic } from '../../application/application-service';
 import { EVENT_REPOSITORY, EventRepository } from '../../application/event-repository';
-import { EventStreamName } from '../../application/event-stream-name.valueboject';
+import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { ID_GENERATOR, IdGenerator } from '../../application/id-generator';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { PrismaService } from '../../../prisma/prisma.service';
-import { ApplicationEvent } from '../../shared/application-command-events';
-import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-materials-url-was-generated.domain-event';
-import { SharedModule } from '../../write/shared/shared.module';
+import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
+import { ApplicationEvent } from '@/module/application-command-events';
+import { PrismaService } from '@/prisma/prisma.service';
+import { SharedModule } from '@/write/shared/shared.module';
+
 import { LearningMaterialsRestController } from './learning-materials.rest-controller';
 
 @Module({

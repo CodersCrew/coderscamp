@@ -1,4 +1,5 @@
-import { GenerateLearningMaterialsUrl } from '../../../shared/commands/generate-learning-materials-url.domain-command';
+import { GenerateLearningMaterialsUrl } from '@/commands/generate-learning-materials-url.domain-command';
+
 import { LearningMaterialsUrl } from '../application/learning-materials-url-generator';
 import { LearningMaterialsUrlDomainEvent } from './events';
 

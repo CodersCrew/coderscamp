@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { ApplicationEvent } from '../../../../shared/application-command-events';
+import { ApplicationEvent } from '@/module/application-command-events';
+
 import { EventStream } from '../../application/application-service';
 import { EventRepository } from '../../application/event-repository';
-import { EventStreamName } from '../../application/event-stream-name.valueboject';
+import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
 

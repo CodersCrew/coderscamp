@@ -1,5 +1,6 @@
-import { EventStreamName } from '../write/shared/application/event-stream-name.valueboject';
-import { EventStreamVersion } from '../write/shared/application/event-stream-version';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+import { EventStreamVersion } from '@/write/shared/application/event-stream-version';
+
 import { DomainCommand } from './domain.command';
 import { DomainEvent } from './domain.event';
 

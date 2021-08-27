@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { ApplicationEvent } from '../../shared/application-command-events';
-import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-materials-url-was-generated.domain-event';
+import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
+import { ApplicationEvent } from '@/module/application-command-events';
 
 // fixme: example for automation, implement later
 @Injectable()

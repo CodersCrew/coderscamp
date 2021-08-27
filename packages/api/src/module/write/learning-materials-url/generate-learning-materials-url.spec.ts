@@ -1,8 +1,9 @@
-import { UserId } from '../../../users/users.types';
-import { ApplicationEvent } from '../../shared/application-command-events';
-import { GenerateLearningMaterialsUrlApplicationCommand } from '../../shared/commands/generate-learning-materials-url.application-command';
-import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-materials-url-was-generated.domain-event';
-import { EventStreamName } from '../shared/application/event-stream-name.valueboject';
+import { GenerateLearningMaterialsUrlApplicationCommand } from '@/commands/generate-learning-materials-url.application-command';
+import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
+import { ApplicationEvent } from '@/module/application-command-events';
+import { UserId } from '@/users/users.types';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+
 import { UsersPort } from './application/users.port';
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
 

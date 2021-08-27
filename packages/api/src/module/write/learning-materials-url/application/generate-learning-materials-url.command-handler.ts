@@ -1,9 +1,10 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { GenerateLearningMaterialsUrlApplicationCommand } from '../../../shared/commands/generate-learning-materials-url.application-command';
-import { APPLICATION_SERVICE, ApplicationService } from '../../shared/application/application-service';
-import { EventStreamName } from '../../shared/application/event-stream-name.valueboject';
+import { GenerateLearningMaterialsUrlApplicationCommand } from '@/commands/generate-learning-materials-url.application-command';
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+
 import { LearningMaterialsUrlDomainEvent } from '../domain/events';
 import { generateLearningMaterialsUrl } from '../domain/generateLearningMaterialsUrl';
 import { LEARNING_MATERIALS_URL_GENERATOR, LearningMaterialsUrlGenerator } from './learning-materials-url-generator';

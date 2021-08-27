@@ -2,17 +2,18 @@ import { CommandBus } from '@nestjs/cqrs';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { ApplicationEvent } from '../../shared/application-command-events';
-import { ApplicationEventBus } from '../shared/application/application.event-bus';
-import { ApplicationCommandFactory, CommandBuilder } from '../shared/application/application-command.factory';
-import { EVENT_REPOSITORY } from '../shared/application/event-repository';
-import { EventStreamName } from '../shared/application/event-stream-name.valueboject';
-import { EventStreamVersion } from '../shared/application/event-stream-version';
-import { ID_GENERATOR, IdGenerator } from '../shared/application/id-generator';
-import { TIME_PROVIDER } from '../shared/application/time-provider.port';
-import { InMemoryEventRepository } from '../shared/infrastructure/event-repository/in-memory-event-repository';
-import { FixedTimeProvider } from '../shared/infrastructure/time-provider/fixed-time-provider';
-import { SharedModule } from '../shared/shared.module';
+import { ApplicationEvent } from '@/module/application-command-events';
+import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
+import { ApplicationCommandFactory, CommandBuilder } from '@/write/shared/application/application-command.factory';
+import { EVENT_REPOSITORY } from '@/write/shared/application/event-repository';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+import { EventStreamVersion } from '@/write/shared/application/event-stream-version';
+import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
+import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
+import { InMemoryEventRepository } from '@/write/shared/infrastructure/event-repository/in-memory-event-repository';
+import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
+import { SharedModule } from '@/write/shared/shared.module';
+
 import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,

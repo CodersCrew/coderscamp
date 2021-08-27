@@ -1,4 +1,4 @@
-import { UserId } from '../../../users/users.types';
+import type { UserId } from '@/users/users.types';
 
 export type GenerateLearningMaterialsUrl = {
   type: 'GenerateLearningMaterialsUrl';
