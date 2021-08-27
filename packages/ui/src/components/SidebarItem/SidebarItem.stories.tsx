@@ -57,7 +57,7 @@ const Template: Story<SidebarItemProps> = (args) => <SidebarItem {...args} />;
 export const Playground = Template.bind({});
 
 Playground.args = {
-  children: 'Dashbord',
+  children: 'Dashboard',
   count: undefined,
   path: '/panel',
 };
