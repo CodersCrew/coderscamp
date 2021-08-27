@@ -12,6 +12,7 @@ import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { InMemoryEventRepository } from '@/write/shared/infrastructure/event-repository/in-memory-event-repository';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 
+import { AppModule } from '../../../app.module';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrl,
@@ -19,7 +20,6 @@ import {
   UserFullname,
 } from './application/learning-materials-url-generator';
 import { USERS_PORT, UsersPort } from './application/users.port';
-import { AppModule } from '../../../app.module';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 
