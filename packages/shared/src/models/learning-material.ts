@@ -1,8 +1,7 @@
 export interface LearningMaterial {
   id: string;
   url: string;
-  completedCount: number;
-  userId: string;
+  courseUserId: string;
 }
 
 export type CreateLearningMaterialResponse = LearningMaterial;

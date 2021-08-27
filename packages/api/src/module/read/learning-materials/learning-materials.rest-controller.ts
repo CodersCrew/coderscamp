@@ -13,7 +13,7 @@ export class LearningMaterialsRestController {
   constructor(private readonly prismaService: PrismaService) {}
 
   @Get()
-  getLearningMaterial(@JwtUserId() userId: UserId): Promise<GetLearningMaterialResponse> {
-    return this.prismaService.learningMaterial.findUnique({ where: { userId } });
+  getLearningMaterial(@JwtUserId() courseUserId: UserId): Promise<GetLearningMaterialResponse> {
+    return this.prismaService.learningMaterials.findUnique({ where: { courseUserId } });
   }
 }

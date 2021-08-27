@@ -5,26 +5,29 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { ApplicationEvent } from '../../shared/application-command-events';
 import { LearningMaterialsUrlWasGenerated } from '../../shared/events/learning-materials-url-was-generated.domain-event';
 import { SharedModule } from '../../write/shared/shared.module';
-import { LearningMaterialsRestController } from './learning-materials.rest-controller';
+import { CourseProgressRestController } from './course-progress.rest-controller';
 
 @Module({
   imports: [SharedModule],
-  controllers: [LearningMaterialsRestController],
+  controllers: [CourseProgressRestController],
 })
-export class LearningMaterialsReadModule {
+export class CourseProgressReadModule {
   constructor(private readonly prismaService: PrismaService) {}
 
-  /**
-   * todo: recovering from failures - reprocessing events: saving last processed event globalOrder and catchup on start.
-   * @param event
-   */
   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    await this.prismaService.learningMaterials.create({
-      data: {
-        id: event.data.learningMaterialsId,
+    await this.prismaService.courseProgress.upsert({
+      create: {
         courseUserId: event.data.courseUserId,
-        url: event.data.materialsUrl,
+        learningMaterialsId: event.data.learningMaterialsId,
+        learningMaterialsCompletedCount: 0,
+      },
+      update: {
+        learningMaterialsId: event.data.learningMaterialsId,
+        learningMaterialsCompletedCount: 0,
+      },
+      where: {
+        courseUserId: event.data.courseUserId,
       },
     });
   }
