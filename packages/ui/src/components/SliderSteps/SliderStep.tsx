@@ -29,6 +29,13 @@ export const SliderStep = ({ current, onClick }: SliderStepProps) => {
       role="tab"
       tabIndex={0}
       aria-selected={current}
+      _after={{
+        content: '""',
+        cursor: 'pointer',
+        position: 'absolute',
+        w: '40px',
+        h: '40px',
+      }}
       {...stepProps}
     />
   );
