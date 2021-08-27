@@ -2697,14 +2697,15 @@ __metadata:
     passport-github2: 0.1.12
     passport-jwt: 4.0.0
     passport-local: 1.0.0
-    prisma: 2.29.0
+    prisma: 2.29.1
     puppeteer: 10.2.0
     reflect-metadata: 0.1.13
     rxjs: 7.3.0
-    supertest: 6.1.5
+    supertest: 6.1.6
     ts-loader: 9.2.5
-    ts-node: 10.2.0
+    ts-node: 10.2.1
     tsconfig-paths: 3.10.1
+    type-fest: 2.0.0
     uuid: 8.3.2
   languageName: unknown
   linkType: soft
@@ -19581,15 +19582,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prisma@npm:2.29.0":
-  version: 2.29.0
-  resolution: "prisma@npm:2.29.0"
+"prisma@npm:2.29.1":
+  version: 2.29.1
+  resolution: "prisma@npm:2.29.1"
   dependencies:
     "@prisma/engines": 2.29.0-34.1be4cd60b89afa04b192acb1ef47758a39810f3a
   bin:
     prisma: build/index.js
     prisma2: build/index.js
-  checksum: bd7dea0a14a6110d564b73ee1860f802e9bce8793b304b10561304e590b5b87e566c41281195a3856cce051a69f01d228b0001873631f6e084a554c40f390650
+  checksum: e7a065c98eea9e9575950cc8fda7f7be536e00d129546e76f53e7c79f57ce8eec03ffe729e3a91faa06e2e461a63e396579098c74869224117f37b116966902e
   languageName: node
   linkType: hard
 
@@ -22772,13 +22773,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"supertest@npm:6.1.5":
-  version: 6.1.5
-  resolution: "supertest@npm:6.1.5"
+"supertest@npm:6.1.6":
+  version: 6.1.6
+  resolution: "supertest@npm:6.1.6"
   dependencies:
     methods: ^1.1.2
     superagent: ^6.1.0
-  checksum: 305fadb1b1dfacddc8c32b38695fc681aec81ef91151b5bc26c2a1bfd5898c51edb48acafd7270aeecfbdc3a0f910da55f67397b791f48481d927443fa50579d
+  checksum: 51d11b794a022b49f0f9664e6d8ffef5e8d18467f65d2b4326e52ec96f0801d7066bf9a97eb06e8b6cd3eb6f662ee5bed937cd5764ab0617a822d7ee4c72ff36
   languageName: node
   linkType: hard
 
@@ -23417,9 +23418,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-node@npm:10.2.0":
-  version: 10.2.0
-  resolution: "ts-node@npm:10.2.0"
+"ts-node@npm:10.2.1":
+  version: 10.2.1
+  resolution: "ts-node@npm:10.2.1"
   dependencies:
     "@cspotcode/source-map-support": 0.6.1
     "@tsconfig/node10": ^1.0.7
@@ -23449,7 +23450,7 @@ resolve@^2.0.0-next.3:
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: da767e0fd5c1b4941f0b846c3532147f31cd2ac4d66a4809358e29ed5971a4e699720bd65f9e5a585a10bc7f9c55571a8fce9e485cedce6a224dcba3869bbd3a
+  checksum: f37d2827a583c51d012cdd3d9b96629fba7a5b5dfad2c26ca48c7c89f904118924689ca56f4b9b2136217194870a76f26aae06e3490ee613b0e960f02dc96bbe
   languageName: node
   linkType: hard
 
@@ -23627,6 +23628,13 @@ resolve@^2.0.0-next.3:
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 62b5628bff67c0eb0b66afa371bd73e230399a8d2ad30d852716efcc4656a7516904570cd8631a49a3ce57c10225adf5d0cbdcb47f6b0255fe6557c453925a15
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:2.0.0":
+  version: 2.0.0
+  resolution: "type-fest@npm:2.0.0"
+  checksum: 9c7ab00b0b594426710233b6d3d112e2bb5b23a523fed4b3272e76dde36b1b78a5691ea20a40332490d3bd46455d0ad67a51ce2271f90c0ae2309861ca01e20d
   languageName: node
   linkType: hard
 
