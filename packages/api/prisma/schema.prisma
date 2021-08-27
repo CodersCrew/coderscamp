@@ -56,5 +56,5 @@ model CourseProgress {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   courseUserId   String @unique
   learningMaterialsId   String @unique
-  learningMaterialsCompletedCount Int
+  learningMaterialsCompletedTasks Int
 }

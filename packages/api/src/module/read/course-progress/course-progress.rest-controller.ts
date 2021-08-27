@@ -22,7 +22,7 @@ export class CourseProgressRestController {
 
     return {
       learningMaterials: {
-        completed: courseProgress.learningMaterialsCompletedCount,
+        completedTasks: courseProgress.learningMaterialsCompletedTasks,
       },
     };
   }

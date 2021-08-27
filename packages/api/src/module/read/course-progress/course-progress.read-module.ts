@@ -16,17 +16,11 @@ export class CourseProgressReadModule {
 
   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    await this.prismaService.courseProgress.upsert({
-      create: {
+    await this.prismaService.courseProgress.create({
+      data: {
         courseUserId: event.data.courseUserId,
         learningMaterialsId: event.data.learningMaterialsId,
-        learningMaterialsCompletedCount: 0,
-      },
-      update: {
-        courseUserId: event.data.courseUserId,
-      },
-      where: {
-        learningMaterialsId: event.data.learningMaterialsId,
+        learningMaterialsCompletedTasks: 0,
       },
     });
   }

@@ -8,13 +8,19 @@ Useful materials to grasp following concepts:
 
 # Step-by-step implementation instructions
 
-![CodersCamp EventModeling](../../.github/images/CodersCampEventModelingLearningMaterialsUrl.jpg)
+MIRO with EventModeling: https://miro.com/app/board/o9J_lQvnN28=/?moveToWidget=3074457362407512031&cot=14
+
+![CodersCamp EventModeling](https://res.cloudinary.com/coderscamp/image/upload/v1630056473/docs/CodersCamp_App___Event_Storming_-_Frame_3_a5zbzt.jpg)
 
 Just after defining events and commands you can split entire work by write/read and automation slices (module).
 Follow instruction to see how to do that.
 
 ## Write Slice.
 Write Slice is a command (blue sticky-note) connected to an event (orange sticky-note).
+Sometimes there is also REST API endpoint and UI mockup for context.
+
+![CodersCamp EventModeling | Write Slice](https://res.cloudinary.com/coderscamp/image/upload/v1630056664/docs/CodersCamp_App___Event_Storming_-_WriteSlice_1_nghaqa.jpg)
+
 
 **Testing strategy:** unit tests on application layer (given past events, when execute command, then published events) and unit test for controller (if appropriate command executed). Optionally testing on domain layer.
 
@@ -37,7 +43,7 @@ Event (code snippet below)
 // file: module/shared/events/learning-materials-url-was-generated.domain-event.ts
 export type LearningMaterialsUrlWasGenerated = {
   type: 'LearningMaterialsUrlWasGenerated';
-  data: { learningMaterialsId: string; userId: UserId; materialsUrl: string };
+  data: { learningMaterialsId: string; courseUserId: UserId; materialsUrl: string };
 };
 
 // Group in one type events which will have impact on that part of the system. 
@@ -53,7 +59,7 @@ Command (code snippet below)
 ```ts
 export type GenerateLearningMaterialsUrl = {
   type: 'GenerateLearningMaterialsUrl';
-  data: { learningMaterialsId: string; userId: UserId };
+  data: { userId: UserId };
 };
 ```
 
@@ -74,11 +80,12 @@ export function generateLearningMaterialsUrl(
   pastEvents: LearningMaterialsUrlDomainEvent[],
   command: GenerateLearningMaterialsUrl,
   learningMaterialsUrl: LearningMaterialsUrl,
+  learningMaterialsId: string,
 ): LearningMaterialsUrlDomainEvent[] {
   return [
     {
       type: 'LearningMaterialsUrlWasGenerated',
-      data: { userId: command.data.userId, materialsUrl: learningMaterialsUrl },
+      data: { learningMaterialsId, userId: command.data.userId, materialsUrl: learningMaterialsUrl },
     },
   ];
 }
@@ -98,35 +105,34 @@ Tests always follows same pattern:
 3. Then assert if certain events were published, or an error was thrown
 
 ```ts
-  it('given was generated before, then should not be generated', () => {
-    // Given
-    const pastEvents: LearningMaterialsUrlDomainEvent[] = [
+it('given was generated before, then should not be generated', () => {
+   // Given
+   const pastEvents: LearningMaterialsUrlDomainEvent[] = [
       {
-        type: 'LearningMaterialsUrlWasGenerated',
-        data: {
-          learningMaterialsId: '50fbf496-de23-4a50-9a72-7caea934f42f',
-          userId: 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab',
-          materialsUrl:
-            'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
-        },
+         type: 'LearningMaterialsUrlWasGenerated',
+         data: {
+            learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
+            courseUserId: 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab',
+            materialsUrl: 'https://app.process.st/runs/sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+         },
       },
-    ];
+   ];
 
-    // When
-    const command: GenerateLearningMaterialsUrl = {
+   // When
+   const command: GenerateLearningMaterialsUrl = {
       type: 'GenerateLearningMaterialsUrl',
       data: {
-        learningMaterialsId: 'c76db1cd-809f-4014-932c-fa970b1b379e',
-        userId: 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab',
+         courseUserId: 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab',
       },
-    };
-    const learningMaterialsUrl =
-      'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
-    const domainLogic = () => generateLearningMaterialsUrl(pastEvents, command, learningMaterialsUrl);
+   };
+   const learningMaterialsUrl = 'https://app.process.st/runs/sbAPITNMsl2wW6j2cg1H2A/tasks/agcdea_DS_O5B-OgtHXA';
+   const learningMaterialsId = 'sbAPITNMsl2wW6j2cg1H2A';
+   const domainLogic = () =>
+           generateLearningMaterialsUrl(pastEvents, command, learningMaterialsUrl, learningMaterialsId);
 
-    // Then
-    expect(domainLogic).toThrow(new Error('Learning resources url was already generated!'));
-  });
+   // Then
+   expect(domainLogic).toThrow(new Error('Learning resources url was already generated!'));
+});
 ```
 
 After, create an implementation to fulfill the test.
@@ -140,38 +146,39 @@ You care about only about information (distilled from events), which may change 
 Domain logic extended by some rule:
 ```ts
 export function generateLearningMaterialsUrl(
-    pastEvents: LearningMaterialsUrlDomainEvent[],
-    command: GenerateLearningMaterialsUrl,
-    learningMaterialsUrl: LearningMaterialsUrl,
+        pastEvents: LearningMaterialsUrlDomainEvent[],
+        command: GenerateLearningMaterialsUrl,
+        learningMaterialsUrl: LearningMaterialsUrl,
+        learningMaterialsId: string,
 ): LearningMaterialsUrlDomainEvent[] {
-  const state = pastEvents.reduce<{ generated: boolean }>(
-      (acc, event) => {
-        switch (event.type) {
-          case 'LearningMaterialsUrlWasGenerated': {
-            return { generated: true };
-          }
-          default: {
-            return acc;
-          }
-        }
-      },
-      { generated: false },
-  );
+   const state = pastEvents.reduce<{ generated: boolean }>(
+           (acc, event) => {
+              switch (event.type) {
+                 case 'LearningMaterialsUrlWasGenerated': {
+                    return { generated: true };
+                 }
+                 default: {
+                    return acc;
+                 }
+              }
+           },
+           { generated: false },
+   );
 
-  if (state.generated) {
-    throw new Error('Learning resources url was already generated!');
-  }
+   if (state.generated) {
+      throw new Error('Learning resources url was already generated!');
+   }
 
-  return [
-    {
-      type: 'LearningMaterialsUrlWasGenerated',
-      data: {
-        learningMaterialsId: command.data.learningMaterialsId,
-        userId: command.data.userId,
-        materialsUrl: learningMaterialsUrl,
+   return [
+      {
+         type: 'LearningMaterialsUrlWasGenerated',
+         data: {
+            learningMaterialsId,
+            courseUserId: command.data.courseUserId,
+            materialsUrl: learningMaterialsUrl,
+         },
       },
-    },
-  ];
+   ];
 }
 ```
 
@@ -227,21 +234,24 @@ export class GenerateLearningMaterialsUrlCommandHandler
     Its a place to inject it. Use just interfaces to be able to stub external service.
      */
     @Inject(LEARNING_MATERIALS_URL_GENERATOR)
-    private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator,
+    private readonly learningMaterialsUrlGenerator: LearningMaterialsUrlGenerator, 
+    
+    @Inject(USERS_PORT) private readonly usersPort: UsersPort,
   ) {}
 
   async execute(command: GenerateLearningMaterialsUrlApplicationCommand): Promise<void> {
-    const learningMaterialsUrl = await this.learningMaterialsUrlGenerator.generateUrlFor(command.data.userId);
-
+     const userFullName = await this.usersPort.getUserFullNameById(command.data.courseUserId);
+     const learningMaterials = await this.learningMaterialsUrlGenerator.generateUrlFor(userFullName);
+     
     /**
      * EventStream - you can read it from Event Modeling - it's the name on horizontal lane. 
      * Events from one stream will be read and passed as pastEvents to your domain logic. After domain logic execution new events will be appended to the stream.
      */
-    const eventStream = `LearningMaterialsUrl_${command.data.userId}`
+    const eventStream = `LearningMaterialsUrl_${command.data.courseUserId}`
     await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(
         eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId }, //metadata - for tracking and monitoring. May be extended by issuerId etc.
-      (pastEvents) => generateLearningMaterialsUrl(pastEvents, command, learningMaterialsUrl), //load events and pass them to business logic
+      (pastEvents) => generateLearningMaterialsUrl(pastEvents, command, learningMaterials.url, learningMaterials.id), //load events and pass them to business logic
     );
   }
 }
@@ -280,6 +290,8 @@ export class GenerateLearningMaterialsUrlController {
 
 
 ## Automation Slice
+
+![Automation](https://res.cloudinary.com/coderscamp/image/upload/v1630057227/docs/CodersCamp_App___Event_Storming_-_Automation_hb9c81.jpg)
 
 **Testing strategy:** unit tests (when publish events, then assert if certain command executed)
 
@@ -322,9 +334,11 @@ Of course if you need to react after some sequence of events, you need to keep s
 
 ## Read Slice
 
-**Testing strategy:** e2e testing with docker for data storage
-
 On EventModeling it's a green sticky-note, connected with REST API.
+
+![ReadSlice](https://res.cloudinary.com/coderscamp/image/upload/v1630057023/docs/CodersCamp_App___Event_Storming_-_ReadSlice_dkrybt.jpg)
+
+**Testing strategy:** e2e testing with docker for data storage
 
 Read doesn't belong to certain stream. It's a perfect model for your needs. You can accumulate even events from many streams.
 Previously you didn't have requirement to read some data.
@@ -333,40 +347,119 @@ Controller may strictly reach database. Here we don't care about ports & adapter
 No abstractions.
 We want to have fully access over how we read.
 
-```ts
-@Module({
-  imports: [SharedModule],
-})
-export class LearningMaterialsReadModule {
-  constructor(private readonly prismaService: PrismaService) {}
-  
-  // define certain type in the @OnEvent or use wildcards and switch-case inside the handler like in domain logic
-  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
-  onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    this.prismaService.learningMaterial.create({ data: { id: event.data.learningMaterialsId, userId: event.data.userId, url: event.data.materialsUrl } });
-  }
+First, create table in database from which we'd like to read your data. 
+For this example LearningMaterials like this is sufficient:
+```prisma
+model LearningMaterials {
+  id             String @id
+  url            String
+  courseUserId   String @unique
 }
 ```
 
-Just subscribe for certain events (one or many) and collect data needed to be read after by REST API. 
+Just subscribe for certain events (one or many) and collect data needed to be read after by REST API.
 Every handler read some data from event and create/update an entity in the database.
 This database is denormalized and prepared for fast reads. No complex queries with many joins anymore!
+```ts
+@Module({
+   imports: [SharedModule],
+   controllers: [LearningMaterialsRestController],
+})
+export class LearningMaterialsReadModule {
+   constructor(private readonly prismaService: PrismaService) {}
+
+   // define certain type in the @OnEvent or use wildcards and switch-case inside the handler like in domain logic
+   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
+   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
+      await this.prismaService.learningMaterials.create({
+         data: {
+            id: event.data.learningMaterialsId,
+            courseUserId: event.data.courseUserId,
+            url: event.data.materialsUrl,
+         },
+      });
+   }
+}
+```
 
 After all introduce REST Controller.
 ```ts
+@UseGuards(JwtAuthGuard)
 @Controller('learning-materials')
 export class LearningMaterialsRestController {
-  constructor(private readonly prismaService: PrismaService) {}
+   constructor(private readonly prismaService: PrismaService) {}
 
-  @Get()
-  getLearningMaterial(@JwtUserId() userId: UserId): Promise<GetLearningMaterialResponse> {
-    return this.prismaService.learningMaterial.findUnique({ where: { userId } });
-  }
+   @Get()
+   async getLearningMaterial(@JwtUserId() courseUserId: UserId): Promise<GetLearningMaterialResponse> {
+      const learningMaterials = await this.prismaService.learningMaterials.findUnique({ where: { courseUserId } });
+
+      if (!learningMaterials) {
+         throw new NotFoundException();
+      }
+
+      return { id: learningMaterials.id, url: learningMaterials.url };
+   }
 }
 ```
 
 
 There should be no relations / communication between read/write/automation just throughout events and command in `module/shared` directory.
+
+
+#### Read Slice from many events 
+
+![ReadSliceManyEvents](https://res.cloudinary.com/coderscamp/image/upload/v1630058074/docs/CodersCamp_App___Event_Storming_-_ReadSliceManyEvents_yufqbs.jpg)
+
+One event may be useful for many read models. 
+Another use case if when we'd like to track course progress - completed tasks on learning materials.
+It'd be another table in database:
+
+```prisma
+model CourseProgress {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  courseUserId   String @unique
+  learningMaterialsId   String @unique
+  learningMaterialsCompletedTasks Int
+}
+```
+
+Here you need learningMaterialsId and courseUserId in order to read how much tasks every user completed.
+courseUserId and learningMaterialsId we can read from LearningMaterialsUrlWasGenerated.
+Then we will be increasing and decreasing counter for learningMaterialsCompletedTasks after handling events like
+TaskWasCompleted and TaskWasUncompleted.
+
+```ts
+export class CourseProgressReadModule {
+  constructor(private readonly prismaService: PrismaService) {}
+
+  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
+  async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
+    await this.prismaService.courseProgress.create({
+      data: {
+        courseUserId: event.data.courseUserId,
+        learningMaterialsId: event.data.learningMaterialsId,
+        learningMaterialsCompletedTasks: 0,
+      },
+    });
+  }
+
+  //should be transaction here, ommited for readability
+   @OnEvent('LearningMaterialsTask.TaskWasCompleted')
+   async onTaskWasCompleted(event: ApplicationEvent<TaskWasCompleted>) {
+      const where = { learningMaterialsId: event.data.learningMaterialsId }
+      const courseProgress = await this.prismaService.findUnique({where})
+      if(!courseProgress){
+        return;
+      }
+      await this.prismaService.courseProgress.update({
+         data: {
+            learningMaterialsCompletedTasks: courseProgress.learningMaterialsCompletedTasks + 1,
+         },
+         where
+      });
+   }
+}
+```
 
 
 # ADR - Architecture Decision Records

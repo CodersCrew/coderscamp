@@ -1,5 +1,5 @@
 export type GetCourseProgressResponse = {
   learningMaterials: {
-    completed: number;
+    completedTasks: number;
   };
 } | null;
