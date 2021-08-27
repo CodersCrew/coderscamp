@@ -1,5 +1,6 @@
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
+import { LearningMaterials } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
@@ -31,28 +32,31 @@ async function learningMaterialsTestModule() {
   const eventBus = module.get<ApplicationEventBus>(ApplicationEventBus);
   const prismaService = module.get<PrismaService>(PrismaService);
 
-  function eventOccurred(event: ApplicationEvent) {
+  function eventOccurred(event: ApplicationEvent): void {
     eventBus.publishAll([event]);
   }
 
-  function readModelForCourseUser(courseUserId: UserId) {
+  function readModelForCourseUser(courseUserId: UserId): Promise<LearningMaterials | null> {
     return prismaService.learningMaterials.findUnique({ where: { courseUserId } });
   }
 
   return { eventOccurred, readModelForCourseUser };
 }
 
+const SAMPLE_MATERIALS_URL =
+  'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
+
 function learningMaterialsUrlWasGeneratedForUser(
   courseUserId: UserId,
 ): ApplicationEvent<LearningMaterialsUrlWasGenerated> {
   return {
     type: 'LearningMaterialsUrlWasGenerated',
-    id: 'generatedId1',
+    id: uuid(),
     occurredAt: new Date(),
     data: {
-      learningMaterialsId: 'sbAPITNMsl2wW6j2cg1H2A',
+      learningMaterialsId: `learningMaterialsId-${courseUserId}`,
       courseUserId,
-      materialsUrl: 'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
+      materialsUrl: SAMPLE_MATERIALS_URL,
     },
     metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
     streamVersion: 1,
@@ -64,13 +68,29 @@ describe('Read Slice | Learning Materials', () => {
   it('when LearningMaterialsUrlWasGenerated occurred, then read model should be updated', async () => {
     // Given
     const moduleUnderTest = await learningMaterialsTestModule();
+    const userId1 = uuid();
+    const userId2 = uuid();
 
     // When
-    const userId1 = uuid();
 
     moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
 
     // Then
-    await expect(moduleUnderTest.readModelForCourseUser(userId1)).resolves.toStrictEqual({});
+    await expect(moduleUnderTest.readModelForCourseUser(userId1)).resolves.toStrictEqual({
+      id: `learningMaterialsId-${userId1}`,
+      url: SAMPLE_MATERIALS_URL,
+      courseUserId: userId1,
+    });
+    await expect(moduleUnderTest.readModelForCourseUser(userId2)).resolves.toBeNull();
+
+    // When
+    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
+
+    // Then
+    await expect(moduleUnderTest.readModelForCourseUser(userId1)).resolves.toStrictEqual({
+      id: `learningMaterialsId-${userId1}`,
+      url: SAMPLE_MATERIALS_URL,
+      courseUserId: userId1,
+    });
   });
 });
