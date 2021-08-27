@@ -1,4 +1,4 @@
-import 'swiper/swiper.scss';
+import 'swiper/css';
 
 import type { CSSProperties } from 'react';
 import type { AppProps } from 'next/app';
