@@ -21,14 +21,12 @@ export class InMemoryEventRepository implements EventRepository {
     return this.eventStreams[eventStreamName.raw] || [];
   }
 
-  write(
+  async write(
     streamName: EventStreamName,
     events: ApplicationEvent[],
     expectedStreamVersion: EventStreamVersion,
   ): Promise<void> {
-    return Promise.all(
-      events.map((value, index) => this.writeOne(streamName, value, expectedStreamVersion + index)),
-    ).then();
+    await Promise.all(events.map((value, index) => this.writeOne(streamName, value, expectedStreamVersion + index)));
   }
 
   private writeOne(

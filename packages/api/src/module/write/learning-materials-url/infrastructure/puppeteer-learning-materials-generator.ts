@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import puppeteer from 'puppeteer';
 
 import {
@@ -7,10 +6,7 @@ import {
   UserFullname,
 } from '../application/learning-materials-url-generator';
 
-/**
- * todo: Do tego kodu z puppeteer doadajcie try-finally, aby wyczyścić resourcy w przypadku błędu
- * @param name
- */
+// todo: try-finally to clean resources on error
 const generateProcessStChecklist = async (name: string) => {
   const urlBase = 'https://app.process.st/workflows/CodersCamp-Test-Checklist-kTrxJoZgP-9IabhRbohIrw/run-link';
   const url = `${urlBase}?checklist_name=${encodeURIComponent(name)}`;

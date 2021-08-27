@@ -8,7 +8,6 @@ export class ApplicationEventBus {
   constructor(private readonly eventEmitter: EventEmitter2) {}
 
   publishAll<EventType extends ApplicationEvent>(events: EventType[]): void {
-    // eslint-disable-next-line array-callback-return
     events.map((e) => {
       // eslint-disable-next-line no-console
       console.log('[ApplicationEventBus] Event published', {
@@ -20,7 +19,7 @@ export class ApplicationEventBus {
 
       const event = `${e.streamName.streamCategory}.${e.type}`;
 
-      this.eventEmitter.emit(event, e);
+      return this.eventEmitter.emit(event, e);
     });
   }
 }
