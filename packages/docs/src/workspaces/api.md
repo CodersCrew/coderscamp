@@ -1,3 +1,9 @@
+---
+title: API (backend) workspace
+description: Documentation related directly to the backend workspace of the project.
+sidebar_position: 3
+---
+
 # Backend Architecture (How to EventModeling -> NestJS Code)
 
 Architectural drivers are: fast introducing of new features and parallelization of development streams.
@@ -144,9 +150,9 @@ After, create an implementation to fulfill the test.
 You always follow the same pattern, and try to reflect how our brain works.
 1. Make some observations (pastEvents)
 2. Make some conclusions based on observations (reduce on events). Here your conclusion is if learning materials url was generated or not.
-Business logic, is that - if was generated, you reject the command by throwing an Error.
-It's always the same. Make reduce on pastEvents and read from them whatever you want to determine if command is OK.
-You care about only about information (distilled from events), which may change answer for your question. You can ignore everything else.
+   Business logic, is that - if was generated, you reject the command by throwing an Error.
+   It's always the same. Make reduce on pastEvents and read from them whatever you want to determine if command is OK.
+   You care about only about information (distilled from events), which may change answer for your question. You can ignore everything else.
 
 Domain logic extended by some rule:
 ```ts
@@ -193,9 +199,9 @@ Test your business logic carefully. It's extremely testable, because it's just [
 Output depends only on input.
 
 ### Application Layer
-Now you need to connect your business logic with external services and dependencies like database / process.st. 
-Also it's a place to communicate somehow with another modules (slices). 
-In NestJS we treat every slice from Event Modeling as separate module. 
+Now you need to connect your business logic with external services and dependencies like database / process.st.
+Also it's a place to communicate somehow with another modules (slices).
+In NestJS we treat every slice from Event Modeling as separate module.
 We can communicate with each other only by events and commands.
 In some cases we can use Ports & Adapters to communicate with external world.
 
@@ -207,7 +213,7 @@ Let's call it ApplicationCommand.
 export class GenerateLearningMaterialsUrlApplicationCommand extends AbstractApplicationCommand<GenerateLearningMaterialsUrl> {}
 ```
 It's part of your module API (do not misunderstand as REST API). An input into your write module.
-If someone wants to do some action inside your module should execute a command. 
+If someone wants to do some action inside your module should execute a command.
 External issuer may be REST API / WebSocket etc. or another module (commonly - automation slice).
 Command reflect certain application use case. **AVOID COMMANDS LIKE CREATE/UPDATE/DELETE.**
 You'r application has business logic, so it's not only an explorer for database.
@@ -262,7 +268,7 @@ export class GenerateLearningMaterialsUrlCommandHandler
 }
 ```
 
-### Infrastructure Layer 
+### Infrastructure Layer
 Here you implement interfaces for application layer dependencies.
 In application layer you define by interfaces what is needed, for example: "LearningMaterialsUrlGenerator".
 By implementing the interface you communicate with some external dependencies to provide what is needed.
@@ -271,7 +277,7 @@ By implementing the interface you communicate with some external dependencies to
 #### REST API
 One of possibilities to interact with your app it's an REST API.
 It's just need to create command and execute it.
-ApplicationCommandFactory class is helpful - you don't need to think how generate commandId, tracking metadata etc. 
+ApplicationCommandFactory class is helpful - you don't need to think how generate commandId, tracking metadata etc.
 Just use it for new command, by passing Application Command class, domain command type and required data. As follows.
 ```ts
 @Controller('learning-materials')
@@ -301,12 +307,12 @@ export class GenerateLearningMaterialsUrlController {
 **Testing strategy:** unit tests (when publish events, then assert if certain command executed)
 
 
-It's a robot (R2-D2) from the event modeling. 
+It's a robot (R2-D2) from the event modeling.
 It takes some events as an input (one or more), prepare tasks (green sticky-note) and execute them by issuing a command.
 
 It's an event handler where you can react for something which happened.
 Automation it's place where you automate reaction on certain events.
-We're using EventEmitter with NestJS instead of EventBus from CQRS, because it's allow for simple usage of 
+We're using EventEmitter with NestJS instead of EventBus from CQRS, because it's allow for simple usage of
 types (without classes) as events. So we don't need wrapper like for application command. Also have more options for subscriptions (wildcards etc.)
 You can read about it in NestJS documentation: [NestJS | Techniques | Events](https://docs.nestjs.com/techniques/events)
 
@@ -352,7 +358,7 @@ Controller may strictly reach database. Here we don't care about ports & adapter
 No abstractions.
 We want to have fully access over how we read.
 
-First, create table in database from which we'd like to read your data. 
+First, create table in database from which we'd like to read your data.
 For this example LearningMaterials like this is sufficient:
 ```prisma
 model LearningMaterials {
@@ -411,11 +417,11 @@ export class LearningMaterialsRestController {
 There should be no relations / communication between read/write/automation just throughout events and command in `module/shared` directory.
 
 
-#### Read Slice from many events 
+#### Read Slice from many events
 
 ![ReadSliceManyEvents](https://res.cloudinary.com/coderscamp/image/upload/v1630058074/docs/CodersCamp_App___Event_Storming_-_ReadSliceManyEvents_yufqbs.jpg)
 
-One event may be useful for many read models. 
+One event may be useful for many read models.
 Another use case if when we'd like to track course progress - completed tasks on learning materials.
 It'd be another table in database:
 
