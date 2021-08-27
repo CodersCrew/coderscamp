@@ -23,11 +23,10 @@ export class CourseProgressReadModule {
         learningMaterialsCompletedCount: 0,
       },
       update: {
-        learningMaterialsId: event.data.learningMaterialsId,
-        learningMaterialsCompletedCount: 0,
+        courseUserId: event.data.courseUserId,
       },
       where: {
-        courseUserId: event.data.courseUserId,
+        learningMaterialsId: event.data.learningMaterialsId,
       },
     });
   }
