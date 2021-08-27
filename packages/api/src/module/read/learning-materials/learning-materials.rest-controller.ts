@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 
 import { GetLearningMaterialResponse } from '@coderscamp/shared/models/learning-material';
 
@@ -13,7 +13,13 @@ export class LearningMaterialsRestController {
   constructor(private readonly prismaService: PrismaService) {}
 
   @Get()
-  getLearningMaterial(@JwtUserId() courseUserId: UserId): Promise<GetLearningMaterialResponse> {
-    return this.prismaService.learningMaterials.findUnique({ where: { courseUserId } });
+  async getLearningMaterial(@JwtUserId() courseUserId: UserId): Promise<GetLearningMaterialResponse> {
+    const learningMaterials = await this.prismaService.learningMaterials.findUnique({ where: { courseUserId } });
+
+    if (!learningMaterials) {
+      throw new NotFoundException();
+    }
+
+    return { id: learningMaterials.id, url: learningMaterials.url };
   }
 }
