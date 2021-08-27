@@ -87,10 +87,10 @@ describe('Read Slice | Learning Materials', () => {
     moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
 
     // Then
-    await expect(moduleUnderTest.readModelForCourseUser(userId1)).resolves.toStrictEqual({
-      id: `learningMaterialsId-${userId1}`,
+    await expect(moduleUnderTest.readModelForCourseUser(userId2)).resolves.toStrictEqual({
+      id: `learningMaterialsId-${userId2}`,
       url: SAMPLE_MATERIALS_URL,
-      courseUserId: userId1,
+      courseUserId: userId2,
     });
   });
 });
