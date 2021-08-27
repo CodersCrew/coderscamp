@@ -125,9 +125,6 @@ module.exports = {
       { blankLine: 'always', prev: ['const', 'let', 'var', 'export'], next: '*' },
       { blankLine: 'any', prev: ['const', 'let', 'var', 'export'], next: ['const', 'let', 'var', 'export'] },
     ],
-
-    // Expect may be placed inside some custom function for readability
-    'jest/expect-expect': 'off',
   },
   overrides: [
     {
