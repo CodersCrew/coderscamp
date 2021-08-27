@@ -10,7 +10,7 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 export const Navbar = () => {
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
-  const buttonSize = useBreakpointValue({ base: 'xs', sm: 'md' } as const);
+  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md' } as const);
   const { openModal } = useRecruitmentModal();
 
   return (
