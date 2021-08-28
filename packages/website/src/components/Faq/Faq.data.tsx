@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 
 import { Button } from '@coderscamp/ui/components/Button';
 
-import { MAIN_TEST_HOUR, MODULES_COUNT, PLACES_COUNT, TEAM_SIZE } from '../../constants';
-import { modulePlurals } from '../../plurals';
+import { MAIN_TEST_HOUR, MODULES_COUNT, PLACES_COUNT, TEAM_SIZE } from '@/constants';
+
 import { InternalLink } from '../InternalLink';
 
 export interface Question {
@@ -68,8 +68,8 @@ export const questions: Question[] = [
     content: (
       <>
         Zostaniesz przydzielony do {TEAM_SIZE}-osobowego zespołu, gdzie ze wsparciem mentora będziesz nadal się rozwijał
-        i tworzył projekty. Od tego momentu czekają Cię jeszcze {MODULES_COUNT - 1} {modulePlurals(MODULES_COUNT - 1)} i
-        związane z nimi testy, po których przejściu będziesz gotowy do rozpoczęcia kariery jako web developer.
+        i tworzył projekty. Od tego momentu czekają Cię jeszcze {MODULES_COUNT - 1} moduły i związane z nimi testy, po
+        których przejściu będziesz gotowy do rozpoczęcia kariery jako web developer.
       </>
     ),
   },

@@ -6,6 +6,7 @@ import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
+import { PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 export const Hero = () => {
   const { openModal } = useRecruitmentModal();
@@ -25,8 +26,9 @@ export const Hero = () => {
             Największy otwarty kurs programowania webowego w Polsce
           </Typography>
           <Typography size={subheaderSize} color="gray.500">
-            Dołącz do 6-osobowego zespołu • Rozwijaj się dzięki wsparciu doświadczonego mentora • Poznaj od podstaw
-            programowanie webowe • Stwórz aż 6 praktycznych projektów • Rozpocznij swoją karierę jako web developer
+            Dołącz do {TEAM_SIZE}-osobowego zespołu • Rozwijaj się dzięki wsparciu doświadczonego mentora • Poznaj od
+            podstaw programowanie webowe • Stwórz aż {PROJECTS_COUNT} praktycznych projektów • Rozpocznij swoją karierę
+            jako web developer
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
