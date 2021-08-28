@@ -37,7 +37,7 @@ export const MobileBaseNavbar = () => {
   return (
     <Flex alignItems="center">
       <ChakraMenu>
-        <MenuButton as={IconButton} aria-label="Options" icon={<SolidMenuIcon />} />
+        <MenuButton as={IconButton} aria-label="Options" icon={<SolidMenuIcon />} size="md" />
         <MenuList>
           {NavbarElements.map((element) => (
             <Link key={element.text} href={element.destinationLink}>

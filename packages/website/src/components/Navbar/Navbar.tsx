@@ -12,7 +12,6 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 export const Navbar = () => {
   const [isSmallerThan370px] = useMediaQuery('(max-width: 370px)');
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
-  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md' } as const);
   const { openModal } = useRecruitmentModal();
 
   return (
@@ -26,11 +25,16 @@ export const Navbar = () => {
         position="relative"
       >
         {baseNavbar}
-        <Flex>
-          <Button size={isSmallerThan370px ? 'xs' : buttonSize} mr="12px" onClick={() => openModal('mentor')}>
+        <Flex overflow="hidden">
+          <Button fontSize={isSmallerThan370px ? 'xs' : 'md'} size="md" mr="12px" onClick={() => openModal('mentor')}>
             Zostań mentorem
           </Button>
-          <Button size={isSmallerThan370px ? 'xs' : buttonSize} color="brand" onClick={() => openModal('participant')}>
+          <Button
+            fontSize={isSmallerThan370px ? 'xs' : 'md'}
+            size="md"
+            color="brand"
+            onClick={() => openModal('participant')}
+          >
             Zapisz się na kurs
           </Button>
         </Flex>
