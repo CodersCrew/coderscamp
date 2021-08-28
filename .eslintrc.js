@@ -126,12 +126,6 @@ module.exports = {
       { blankLine: 'always', prev: ['const', 'let', 'var', 'export'], next: '*' },
       { blankLine: 'any', prev: ['const', 'let', 'var', 'export'], next: ['const', 'let', 'var', 'export'] },
     ],
-    'jest/expect-expect': [
-      'warn',
-      {
-        assertFunctionNames: ['expect', 'expectReadModel'],
-      },
-    ],
   },
   overrides: [
     {
@@ -181,6 +175,9 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest-formatting/recommended',
       ],
+      rules: {
+        'jest/expect-expect': [2, { assertFunctionNames: ['expect', '*.expectReadModel'] }],
+      },
     },
   ],
   settings: {
