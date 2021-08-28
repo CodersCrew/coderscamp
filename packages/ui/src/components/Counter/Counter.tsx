@@ -47,12 +47,10 @@ export const Counter = ({ valueFrom = 0, valueTo, totalDuration = 2, ...props }:
 
   useEffect(() => {
     if (inView) {
-      const { stop } = animate(startingValue, digitsInString(valueTo), {
+      animate(startingValue, digitsInString(valueTo), {
         duration: totalDuration,
         onUpdate: updateState,
       });
-
-      return stop;
     }
   }, [inView, startingValue, totalDuration, valueTo]);
 
