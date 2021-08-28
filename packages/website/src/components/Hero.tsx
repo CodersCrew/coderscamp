@@ -3,6 +3,7 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
+import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
 
@@ -30,9 +31,11 @@ export const Hero = () => {
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
           <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
-            Zapisz się na CodersCamp
+            Zapisz się na kurs
           </Button>
-          <Button {...buttonProps}>Pobierz plan kursu</Button>
+          <Button {...buttonProps} icon={<SolidDownloadIcon />}>
+            Pobierz plan kursu
+          </Button>
         </Stack>
       </VStack>
     </Flex>
