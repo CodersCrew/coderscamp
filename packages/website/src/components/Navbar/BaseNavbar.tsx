@@ -56,7 +56,11 @@ export const DesktopBaseNavbar = () => {
 
   return (
     <>
-      {logoLayout && <Logo maxWidth="280px" color="black" layout={logoLayout} />}
+      {logoLayout && (
+        <Link href="/">
+          <Logo maxWidth="280px" color="black" layout={logoLayout} style={{ cursor: 'pointer' }} />
+        </Link>
+      )}
       <Flex>
         {NavbarElements.map((element) => (
           <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
