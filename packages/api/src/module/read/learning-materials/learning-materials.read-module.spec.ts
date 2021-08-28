@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LearningMaterials } from '@prisma/client';
+import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
-
-import { Unwrap } from '@coderscamp/shared/utils/lang';
 
 import { cleanupDatabase } from '@/common/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
@@ -15,8 +14,7 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 
 import { AppModule } from '../../../app.module';
 
-const SAMPLE_MATERIALS_URL =
-  'https://app.process.st/runs/Piotr%20Nowak-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA';
+const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 
 async function learningMaterialsTestModule() {
   const app: TestingModule = await Test.createTestingModule({
@@ -68,7 +66,7 @@ function learningMaterialsUrlWasGeneratedForUser(
 }
 
 describe('Read Slice | Learning Materials', () => {
-  let moduleUnderTest: Unwrap<ReturnType<typeof learningMaterialsTestModule>>;
+  let moduleUnderTest: AsyncReturnType<typeof learningMaterialsTestModule>;
 
   beforeEach(async () => {
     moduleUnderTest = await learningMaterialsTestModule();

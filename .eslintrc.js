@@ -126,6 +126,12 @@ module.exports = {
       { blankLine: 'always', prev: ['const', 'let', 'var', 'export'], next: '*' },
       { blankLine: 'any', prev: ['const', 'let', 'var', 'export'], next: ['const', 'let', 'var', 'export'] },
     ],
+    'jest/expect-expect': [
+      'warn',
+      {
+        assertFunctionNames: ['expect', 'expectReadModel'],
+      },
+    ],
   },
   overrides: [
     {

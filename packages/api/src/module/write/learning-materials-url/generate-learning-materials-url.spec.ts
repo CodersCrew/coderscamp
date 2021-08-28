@@ -1,4 +1,4 @@
-import { Unwrap } from '@coderscamp/shared/utils/lang';
+import { AsyncReturnType } from 'type-fest';
 
 import { GenerateLearningMaterialsUrlApplicationCommand } from '@/commands/generate-learning-materials-url.application-command';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
@@ -8,7 +8,7 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 import { generateLearningMaterialsUrlTestModule } from './generate-learning-materials-url.test-module';
 
 describe('Generate Learning Materials URL', () => {
-  let moduleUnderTest: Unwrap<ReturnType<typeof generateLearningMaterialsUrlTestModule>>;
+  let moduleUnderTest: AsyncReturnType<typeof generateLearningMaterialsUrlTestModule>;
 
   beforeEach(async () => {
     moduleUnderTest = await generateLearningMaterialsUrlTestModule();

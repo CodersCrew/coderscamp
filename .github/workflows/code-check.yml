@@ -38,6 +38,8 @@ jobs:
         run: yarn prisma migrate deploy
       - name: Run tests for all files
         run: yarn test --coverage
+      - name: Stop database
+        run: docker-compose down
       - name: Upload server coverage
         uses: codecov/codecov-action@v2
         with:
