@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import { ProjectCard } from './ProjectCard';
+import { PROJECT_CARD_TEXT } from './projectCardTypes';
 
 const title = 'Zaawansowany React i Node';
 const date = new Date();
@@ -18,7 +19,7 @@ describe('ProjectCard', () => {
         onButtonClick={(_url: string) => {}}
       />,
     );
-    expect(screen.getByText('Nie rozpoczęty')).toBeInTheDocument();
+    expect(screen.getByText(PROJECT_CARD_TEXT.idle.statusText)).toBeInTheDocument();
   });
 
   it('should display W trakcie when status is equal to doing', () => {
@@ -32,7 +33,7 @@ describe('ProjectCard', () => {
         onButtonClick={(_url: string) => {}}
       />,
     );
-    expect(screen.getByText('W trakcie')).toBeInTheDocument();
+    expect(screen.getByText(PROJECT_CARD_TEXT.doing.statusText)).toBeInTheDocument();
   });
 
   it('should display W ocenie when status is equal to review', () => {
@@ -46,7 +47,7 @@ describe('ProjectCard', () => {
         onButtonClick={(_url: string) => {}}
       />,
     );
-    expect(screen.getByText('W ocenie')).toBeInTheDocument();
+    expect(screen.getByText(PROJECT_CARD_TEXT.review.statusText)).toBeInTheDocument();
   });
 
   it('should display Zakończony when status is equal to done', () => {
@@ -61,7 +62,7 @@ describe('ProjectCard', () => {
         onButtonClick={(_url: string) => {}}
       />,
     );
-    expect(screen.getByText('Zakończony')).toBeInTheDocument();
+    expect(screen.getByText(PROJECT_CARD_TEXT.done.statusText)).toBeInTheDocument();
   });
 
   it('should have button disabled if status is equal to idle', () => {

@@ -3,7 +3,7 @@ import { Box, Flex, Grid, Image } from '@chakra-ui/react';
 
 import { Button } from '../Button';
 import { Typography } from '../Typography';
-import { ProjectCardProps, ProjectCardText } from './projectCardTypes';
+import { PROJECT_CARD_TEXT, ProjectCardProps } from './projectCardTypes';
 
 export const ProjectCard = ({
   status,
@@ -36,12 +36,12 @@ export const ProjectCard = ({
             <Typography weight="medium" as="span">
               Status:
             </Typography>
-            <Typography as="span">{ProjectCardText[status].statusText}</Typography>
+            <Typography as="span">{PROJECT_CARD_TEXT[status].statusText}</Typography>
           </Flex>
 
           <Flex justifyContent="space-between" alignSelf="start">
             <Typography weight="medium" as="span">
-              {ProjectCardText[status].timeStatus}:
+              {PROJECT_CARD_TEXT[status].timeStatus}:
             </Typography>
             <Typography as="span">
               {status !== 'done' && date ? new Date(date).toLocaleDateString() : `${points}/${pointsMax}`}

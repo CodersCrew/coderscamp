@@ -25,7 +25,7 @@ type ProjectCardStatus = 'idle' | 'doing' | 'review' | 'done';
 
 type ProjectCardOptions = Record<ProjectCardStatus, { statusText: string; timeStatus: string }>;
 
-export const ProjectCardText: ProjectCardOptions = {
+export const PROJECT_CARD_TEXT: ProjectCardOptions = {
   idle: {
     statusText: 'Nie rozpoczęty',
     timeStatus: 'Rozpoczęcie',
