@@ -21,7 +21,8 @@
     "@chakra-ui/theme-tools": "1.1.9",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
-    "framer-motion": "4.1.17"
+    "framer-motion": "4.1.17",
+    "react-intersection-observer": "8.32.0"
   },
   "devDependencies": {
     "@chakra-ui/cli": "1.5.0",

@@ -2772,6 +2772,7 @@ __metadata:
     "@types/react-dom": 17.0.9
     framer-motion: 4.1.17
     react: 17.0.2
+    react-intersection-observer: 8.32.0
   peerDependencies:
     react: 17.0.2
   languageName: unknown
@@ -2790,7 +2791,6 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-hook-form: 7.12.2
-    react-in-viewport: 1.0.0-alpha.19
     sass: 1.37.5
     swiper: 6.8.1
   languageName: unknown
@@ -13631,7 +13631,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
+"hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -19911,18 +19911,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-in-viewport@npm:1.0.0-alpha.19":
-  version: 1.0.0-alpha.19
-  resolution: "react-in-viewport@npm:1.0.0-alpha.19"
-  dependencies:
-    hoist-non-react-statics: ^3.0.0
-  peerDependencies:
-    react: ^16.8.3 || ^17.0.0
-    react-dom: ^16.8.3 || ^17.0.0
-  checksum: daad57374a4d35a0fd03a4058b6c35081947ac6ff729244998d5ce46ab57855b877fd4105f6d71a29b60d262e1a81c5760f01421952ffd820aa45be3d4417615
-  languageName: node
-  linkType: hard
-
 "react-inspector@npm:^5.1.0":
   version: 5.1.1
   resolution: "react-inspector@npm:5.1.1"
@@ -19933,6 +19921,15 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.8.4 || ^17.0.0
   checksum: ca9e4c1fedb94e4e956dd3142838c5a25a9d61375aee5e8a74dd623bae09a263098a93f220e8d84c7fd39e569e1fa4297d363ddbc91b15bca91baeb7281d7f4f
+  languageName: node
+  linkType: hard
+
+"react-intersection-observer@npm:8.32.0":
+  version: 8.32.0
+  resolution: "react-intersection-observer@npm:8.32.0"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
+  checksum: 24eebbbc73511d975627b6563ff168812ec3de5bd251dd4991cf89b2ad04b3c0dd27f8487ea368f87793d117557771d517ccf0625b5c8e944d8ad71a68f079fd
   languageName: node
   linkType: hard
 
