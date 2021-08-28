@@ -175,6 +175,9 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest-formatting/recommended',
       ],
+      rules: {
+        'jest/expect-expect': [2, { assertFunctionNames: ['expect', '*.expectReadModel'] }],
+      },
     },
   ],
   settings: {
