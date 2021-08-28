@@ -27,7 +27,7 @@ export class CourseProgressReadModule {
     });
   }
 
-  @OnEvent('LearningMaterialTasks.TaskWasCompleted')
+  @OnEvent('LearningMaterialsTasks.TaskWasCompleted')
   async onTaskWasCompleted(event: ApplicationEvent<TaskWasCompleted>) {
     await this.prismaService.courseProgress.update({
       where: {
