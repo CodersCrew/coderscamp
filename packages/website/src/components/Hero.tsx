@@ -1,12 +1,14 @@
-import React from 'react';
-
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
+import { useRecruitmentModal } from '@/components/RecruitmentModal';
+
 export const Hero = () => {
+  const { openModal } = useRecruitmentModal();
+
   const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
   const buttonsStackDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
 
@@ -27,7 +29,7 @@ export const Hero = () => {
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand">
+          <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
             Zapisz się na CodersCamp
           </Button>
           <Button {...buttonProps}>Pobierz plan kursu</Button>

@@ -2,10 +2,14 @@ import reactRefresh from '@vitejs/plugin-react-refresh';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-import { validateEnvVariables } from './src/common/env';
+import { validateBuildEnv } from './src/common/validateBuildEnv';
 
-export default () => {
-  validateEnvVariables();
+export default async () => {
+  try {
+    await validateBuildEnv();
+  } catch (ex) {
+    throw new Error(ex);
+  }
 
   return defineConfig({
     plugins: [tsconfigPaths(), reactRefresh()],

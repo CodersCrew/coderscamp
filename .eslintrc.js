@@ -9,6 +9,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/setupTests.ts',
   'scripts/*.js',
   '**/testHelpers.tsx',
+  '**/*.test-module.ts',
 ];
 
 module.exports = {
@@ -36,6 +37,7 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
+    'airbnb',
     'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
@@ -158,6 +160,11 @@ module.exports = {
       // Files that should contain a default export.
       files: ['*.config.[tj]s', 'packages/website/src/pages/**/*.tsx', '*.stories.tsx'],
       rules: { 'import/no-default-export': 0 },
+    },
+    {
+      // Redux slices.
+      files: ['**/*Slice.ts'],
+      rules: { 'no-param-reassign': 0 },
     },
     {
       // Enable plugins rules only for test files.

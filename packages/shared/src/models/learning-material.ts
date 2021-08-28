@@ -1,10 +1,4 @@
-export interface LearningMaterial {
-  id: number;
+export type GetLearningMaterialResponse = {
+  id: string;
   url: string;
-  completedCount: number;
-  userId: number;
-}
-
-export type CreateLearningMaterialResponse = LearningMaterial;
-
-export type GetLearningMaterialResponse = LearningMaterial | null;
+};
