@@ -50,6 +50,7 @@ export const MobileBaseNavbar = () => {
   const [isVisible, setIsVisible] = useState(false);
   const logoLayout = useBreakpointValue({ sm: 'square', md: 'horizontal' } as const);
   const { route } = useRouter();
+  const iconButonSize = 'md';
   const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
 
   const changeDisplayMobileMenu = () => setIsVisible(!isVisible);
@@ -66,7 +67,12 @@ export const MobileBaseNavbar = () => {
 
   return (
     <Flex>
-      <IconButton size="md" aria-label="Open Menu" icon={<SolidMenuIcon />} onClick={changeDisplayMobileMenu} />
+      <IconButton
+        size={iconButonSize}
+        aria-label="Open Menu"
+        icon={<SolidMenuIcon />}
+        onClick={changeDisplayMobileMenu}
+      />
       {isVisible && (
         <Flex
           w="100vw"
@@ -84,7 +90,7 @@ export const MobileBaseNavbar = () => {
               mt="18px"
               mr="8px"
               aria-label="Close Menu"
-              size="md"
+              size={iconButonSize}
               icon={<SolidCloseIcon />}
               onClick={changeDisplayMobileMenu}
             />
