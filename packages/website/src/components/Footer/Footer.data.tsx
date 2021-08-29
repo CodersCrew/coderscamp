@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import {
   SolidFacebookIcon,
@@ -8,42 +8,56 @@ import {
   SolidLinkedinIcon,
 } from '@coderscamp/ui/icons';
 
-export const socialMediaIcons = [
-  { name: 'FacebookIcon', component: <SolidFacebookIcon />, urlPath: 'https://www.facebook.com/ccrew18' },
-  { name: 'InstagramIcon', component: <SolidInstagramIcon />, urlPath: 'https://www.instagram.com/coderscrew.pl/' },
-  {
-    name: 'LinkedinIcon',
-    component: <SolidLinkedinIcon />,
-    urlPath: 'https://www.linkedin.com/company/coderscrew/mycompany/',
-  },
-  { name: 'GitHubIcon', component: <SolidGitHubIcon />, urlPath: 'https://github.com/CodersCrew' },
-  { name: 'GlobalIcon', component: <SolidGlobalIcon />, urlPath: 'https://coderscrew.pl/' },
+import { COURSE_PLAN_URL, MENTORS_GUIDE_URL, PRIVACY_POLICY_URL, SCHEDULE_URL, TERMS_URL } from '@/constants';
+
+interface Social {
+  label: string;
+  icon: ReactElement;
+  href: string;
+}
+
+export const socialMediaIcons: Social[] = [
+  { label: 'Link do konta Facebook', icon: <SolidFacebookIcon />, href: 'https://facebook.com/ccrew18' },
+  { label: 'Link do konta Instagram', icon: <SolidInstagramIcon />, href: 'https://instagram.com/coderscrew.pl' },
+  { label: 'Link do konta LinkedIn', icon: <SolidLinkedinIcon />, href: 'https://linkedin.com/company/coderscrew' },
+  { label: 'Link do konta GitHub', icon: <SolidGitHubIcon />, href: 'https://github.com/CodersCrew' },
+  { label: 'Link do strony internetowej', icon: <SolidGlobalIcon />, href: 'https://coderscrew.pl' },
 ];
 
-export const footerNav = [
+interface NavItem {
+  href: string;
+  children: string;
+  isExternal?: boolean;
+}
+
+interface NavColumn {
+  title: string;
+  items: NavItem[];
+}
+
+export const footerNav: NavColumn[] = [
   {
     title: 'Nawigacja',
     items: [
-      { urlPath: '/', name: 'Strona główna' },
-      { urlPath: '/', name: 'Dla mentorów' },
-      { urlPath: '/', name: 'FAQ' },
-      { urlPath: '/', name: 'Kontakt' },
+      { href: '/', children: 'Strona główna' },
+      { href: '/mentor', children: 'Dla mentorów' },
+      { href: '/faq', children: 'FAQ' },
+      { href: '/kontakt', children: 'Kontakt' },
     ],
   },
   {
     title: 'Do pobrania',
     items: [
-      { urlPath: '/', name: 'Plan kursu' },
-      { urlPath: '/', name: 'Poradnik mentora' },
-      { urlPath: '/', name: 'Media kit' },
+      { href: SCHEDULE_URL, children: 'Harmonogram', isExternal: true },
+      { href: COURSE_PLAN_URL, children: 'Plan kursu', isExternal: true },
+      { href: MENTORS_GUIDE_URL, children: 'Poradnik mentora', isExternal: true },
     ],
   },
   {
     title: 'Kwestie prawne',
     items: [
-      { urlPath: '/', name: 'Regulamin kursu' },
-      { urlPath: '/', name: 'Polityka prywatności' },
-      { urlPath: '/', name: 'Polityka cookies' },
+      { href: TERMS_URL, children: 'Regulamin kursu', isExternal: true },
+      { href: PRIVACY_POLICY_URL, children: 'Polityka prywatności', isExternal: true },
     ],
   },
 ];

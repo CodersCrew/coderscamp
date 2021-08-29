@@ -6,7 +6,7 @@ import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
+import { COURSE_PLAN_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 export const Hero = () => {
   const { openModal } = useRecruitmentModal();
@@ -35,7 +35,7 @@ export const Hero = () => {
           <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
             Zapisz się na kurs
           </Button>
-          <Button {...buttonProps} icon={<SolidDownloadIcon />}>
+          <Button {...buttonProps} as="a" href={COURSE_PLAN_URL} icon={<SolidDownloadIcon />}>
             Pobierz plan kursu
           </Button>
         </Stack>

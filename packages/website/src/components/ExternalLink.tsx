@@ -1,8 +1,14 @@
 import { Link, LinkProps } from '@coderscamp/ui/components/Link';
 
-export const ExternalLink = ({ children, ...chakraProps }: LinkProps) => {
+interface ExternalLinkProps extends LinkProps {
+  withUnderline?: boolean;
+}
+
+export const ExternalLink = ({ children, withUnderline = true, ...chakraProps }: ExternalLinkProps) => {
+  const underlineProps = withUnderline ? { textDecoration: 'underline', textUnderlineOffset: '2px' } : {};
+
   return (
-    <Link {...chakraProps} textDecoration="underline" textUnderlineOffset="2px">
+    <Link target="_blank" rel="noreferrer" {...chakraProps} {...underlineProps}>
       {children}
     </Link>
   );
