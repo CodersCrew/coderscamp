@@ -96,7 +96,7 @@ export const MobileBaseNavbar = () => {
             />
           </Flex>
 
-          <VStack h="100%" justifyContent="space-evenly">
+          <VStack h="100%" spacing="12">
             {NavbarElements.map((element) => (
               <Link key={element.text} href={element.destinationLink}>
                 <Box
