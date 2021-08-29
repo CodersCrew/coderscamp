@@ -16,7 +16,7 @@ export interface SliderStepsProps {
 
 const arrowStyles = {
   variant: 'ghost',
-  size: 'sm',
+  size: 'md',
 } as const;
 
 export const SliderSteps = ({ count, selectedIndex, onChange, showDots = true }: SliderStepsProps) => {

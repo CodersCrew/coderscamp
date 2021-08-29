@@ -1,5 +1,5 @@
 import React from 'react';
-import { Circle } from '@chakra-ui/react';
+import { Center, Circle } from '@chakra-ui/react';
 
 export interface SliderStepProps {
   current: boolean;
@@ -7,13 +7,11 @@ export interface SliderStepProps {
 }
 const currentDotProps = {
   backgroundColor: 'brand.500',
-  mx: '6px',
   borderColor: 'brand.200',
   borderWidth: '4px',
 };
 const defaultProps = {
   backgroundColor: 'gray.300',
-  mx: '10px',
   cursor: 'pointer',
 };
 
@@ -22,21 +20,16 @@ export const SliderStep = ({ current, onClick }: SliderStepProps) => {
   const selectStep = () => !current && onClick();
 
   return (
-    <Circle
-      size="12px"
-      boxSizing="content-box"
+    <Center
+      w="40px"
+      h="40px"
       onClick={selectStep}
+      cursor={current ? '' : 'pointer'}
       role="tab"
       tabIndex={0}
       aria-selected={current}
-      _after={{
-        content: '""',
-        cursor: 'pointer',
-        position: 'absolute',
-        w: '40px',
-        h: '40px',
-      }}
-      {...stepProps}
-    />
+    >
+      <Circle size="12px" boxSizing="content-box" {...stepProps} />
+    </Center>
   );
 };
