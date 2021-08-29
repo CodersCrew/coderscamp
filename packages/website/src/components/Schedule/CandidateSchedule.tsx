@@ -2,6 +2,8 @@ import { Center } from '@coderscamp/ui/components/Center';
 import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
+import { CANDIDATE_SCHEDULE_ID } from '@/constants';
+
 import { ScheduleItem } from './ScheduleItem';
 import { useCandidateSchedule } from './useSchedule';
 
@@ -9,7 +11,7 @@ export const CandidateSchedule = () => {
   const schedule = useCandidateSchedule();
 
   return (
-    <Center flexDirection="column" mx="auto" w="100%" mt="120px" mb="80px">
+    <Center flexDirection="column" mx="auto" w="100%" mt="120px" mb="80px" id={CANDIDATE_SCHEDULE_ID}>
       <Typography size="4xl" weight="extrabold" m="64px 0">
         Jak wziąć udział?
       </Typography>
