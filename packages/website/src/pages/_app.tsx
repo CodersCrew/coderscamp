@@ -1,10 +1,11 @@
-import 'swiper/swiper.scss';
+import 'swiper/css';
 
 import type { CSSProperties } from 'react';
 import type { AppProps } from 'next/app';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
 
+import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/Navbar';
 import { RecruitmentModalProvider } from '@/components/RecruitmentModal';
 
@@ -21,6 +22,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <RecruitmentModalProvider>
         <Navbar />
         <Component {...pageProps} />
+        <Footer />
       </RecruitmentModalProvider>
     </ThemeProvider>
   );

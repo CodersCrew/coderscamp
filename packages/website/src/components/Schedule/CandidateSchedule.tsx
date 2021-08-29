@@ -3,10 +3,10 @@ import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
 import { ScheduleItem } from './ScheduleItem';
-import { useSchedule } from './useSchedule';
+import { useCandidateSchedule } from './useSchedule';
 
-export const Schedule = () => {
-  const schedule = useSchedule();
+export const CandidateSchedule = () => {
+  const schedule = useCandidateSchedule();
 
   return (
     <Center flexDirection="column" mx="auto" w="100%" mt="120px" mb="80px">
