@@ -16,7 +16,7 @@ export interface SliderStepsProps {
 
 const arrowStyles = {
   variant: 'ghost',
-  size: 'md',
+  size: 'sm',
 } as const;
 
 export const SliderSteps = ({ count, selectedIndex, onChange, showDots = true }: SliderStepsProps) => {
@@ -33,7 +33,14 @@ export const SliderSteps = ({ count, selectedIndex, onChange, showDots = true }:
 
   return (
     <Center width="max-content" role="tablist">
-      <IconButton icon={<OutlinedArrowLeftIcon />} {...arrowStyles} onClick={goBack} aria-label="go back button" />
+      <IconButton
+        w="40px"
+        h="40px"
+        icon={<OutlinedArrowLeftIcon />}
+        {...arrowStyles}
+        onClick={goBack}
+        aria-label="go back button"
+      />
       {showDots ? (
         [...Array(count).keys()].map((index) => (
           <SliderStep key={index} current={selectedIndex === index} onClick={() => goToSelected(index)} />
@@ -44,6 +51,8 @@ export const SliderSteps = ({ count, selectedIndex, onChange, showDots = true }:
         </Typography>
       )}
       <IconButton
+        w="40px"
+        h="40px"
         icon={<OutlinedArrowRightIcon />}
         {...arrowStyles}
         onClick={goForward}
