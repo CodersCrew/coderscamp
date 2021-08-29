@@ -10,15 +10,15 @@ interface AnimatedCounterProps extends Omit<TypographyProps, 'children'> {
   totalDuration?: number;
 }
 
-function digitsInString(value: string) {
+const digitsInString = (value: string) => {
   return Number(value.match(/\d+/g)?.join('')) || 0;
-}
+};
 
-function postfixInString(value: string) {
+const postfixInString = (value: string) => {
   return String(value.match(/\D+/) || '');
-}
+};
 
-function addThousandsSeparator(value: string) {
+const addThousandsSeparator = (value: string) => {
   return value
     .split('')
     .reverse()
@@ -27,7 +27,7 @@ function addThousandsSeparator(value: string) {
     ?.map((val) => val.split('').reverse().join(''))
     .reverse()
     .join(' ');
-}
+};
 
 export const Counter = ({ valueFrom = 0, valueTo, totalDuration = 2, ...props }: AnimatedCounterProps) => {
   const [displayValue, setDisplayValue] = useState('0');
