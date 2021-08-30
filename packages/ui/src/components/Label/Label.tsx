@@ -1,12 +1,13 @@
 import React, { ReactText } from 'react';
 import { Box, forwardRef, HTMLChakraProps } from '@chakra-ui/react';
 
+import type { OmitForbiddenProps } from '../../types';
 import { useFieldContextSize } from '../FormControl/FieldContext';
 import { Typography } from '../Typography';
 
 type LabelSizeProps = 'sm' | 'md' | 'lg';
 
-export interface LabelProps extends HTMLChakraProps<'div'> {
+export interface LabelProps extends OmitForbiddenProps<HTMLChakraProps<'div'>> {
   children: ReactText | ReactText[];
   size?: LabelSizeProps;
   required?: boolean;
