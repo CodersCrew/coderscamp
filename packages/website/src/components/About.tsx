@@ -8,6 +8,7 @@ import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
 import code from '@/assets/code.jpg';
+import { MODULES_COUNT, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 type ListItemProps = {
   children: ReactNode;
@@ -47,13 +48,14 @@ export const About = () => {
             <Typography mb="16px">Podczas kursu:</Typography>
             <VStack spacing="12px">
               <ListItem>
-                Otrzymasz od nas <b>interaktywny plan nauki</b>, składający się z <b>5 modułów tematycznych</b>. Każdy
-                moduł to kilkanaście sekcji, które pozwolą Ci zarówno zapoznać się z teorią dotyczącą danego
-                zagadnienia, jak i wykorzystać zdobytą wiedzę w praktyce.
+                Otrzymasz od nas <b>interaktywny plan nauki</b>, składający się z{' '}
+                <b>{MODULES_COUNT} modułów tematycznych</b>. Każdy moduł to kilkanaście sekcji, które pozwolą Ci zarówno
+                zapoznać się z teorią dotyczącą danego zagadnienia, jak i wykorzystać zdobytą wiedzę w praktyce.
               </ListItem>
               <ListItem>
-                Dołączysz do <b>6-osobowego zespołu</b> prowadzonego przez <b>doświadczonego mentora</b>. Wspólnie
-                zrealizujecie aż <b>6 praktycznych projektów</b> o rosnącej skali, budując tym samym swoje portfolio.
+                Dołączysz do <b>{TEAM_SIZE}-osobowego zespołu</b> prowadzonego przez <b>doświadczonego mentora</b>.
+                Wspólnie zrealizujecie aż <b>{PROJECTS_COUNT} praktycznych projektów</b> o rosnącej skali, budując tym
+                samym swoje portfolio.
               </ListItem>
               <ListItem>
                 Staniesz się częścią <b>społeczności składającej się z kilkuset osób</b>, które tak jak Ty stawiają

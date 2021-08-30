@@ -25,8 +25,8 @@ const EMAIL_REGEX =
   // eslint-disable-next-line no-useless-escape
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const requiredValidator = { required: 'To pole jest wymagane' };
-const emailValidator = { pattern: { value: EMAIL_REGEX, message: 'Niepoprawny adres e-mail' } };
+export const requiredValidator = { required: 'To pole jest wymagane' };
+export const emailValidator = { pattern: { value: EMAIL_REGEX, message: 'Niepoprawny adres e-mail' } };
 
 export const Form = () => {
   const {

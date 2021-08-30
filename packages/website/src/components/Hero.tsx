@@ -1,12 +1,16 @@
-import React from 'react';
-
 import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
+import { SolidDownloadIcon } from '@coderscamp/ui/icons';
+
+import { useRecruitmentModal } from '@/components/RecruitmentModal';
+import { COURSE_PLAN_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 export const Hero = () => {
+  const { openModal } = useRecruitmentModal();
+
   const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
   const buttonsStackDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
 
@@ -22,15 +26,18 @@ export const Hero = () => {
             Największy otwarty kurs programowania webowego w Polsce
           </Typography>
           <Typography size={subheaderSize} color="gray.500">
-            Dołącz do 6-osobowego zespołu • Rozwijaj się dzięki wsparciu doświadczonego mentora • Poznaj od podstaw
-            programowanie webowe • Stwórz aż 6 praktycznych projektów • Rozpocznij swoją karierę jako web developer
+            Dołącz do {TEAM_SIZE}-osobowego zespołu • Rozwijaj się dzięki wsparciu doświadczonego mentora • Poznaj od
+            podstaw programowanie webowe • Stwórz aż {PROJECTS_COUNT} praktycznych projektów • Rozpocznij swoją karierę
+            jako web developer
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand">
-            Zapisz się na CodersCamp
+          <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
+            Zapisz się na kurs
           </Button>
-          <Button {...buttonProps}>Pobierz plan kursu</Button>
+          <Button {...buttonProps} as="a" href={COURSE_PLAN_URL} icon={<SolidDownloadIcon />}>
+            Pobierz plan kursu
+          </Button>
         </Stack>
       </VStack>
     </Flex>
