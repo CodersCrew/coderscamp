@@ -26,16 +26,11 @@ export const Navbar = () => {
       >
         {baseNavbar}
         <Flex overflow="hidden">
-          <Button fontSize={isSmallerThan370px ? 'xs' : 'md'} size="md" mr="12px" onClick={() => openModal('mentor')}>
+          <Button size="md" mr="12px" onClick={() => openModal('mentor')}>
             Zostań mentorem
           </Button>
-          <Button
-            fontSize={isSmallerThan370px ? 'xs' : 'md'}
-            size="md"
-            color="brand"
-            onClick={() => openModal('participant')}
-          >
-            Zapisz się na kurs
+          <Button size="md" color="brand" onClick={() => openModal('participant')}>
+            {isSmallerThan370px ? 'Zapisz się' : 'Zapisz się na kurs'}
           </Button>
         </Flex>
       </HStack>
