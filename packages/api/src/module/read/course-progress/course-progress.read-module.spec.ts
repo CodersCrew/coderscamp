@@ -1,37 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { CourseProgress } from '@prisma/client';
 import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { cleanupDatabase } from '@/common/test-utils';
+import { initTestModule } from '@/common/test-utils';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
-import { PrismaService } from '@/prisma/prisma.service';
-import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
-import { AppModule } from '../../../app.module';
-
 async function courseProgressTestModule() {
-  const app: TestingModule = await Test.createTestingModule({
-    imports: [AppModule],
-  }).compile();
-
-  await app.init();
-
-  const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
-  const prismaService = app.get<PrismaService>(PrismaService);
-
-  await cleanupDatabase(prismaService);
-
-  async function close() {
-    await app.close();
-  }
-
-  function eventOccurred(event: ApplicationEvent): void {
-    eventBus.publishAll([event]);
-  }
+  const { prismaService, close, eventOccurred } = await initTestModule();
 
   async function addExampleData({
     id,
@@ -49,19 +27,15 @@ async function courseProgressTestModule() {
     });
   }
 
-  async function GetDataFromDb(learningMaterialsId: string) {
-    const data = await prismaService.courseProgress.findUnique({ where: { learningMaterialsId } });
-
-    return data;
-  }
-
   async function expectReadModel(expectation: { learningMaterialsId: string; readModel: CourseProgress | null }) {
     await waitForExpect(() =>
-      expect(GetDataFromDb(expectation.learningMaterialsId)).resolves.toStrictEqual(expectation.readModel),
+      expect(
+        prismaService.courseProgress.findUnique({ where: { learningMaterialsId: expectation.learningMaterialsId } }),
+      ).resolves.toStrictEqual(expectation.readModel),
     );
   }
 
-  return { eventOccurred, expectReadModel, close, addExampleData, GetDataFromDb };
+  return { eventOccurred, expectReadModel, close, addExampleData };
 }
 
 function taskWasCompletedForLearningMaterials(learningMaterialsId: string): ApplicationEvent<TaskWasCompleted> {
