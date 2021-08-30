@@ -48,6 +48,12 @@ model Event {
   @@unique(fields: [streamId, streamCategory], name: "streamName")
 }
 
+model Course {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dateStart DateTime
+  dateEnd   DateTime
+}
+
 enum Role {
   Admin
   User

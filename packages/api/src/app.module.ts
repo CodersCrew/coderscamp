@@ -7,6 +7,7 @@ import { join } from 'path';
 import { env } from '@/common/env';
 
 import { AuthModule } from './auth/auth.module';
+import { CoursesModule } from './courses/courses.module';
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from './module/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
 import { CourseProgressReadModule } from './module/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from './module/read/learning-materials/learning-materials.read-module';
@@ -33,6 +34,7 @@ const imports: ModuleMetadata['imports'] = [
   }),
   PrismaModule,
   UsersModule,
+  CoursesModule,
   AuthModule,
   ...eventModelingModules,
 ];
