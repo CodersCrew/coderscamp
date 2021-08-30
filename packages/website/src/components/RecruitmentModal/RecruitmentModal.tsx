@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { IconButton } from '@coderscamp/ui/components/IconButton';
 import {
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -11,7 +11,6 @@ import {
 } from '@coderscamp/ui/components/Modal';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidCloseIcon } from '@coderscamp/ui/icons';
 
 import { RecruitmentModalForm } from './RecruitmentModalForm';
 import type { ModalConfig, ModalType } from './RecruitmentModalProvider';
@@ -26,8 +25,7 @@ interface RecruitmentModalProps {
 export const RecruitmentModal = ({ isOpen, config, onClose, modalType }: RecruitmentModalProps) => {
   const modalContentPaddings = useBreakpointValue({ base: '32px 16px 16px 32px', md: '56px 64px 64px 64px' } as const);
   const modalBodyMarginBottom = useBreakpointValue({ base: '16px', lg: '32px' } as const);
-  const modalCloseIconSize = useBreakpointValue({ base: 'sm', md: 'lg' } as const);
-  const modalHeaderTextMargin = useBreakpointValue({ base: '32px', md: '60px' } as const);
+  const modalHeaderTextMargin = useBreakpointValue({ base: '32px', md: '64px' } as const);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -40,16 +38,18 @@ export const RecruitmentModal = ({ isOpen, config, onClose, modalType }: Recruit
         boxShadow="large"
         textAlign="center"
       >
-        <IconButton
-          icon={<SolidCloseIcon />}
-          aria-label="Close modal button"
+        <ModalCloseButton
           variant="ghost"
-          style={{ position: 'absolute', top: 12, right: 12 }}
-          size={modalCloseIconSize}
           onClick={onClose}
+          size="lg"
+          position="absolute"
+          top="12px"
+          right="12px"
+          aria-label="Zamknij modal"
         />
+
         <ModalHeader p={0}>
-          <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" marginX={modalHeaderTextMargin}>
+          <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" mx={modalHeaderTextMargin}>
             {config.header}
           </Typography>
         </ModalHeader>
