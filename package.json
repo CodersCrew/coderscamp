@@ -19,15 +19,14 @@
     "w": "ts-node scripts/w.ts",
     "bootstrap": "ts-node scripts/bootstrap.ts",
     "clean": "ts-node scripts/clean.ts",
-    "generate": "concurrently \"yarn w api generate\" \"yarn w ui generate\"",
     "typecheck": "yarn workspaces foreach -vpi run typecheck",
     "test": "yarn workspaces foreach -vpi run test",
     "eslint": "eslint --ignore-path .gitignore --ext js,ts,tsx",
     "lint": "yarn eslint \"**/*.{js,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
     "lint:perf": "cross-env TIMING=50 yarn lint",
-    "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\"",
-    "api:dev": "yarn w api dev"
+    "generate": "concurrently \"yarn w api generate\" \"yarn w ui generate\"",
+    "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
     "@types/jest": "27.0.1",
