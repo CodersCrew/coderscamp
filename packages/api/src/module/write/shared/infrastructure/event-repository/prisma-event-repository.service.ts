@@ -13,10 +13,10 @@ const parseData = (value: unknown): Record<string, unknown> => JSON.parse(typeof
 const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, unknown> => {
   const metadata = JSON.parse(typeof value === 'string' ? value : '{}');
 
-  const hasCorrectCorelationId = 'correlationId' in metadata && typeof metadata.correlationId === 'string';
+  const hasCorrectCorrelationId = 'correlationId' in metadata && typeof metadata.correlationId === 'string';
   const hasCorrectCausationId = !('causationId' in metadata) || typeof metadata.causationId === 'string';
 
-  if (!hasCorrectCorelationId || !hasCorrectCausationId) {
+  if (!hasCorrectCorrelationId || !hasCorrectCausationId) {
     throw new Error('Wrong format of the metadata JSON');
   }
 
@@ -51,8 +51,7 @@ export class PrismaEventRepository implements EventRepository {
     events: ApplicationEvent[],
     expectedStreamVersion: EventStreamVersion,
   ): Promise<void> {
-    // todo: do it in transaction!
-    this.prismaService.$transaction(async (prisma) => {
+    await this.prismaService.$transaction(async (prisma) => {
       const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
 
       if (currentStreamVersion !== expectedStreamVersion) {
