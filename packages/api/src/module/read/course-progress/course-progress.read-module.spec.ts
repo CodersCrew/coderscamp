@@ -5,6 +5,7 @@ import waitForExpect from 'wait-for-expect';
 
 import { initTestModule } from '@/common/test-utils';
 import { ApplicationEvent } from '@/module/application-command-events';
+import { LearningMaterialsUrlWasGenerated } from '@/module/events/learning-materials-url-was-generated.domain-event';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
@@ -27,10 +28,21 @@ async function courseProgressTestModule() {
     });
   }
 
-  async function expectReadModel(expectation: { learningMaterialsId: string; readModel: CourseProgress | null }) {
+  async function expectReadModel(expectation: {
+    learningMaterialsId: string;
+    readModel: Omit<CourseProgress, 'id'> | null;
+  }) {
     await waitForExpect(() =>
       expect(
-        prismaService.courseProgress.findUnique({ where: { learningMaterialsId: expectation.learningMaterialsId } }),
+        prismaService.courseProgress.findUnique({
+          where: { learningMaterialsId: expectation.learningMaterialsId },
+          select: {
+            id: false,
+            courseUserId: true,
+            learningMaterialsCompletedTasks: true,
+            learningMaterialsId: true,
+          },
+        }),
       ).resolves.toStrictEqual(expectation.readModel),
     );
   }
@@ -53,6 +65,25 @@ function taskWasCompletedForLearningMaterials(learningMaterialsId: string): Appl
   };
 }
 
+function learningMaterialsUrlWasGeneratedWithId(id: string): ApplicationEvent<LearningMaterialsUrlWasGenerated> {
+  const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
+  const courseUserId = `userId-${id}`;
+
+  return {
+    type: 'LearningMaterialsUrlWasGenerated',
+    id: uuid(),
+    occurredAt: new Date(),
+    data: {
+      learningMaterialsId: `learningMaterialsId-${id}`,
+      courseUserId,
+      materialsUrl: SAMPLE_MATERIALS_URL,
+    },
+    metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
+    streamVersion: 1,
+    streamName: EventStreamName.from('LearningMaterialsUrl', courseUserId),
+  };
+}
+
 describe('Read Slice | CourseProgress', () => {
   let moduleUnderTest: AsyncReturnType<typeof courseProgressTestModule>;
 
@@ -70,23 +101,27 @@ describe('Read Slice | CourseProgress', () => {
     const courseUserId = `userId-${id}`;
     const learningMaterialsId = `learningMaterialsId-${id}`;
     const initialLearningMaterialCompletedTask = 0;
-    const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
 
-    await moduleUnderTest.addExampleData({
-      id,
-      courseUserId,
+    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+
+    await moduleUnderTest.expectReadModel({
       learningMaterialsId,
-      learningMaterialsCompletedTasks: initialLearningMaterialCompletedTask,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: initialLearningMaterialCompletedTask,
+      },
     });
 
     // When
     moduleUnderTest.eventOccurred(taskWasCompletedForLearningMaterials(learningMaterialsId));
 
     // Then
+    const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
+
     await moduleUnderTest.expectReadModel({
       learningMaterialsId,
       readModel: {
-        id,
         learningMaterialsId,
         courseUserId,
         learningMaterialsCompletedTasks: learningMaterialCompletedTaskAfterEvent,
