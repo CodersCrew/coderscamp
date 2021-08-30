@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-const { exec } = require('./_helpers');
+import { exec } from './_helpers';
 
 /**
  * Initializes the entire project and creates generated files.

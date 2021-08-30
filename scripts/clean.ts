@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-const { exec, log } = require('./_helpers');
+import { exec, log } from './_helpers';
 
 const OUTPUT_DIRS = ['dist', 'storybook-static', '.next', 'yarn-error.log'];
 

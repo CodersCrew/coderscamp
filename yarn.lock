@@ -6678,6 +6678,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/shelljs@npm:0.8.9":
+  version: 0.8.9
+  resolution: "@types/shelljs@npm:0.8.9"
+  dependencies:
+    "@types/glob": "*"
+    "@types/node": "*"
+  checksum: 3d36b010d84665eed34076b4d4501c81f327df5e0c4062183bd2ce14ad927e82de2d1b00d49d356f9cc48390dd6b4db7b38fa221bc9f0eeb63cb7f873cd09fe4
+  languageName: node
+  linkType: hard
+
 "@types/source-list-map@npm:*":
   version: 0.1.2
   resolution: "@types/source-list-map@npm:0.1.2"
@@ -9688,6 +9698,7 @@ __metadata:
   resolution: "coderscamp@workspace:."
   dependencies:
     "@types/jest": 27.0.1
+    "@types/shelljs": 0.8.9
     "@typescript-eslint/eslint-plugin": 4.29.3
     "@typescript-eslint/parser": 4.29.3
     concurrently: 6.2.1
@@ -9715,6 +9726,7 @@ __metadata:
     serve: 12.0.0
     shelljs: 0.8.4
     ts-jest: 27.0.5
+    ts-node: 10.2.1
     typescript: 4.4.2
   languageName: unknown
   linkType: soft
