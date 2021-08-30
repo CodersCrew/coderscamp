@@ -1,19 +1,25 @@
+import del from 'del';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
 import { exec, log } from './_helpers';
 
-const OUTPUT_DIRS = ['dist', 'storybook-static', '.next', 'yarn-error.log'];
-
-const toMonorepoPath = (path) => `${path} packages/**/${path}`;
+const toMonorepoPath = (path: string) => [path, `packages/**/${path}`];
 
 /**
  * Removes all production output files, node_modules and clears Yarn cache.
  */
 const main = () => {
-  const pathsToRemove = [...OUTPUT_DIRS, 'node_modules'].map(toMonorepoPath).join(' ');
+  const gitignore = readFileSync(resolve(__dirname, '../.gitignore'), 'utf-8');
+  const rootPaths = gitignore
+    .split('\n')
+    .filter((str) => str.trim() && !str.startsWith('#') && !str.startsWith('.env'));
 
-  const script = `rimraf ${pathsToRemove} && yarn cache clean`;
+  exec('yarn cache clean');
+  log('Yarn cache cleaned');
 
-  log(script);
-  exec(script);
+  del.sync(rootPaths.flatMap(toMonorepoPath), { expandDirectories: true, dot: true });
+  log('All generated files deleted');
 };
 
 main();
