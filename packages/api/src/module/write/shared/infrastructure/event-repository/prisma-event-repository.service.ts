@@ -52,25 +52,27 @@ export class PrismaEventRepository implements EventRepository {
     expectedStreamVersion: EventStreamVersion,
   ): Promise<void> {
     // todo: do it in transaction!
-    const currentStreamVersion = await this.prismaService.event.count({ where: { streamId: streamName.streamId } });
+    this.prismaService.$transaction(async (prisma) => {
+      const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
 
-    if (currentStreamVersion !== expectedStreamVersion) {
-      throw new Error(
-        `Event stream ${streamName.raw} expected version is: ${expectedStreamVersion}, but current version is: ${currentStreamVersion}`,
-      );
-    }
+      if (currentStreamVersion !== expectedStreamVersion) {
+        throw new Error(
+          `Event stream ${streamName.raw} expected version is: ${expectedStreamVersion}, but current version is: ${currentStreamVersion}`,
+        );
+      }
 
-    const databaseEvents = events.map((e) => ({
-      id: e.id,
-      type: e.type,
-      streamId: streamName.streamId,
-      streamCategory: streamName.streamCategory,
-      streamVersion: e.streamVersion,
-      occurredAt: e.occurredAt,
-      data: JSON.stringify(e.data),
-      metadata: JSON.stringify(e.metadata),
-    }));
+      const databaseEvents = events.map((e) => ({
+        id: e.id,
+        type: e.type,
+        streamId: streamName.streamId,
+        streamCategory: streamName.streamCategory,
+        streamVersion: e.streamVersion,
+        occurredAt: e.occurredAt,
+        data: JSON.stringify(e.data),
+        metadata: JSON.stringify(e.metadata),
+      }));
 
-    await this.prismaService.event.createMany({ data: databaseEvents });
+      return prisma.event.createMany({ data: databaseEvents });
+    });
   }
 }
