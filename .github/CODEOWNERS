@@ -1,0 +1,19 @@
+# Panel
+packages/panel/         @Veryyapeee
+
+# Website
+packages/website/       @talcia
+
+# API
+packages/api/           @nowakprojects
+
+# Frontend tests
+panel/**/*.test.tsx     @lagdush @Veryyapeee
+panel/**/*.test.ts      @lagdush @Veryyapeee
+ui/**/*.test.tsx        @lagdush
+ui/**/*.test.ts         @lagdush
+
+# CI/CD
+/*                      @KonradSzwarc
+scripts/                @KonradSzwarc
+.github/                @KonradSzwarc
