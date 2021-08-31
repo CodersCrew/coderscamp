@@ -2,8 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer, { SendMailOptions } from 'nodemailer';
 
 import type { FormValues } from '@/components/Contact/Form';
-
-import { CONTACT_EMAIL } from '../../constants';
+import { CONTACT_EMAIL } from '@/constants';
 
 async function sendContactForm(req: NextApiRequest, res: NextApiResponse) {
   const port = Number(process.env.NODEMAILER_PORT);

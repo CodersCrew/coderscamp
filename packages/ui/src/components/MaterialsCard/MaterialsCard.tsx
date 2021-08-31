@@ -34,14 +34,8 @@ export const MaterialsCard = ({ status, ...props }: MaterialsCardProps) => {
         Materiały
       </Typography>
       <Box paddingTop="24px">
-        <Typography lineHeight="md" letterSpacing="md">
-          {MaterialsCardText[status].statusText}
-        </Typography>
-        {status === 'loading' && (
-          <Typography lineHeight="md" letterSpacing="md">
-            Może to zająć do kilku minut.
-          </Typography>
-        )}
+        <Typography size="md">{MaterialsCardText[status].statusText}</Typography>
+        {status === 'loading' && <Typography size="md">Może to zająć do kilku minut.</Typography>}
       </Box>
       <Box paddingTop="24px">
         <Button color="brand" disabled={status === 'loading'} display="block">

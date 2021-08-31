@@ -21,7 +21,9 @@
     "@chakra-ui/theme-tools": "1.1.9",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
-    "framer-motion": "4.1.17"
+    "@types/react-router-dom": "5.1.8",
+    "framer-motion": "4.1.17",
+    "react-router-dom": "5.2.0"
   },
   "devDependencies": {
     "@chakra-ui/cli": "1.5.0",
@@ -31,7 +33,7 @@
     "@storybook/addon-links": "6.3.7",
     "@storybook/react": "6.3.7",
     "@svgr/cli": "5.5.0",
-    "@testing-library/dom": "8.1.0",
+    "@testing-library/dom": "8.2.0",
     "@testing-library/jest-dom": "5.14.1",
     "@testing-library/react": "12.0.0",
     "@testing-library/react-hooks": "7.0.1",

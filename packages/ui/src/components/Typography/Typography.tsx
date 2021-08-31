@@ -1,15 +1,15 @@
 import React, { ReactNode } from 'react';
 import { Box, forwardRef, HTMLChakraProps, ResponsiveValue } from '@chakra-ui/react';
 
+import type { OmitForbiddenProps } from '../../types';
+
 type TypographyVariant = 'span' | 'div' | 'p' | 'a' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label';
 
 type TypographyFontSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl';
 
 type TypographyFontWeight = 'normal' | 'medium' | 'bold' | 'extrabold';
 
-type ExcludedProps = 'fontSize' | 'fontWeight' | 'letterSpacing' | 'lineHeight' | 'fontFamily';
-
-export interface TypographyProps extends Omit<HTMLChakraProps<'div'>, ExcludedProps> {
+export interface TypographyProps extends OmitForbiddenProps<HTMLChakraProps<'div'>> {
   children: ReactNode | ReactNode[];
   as?: TypographyVariant;
   size?: ResponsiveValue<TypographyFontSize>;

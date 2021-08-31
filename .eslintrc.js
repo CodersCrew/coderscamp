@@ -5,11 +5,13 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/*.spec.*',
   '**/vite.config.ts',
   '**/next.config.js',
+  'jest.config.ts',
   '**/*.stories.tsx',
   '**/setupTests.ts',
   'scripts/*.js',
   '**/testHelpers.tsx',
   '**/*.test-module.ts',
+  '**/test-utils.ts',
 ];
 
 module.exports = {
@@ -37,6 +39,7 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
+    'airbnb',
     'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
@@ -174,6 +177,9 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest-formatting/recommended',
       ],
+      rules: {
+        'jest/expect-expect': [2, { assertFunctionNames: ['expect', '*.expectReadModel'] }],
+      },
     },
   ],
   settings: {
