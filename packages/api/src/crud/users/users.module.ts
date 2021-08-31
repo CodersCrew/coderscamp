@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaModule } from '@/common/prisma/prisma.module';
+
 import { UserRegistrationCompletedHandler } from './handlers/user-registration-completed.handler';
 import { UsersController } from './users.controller';
 import { UsersRepository } from './users.repository';

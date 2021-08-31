@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
+import { PrismaService } from '@/common/prisma/prisma.service';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
-import { PrismaService } from '@/prisma/prisma.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { LearningMaterialsRestController } from './learning-materials.rest-controller';

@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 
+import { PrismaService } from '@/common/prisma/prisma.service';
 import { ApplicationEvent } from '@/module/application-command-events';
-import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 
 import { AppModule } from '../app.module';
