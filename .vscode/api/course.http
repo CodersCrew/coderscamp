@@ -5,3 +5,8 @@ POST {{serverUrl}}/learning-materials
 
 # Get learning materials for the current user
 GET {{serverUrl}}/learning-materials
+
+###
+
+# Get course progress of the current user
+GET {{serverUrl}}/course-progress
