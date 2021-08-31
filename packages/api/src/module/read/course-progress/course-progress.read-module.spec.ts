@@ -92,6 +92,37 @@ describe('Read Slice | CourseProgress', () => {
     await moduleUnderTest.close();
   });
 
+  it('when taskWasCompleted occurred, then learningMaterialsCompletedTasks should be increased', async () => {
+    // Given
+    const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
+
+    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: initialLearningMaterialCompletedTask,
+      },
+    });
+
+    // When
+    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasCompleted'));
+
+    // Then
+    const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
+
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: learningMaterialCompletedTaskAfterEvent,
+      },
+    });
+  });
+
   it('when taskWasUnCompleted then learningMaterialsCompletedTasks should be decrease', async () => {
     // Given
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());

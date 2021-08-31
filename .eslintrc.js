@@ -12,6 +12,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/testHelpers.tsx',
   '**/*.test-module.ts',
   '**/test-utils.ts',
+  'scripts/**',
 ];
 
 module.exports = {

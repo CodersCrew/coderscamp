@@ -40,7 +40,7 @@ export class CourseProgressReadModule {
     await this.prismaService.courseProgress.update({
       where,
       data: {
-        learningMaterialsCompletedTasks: courseProgress.learningMaterialsCompletedTasks - 1,
+        learningMaterialsCompletedTasks: { decrement: 1 },
       },
     });
   }
