@@ -12,22 +12,6 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 async function courseProgressTestModule() {
   const { prismaService, close, eventOccurred } = await initTestModule();
 
-  async function addExampleData({
-    id,
-    learningMaterialsId,
-    learningMaterialsCompletedTasks,
-    courseUserId,
-  }: CourseProgress) {
-    await prismaService.courseProgress.create({
-      data: {
-        id,
-        learningMaterialsId,
-        learningMaterialsCompletedTasks,
-        courseUserId,
-      },
-    });
-  }
-
   async function expectReadModel(expectation: {
     learningMaterialsId: string;
     readModel: Omit<CourseProgress, 'id'> | null;
@@ -47,7 +31,7 @@ async function courseProgressTestModule() {
     );
   }
 
-  return { eventOccurred, expectReadModel, close, addExampleData };
+  return { eventOccurred, expectReadModel, close };
 }
 
 function taskWasCompletedForLearningMaterials(learningMaterialsId: string): ApplicationEvent<TaskWasCompleted> {
