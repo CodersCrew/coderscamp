@@ -15,11 +15,13 @@ async function learningMaterialsTestModule() {
   const { prismaService, close, eventOccurred } = await initTestModule();
 
   async function expectReadModel(expectation: { courseUserId: UserId; readModel: LearningMaterials | null }) {
-    await waitForExpect(() =>
-      expect(
-        prismaService.learningMaterials.findUnique({ where: { courseUserId: expectation.courseUserId } }),
-      ).resolves.toStrictEqual(expectation.readModel),
-    );
+    await waitForExpect(async () => {
+      const result = await prismaService.learningMaterials.findUnique({
+        where: { courseUserId: expectation.courseUserId },
+      });
+
+      expect(result).toStrictEqual(expectation.readModel);
+    });
   }
 
   return { eventOccurred, expectReadModel, close };
