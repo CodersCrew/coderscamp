@@ -6,9 +6,8 @@ import waitForExpect from 'wait-for-expect';
 import { initTestModule } from '@/common/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
+import { UserId } from '@/users/users.types';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-
-import { UserId } from '../../../crud/users/users.types';
 
 const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 

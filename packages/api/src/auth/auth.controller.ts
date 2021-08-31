@@ -17,8 +17,8 @@ import { LoginResponse } from '@coderscamp/shared/models/auth/login';
 import { RegisterBody, registerError, RegisterResponse } from '@coderscamp/shared/models/auth/register';
 
 import { env } from '@/common/env';
-import { isUniqueConstraintError } from '@/common/prisma/prisma.errors';
 
+import { isUniqueConstraintError } from '../prisma/prisma.errors';
 import { fromUserToJwt } from './jwt/jwt.utils';
 import { LocalGuardRequest } from './local/local.types';
 import { LocalAuthGuard } from './local/local-auth.guard';
