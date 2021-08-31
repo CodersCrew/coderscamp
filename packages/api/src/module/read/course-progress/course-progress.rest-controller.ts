@@ -2,9 +2,10 @@ import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 
 import { GetCourseProgressResponse } from '@coderscamp/shared/models/course-progress';
 
+import { PrismaService } from '@/prisma/prisma.service';
+
 import { JwtAuthGuard } from '../../../crud/auth/jwt/jwt-auth.guard';
 import { JwtUserId } from '../../../crud/auth/jwt/jwt-user-id.decorator';
-import { PrismaService } from '@/prisma/prisma.service';
 import type { UserId } from '../../../crud/users/users.types';
 
 @UseGuards(JwtAuthGuard)

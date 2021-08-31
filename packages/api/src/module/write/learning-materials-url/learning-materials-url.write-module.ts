@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { UsersModule } from '../../../crud/users/users.module';
-import { UsersService } from '../../../crud/users/users.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
+import { UsersModule } from '../../../crud/users/users.module';
+import { UsersService } from '../../../crud/users/users.service';
 import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';
 import { LEARNING_MATERIALS_URL_GENERATOR } from './application/learning-materials-url-generator';
 import { USERS_PORT } from './application/users.port';
