@@ -11,6 +11,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   'scripts/*.js',
   '**/testHelpers.tsx',
   '**/*.test-module.ts',
+  '**/test-utils.ts',
 ];
 
 module.exports = {
