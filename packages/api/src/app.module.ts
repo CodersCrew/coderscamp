@@ -6,14 +6,14 @@ import { join } from 'path';
 
 import { env } from '@/common/env';
 
-import { AuthModule } from './auth/auth.module';
-import { CoursesModule } from './courses/courses.module';
+import { AuthModule } from './crud/auth/auth.module';
+import { CoursesModule } from './crud/courses/courses.module';
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from './module/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
 import { CourseProgressReadModule } from './module/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from './module/read/learning-materials/learning-materials.read-module';
 import { LearningMaterialsUrlWriteModule } from './module/write/learning-materials-url/learning-materials-url.write-module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './crud/users/users.module';
 
 const isProduction = env.NODE_ENV === 'production';
 
