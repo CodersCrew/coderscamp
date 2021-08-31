@@ -2810,6 +2810,7 @@ __metadata:
     nodemailer: 6.6.3
     react: 17.0.2
     react-dom: 17.0.2
+    react-headroom: 3.1.1
     react-hook-form: 7.12.2
     sass: 1.38.0
     swiper: 6.8.3
@@ -18892,6 +18893,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"performance-now@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "performance-now@npm:2.1.0"
+  checksum: 534e641aa8f7cba160f0afec0599b6cecefbb516a2e837b512be0adbe6c1da5550e89c78059c7fabc5c9ffdf6627edabe23eb7c518c4500067a898fa65c2b550
+  languageName: node
+  linkType: hard
+
 "picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.2.2, picomatch@npm:^2.2.3":
   version: 2.3.0
   resolution: "picomatch@npm:2.3.0"
@@ -19838,7 +19846,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -20062,6 +20070,15 @@ fsevents@^1.2.7:
   dependencies:
     inherits: ~2.0.3
   checksum: ebc23639248e4fe40a789f713c20548e513e053b3dc4924b6cb0ad741e3f264dcff948225c8737834dd4f9ec286dbc06a1a7c13858ea382d9379f4303bcc0916
+  languageName: node
+  linkType: hard
+
+"raf@npm:^3.3.0":
+  version: 3.4.1
+  resolution: "raf@npm:3.4.1"
+  dependencies:
+    performance-now: ^2.1.0
+  checksum: 50ba284e481c8185dbcf45fc4618ba3aec580bb50c9121385d5698cb6012fe516d2015b1df6dd407a7b7c58d44be8086108236affbce1861edd6b44637c8cd52
   languageName: node
   linkType: hard
 
@@ -20323,6 +20340,19 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: 4a86e44cb46dc54caef485f476f4462dedffad7cdb7f80c1ae5e5127311ea3b166366481b664bf732fe893f31c647cb6267ad833bd58f046062235383747ee2b
+  languageName: node
+  linkType: hard
+
+"react-headroom@npm:3.1.1":
+  version: 3.1.1
+  resolution: "react-headroom@npm:3.1.1"
+  dependencies:
+    prop-types: ^15.5.8
+    raf: ^3.3.0
+    shallowequal: ^1.1.0
+  peerDependencies:
+    react: ^16.3.0 || ^17
+  checksum: ee6fb52557466b3ffbd83483a6f436153e81f0f9610888e49539263b9187341de05532af692cd9d11ee79545ad95fc53848a91614ea990f066820fcbded8a9f4
   languageName: node
   linkType: hard
 
