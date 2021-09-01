@@ -44,7 +44,7 @@ export const About = () => {
             <VStack spacing="12px">
               <ListItem>
                 <Typography weight="extrabold" as="p">
-                  interaktywny plan nauki
+                  Interaktywny plan nauki
                 </Typography>
                 składający się z {MODULES_COUNT} modułów tematycznych. Każdy moduł to kilkanaście sekcji, które pozwolą
                 Ci zarówno zapoznać się z teorią dotyczącą danego zagadnienia, jak <br />i wykorzystać zdobytą wiedzę w
@@ -52,14 +52,14 @@ export const About = () => {
               </ListItem>
               <ListItem>
                 <Typography weight="extrabold" as="p">
-                  pracę w {TEAM_SIZE}-osobowym zespole
+                  Pracę w {TEAM_SIZE}-osobowym zespole
                 </Typography>
                 prowadzonym przez doświadczonego mentora. Wspólnie zrealizujecie aż {PROJECTS_COUNT} praktycznych,
                 zróżnicowanych projektów, budując tym samym swoje portfolio.
               </ListItem>
               <ListItem>
                 <Typography weight="extrabold" as="p">
-                  wspierającą społeczność
+                  Wspierającą społeczność
                 </Typography>
                 składającą się z kilkuset osób, które tak jak Ty stawiają pierwsze kroki w branży IT oraz
                 kilkudziesięciu ekspertów i mentorów, na których wsparcie będziesz mógł liczyć przez cały kurs.
