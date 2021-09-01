@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 
-import { ApplicationEvent } from '@/module/application-command-events';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
+import { StorableEvent } from '@/write/shared/application/event-repository';
 
 import { AppModule } from '../app.module';
 
@@ -27,8 +27,11 @@ export async function initTestModule() {
   async function close() {
     await app.close();
   }
-  function eventOccurred(event: ApplicationEvent): void {
-    eventBus.publishAll([event]);
+
+  let publishedEvents = 0;
+
+  function eventOccurred(event: StorableEvent): void {
+    eventBus.publishAll([{ ...event, globalOrder: (publishedEvents += 1) }]);
   }
 
   return { prismaService, close, eventOccurred };
