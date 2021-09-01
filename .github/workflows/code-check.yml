@@ -37,7 +37,7 @@ jobs:
         working-directory: ./packages/api
         run: yarn prisma migrate deploy
       - name: Run tests for all files
-        run: yarn test --coverage
+        run: yarn test --coverage --detectOpenHandles
       - name: Stop database
         run: docker-compose down
       - name: Upload server coverage
