@@ -4,6 +4,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
+import { TaskWasUncompleted } from '@/module/events/task-was-uncompleted-event.domain-event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
@@ -23,6 +24,23 @@ export class CourseProgressReadModule {
         courseUserId: event.data.courseUserId,
         learningMaterialsId: event.data.learningMaterialsId,
         learningMaterialsCompletedTasks: 0,
+      },
+    });
+  }
+
+  @OnEvent('LearningMaterialsTasks.TaskWasUncompleted')
+  async onTaskWasUncompleted(event: ApplicationEvent<TaskWasUncompleted>) {
+    const where = { learningMaterialsId: event.data.learningMaterialsId };
+    const courseProgress = await this.prismaService.courseProgress.findUnique({ where });
+
+    if (!courseProgress || courseProgress.learningMaterialsCompletedTasks === 0) {
+      return;
+    }
+
+    await this.prismaService.courseProgress.update({
+      where,
+      data: {
+        learningMaterialsCompletedTasks: { decrement: 1 },
       },
     });
   }
