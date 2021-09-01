@@ -8,6 +8,7 @@ import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-ur
 import { ApplicationEvent } from '@/module/application-command-events';
 import { UserId } from '@/users/users.types';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+import {StorableEvent} from "@/write/shared/application/event-repository";
 
 const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 
@@ -29,7 +30,7 @@ async function learningMaterialsTestModule() {
 
 function learningMaterialsUrlWasGeneratedForUser(
   courseUserId: UserId,
-): ApplicationEvent<LearningMaterialsUrlWasGenerated> {
+): StorableEvent<LearningMaterialsUrlWasGenerated> {
   return {
     type: 'LearningMaterialsUrlWasGenerated',
     id: uuid(),

@@ -179,7 +179,10 @@ module.exports = {
         'plugin:jest-formatting/recommended',
       ],
       rules: {
-        'jest/expect-expect': [2, { assertFunctionNames: ['expect', '*.expectReadModel'] }],
+        'jest/expect-expect': [
+          2,
+          { assertFunctionNames: ['expect', '*.expectReadModel', '*.expectEventPublishedLastly'] },
+        ],
       },
     },
   ],

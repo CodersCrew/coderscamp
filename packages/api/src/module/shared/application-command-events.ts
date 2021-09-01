@@ -49,6 +49,8 @@ export abstract class AbstractApplicationCommand<
   }
 }
 
+export type EventGlobalOrder = number;
+
 export interface ApplicationEvent<
   DomainEventType extends DomainEvent = DomainEvent,
   EventMetadata extends DefaultEventMetadata = DefaultEventMetadata,
@@ -60,4 +62,5 @@ export interface ApplicationEvent<
   readonly metadata: EventMetadata;
   readonly streamVersion: EventStreamVersion;
   readonly streamName: EventStreamName;
+  readonly globalOrder: EventGlobalOrder;
 }
