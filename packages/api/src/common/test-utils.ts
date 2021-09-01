@@ -12,7 +12,7 @@ export async function cleanupDatabase(prismaService: PrismaService) {
   );
 }
 
-export async function initTestModule() {
+export async function initReadTestModule() {
   const app = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
