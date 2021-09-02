@@ -60,7 +60,7 @@ describe('Read Slice | Learning Materials', () => {
     const userId2 = uuid();
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       learningMaterialsUrlWasGeneratedForUser(userId1),
       EventStreamName.from('LearningMaterialsUrl', userId1),
     );
@@ -80,7 +80,7 @@ describe('Read Slice | Learning Materials', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       learningMaterialsUrlWasGeneratedForUser(userId2),
       EventStreamName.from('LearningMaterialsUrl', userId2),
     );

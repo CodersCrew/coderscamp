@@ -35,9 +35,9 @@ export async function initReadTestModule() {
 
   let publishedEvents = 0;
 
-  function eventOccurred(event: StorableEvent, streamName: EventStreamName): void {
+  async function eventOccurred(event: StorableEvent, streamName: EventStreamName): Promise<void> {
     publishedEvents += 1;
-    eventBus.publishAll([{ ...event, globalOrder: publishedEvents, streamVersion: publishedEvents, streamName }]);
+    await eventBus.publishAll([{ ...event, globalOrder: publishedEvents, streamVersion: publishedEvents, streamName }]);
   }
 
   return { prismaService, close, eventOccurred };

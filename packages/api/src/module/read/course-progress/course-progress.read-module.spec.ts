@@ -92,7 +92,7 @@ describe('Read Slice | CourseProgress', () => {
     // Given
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
     );
@@ -107,7 +107,7 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       statusTask(learningMaterialsId, 'TaskWasCompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
     );
@@ -129,7 +129,7 @@ describe('Read Slice | CourseProgress', () => {
     // Given
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
     );
@@ -144,7 +144,7 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       statusTask(learningMaterialsId, 'TaskWasCompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
     );
@@ -162,7 +162,7 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       statusTask(learningMaterialsId, 'TaskWasUncompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
     );
@@ -183,7 +183,7 @@ describe('Read Slice | CourseProgress', () => {
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
     );
@@ -199,7 +199,7 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(
+    await moduleUnderTest.eventOccurred(
       statusTask(learningMaterialsId, 'TaskWasUncompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
     );

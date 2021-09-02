@@ -20,7 +20,7 @@ import {
 } from './application/learning-materials-url-generator';
 import { USERS_PORT, UsersPort } from './application/users.port';
 
-type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
+type EventBusSpy = jest.SpyInstance<Promise<void>, [ApplicationEvent[]]>;
 
 export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   type: EventType['type'];
