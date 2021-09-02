@@ -123,47 +123,45 @@ describe('Prisma Event Repository', () => {
     expect(readEventStream).toStrictEqual([storedEvent0, storedEvent1]);
   });
 
-  describe('readAll with filter', () => {
-    it('filter by eventStreamCategory, eventType, fromGlobalPosition', async () => {
-      // Given
-      const { eventRepository } = sut;
-      const streamCategory = 'SampleEventStreamCategory';
-      const streamId = sut.randomEventStreamId();
-      const streamName = EventStreamName.props({ streamCategory, streamId });
+  it('readAll with filter by eventStreamCategory, eventType, fromGlobalPosition', async () => {
+    // Given
+    const { eventRepository } = sut;
+    const streamCategory = 'SampleEventStreamCategory';
+    const streamId = sut.randomEventStreamId();
+    const streamName = EventStreamName.props({ streamCategory, streamId });
 
-      const sampleDomainEvent: SampleDomainEvent = {
-        type: 'SampleDomainEvent',
-        data: {
-          value1: 'sampleValue1',
-          value2: 123,
-        },
-      };
-      const anotherSampleDomainEvent: AnotherSampleDomainEvent = {
-        type: 'AnotherSampleDomainEvent',
-        data: {
-          value1: 'sampleValue1',
-          value2: 123,
-        },
-      };
+    const sampleDomainEvent: SampleDomainEvent = {
+      type: 'SampleDomainEvent',
+      data: {
+        value1: 'sampleValue1',
+        value2: 123,
+      },
+    };
+    const anotherSampleDomainEvent: AnotherSampleDomainEvent = {
+      type: 'AnotherSampleDomainEvent',
+      data: {
+        value1: 'sampleValue1',
+        value2: 123,
+      },
+    };
 
-      const sampleEventsToStore: StorableEvent[] = sequence(50).map(() =>
-        storableEvent<SampleDomainEvent>(sampleDomainEvent),
-      );
-      const anotherSampleEventsToStore: StorableEvent[] = sequence(50).map(() =>
-        storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEvent),
-      );
+    const sampleEventsToStore: StorableEvent[] = sequence(50).map(() =>
+      storableEvent<SampleDomainEvent>(sampleDomainEvent),
+    );
+    const anotherSampleEventsToStore: StorableEvent[] = sequence(50).map(() =>
+      storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEvent),
+    );
 
-      // When
-      await eventRepository.write(streamName, [...sampleEventsToStore, ...anotherSampleEventsToStore], 0);
+    // When
+    await eventRepository.write(streamName, [...sampleEventsToStore, ...anotherSampleEventsToStore], 0);
 
-      // Then
-      const result = await eventRepository.readAll({
-        streamCategory,
-        fromGlobalPosition: 100,
-        eventType: 'AnotherSampleDomainEvent',
-      });
-
-      expect(result.length).toBe(1);
+    // Then
+    const result = await eventRepository.readAll({
+      streamCategory,
+      fromGlobalPosition: 100,
+      eventType: 'AnotherSampleDomainEvent',
     });
+
+    expect(result.length).toBe(1);
   });
 });
