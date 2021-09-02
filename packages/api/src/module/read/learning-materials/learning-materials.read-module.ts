@@ -3,9 +3,9 @@ import { OnEvent } from '@nestjs/event-emitter';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
-import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
+import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { LearningMaterialsRestController } from './learning-materials.rest-controller';
 
 @Module({

@@ -16,7 +16,7 @@ import type { LogoutResponse } from '@coderscamp/shared/models/auth';
 import { LoginResponse } from '@coderscamp/shared/models/auth/login';
 import { RegisterBody, registerError, RegisterResponse } from '@coderscamp/shared/models/auth/register';
 
-import { env } from '../../shared/env';
+import { env } from '@/shared/env';
 
 import { isUniqueConstraintError } from '../../shared/prisma/prisma.errors';
 import { fromUserToJwt } from './jwt/jwt.utils';
