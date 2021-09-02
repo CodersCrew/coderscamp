@@ -2,15 +2,15 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 
 import type { GetAllUsersResponse, GetMeResponse } from '@coderscamp/shared/models/user';
 
+import type { UserId } from '@/shared/domain.types';
 import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 
 import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
-import { UsersService } from './users.service';
-import type { UserId } from './users.types';
+import { UserProfileService } from './user-profile.service';
 
 @Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UserProfileController {
+  constructor(private readonly usersService: UserProfileService) {}
 
   @Get('/')
   async getAll(): Promise<GetAllUsersResponse> {

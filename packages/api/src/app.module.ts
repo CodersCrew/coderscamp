@@ -4,11 +4,11 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
+import { UserProfileModule } from '@/crud/user-profile/user-profile.module';
 import { env } from '@/shared/env';
 
 import { AuthModule } from './crud/auth/auth.module';
 import { CoursesModule } from './crud/courses/courses.module';
-import { UsersModule } from './crud/user-profiles/users.module';
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from './module/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
 import { CourseProgressReadModule } from './module/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from './module/read/learning-materials/learning-materials.read-module';
@@ -33,7 +33,7 @@ const imports: ModuleMetadata['imports'] = [
     ignoreErrors: false,
   }),
   PrismaModule,
-  UsersModule,
+  UserProfileModule,
   CoursesModule,
   AuthModule,
   ...eventModelingModules,

@@ -1,4 +1,4 @@
-import type { UserId } from '@/crud/user-profiles/users.types';
+import type { UserId } from '@/shared/domain.types';
 
 export type GenerateLearningMaterialsUrl = {
   type: 'GenerateLearningMaterialsUrl';

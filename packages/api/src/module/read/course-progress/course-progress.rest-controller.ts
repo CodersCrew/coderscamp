@@ -3,8 +3,8 @@ import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 import { GetCourseProgressResponse } from '@coderscamp/shared/models/course-progress';
 
 import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
-import type { UserId } from '@/crud/user-profiles/users.types';
 import { PrismaService } from '@/prisma/prisma.service';
+import type { UserId } from '@/shared/domain.types';
 import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
