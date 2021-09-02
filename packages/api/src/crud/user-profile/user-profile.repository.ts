@@ -3,12 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
-export class UsersRepository {
+export class UserProfileRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  findMany = this.prisma.user.findMany;
+  findMany = this.prisma.userProfile.findMany;
 
-  findUnique = this.prisma.user.findUnique;
+  findUnique = this.prisma.userProfile.findUnique;
 
-  create = this.prisma.user.create;
+  create = this.prisma.userProfile.create;
 }
