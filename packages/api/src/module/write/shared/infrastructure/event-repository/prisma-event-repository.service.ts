@@ -105,6 +105,7 @@ export class PrismaEventRepository implements EventRepository {
     };
     const storedEvents = await this.prismaService.event.findMany({
       where,
+      orderBy: { globalOrder: 'asc' },
     });
 
     return storedEvents.map((e) => ({

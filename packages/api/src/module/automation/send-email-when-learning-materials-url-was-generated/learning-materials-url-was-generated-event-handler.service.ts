@@ -8,6 +8,5 @@ import { ApplicationEvent } from '@/module/application-command-events';
 @Injectable()
 export class LearningMaterialsUrlWasGeneratedEventHandler {
   @OnEvent('LearningMaterialsUrl.*')
-  handleLearningMaterialsUrlDomainEvent(_event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-  }
+  handleLearningMaterialsUrlDomainEvent(_event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {}
 }

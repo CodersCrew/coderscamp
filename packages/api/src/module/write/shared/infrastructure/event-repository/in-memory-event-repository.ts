@@ -71,7 +71,14 @@ export class InMemoryEventRepository implements EventRepository {
     return Object.entries(this.eventStreams).reduce((acc, stream) => acc + stream.length, 0);
   }
 
-  readAll(_filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]> {
-    return Promise.resolve([]);
+  async readAll(filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]> {
+    const { streamCategory, eventType, fromGlobalPosition } = filter;
+
+    return Object.values(this.eventStreams)
+      .reduce((acc, stream) => acc.concat(stream), [])
+      .filter((e) => (streamCategory ? e.streamName.streamCategory === streamCategory : true))
+      .filter((e) => (eventType ? e.type === eventType : true))
+      .filter((e) => (fromGlobalPosition ? e.globalOrder >= fromGlobalPosition : true))
+      .sort((e1, e2) => e1.globalOrder - e2.globalOrder);
   }
 }
