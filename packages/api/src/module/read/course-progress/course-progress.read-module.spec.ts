@@ -3,53 +3,66 @@ import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { initTestModule } from '@/common/test-utils';
-import { ApplicationEvent } from '@/module/application-command-events';
+import { initReadTestModule } from '@/common/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/module/events/learning-materials-url-was-generated.domain-event';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
+import { TaskWasUncompleted } from '@/module/events/task-was-uncompleted-event.domain-event';
+import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
-async function courseProgressTestModule() {
-  const { prismaService, close, eventOccurred } = await initTestModule();
-
-  async function expectReadModel(expectation: {
-    learningMaterialsId: string;
-    readModel: Omit<CourseProgress, 'id'> | null;
-  }) {
-    await waitForExpect(() =>
-      expect(
-        prismaService.courseProgress.findUnique({
-          where: { learningMaterialsId: expectation.learningMaterialsId },
-          select: {
-            id: false,
-            courseUserId: true,
-            learningMaterialsCompletedTasks: true,
-            learningMaterialsId: true,
-          },
-        }),
-      ).resolves.toStrictEqual(expectation.readModel),
-    );
-  }
-
-  return { eventOccurred, expectReadModel, close };
-}
-
-function taskWasCompletedForLearningMaterials(learningMaterialsId: string): ApplicationEvent<TaskWasCompleted> {
+const statusTask = (
+  learningMaterialsId: string,
+  type: 'TaskWasUncompleted' | 'TaskWasCompleted',
+): StorableEvent<TaskWasUncompleted | TaskWasCompleted> => {
   return {
-    type: 'TaskWasCompleted',
+    type,
     id: uuid(),
     occurredAt: new Date(),
     data: {
       learningMaterialsId,
-      taskId: '123',
+      taskId: '2',
     },
     metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
     streamVersion: 1,
     streamName: EventStreamName.from('LearningMaterialsTasks', learningMaterialsId),
   };
+};
+
+const givenData = (id: string) => {
+  return {
+    id,
+    courseUserId: `userId-${id}`,
+    learningMaterialsId: `learningMaterialsId-${id}`,
+    initialLearningMaterialCompletedTask: 0,
+  };
+};
+
+async function courseProgressTestModule() {
+  const { prismaService, close, eventOccurred } = await initReadTestModule();
+
+  async function expectReadModel(expectation: {
+    learningMaterialsId: string;
+    readModel: Omit<CourseProgress, 'id'> | null;
+  }) {
+    await waitForExpect(async () => {
+      const readModel = await prismaService.courseProgress.findUnique({
+        where: { learningMaterialsId: expectation.learningMaterialsId },
+        select: {
+          id: false,
+          courseUserId: true,
+          learningMaterialsCompletedTasks: true,
+          learningMaterialsId: true,
+        },
+      });
+
+      expect(readModel).toStrictEqual(expectation.readModel);
+    });
+  }
+
+  return { eventOccurred, expectReadModel, close };
 }
 
-function learningMaterialsUrlWasGeneratedWithId(id: string): ApplicationEvent<LearningMaterialsUrlWasGenerated> {
+const learningMaterialsUrlWasGeneratedWithId = (id: string): StorableEvent<LearningMaterialsUrlWasGenerated> => {
   const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
   const courseUserId = `userId-${id}`;
 
@@ -66,7 +79,7 @@ function learningMaterialsUrlWasGeneratedWithId(id: string): ApplicationEvent<Le
     streamVersion: 1,
     streamName: EventStreamName.from('LearningMaterialsUrl', courseUserId),
   };
-}
+};
 
 describe('Read Slice | CourseProgress', () => {
   let moduleUnderTest: AsyncReturnType<typeof courseProgressTestModule>;
@@ -81,10 +94,7 @@ describe('Read Slice | CourseProgress', () => {
 
   it('when taskWasCompleted occurred, then learningMaterialsCompletedTasks should be increased', async () => {
     // Given
-    const id = uuid();
-    const courseUserId = `userId-${id}`;
-    const learningMaterialsId = `learningMaterialsId-${id}`;
-    const initialLearningMaterialCompletedTask = 0;
+    const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
 
@@ -98,7 +108,7 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(taskWasCompletedForLearningMaterials(learningMaterialsId));
+    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasCompleted'));
 
     // Then
     const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
@@ -109,6 +119,80 @@ describe('Read Slice | CourseProgress', () => {
         learningMaterialsId,
         courseUserId,
         learningMaterialsCompletedTasks: learningMaterialCompletedTaskAfterEvent,
+      },
+    });
+  });
+
+  it('when taskWasUnCompleted then learningMaterialsCompletedTasks should be decrease', async () => {
+    // Given
+    const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
+
+    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: initialLearningMaterialCompletedTask,
+      },
+    });
+
+    // When
+    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasCompleted'));
+
+    // Then
+    const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
+
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: learningMaterialCompletedTaskAfterEvent,
+      },
+    });
+
+    // When
+    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasUncompleted'));
+
+    // Then
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: 0,
+      },
+    });
+  });
+
+  it('when taskWasUnCompleted and learningMaterialsCompletedTasks is equal to 0 then  learningMaterialsCompletedTasks should be 0', async () => {
+    // Given
+    const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
+
+    // When
+    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+
+    // Then
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: initialLearningMaterialCompletedTask,
+      },
+    });
+
+    // When
+    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasUncompleted'));
+    // Then
+    await moduleUnderTest.expectReadModel({
+      learningMaterialsId,
+      readModel: {
+        learningMaterialsId,
+        courseUserId,
+        learningMaterialsCompletedTasks: 0,
       },
     });
   });

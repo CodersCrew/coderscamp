@@ -1,0 +1,7 @@
+# Get the current user
+GET {{serverUrl}}/users/me
+
+###
+
+# Get all users
+GET {{serverUrl}}/users

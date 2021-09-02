@@ -4,14 +4,13 @@ import { v4 as uuid } from 'uuid';
 
 import { cleanupDatabase } from '@/common/test-utils';
 import { ApplicationEvent } from '@/module/application-command-events';
+import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '@/write/shared/application/application-command.factory';
-import { EVENT_REPOSITORY, EventRepository } from '@/write/shared/application/event-repository';
+import { EVENT_REPOSITORY, EventRepository, StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventStreamVersion } from '@/write/shared/application/event-stream-version';
-import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
-import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 
 import { AppModule } from '../../../app.module';
@@ -23,6 +22,12 @@ import { USERS_PORT, UsersPort } from './application/users.port';
 
 type EventBusSpy = jest.SpyInstance<void, [ApplicationEvent[]]>;
 
+export type ExpectedPublishEvent<EventType extends DomainEvent> = {
+  type: EventType['type'];
+  data: EventType['data'];
+  streamName: EventStreamName;
+};
+
 function getEventBusSpy(app: TestingModule): EventBusSpy {
   const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
 
@@ -31,10 +36,6 @@ function getEventBusSpy(app: TestingModule): EventBusSpy {
 
 export async function generateLearningMaterialsUrlTestModule() {
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
-  let generatedIds = 0;
-  const mockedIdGenerator: IdGenerator = {
-    generate: jest.fn().mockReturnValue(`generatedId${(generatedIds += 1)}`),
-  };
 
   let generatedUrls = 0;
   const mockedLearningResourcesGenerator: LearningMaterialsUrlGenerator = {
@@ -55,12 +56,8 @@ export async function generateLearningMaterialsUrlTestModule() {
   const app: TestingModule = await Test.createTestingModule({
     imports: [AppModule],
   })
-    .overrideProvider(ID_GENERATOR)
-    .useValue(mockedIdGenerator)
     .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)
     .useValue(mockedLearningResourcesGenerator)
-    .overrideProvider(TIME_PROVIDER)
-    .useValue(testTimeProvider)
     .overrideProvider(USERS_PORT)
     .useValue(mockedUsersPort)
     .compile();
@@ -81,16 +78,37 @@ export async function generateLearningMaterialsUrlTestModule() {
     return eventBusSpy.mock.calls[lastEventIndex][0];
   }
 
-  async function eventOccurred(
-    eventStreamName: EventStreamName,
-    event: ApplicationEvent,
-    streamVersion: EventStreamVersion,
-  ) {
-    await eventRepository.write(eventStreamName, [event], streamVersion);
+  function expectEvent<EventType extends DomainEvent>(actual: any, expected: ExpectedPublishEvent<EventType>) {
+    expect(actual.type).toBe(expected.type);
+    expect(actual.data).toStrictEqual(expected.data);
+    expect(actual.streamName).toStrictEqual(expected.streamName);
   }
 
-  function timeTravelTo(time: Date) {
-    testTimeProvider.travelTo(time);
+  function expectEventPublishedLastly<EventType extends DomainEvent>(expected: ExpectedPublishEvent<EventType>) {
+    const lastPublishedEvent = getLastPublishedEvents()[0];
+
+    expectEvent(lastPublishedEvent, expected);
+  }
+
+  function randomEventId() {
+    return uuid();
+  }
+
+  async function eventOccurred(
+    eventStreamName: EventStreamName,
+    event: DomainEvent,
+    streamVersion: EventStreamVersion,
+  ) {
+    const storableEvent: StorableEvent = {
+      ...event,
+      id: randomEventId(),
+      occurredAt: testTimeProvider.currentTime(),
+      metadata: { correlationId: uuid(), causationId: uuid() },
+      streamVersion,
+      streamName: eventStreamName,
+    };
+
+    await eventRepository.write(eventStreamName, [storableEvent], streamVersion);
   }
 
   async function executeCommand(builder: CommandBuilder) {
@@ -99,15 +117,7 @@ export async function generateLearningMaterialsUrlTestModule() {
     await commandBus.execute(command);
   }
 
-  function currentTime() {
-    return testTimeProvider.currentTime();
-  }
-
   function randomUserId() {
-    return uuid();
-  }
-
-  function randomEventId() {
     return uuid();
   }
 
@@ -117,13 +127,10 @@ export async function generateLearningMaterialsUrlTestModule() {
 
   return {
     executeCommand,
-    eventBus: eventBusSpy,
-    timeTravelTo,
-    getLastPublishedEvents,
     eventOccurred,
-    currentTime,
     randomUserId,
     randomEventId,
     close,
+    expectEventPublishedLastly,
   };
 }

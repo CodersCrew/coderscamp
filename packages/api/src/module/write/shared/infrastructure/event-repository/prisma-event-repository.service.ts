@@ -4,7 +4,7 @@ import { ApplicationEvent, DefaultCommandMetadata } from '@/module/application-c
 import { PrismaService } from '@/prisma/prisma.service';
 
 import { EventStream } from '../../application/application-service';
-import { EventRepository } from '../../application/event-repository';
+import { EventRepository, StorableEvent } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
@@ -43,15 +43,16 @@ export class PrismaEventRepository implements EventRepository {
       metadata: parseMetadata(e.metadata),
       streamVersion: e.streamVersion,
       streamName,
+      globalOrder: e.globalOrder,
     }));
   }
 
   async write(
     streamName: EventStreamName,
-    events: ApplicationEvent[],
+    events: StorableEvent[],
     expectedStreamVersion: EventStreamVersion,
-  ): Promise<void> {
-    await this.prismaService.$transaction(async (prisma) => {
+  ): Promise<ApplicationEvent[]> {
+    return this.prismaService.$transaction(async (prisma) => {
       const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
 
       if (currentStreamVersion !== expectedStreamVersion) {
@@ -71,7 +72,24 @@ export class PrismaEventRepository implements EventRepository {
         metadata: JSON.stringify(e.metadata),
       }));
 
-      return prisma.event.createMany({ data: databaseEvents });
+      await prisma.event.createMany({ data: databaseEvents });
+
+      const storedEvents = await prisma.event.findMany({
+        where: {
+          id: { in: databaseEvents.map((e) => e.id) },
+        },
+      });
+
+      return storedEvents.map((e) => ({
+        type: e.type,
+        id: e.id,
+        occurredAt: e.occurredAt,
+        data: parseData(e.data),
+        metadata: parseMetadata(e.metadata),
+        streamVersion: e.streamVersion,
+        streamName,
+        globalOrder: e.globalOrder,
+      }));
     });
   }
 }

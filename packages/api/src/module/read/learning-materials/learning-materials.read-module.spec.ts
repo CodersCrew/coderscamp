@@ -3,23 +3,25 @@ import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { initTestModule } from '@/common/test-utils';
+import { initReadTestModule } from '@/common/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
-import { ApplicationEvent } from '@/module/application-command-events';
 import { UserId } from '@/users/users.types';
+import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 
 async function learningMaterialsTestModule() {
-  const { prismaService, close, eventOccurred } = await initTestModule();
+  const { prismaService, close, eventOccurred } = await initReadTestModule();
 
   async function expectReadModel(expectation: { courseUserId: UserId; readModel: LearningMaterials | null }) {
-    await waitForExpect(() =>
-      expect(
-        prismaService.learningMaterials.findUnique({ where: { courseUserId: expectation.courseUserId } }),
-      ).resolves.toStrictEqual(expectation.readModel),
-    );
+    await waitForExpect(async () => {
+      const result = await prismaService.learningMaterials.findUnique({
+        where: { courseUserId: expectation.courseUserId },
+      });
+
+      expect(result).toStrictEqual(expectation.readModel);
+    });
   }
 
   return { eventOccurred, expectReadModel, close };
@@ -27,7 +29,7 @@ async function learningMaterialsTestModule() {
 
 function learningMaterialsUrlWasGeneratedForUser(
   courseUserId: UserId,
-): ApplicationEvent<LearningMaterialsUrlWasGenerated> {
+): StorableEvent<LearningMaterialsUrlWasGenerated> {
   return {
     type: 'LearningMaterialsUrlWasGenerated',
     id: uuid(),
