@@ -1,6 +1,4 @@
-#!/usr/bin/env node
-
-const { log, terminate, exec } = require('./_helpers');
+import { exec, log, terminate } from './_helpers';
 
 const WORKSPACES = ['api', 'docs', 'panel', 'ui', 'website', 'shared'];
 

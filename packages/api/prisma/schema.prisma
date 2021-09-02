@@ -44,8 +44,6 @@ model Event {
   data           Json
   metadata       Json
   globalOrder    Int @default(autoincrement())
-
-  @@unique(fields: [streamId, streamCategory], name: "streamName")
 }
 
 model Course {
@@ -60,8 +58,8 @@ enum Role {
 }
 
 model CourseProgress {
-  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  courseUserId   String @unique
-  learningMaterialsId   String @unique
-  learningMaterialsCompletedTasks Int
+  id                                String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  courseUserId                      String @unique
+  learningMaterialsId               String @unique
+  learningMaterialsCompletedTasks   Int
 }

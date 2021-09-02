@@ -12,6 +12,7 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/testHelpers.tsx',
   '**/*.test-module.ts',
   '**/test-utils.ts',
+  'scripts/**',
 ];
 
 module.exports = {
@@ -178,7 +179,10 @@ module.exports = {
         'plugin:jest-formatting/recommended',
       ],
       rules: {
-        'jest/expect-expect': [2, { assertFunctionNames: ['expect', '*.expectReadModel'] }],
+        'jest/expect-expect': [
+          2,
+          { assertFunctionNames: ['expect', '*.expectReadModel', '*.expectEventPublishedLastly'] },
+        ],
       },
     },
   ],

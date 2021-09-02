@@ -9,6 +9,15 @@
     "**/.yarn": true,
     "yarn.lock": true
   },
+  "rest-client.defaultHeaders": {
+    "Content-Type": "application/json",
+    "User-Agent": "vscode-restclient"
+  },
+  "rest-client.environmentVariables": {
+    "coderscamp-local": {
+      "serverUrl": "http://localhost:4000/api"
+    }
+  },
   "typescript.tsdk": "node_modules/typescript/lib",
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
