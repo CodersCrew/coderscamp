@@ -8,43 +8,24 @@ import { env } from '@/shared/env';
 
 import { AuthController } from './auth.controller';
 import type { LocalGuardRequest } from './local/local.types';
-import { UserRegistrationService } from './user-registration.service';
 
 describe('Auth controller', () => {
   let controller: AuthController;
-  let authService: Partial<UserRegistrationService>;
   let jwtService: Partial<JwtService>;
 
   const mockedJwt = 'some token value';
 
   beforeEach(async () => {
-    authService = {
-      register: jest.fn(),
-    };
     jwtService = {
       sign: jest.fn().mockReturnValue(mockedJwt),
     };
 
     const module = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [
-        { provide: UserRegistrationService, useValue: authService },
-        { provide: JwtService, useValue: jwtService },
-      ],
+      providers: [{ provide: JwtService, useValue: jwtService }],
     }).compile();
 
     controller = await module.resolve(AuthController);
-  });
-
-  describe('register', () => {
-    it('calls `authService` with received body', async () => {
-      const bodyMock = { fullName: 'Some Name', email: 'some@mail.com', password: 'xyz' };
-
-      await controller.register(bodyMock);
-
-      expect(authService.register).toHaveBeenCalledWith(bodyMock);
-      expect(authService.register).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('login', () => {
