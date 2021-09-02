@@ -5,9 +5,9 @@ import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-ur
 import { ApplicationEvent } from '@/module/application-command-events';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
 import { TaskWasUncompleted } from '@/module/events/task-was-uncompleted-event.domain-event';
+import { PrismaService } from '@/prisma/prisma.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
-import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { CourseProgressRestController } from './course-progress.rest-controller';
 
 @Module({

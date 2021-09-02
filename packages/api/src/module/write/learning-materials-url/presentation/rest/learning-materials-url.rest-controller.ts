@@ -4,9 +4,8 @@ import { CommandBus } from '@nestjs/cqrs';
 import { GenerateLearningMaterialsUrlApplicationCommand } from '@/commands/generate-learning-materials-url.application-command';
 import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
 import { UserId } from '@/crud/users/users.types';
+import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
-
-import { JwtAuthGuard } from '../../../../../shared/guards/jwt-auth.guard';
 
 @Controller('learning-materials')
 export class LearningMaterialsUrlRestController {

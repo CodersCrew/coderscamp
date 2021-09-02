@@ -4,9 +4,8 @@ import { GetCourseProgressResponse } from '@coderscamp/shared/models/course-prog
 
 import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
 import type { UserId } from '@/crud/users/users.types';
-
-import { JwtAuthGuard } from '../../../shared/guards/jwt-auth.guard';
-import { PrismaService } from '../../../shared/prisma/prisma.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('course-progress')

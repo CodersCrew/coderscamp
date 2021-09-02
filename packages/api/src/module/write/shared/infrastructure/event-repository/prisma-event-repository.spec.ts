@@ -2,13 +2,12 @@ import { Test } from '@nestjs/testing';
 import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
+import { PrismaModule } from '@/prisma/prisma.module';
+import { PrismaService } from '@/prisma/prisma.service';
 import { cleanupDatabase, sequence, storableEvent } from '@/shared/test-utils';
 import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { PrismaEventRepository } from '@/write/shared/infrastructure/event-repository/prisma-event-repository.service';
-
-import { PrismaModule } from '../../../../../shared/prisma/prisma.module';
-import { PrismaService } from '../../../../../shared/prisma/prisma.service';
 
 async function initTestPrismaEventRepository() {
   const app = await Test.createTestingModule({

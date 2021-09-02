@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
+import { PrismaService } from '@/prisma/prisma.service';
 import { cleanupDatabase } from '@/shared/test-utils';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '@/write/shared/application/application-command.factory';
@@ -13,7 +14,6 @@ import { EventStreamVersion } from '@/write/shared/application/event-stream-vers
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 
 import { AppModule } from '../../../app.module';
-import { PrismaService } from '../../../shared/prisma/prisma.service';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrlGenerator,

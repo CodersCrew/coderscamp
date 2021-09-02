@@ -2,8 +2,9 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 
 import { CourseBody, CreateCourseResponse, GetAllCoursesResponse } from '@coderscamp/shared/models/course';
 
+import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
+
 import { ForAdmin, RolesGuard } from '../../shared/guards/index';
-import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard';
 import { CoursesService } from './courses.service';
 
 @ForAdmin()
