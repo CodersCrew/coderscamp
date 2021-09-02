@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { User } from '@prisma/client';
+import type { UserProfile } from '@prisma/client';
 
 import type { UserId } from '@/shared/domain.types';
 
@@ -9,11 +9,11 @@ import { UserProfileRepository } from './user-profile.repository';
 export class UserProfileService {
   constructor(private readonly usersRepository: UserProfileRepository) {}
 
-  getAll(): Promise<User[]> {
+  getAll(): Promise<UserProfile[]> {
     return this.usersRepository.findMany();
   }
 
-  getById(id: UserId): Promise<User | null> {
+  getById(id: UserId): Promise<UserProfile | null> {
     return this.usersRepository.findUnique({ where: { id } });
   }
 }
