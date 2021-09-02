@@ -1,3 +1,5 @@
+export type { HTMLChakraProps } from '@chakra-ui/react';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyObject = Record<string, any>;
 
