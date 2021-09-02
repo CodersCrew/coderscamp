@@ -12,7 +12,7 @@ export type StorableEvent<
   EventMetadata extends DefaultEventMetadata = DefaultEventMetadata,
 > = Omit<ApplicationEvent<DomainEventType, EventMetadata>, 'globalOrder' | 'streamVersion' | 'streamName'>;
 
-export type ReadAllFilter = { streamCategory?: string; eventType?: string; fromGlobalPosition?: number };
+export type ReadAllFilter = { streamCategory?: string; eventTypes?: string[]; fromGlobalPosition?: number };
 
 export interface EventRepository {
   read(streamName: EventStreamName): Promise<EventStream>;

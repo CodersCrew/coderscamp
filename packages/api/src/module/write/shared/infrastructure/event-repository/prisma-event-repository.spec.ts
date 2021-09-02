@@ -156,12 +156,27 @@ describe('Prisma Event Repository', () => {
     await eventRepository.write(streamName, [...sampleEventsToStore, ...anotherSampleEventsToStore], 0);
 
     // Then
-    const result = await eventRepository.readAll({
+    const result1 = await eventRepository.readAll({
       streamCategory,
-      fromGlobalPosition: 100,
-      eventType: 'AnotherSampleDomainEvent',
+      fromGlobalPosition: 99,
+      eventTypes: ['SampleDomainEvent', 'AnotherSampleDomainEvent'],
     });
 
-    expect(result.length).toBe(1);
+    expect(result1.length).toBe(2);
+
+    // Then
+    const result2 = await eventRepository.readAll({});
+
+    expect(result2.length).toBe(100);
+
+    // Then
+    const result3 = await eventRepository.readAll({ fromGlobalPosition: 40, eventTypes: ['SampleDomainEvent'] });
+
+    expect(result3.length).toBe(11);
+
+    // Then
+    const result4 = await eventRepository.readAll({ fromGlobalPosition: 999 });
+
+    expect(result4.length).toBe(0);
   });
 });

@@ -101,7 +101,7 @@ export class PrismaEventRepository implements EventRepository {
           }
         : undefined,
       streamCategory: filter.streamCategory,
-      type: filter.eventType,
+      type: filter.eventTypes ? { in: filter.eventTypes } : undefined,
     };
     const storedEvents = await this.prismaService.event.findMany({
       where,
