@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { EventBus } from '@nestjs/cqrs';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { pick } from '@coderscamp/shared/utils/object';
+
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 
 import { hashPassword } from '../auth/local/local.utils';
 import { UserRegistrationCompletedEvent } from './events/user-registration-completed.event';
 import { UserRegistrationStartedEvent } from './events/user-registration-started.event';
 import { UserRegistrationRepository } from './user-registration.repository';
+import {RegisterUserApplicationCommand} from "@/commands/register-user";
 
 interface RegisterData {
   fullName: string;
@@ -17,12 +19,14 @@ interface RegisterData {
 @Injectable()
 export class UserRegistrationService {
   constructor(
-    private readonly eventBus: EventBus,
+    @Inject(APPLICATION_SERVICE)
+    private readonly applicationService: ApplicationService,
     private readonly userRegistrationRepository: UserRegistrationRepository,
   ) {}
 
-  async register(data: RegisterData) {
-    const password = await hashPassword(data.password);
+  async register(command: RegisterUserApplicationCommand) {
+    const {data} = command;
+    const password = await hashPassword(data.plainPassword);
 
     const userRegistration = await this.userRegistrationRepository.createUserRegistration({
       data: pick(data, ['fullName', 'email']),
