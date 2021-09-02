@@ -4,7 +4,7 @@ import { Test } from '@nestjs/testing';
 import httpMocks from 'node-mocks-http';
 import { v4 as uuidv4 } from 'uuid';
 
-import { env } from '@/common/env';
+import { env } from '../../shared/env';
 
 import { AuthController } from './auth.controller';
 import type { LocalGuardRequest } from './local/local.types';

@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
 
 import { DomainEvent } from '@/module/domain.event';
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaService } from './prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';

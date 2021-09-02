@@ -3,7 +3,7 @@ import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { initReadTestModule } from '@/common/test-utils';
+import { initReadTestModule } from '../../../shared/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/module/events/learning-materials-url-was-generated.domain-event';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
 import { TaskWasUncompleted } from '@/module/events/task-was-uncompleted-event.domain-event';

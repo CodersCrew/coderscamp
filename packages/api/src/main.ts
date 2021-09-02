@@ -2,7 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 
-import { env, validateEnv } from '@/common/env';
+import { env, validateEnv } from './shared/env';
 
 import { AppModule } from './app.module';
 

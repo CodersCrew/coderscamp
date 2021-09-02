@@ -19,7 +19,8 @@
       "@/module/*": ["src/module/shared/*"],
       "@/events/*": ["src/module/shared/events/*"],
       "@/commands/*": ["src/module/shared/commands/*"],
-      "@/guards/*": ["src/guards/*"]
+      "@/guards/*": ["src/guards/*"],
+      "@/crud/*": ["src/crud/*"]
     },
     "sourceMap": true,
     "target": "es2017"

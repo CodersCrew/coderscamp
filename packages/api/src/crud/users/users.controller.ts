@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 
 import type { GetAllUsersResponse, GetMeResponse } from '@coderscamp/shared/models/user';
 
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard';
 import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
 import { UsersService } from './users.service';
 import type { UserId } from './users.types';
