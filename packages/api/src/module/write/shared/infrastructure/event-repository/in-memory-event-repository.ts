@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationEvent } from '@/module/application-command-events';
 
 import { EventStream } from '../../application/application-service';
-import { EventRepository, StorableEvent } from '../../application/event-repository';
+import { EventRepository, ReadAllFilter, StorableEvent } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
@@ -43,7 +43,12 @@ export class InMemoryEventRepository implements EventRepository {
 
     const streamVersion = !foundStream ? 0 : foundStream.length;
 
-    const storeEvent = { ...event, globalOrder: this.globalEventsCount() };
+    const storeEvent = {
+      ...event,
+      globalOrder: this.globalEventsCount(),
+      streamName,
+      streamVersion: expectedStreamVersion + 1,
+    };
 
     if (!foundStream) {
       if (expectedStreamVersion !== 0) {
@@ -64,5 +69,9 @@ export class InMemoryEventRepository implements EventRepository {
 
   private globalEventsCount(): number {
     return Object.entries(this.eventStreams).reduce((acc, stream) => acc + stream.length, 0);
+  }
+
+  readAll(_filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]> {
+    return Promise.resolve([]);
   }
 }

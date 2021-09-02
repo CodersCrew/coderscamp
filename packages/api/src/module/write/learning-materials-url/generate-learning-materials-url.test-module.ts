@@ -104,8 +104,6 @@ export async function generateLearningMaterialsUrlTestModule() {
       id: randomEventId(),
       occurredAt: testTimeProvider.currentTime(),
       metadata: { correlationId: uuid(), causationId: uuid() },
-      streamVersion,
-      streamName: eventStreamName,
     };
 
     await eventRepository.write(eventStreamName, [storableEvent], streamVersion);

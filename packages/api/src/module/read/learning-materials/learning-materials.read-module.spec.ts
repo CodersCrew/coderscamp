@@ -40,8 +40,6 @@ function learningMaterialsUrlWasGeneratedForUser(
       materialsUrl: SAMPLE_MATERIALS_URL,
     },
     metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-    streamVersion: 1,
-    streamName: EventStreamName.from('LearningMaterialsUrl', courseUserId),
   };
 }
 
@@ -62,7 +60,10 @@ describe('Read Slice | Learning Materials', () => {
     const userId2 = uuid();
 
     // When
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
+    moduleUnderTest.eventOccurred(
+      learningMaterialsUrlWasGeneratedForUser(userId1),
+      EventStreamName.from('LearningMaterialsUrl', userId1),
+    );
 
     // Then
     await moduleUnderTest.expectReadModel({
@@ -79,7 +80,10 @@ describe('Read Slice | Learning Materials', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId2));
+    moduleUnderTest.eventOccurred(
+      learningMaterialsUrlWasGeneratedForUser(userId2),
+      EventStreamName.from('LearningMaterialsUrl', userId2),
+    );
 
     // Then
     await moduleUnderTest.expectReadModel({
