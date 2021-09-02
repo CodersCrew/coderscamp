@@ -3,7 +3,7 @@ import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { UserId } from '@/crud/users/users.types';
+import { UserId } from '@/crud/user-profiles/users.types';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { initReadTestModule } from '@/shared/test-utils';
 import { StorableEvent } from '@/write/shared/application/event-repository';

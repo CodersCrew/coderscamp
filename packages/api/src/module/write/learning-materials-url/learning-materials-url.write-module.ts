@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { UsersModule } from '@/crud/users/users.module';
-import { UsersService } from '@/crud/users/users.service';
+import { UsersModule } from '@/crud/user-profiles/users.module';
+import { UsersService } from '@/crud/user-profiles/users.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';

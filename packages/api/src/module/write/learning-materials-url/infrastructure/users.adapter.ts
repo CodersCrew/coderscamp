@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { UsersService } from '@/crud/users/users.service';
-import type { UserId } from '@/crud/users/users.types';
+import { UsersService } from '@/crud/user-profiles/users.service';
+import type { UserId } from '@/crud/user-profiles/users.types';
 
 import { UsersPort } from '../application/users.port';
 

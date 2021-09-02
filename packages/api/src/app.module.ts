@@ -8,7 +8,7 @@ import { env } from '@/shared/env';
 
 import { AuthModule } from './crud/auth/auth.module';
 import { CoursesModule } from './crud/courses/courses.module';
-import { UsersModule } from './crud/users/users.module';
+import { UsersModule } from './crud/user-profiles/users.module';
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from './module/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
 import { CourseProgressReadModule } from './module/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from './module/read/learning-materials/learning-materials.read-module';
