@@ -2,8 +2,8 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 import { pick } from '@coderscamp/shared/utils/object';
 
+import { UserRegistrationStartedEvent } from '../../user-registration/events/user-registration-started.event';
 import { AuthUserRepository } from '../auth-user.repository';
-import { UserRegistrationStartedEvent } from '../events/user-registration-started.event';
 
 @EventsHandler(UserRegistrationStartedEvent)
 export class UserRegistrationStartedHandler implements IEventHandler<UserRegistrationStartedEvent> {

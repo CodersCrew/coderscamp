@@ -2,7 +2,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 import { pick } from '@coderscamp/shared/utils/object';
 
-import { UserRegistrationCompletedEvent } from '../../auth/events/user-registration-completed.event';
+import { UserRegistrationCompletedEvent } from '../../user-registration/events/user-registration-completed.event';
 import { UserProfileRepository } from '../user-profile.repository';
 
 @EventsHandler(UserRegistrationCompletedEvent)

@@ -3,9 +3,9 @@ import { EventBus } from '@nestjs/cqrs';
 
 import { pick } from '@coderscamp/shared/utils/object';
 
+import { hashPassword } from '../auth/local/local.utils';
 import { UserRegistrationCompletedEvent } from './events/user-registration-completed.event';
 import { UserRegistrationStartedEvent } from './events/user-registration-started.event';
-import { hashPassword } from './local/local.utils';
 import { UserRegistrationRepository } from './user-registration.repository';
 
 interface RegisterData {

@@ -7,15 +7,10 @@ import { env } from '@/shared/env';
 
 import { AuthController } from './auth.controller';
 import { AuthUserRepository } from './auth-user.repository';
-import { UserRegistrationCompletedEvent } from './events/user-registration-completed.event';
-import { UserRegistrationStartedEvent } from './events/user-registration-started.event';
 import { UserRegistrationStartedHandler } from './handlers/user-registration-started.handler';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { LocalStrategy } from './local/local.strategy';
-import { UserRegistrationRepository } from './user-registration.repository';
-import { UserRegistrationService } from './user-registration.service';
 
-const events = [UserRegistrationCompletedEvent, UserRegistrationStartedEvent];
 const handlers = [UserRegistrationStartedHandler];
 const strategies = [JwtStrategy, LocalStrategy];
 
@@ -29,13 +24,6 @@ const strategies = [JwtStrategy, LocalStrategy];
     CqrsModule,
   ],
   controllers: [AuthController],
-  providers: [
-    UserRegistrationService,
-    UserRegistrationRepository,
-    AuthUserRepository,
-    ...events,
-    ...handlers,
-    ...strategies,
-  ],
+  providers: [AuthUserRepository, ...handlers, ...strategies],
 })
 export class AuthModule {}
