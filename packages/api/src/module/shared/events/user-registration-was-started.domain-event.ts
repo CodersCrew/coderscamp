@@ -3,7 +3,7 @@ export type UserRegistrationWasStarted = {
   data: {
     userId: string;
     fullName: string;
-    email: string;
-    password: string;
+    emailAddress: string;
+    hashedPassword: string;
   };
 };

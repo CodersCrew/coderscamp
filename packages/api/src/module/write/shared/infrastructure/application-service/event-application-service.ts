@@ -27,7 +27,7 @@ export class EventApplicationService implements ApplicationService {
     const eventStream = await this.eventRepository.read(streamName);
     const streamVersion = EventApplicationService.streamVersion(eventStream);
 
-    const resultDomainEvents = domainLogic(
+    const resultDomainEvents = await domainLogic(
       eventStream.map((e) => {
         return { type: e.type, data: e.data } as DomainEventType;
       }),

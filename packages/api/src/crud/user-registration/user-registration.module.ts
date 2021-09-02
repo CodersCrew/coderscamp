@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { UserRegistrationController } from '@/crud/user-registration/user-registration.controller';
-import { UserRegistrationRepository } from '@/crud/user-registration/user-registration.repository';
+import { UserRegistrationEmails } from '@/crud/user-registration/user-registration-emails.service';
 import { UserRegistrationService } from '@/crud/user-registration/user-registration.service';
 import {SharedModule} from "@/write/shared/shared.module";
 
 @Module({
   imports: [SharedModule],
   controllers: [UserRegistrationController],
-  providers: [UserRegistrationService, UserRegistrationRepository],
+  providers: [UserRegistrationService, UserRegistrationEmails],
 })
 export class UserRegistrationModule {}
