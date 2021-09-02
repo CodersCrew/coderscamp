@@ -11,8 +11,9 @@ import { AppModule } from '../app.module';
 
 export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
-    Object.values(prismaService).map((table) => (table?.deleteMany ? table.deleteMany({}) : Promise.resolve())),
+    Object.values(prismaService).map((table) => (table?.deleteMany ? table.deleteMany() : Promise.resolve())),
   );
+  
   await prismaService.$executeRaw`ALTER SEQUENCE "Event_globalOrder_seq" RESTART WITH 1`;
 }
 
