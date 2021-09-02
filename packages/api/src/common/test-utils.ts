@@ -6,7 +6,6 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-import { EventStreamVersion } from '@/write/shared/application/event-stream-version';
 
 import { AppModule } from '../app.module';
 
@@ -36,24 +35,23 @@ export async function initReadTestModule() {
 
   let publishedEvents = 0;
 
-  function eventOccurred(event: StorableEvent): void {
-    eventBus.publishAll([{ ...event, globalOrder: (publishedEvents += 1) }]);
+  async function eventOccurred(event: StorableEvent, streamName: EventStreamName): Promise<void> {
+    publishedEvents += 1;
+    await eventBus.publishAll([{ ...event, globalOrder: publishedEvents, streamVersion: publishedEvents, streamName }]);
   }
 
   return { prismaService, close, eventOccurred };
 }
 
-export function storableEvent<EventType extends DomainEvent>(
-  eventStreamName: EventStreamName,
-  event: EventType,
-  streamVersion: EventStreamVersion,
-): StorableEvent<EventType> {
+export function storableEvent<EventType extends DomainEvent>(event: EventType): StorableEvent<EventType> {
   return {
     ...event,
     id: uuid(),
     occurredAt: new Date(),
     metadata: { correlationId: uuid(), causationId: uuid() },
-    streamVersion,
-    streamName: eventStreamName,
   };
+}
+
+export function sequence(length: number) {
+  return Array.from(Array(length).keys());
 }

@@ -23,8 +23,6 @@ const statusTask = (
       taskId: '2',
     },
     metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-    streamVersion: 1,
-    streamName: EventStreamName.from('LearningMaterialsTasks', learningMaterialsId),
   };
 };
 
@@ -76,8 +74,6 @@ const learningMaterialsUrlWasGeneratedWithId = (id: string): StorableEvent<Learn
       materialsUrl: SAMPLE_MATERIALS_URL,
     },
     metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-    streamVersion: 1,
-    streamName: EventStreamName.from('LearningMaterialsUrl', courseUserId),
   };
 };
 
@@ -96,7 +92,10 @@ describe('Read Slice | CourseProgress', () => {
     // Given
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+    await moduleUnderTest.eventOccurred(
+      learningMaterialsUrlWasGeneratedWithId(id),
+      EventStreamName.from('LearningMaterialsUrl', courseUserId),
+    );
 
     await moduleUnderTest.expectReadModel({
       learningMaterialsId,
@@ -108,7 +107,10 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasCompleted'));
+    await moduleUnderTest.eventOccurred(
+      statusTask(learningMaterialsId, 'TaskWasCompleted'),
+      EventStreamName.from('LearningMaterialsTasks', courseUserId),
+    );
 
     // Then
     const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
@@ -127,7 +129,10 @@ describe('Read Slice | CourseProgress', () => {
     // Given
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+    await moduleUnderTest.eventOccurred(
+      learningMaterialsUrlWasGeneratedWithId(id),
+      EventStreamName.from('LearningMaterialsUrl', courseUserId),
+    );
 
     await moduleUnderTest.expectReadModel({
       learningMaterialsId,
@@ -139,7 +144,10 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasCompleted'));
+    await moduleUnderTest.eventOccurred(
+      statusTask(learningMaterialsId, 'TaskWasCompleted'),
+      EventStreamName.from('LearningMaterialsTasks', courseUserId),
+    );
 
     // Then
     const learningMaterialCompletedTaskAfterEvent = initialLearningMaterialCompletedTask + 1;
@@ -154,7 +162,10 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasUncompleted'));
+    await moduleUnderTest.eventOccurred(
+      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
+      EventStreamName.from('LearningMaterialsTasks', courseUserId),
+    );
 
     // Then
     await moduleUnderTest.expectReadModel({
@@ -172,7 +183,10 @@ describe('Read Slice | CourseProgress', () => {
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     // When
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedWithId(id));
+    await moduleUnderTest.eventOccurred(
+      learningMaterialsUrlWasGeneratedWithId(id),
+      EventStreamName.from('LearningMaterialsUrl', courseUserId),
+    );
 
     // Then
     await moduleUnderTest.expectReadModel({
@@ -185,7 +199,10 @@ describe('Read Slice | CourseProgress', () => {
     });
 
     // When
-    moduleUnderTest.eventOccurred(statusTask(learningMaterialsId, 'TaskWasUncompleted'));
+    await moduleUnderTest.eventOccurred(
+      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
+      EventStreamName.from('LearningMaterialsTasks', courseUserId),
+    );
     // Then
     await moduleUnderTest.expectReadModel({
       learningMaterialsId,
