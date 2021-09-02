@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Box } from '@coderscamp/ui/components/Box';
 import { SliderSteps, SliderStepsProps } from '@coderscamp/ui/components/SliderSteps';
 import { VStack } from '@coderscamp/ui/components/Stack';
+import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 
 import { useRerender } from '../../hooks/useRerender';
 import { Testimonial } from './Testimonials.data';
@@ -22,6 +23,7 @@ export const TestimonialsCarousel = ({
 }: TestimonialsCarouselProps) => {
   const ref = useRef<Parameters<NonNullable<SwiperProps['onInit']>>[0]>();
   const rerender = useRerender();
+  const [isSmallMobile] = useMediaQuery('(max-width: 520px)');
 
   const handleSwiperInit: SwiperProps['onInit'] = (swiper) => {
     ref.current = swiper;
@@ -37,6 +39,7 @@ export const TestimonialsCarousel = ({
         count={testimonials.length}
         selectedIndex={ref.current?.activeIndex ?? 0}
         onChange={handleSliderStepChange}
+        showDots={!isSmallMobile}
       />
       <Box width="100%">
         <Swiper

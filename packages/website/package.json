@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/nodemailer": "6.4.4",
     "@types/react": "17.0.19",
-    "@types/react-headroom": "^2.2.2",
+    "@types/react-headroom": "2.2.2",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "8.0.0"
   }
