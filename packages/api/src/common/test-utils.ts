@@ -10,10 +10,12 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 import { AppModule } from '../app.module';
 
 export async function cleanupDatabase(prismaService: PrismaService) {
+  console.log("CLEANUP DATABASE")
+  await prismaService.$executeRaw`TRUNCATE TABLE "Event"`;
   await Promise.all(
-    Object.values(prismaService).map((table) => (table?.deleteMany ? table.deleteMany() : Promise.resolve())),
+    Object.values(prismaService).map((table) => (table?.deleteMany ? table.deleteMany({}) : Promise.resolve())),
   );
-
+  await prismaService.event.deleteMany({}).then((c) => console.log('DELETED', c));
   await prismaService.$executeRaw`ALTER SEQUENCE "Event_globalOrder_seq" RESTART WITH 1`;
 }
 
