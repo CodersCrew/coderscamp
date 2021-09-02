@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import ReactHeadroom from 'react-headroom';
-import { Center } from '@chakra-ui/react';
 
-import { chakra } from '@coderscamp/ui/components/Box';
 import { Button } from '@coderscamp/ui/components/Button';
+import { Center } from '@coderscamp/ui/components/Center';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { HStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
