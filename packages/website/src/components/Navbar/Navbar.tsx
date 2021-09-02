@@ -25,7 +25,7 @@ export const Navbar = () => {
         position="relative"
       >
         {baseNavbar}
-        <Flex overflow="hidden">
+        <Flex>
           <Button size="md" mr="12px" onClick={() => openModal('mentor')}>
             Zostań mentorem
           </Button>
