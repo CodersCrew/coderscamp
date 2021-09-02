@@ -14,14 +14,19 @@ export const Hero = () => {
   const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
   const buttonsStackDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
 
-  const mainHeaderSize = { base: '4xl', sm: '6xl', md: '7xl', xl: '8xl' } as const;
-  const subheaderSize = { base: 'md', sm: 'xl', md: '2xl' } as const;
+  const mainHeaderSize = { base: '4xl', md: '6xl', '1xl': '7xl', '2xl': '8xl' } as const;
+  const subheaderSize = { base: 'md', sm: 'xl', '1xl': '2xl' } as const;
   const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
 
   return (
-    <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}>
-      <VStack spacing={{ base: '24px', md: '56px' }} maxW="min(1400px, 100%)">
-        <VStack spacing={{ base: '16px', md: '32px' }} textAlign="center">
+    <Flex
+      justify="center"
+      width="100%"
+      p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}
+      pt={{ xl: '60px', '1xl': '80px', '2xl': '120px' }}
+    >
+      <VStack spacing={{ base: '24px', xl: '32px', '1xl': '40px', '2xl': '56px' }}>
+        <VStack spacing={{ base: '16px', '1xl': '24px', '2xl': '32px' }} textAlign="center">
           <Typography size={mainHeaderSize} color="gray.900" weight="extrabold">
             Największy otwarty kurs programowania webowego w Polsce
           </Typography>
