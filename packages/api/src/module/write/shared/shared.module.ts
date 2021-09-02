@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { env } from '@/common/env';
 import { PrismaModule } from '@/prisma/prisma.module';
+import { env } from '@/shared/env';
 
 import { ApplicationEventBus } from './application/application.event-bus';
 import { ApplicationCommandFactory } from './application/application-command.factory';

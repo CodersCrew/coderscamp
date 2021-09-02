@@ -2,10 +2,10 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
 
-import { cleanupDatabase } from '@/common/test-utils';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
+import { cleanupDatabase } from '@/shared/test-utils';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '@/write/shared/application/application-command.factory';
 import { EVENT_REPOSITORY, EventRepository, StorableEvent } from '@/write/shared/application/event-repository';

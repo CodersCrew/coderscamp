@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { env } from '@/common/env';
+import { env } from '@/shared/env';
 
 import { AuthController } from './auth.controller';
 import { AuthUserRepository } from './auth-user.repository';

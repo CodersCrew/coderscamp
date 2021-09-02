@@ -2,10 +2,10 @@ import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
 
 import { GetLearningMaterialResponse } from '@coderscamp/shared/models/learning-material';
 
-import { JwtAuthGuard } from '@/auth/jwt/jwt-auth.guard';
-import { JwtUserId } from '@/auth/jwt/jwt-user-id.decorator';
+import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
+import { UserId } from '@/crud/users/users.types';
 import { PrismaService } from '@/prisma/prisma.service';
-import { UserId } from '@/users/users.types';
+import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('learning-materials')
