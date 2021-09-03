@@ -1,12 +1,13 @@
 import './styles/Inter.css';
 
-import React, { memo } from 'react';
-import { ChakraProvider, ChakraProviderProps, ColorModeScript } from '@chakra-ui/react';
+import React, { memo, ReactNode } from 'react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import type { Styles } from '@chakra-ui/theme-tools';
 
 import { createTheme } from './overwrites';
 
-export interface ThemeProviderProps extends Omit<ChakraProviderProps, 'theme'> {
+export interface ThemeProviderProps {
+  children: ReactNode;
   globalStyles?: Styles['global'];
 }
 

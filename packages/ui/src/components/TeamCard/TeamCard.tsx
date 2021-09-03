@@ -47,25 +47,23 @@ const Avatars = ({ teamMembers }: AvatarsProps) => {
 export const TeamCard = ({ members, mentors, active, ...props }: TeamCardProps) => {
   return (
     <Box width="100%" boxShadow="base" borderRadius={8} padding="24px" {...props}>
-      <Typography size="2xl" fontWeight={800} lineHeight="28px">
+      <Typography size="2xl" weight="extrabold">
         Twój zespół
       </Typography>
       <Box marginTop="24px">
         {active ? (
           <>
-            <Typography fontWeight="medium" size="md">
+            <Typography weight="medium" size="md">
               Członkowie
             </Typography>
             <Avatars teamMembers={members} />
-            <Typography fontWeight="medium" size="md" marginTop="16px">
+            <Typography weight="medium" size="md" marginTop="16px">
               Mentor
             </Typography>
             <Avatars teamMembers={mentors} />
           </>
         ) : (
-          <Typography fontWeight="400" lineHeight="24px">
-            {NOT_ACTIVE_TEXT}
-          </Typography>
+          <Typography>{NOT_ACTIVE_TEXT}</Typography>
         )}
       </Box>
     </Box>

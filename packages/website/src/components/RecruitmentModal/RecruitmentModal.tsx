@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -12,17 +13,19 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
 import { RecruitmentModalForm } from './RecruitmentModalForm';
-import type { ModalConfig } from './RecruitmentModalProvider';
+import type { ModalConfig, ModalType } from './RecruitmentModalProvider';
 
 interface RecruitmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   config: ModalConfig;
+  modalType: ModalType;
 }
 
-export const RecruitmentModal = ({ isOpen, config, onClose }: RecruitmentModalProps) => {
+export const RecruitmentModal = ({ isOpen, config, onClose, modalType }: RecruitmentModalProps) => {
   const modalContentPaddings = useBreakpointValue({ base: '32px 16px 16px 32px', md: '56px 64px 64px 64px' } as const);
   const modalBodyMarginBottom = useBreakpointValue({ base: '16px', lg: '32px' } as const);
+  const modalHeaderTextMargin = useBreakpointValue({ base: '32px', md: '64px' } as const);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -35,8 +38,18 @@ export const RecruitmentModal = ({ isOpen, config, onClose }: RecruitmentModalPr
         boxShadow="large"
         textAlign="center"
       >
+        <ModalCloseButton
+          variant="ghost"
+          onClick={onClose}
+          size="lg"
+          position="absolute"
+          top="12px"
+          right="12px"
+          aria-label="Zamknij modal"
+        />
+
         <ModalHeader p={0}>
-          <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" style={{ whiteSpace: 'pre-line' }}>
+          <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" mx={modalHeaderTextMargin}>
             {config.header}
           </Typography>
         </ModalHeader>
@@ -44,7 +57,7 @@ export const RecruitmentModal = ({ isOpen, config, onClose }: RecruitmentModalPr
           <Typography as="p" size="lg" color="gray.500" mb={modalBodyMarginBottom} mt="12px">
             {config.body}
           </Typography>
-          <RecruitmentModalForm />
+          <RecruitmentModalForm modalType={modalType} onClose={onClose} />
         </ModalBody>
         <ModalFooter p={0}>
           <Typography as="p" size="sm" color="gray.500" mt="24px">

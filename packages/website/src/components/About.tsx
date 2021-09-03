@@ -8,6 +8,7 @@ import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
 import code from '@/assets/code.jpg';
+import { MODULES_COUNT, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 type ListItemProps = {
   children: ReactNode;
@@ -35,30 +36,33 @@ export const About = () => {
         <HStack spacing="64px">
           <Box color="gray.500">
             <Typography size="lg" mb="24px">
-              CodersCamp to 6-miesięczny, darmowy kurs programowania webowego organizowany przez Stowarzyszenie
+              CodersCamp to 6-miesięczny, darmowy kurs programowania webowego, organizowany przez Stowarzyszenie
               CodersCrew. Misją, jaką sobie wyznaczyliśmy, jest przeprowadzić każdego od pierwszych linii kodu do
-              rozpoczęcia kariery jako web developer.
+              rozpoczęcia kariery jako web developer. Aby wziąć udział w kursie nie musisz posiadać żadnego
+              doświadczenia. Podczas kursu zapewnimy Ci:
             </Typography>
-            <Typography mb="16px">
-              Aby wziąć udział w bootcampie <b>nie musisz posiadać żadnego wcześniejszego doświadczenia</b> – wystarczą
-              duże pokłady czasu i zaangażowania, które będziesz mógł przeznaczyć na wyzwania, jakie dla Ciebie
-              przygotowaliśmy.
-            </Typography>
-            <Typography mb="16px">Podczas kursu:</Typography>
             <VStack spacing="12px">
               <ListItem>
-                Otrzymasz od nas <b>interaktywny plan nauki</b>, składający się z <b>5 modułów tematycznych</b>. Każdy
-                moduł to kilkanaście sekcji, które pozwolą Ci zarówno zapoznać się z teorią dotyczącą danego
-                zagadnienia, jak i wykorzystać zdobytą wiedzę w praktyce.
+                <Typography weight="extrabold" as="p">
+                  Interaktywny plan nauki
+                </Typography>
+                składający się z {MODULES_COUNT} modułów tematycznych. Każdy moduł to kilkanaście sekcji, które pozwolą
+                Ci zarówno zapoznać się z teorią dotyczącą danego zagadnienia, jak <br />i wykorzystać zdobytą wiedzę w
+                praktyce.
               </ListItem>
               <ListItem>
-                Dołączysz do <b>6-osobowego zespołu</b> prowadzonego przez <b>doświadczonego mentora</b>. Wspólnie
-                zrealizujecie aż <b>6 praktycznych projektów</b> o rosnącej skali, budując tym samym swoje portfolio.
+                <Typography weight="extrabold" as="p">
+                  Pracę w {TEAM_SIZE}-osobowym zespole
+                </Typography>
+                prowadzonym przez doświadczonego mentora. Wspólnie zrealizujecie aż {PROJECTS_COUNT} praktycznych,
+                zróżnicowanych projektów, budując tym samym swoje portfolio.
               </ListItem>
               <ListItem>
-                Staniesz się częścią <b>społeczności składającej się z kilkuset osób</b>, które tak jak Ty stawiają
-                pierwsze kroki w branży IT oraz <b>kilkudziesięciu ekspertów i mentorów</b>, na których wsparcie
-                będziesz mógł liczyć przez cały kurs.
+                <Typography weight="extrabold" as="p">
+                  Wspierającą społeczność
+                </Typography>
+                składającą się z kilkuset osób, które tak jak Ty stawiają pierwsze kroki w branży IT oraz
+                kilkudziesięciu ekspertów i mentorów, na których wsparcie będziesz mógł liczyć przez cały kurs.
               </ListItem>
             </VStack>
           </Box>

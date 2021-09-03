@@ -4,7 +4,7 @@ import { ApplicationEvent, DefaultCommandMetadata } from '@/module/application-c
 import { PrismaService } from '@/prisma/prisma.service';
 
 import { EventStream } from '../../application/application-service';
-import { EventRepository } from '../../application/event-repository';
+import { EventRepository, ReadAllFilter, StorableEvent } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
@@ -13,10 +13,10 @@ const parseData = (value: unknown): Record<string, unknown> => JSON.parse(typeof
 const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, unknown> => {
   const metadata = JSON.parse(typeof value === 'string' ? value : '{}');
 
-  const hasCorrectCorelationId = 'correlationId' in metadata && typeof metadata.correlationId === 'string';
+  const hasCorrectCorrelationId = 'correlationId' in metadata && typeof metadata.correlationId === 'string';
   const hasCorrectCausationId = !('causationId' in metadata) || typeof metadata.causationId === 'string';
 
-  if (!hasCorrectCorelationId || !hasCorrectCausationId) {
+  if (!hasCorrectCorrelationId || !hasCorrectCausationId) {
     throw new Error('Wrong format of the metadata JSON');
   }
 
@@ -42,35 +42,81 @@ export class PrismaEventRepository implements EventRepository {
       data: parseData(e.data),
       metadata: parseMetadata(e.metadata),
       streamVersion: e.streamVersion,
-      streamName,
+      streamName: EventStreamName.from(e.streamCategory, e.streamId),
+      globalOrder: e.globalOrder,
     }));
   }
 
   async write(
     streamName: EventStreamName,
-    events: ApplicationEvent[],
+    events: StorableEvent[],
     expectedStreamVersion: EventStreamVersion,
-  ): Promise<void> {
-    // todo: do it in transaction!
-    const currentStreamVersion = await this.prismaService.event.count({ where: { streamId: streamName.streamId } });
+  ): Promise<ApplicationEvent[]> {
+    return this.prismaService.$transaction(async (prisma) => {
+      const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
 
-    if (currentStreamVersion !== expectedStreamVersion) {
-      throw new Error(
-        `Event stream ${streamName.raw} expected version is: ${expectedStreamVersion}, but current version is: ${currentStreamVersion}`,
-      );
-    }
+      if (currentStreamVersion !== expectedStreamVersion) {
+        throw new Error(
+          `Event stream ${streamName.raw} expected version is: ${expectedStreamVersion}, but current version is: ${currentStreamVersion}`,
+        );
+      }
 
-    const databaseEvents = events.map((e) => ({
-      id: e.id,
+      const databaseEvents = events.map((e, index) => ({
+        id: e.id,
+        type: e.type,
+        streamId: streamName.streamId,
+        streamCategory: streamName.streamCategory,
+        streamVersion: currentStreamVersion + 1 + index,
+        occurredAt: e.occurredAt,
+        data: JSON.stringify(e.data),
+        metadata: JSON.stringify(e.metadata),
+      }));
+
+      await prisma.event.createMany({ data: databaseEvents });
+
+      const storedEvents = await prisma.event.findMany({
+        where: {
+          id: { in: databaseEvents.map((e) => e.id) },
+        },
+      });
+
+      return storedEvents.map((e) => ({
+        type: e.type,
+        id: e.id,
+        occurredAt: e.occurredAt,
+        data: parseData(e.data),
+        metadata: parseMetadata(e.metadata),
+        streamVersion: e.streamVersion,
+        streamName: EventStreamName.from(e.streamCategory, e.streamId),
+        globalOrder: e.globalOrder,
+      }));
+    });
+  }
+
+  async readAll(filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]> {
+    const where = {
+      globalOrder: filter.fromGlobalPosition
+        ? {
+            gte: filter.fromGlobalPosition ?? 0,
+          }
+        : undefined,
+      streamCategory: filter.streamCategory,
+      type: filter.eventTypes ? { in: filter.eventTypes } : undefined,
+    };
+    const storedEvents = await this.prismaService.event.findMany({
+      where,
+      orderBy: { globalOrder: 'asc' },
+    });
+
+    return storedEvents.map((e) => ({
       type: e.type,
-      streamId: streamName.streamId,
-      streamCategory: streamName.streamCategory,
-      streamVersion: e.streamVersion,
+      id: e.id,
       occurredAt: e.occurredAt,
-      data: JSON.stringify(e.data),
-      metadata: JSON.stringify(e.metadata),
+      data: parseData(e.data),
+      metadata: parseMetadata(e.metadata),
+      streamVersion: e.streamVersion,
+      streamName: EventStreamName.from(e.streamCategory, e.streamId),
+      globalOrder: e.globalOrder,
     }));
-
-    await this.prismaService.event.createMany({ data: databaseEvents });
   }
 }

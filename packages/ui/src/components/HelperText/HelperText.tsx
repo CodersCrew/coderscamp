@@ -1,6 +1,7 @@
 import React, { forwardRef, ReactNode } from 'react';
-import { HTMLChakraProps } from '@chakra-ui/react';
+import type { HTMLChakraProps } from '@chakra-ui/react';
 
+import type { OmitForbiddenProps } from '../../types';
 import { useFieldContextSize } from '../FormControl/FieldContext';
 import { Typography } from '../Typography';
 
@@ -8,7 +9,7 @@ type HelperTextVariant = 'default' | 'warning' | 'error';
 
 type HelperTextSize = 'sm' | 'md' | 'lg';
 
-export interface HelperTextProps extends Omit<HTMLChakraProps<'div'>, 'as'> {
+export interface HelperTextProps extends OmitForbiddenProps<HTMLChakraProps<'div'>, 'as'> {
   variant?: HelperTextVariant;
   size?: HelperTextSize;
   children: ReactNode;
