@@ -99,7 +99,10 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     return eventBusSpy.mock.calls[lastEventIndex][0];
   }
 
-  function expectEvent<EventType extends DomainEvent>(actual: any, expected: ExpectedPublishEvent<EventType>) {
+  function expectEvent<EventType extends DomainEvent>(
+    actual: ApplicationEvent,
+    expected: ExpectedPublishEvent<EventType>,
+  ) {
     expect({
       type: actual.type,
       data: actual.data,
