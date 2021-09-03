@@ -42,7 +42,7 @@ const TopFooter = () => {
   return (
     <Flex w="100%" direction={direction} align="flex-start" justify="space-between" mb={[0, 0, 0, 0, '32px']}>
       <Box maxW="384px" direction="column" mb="56px">
-        <Box position="relative" display="block" w="291px" h="32px">
+        <Box position="relative" display="block" maxW="291px" h="32px">
           <Image alt="Logo CodersCrew" src={logoCodersCrew} layout="fill" />
         </Box>
         <Typography w="100%" pt="20px" size="md">
