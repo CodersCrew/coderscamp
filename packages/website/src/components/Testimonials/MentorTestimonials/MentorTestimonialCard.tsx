@@ -1,8 +1,8 @@
-import { Avatar } from '@coderscamp/ui/components/Avatar';
 import { Center } from '@coderscamp/ui/components/Center';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
+import { MentorAvatar } from '../MentorAvatar';
 import { Testimonial } from '../Testimonials.data';
 
 export const MentorTestimonialCard = ({ content, image, name, company, companyPosition }: Testimonial) => {
@@ -12,7 +12,7 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
         {content}
       </Typography>
       <Center>
-        <Avatar src={image} size="lg" mr="16px" borderWidth="1px" borderColor="gray.300" />
+        <MentorAvatar mr="16px" src={image} alt={name} />
         <VStack alignItems="flex-start" spacing="0px">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}
