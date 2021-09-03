@@ -4,5 +4,6 @@ export type UserRegistrationWasCompleted = {
     userId: string;
     fullName: string;
     emailAddress: string;
+    hashedPassword: string;
   };
 };

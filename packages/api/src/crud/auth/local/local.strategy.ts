@@ -1,12 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { IStrategyOptions, Strategy } from 'passport-local';
 
 import type { LoginBody } from '@coderscamp/shared/models/auth/login';
 import { omit } from '@coderscamp/shared/utils/object';
 
+import { PASSWORD_ENCODER, PasswordEncoder } from '@/write/shared/application/password-encoder';
+
 import { AuthUserRepository } from '../auth-user.repository';
-import { checkPassword } from './local.utils';
 
 const strategyOptions: IStrategyOptions & Record<string, keyof LoginBody> = {
   usernameField: 'email' as const,
@@ -15,7 +16,10 @@ const strategyOptions: IStrategyOptions & Record<string, keyof LoginBody> = {
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authUserRepository: AuthUserRepository) {
+  constructor(
+    private readonly authUserRepository: AuthUserRepository,
+    @Inject(PASSWORD_ENCODER) private readonly passwordEncoder: PasswordEncoder,
+  ) {
     super(strategyOptions);
   }
 
@@ -26,7 +30,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    const isPasswordCorrect = await checkPassword(password, user.password);
+    const isPasswordCorrect = await this.passwordEncoder.matches(password, user.password);
 
     if (!isPasswordCorrect) {
       throw new UnauthorizedException();

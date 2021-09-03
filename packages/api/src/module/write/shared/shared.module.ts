@@ -4,6 +4,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 
 import { PrismaModule } from '@/prisma/prisma.module';
 import { env } from '@/shared/env';
+import { PASSWORD_ENCODER } from '@/write/shared/application/password-encoder';
+import { CryptoPasswordEncoder } from '@/write/shared/infrastructure/password-encoder/crypto-password-encoder';
 
 import { ApplicationEventBus } from './application/application.event-bus';
 import { ApplicationCommandFactory } from './application/application-command.factory';
@@ -48,6 +50,10 @@ if (env.EVENT_REPOSITORY === 'prisma') {
       provide: APPLICATION_SERVICE,
       useClass: EventApplicationService,
     },
+    {
+      provide: PASSWORD_ENCODER,
+      useClass: CryptoPasswordEncoder,
+    },
     ApplicationCommandFactory,
   ],
   exports: [
@@ -57,6 +63,7 @@ if (env.EVENT_REPOSITORY === 'prisma') {
     TIME_PROVIDER,
     ID_GENERATOR,
     APPLICATION_SERVICE,
+    PASSWORD_ENCODER,
   ],
 })
 export class SharedModule {}
