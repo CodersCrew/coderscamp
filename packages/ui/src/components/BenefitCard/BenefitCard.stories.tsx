@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { Meta, Story } from '@storybook/react';
 
-import { SolidGitHubIcon } from '../../icons';
+import { SolidGitHubIcon } from '../../icons/SolidGitHub';
 import { BenefitCard, BenefitCardProps } from './BenefitCard';
 
 const meta: Meta = {

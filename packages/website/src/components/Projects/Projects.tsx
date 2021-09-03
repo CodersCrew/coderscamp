@@ -1,14 +1,15 @@
-import React, { ComponentType } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-const ProjectsCarousel = dynamic(
-  import('./ProjectsCarousel').then((mod) => mod.ProjectsCarousel) as Promise<ComponentType>,
-  { ssr: false },
-);
+import type { Import } from '@/types';
+
+const ProjectsCarousel = dynamic(import('./ProjectsCarousel').then((mod) => mod.ProjectsCarousel) as Import, {
+  ssr: false,
+});
 
 export const Projects = () => {
   return (

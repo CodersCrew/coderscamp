@@ -17,7 +17,7 @@ import {
   ToolboxIcon,
   UserGroupCrownIcon,
   UsersIcon,
-} from '@coderscamp/ui/icons';
+} from '@coderscamp/ui/icons/benefits';
 
 import { PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
