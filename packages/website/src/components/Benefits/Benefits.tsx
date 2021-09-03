@@ -6,7 +6,8 @@ import { Center } from '@coderscamp/ui/components/Center';
 import { Grid } from '@coderscamp/ui/components/Grid';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidArrowDownIcon, SolidArrowUpIcon } from '@coderscamp/ui/icons';
+import { SolidArrowDownIcon } from '@coderscamp/ui/icons/SolidArrowDown';
+import { SolidArrowUpIcon } from '@coderscamp/ui/icons/SolidArrowUp';
 
 export interface BenefitsProps {
   title: string;

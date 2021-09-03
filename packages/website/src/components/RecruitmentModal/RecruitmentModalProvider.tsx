@@ -1,8 +1,16 @@
 import React, { createContext, ReactNode, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 
-import { RecruitmentModal } from './RecruitmentModal';
+import type { Import } from '@/types';
+
+import type { RecruitmentModalProps } from './RecruitmentModal';
+
+const RecruitmentModal = dynamic(
+  import('./RecruitmentModal').then((m) => m.RecruitmentModal) as Import<RecruitmentModalProps>,
+  { ssr: false },
+);
 
 export type ModalType = 'mentor' | 'participant';
 

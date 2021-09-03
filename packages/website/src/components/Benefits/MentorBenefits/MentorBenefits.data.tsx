@@ -12,7 +12,7 @@ import {
   SitemapIcon,
   UsersIcon,
   UserTieIcon,
-} from '@coderscamp/ui/icons';
+} from '@coderscamp/ui/icons/benefits';
 
 export const mentorBenefitItems: BenefitCardProps[] = [
   {

@@ -7,7 +7,7 @@ import { Logo } from '@coderscamp/ui/components/Logo';
 import { Menu as ChakraMenu, MenuButton, MenuItem, MenuList } from '@coderscamp/ui/components/Menu';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
-import { OutlinedMenuIcon } from '@coderscamp/ui/icons';
+import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
 
 import { NavActionButtons } from './NavActionButtons';
 import { NavbarItem } from './NavbarItem';
@@ -40,7 +40,7 @@ export const MobileBaseNavbar = () => {
   return (
     <Flex alignItems="center" order={2}>
       <ChakraMenu>
-        <MenuButton as={IconButton} aria-label="Options" icon={<OutlinedMenuIcon />} size="md" bg="transparent" />
+        <MenuButton as={IconButton} aria-label="Options" icon={<SolidMenuIcon />} size="md" bg="transparent" />
 
         <MenuList>
           {logoLayout && <Logo ml="6" maxWidth="280px" color="black" layout={logoLayout} />}
