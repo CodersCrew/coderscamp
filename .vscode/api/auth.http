@@ -5,7 +5,7 @@
 ###
 
 # Register a new user
-POST {{serverUrl}}/auth/register
+POST {{serverUrl}}/user-registration
 
 {
   "fullName": "{{fullName}}",

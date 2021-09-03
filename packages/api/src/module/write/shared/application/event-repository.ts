@@ -10,7 +10,9 @@ export const EVENT_REPOSITORY = Symbol('EVENT_REPOSITORY');
 export type StorableEvent<
   DomainEventType extends DomainEvent = DomainEvent,
   EventMetadata extends DefaultEventMetadata = DefaultEventMetadata,
-> = Omit<ApplicationEvent<DomainEventType, EventMetadata>, 'globalOrder'>;
+> = Omit<ApplicationEvent<DomainEventType, EventMetadata>, 'globalOrder' | 'streamVersion' | 'streamName'>;
+
+export type ReadAllFilter = { streamCategory?: string; eventTypes?: string[]; fromGlobalPosition?: number };
 
 export interface EventRepository {
   read(streamName: EventStreamName): Promise<EventStream>;
@@ -20,4 +22,6 @@ export interface EventRepository {
     events: StorableEvent[],
     expectedStreamVersion: EventStreamVersion,
   ): Promise<ApplicationEvent[]>;
+
+  readAll(filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]>;
 }

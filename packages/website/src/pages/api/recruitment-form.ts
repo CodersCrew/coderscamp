@@ -16,7 +16,11 @@ async function sendRecruitmentForm(req: NextApiRequest, res: NextApiResponse) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
     const values: RecruitmentModalData = req.body;
 
-    await supabase.from<RecruitmentModalData>('emails').insert(values);
+    const { error } = await supabase.from<RecruitmentModalData>('emails').insert(values);
+
+    if (error) {
+      throw new Error(error.message);
+    }
 
     return res.status(200).json({ message: 'Recruitment form submitted' });
   } catch (ex) {

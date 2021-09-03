@@ -8,7 +8,5 @@ import { ApplicationEvent } from '@/module/application-command-events';
 @Injectable()
 export class LearningMaterialsUrlWasGeneratedEventHandler {
   @OnEvent('LearningMaterialsUrl.*')
-  handleLearningMaterialsUrlDomainEvent(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    console.log('TODO: Send Email', event);
-  }
+  handleLearningMaterialsUrlDomainEvent(_event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {}
 }

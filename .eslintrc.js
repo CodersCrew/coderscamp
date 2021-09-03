@@ -181,7 +181,14 @@ module.exports = {
       rules: {
         'jest/expect-expect': [
           2,
-          { assertFunctionNames: ['expect', '*.expectReadModel', '*.expectEventPublishedLastly'] },
+          {
+            assertFunctionNames: [
+              'expect',
+              '*.expectReadModel',
+              '*.expectEventPublishedLastly',
+              '*.expectEventsPublishedLastly',
+            ],
+          },
         ],
       },
     },
