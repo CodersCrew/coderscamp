@@ -45,7 +45,7 @@ export const MobileBaseNavbar = () => {
 
   return (
     <Flex order={2}>
-      <IconButton aria-label="Nawigacja" icon={<OutlinedMenuIcon />} size="md" bg="transparent" onClick={onOpen} />
+      <IconButton aria-label="Nawigacja" icon={<SolidMenuIcon />} size="md" bg="transparent" onClick={onOpen} />
       <Drawer placement="left" size={drawerSize} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent boxShadow="large">
