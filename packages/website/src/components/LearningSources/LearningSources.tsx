@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 import { Center } from '@coderscamp/ui/components/Center';
 import { Flex } from '@coderscamp/ui/components/Flex';
@@ -26,16 +25,19 @@ export const LearningSources = () => {
           </Typography>
         </VStack>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 3, xl: 4 }} spacing="4px" width="100%">
-          {learningSources.map(({ name, image, url, width, height }) => (
+          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
+          {learningSources.map(({ name, url, image: Image }) => (
             <Link key={name} href={url} target="_blank" rel="nofollow">
               <Center
                 bgColor="gray.50"
                 borderRadius="8px"
                 height="112px"
+                px="32px"
+                py="24px"
                 transition="background-color 0.225s"
                 _hover={{ bgColor: 'gray.100' }}
               >
-                <Image src={image} alt={name} width={width ?? 200} height={height ?? 48} />
+                <Image width="100%" height="100%" maxW="216px" />
               </Center>
             </Link>
           ))}
