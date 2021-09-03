@@ -100,8 +100,15 @@ export const MobileBaseNavbar = () => {
 };
 
 export const DesktopBaseNavbar = () => {
+  const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
+
   return (
     <>
+      {logoLayout && (
+        <Link href="/">
+          <Logo maxWidth="280px" color="black" layout={logoLayout} style={{ cursor: 'pointer' }} />
+        </Link>
+      )}
       <Flex>
         {NavbarElements.map((element) => (
           <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
