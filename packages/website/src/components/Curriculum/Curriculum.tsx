@@ -7,6 +7,8 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
+import { COURSE_PLAN_URL } from '@/constants';
+
 import { techNamesBottom, techNamesTop } from './Curriculum.data';
 import { TechSliding } from './TechSliding';
 
@@ -28,7 +30,7 @@ export const Curriculum = () => {
           miesięcy. Lista nie zawiera tematów projektów, jako że na CodersCamp nie są one przez nas narzucane – o
           wszystkim decydujecie wspólnie w ramach zespołu.
         </Typography>
-        <Button colorScheme="brand" icon={<SolidDownloadIcon />} size={buttonSize}>
+        <Button as="a" href={COURSE_PLAN_URL} color="brand" icon={<SolidDownloadIcon />} size={buttonSize}>
           Pobierz plan kursu
         </Button>
       </VStack>

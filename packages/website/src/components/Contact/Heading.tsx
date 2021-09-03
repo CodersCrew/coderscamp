@@ -6,7 +6,8 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidFacebookIcon, SolidMailIcon } from '@coderscamp/ui/icons';
 
-import { CONTACT_EMAIL } from '../../constants';
+import { CONTACT_EMAIL } from '@/constants';
+
 import { ContactLink } from './ContactLink';
 
 const CODERSCREW_FB_URL = 'facebook.com/ccrew18';

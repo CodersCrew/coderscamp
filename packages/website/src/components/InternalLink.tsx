@@ -4,7 +4,9 @@ import NextLink from 'next/link';
 
 import { Link, LinkProps } from '@coderscamp/ui/components/Link';
 
-export type InternalLinkProps = PropsWithChildren<NextLinkProps & Omit<LinkProps, 'as'>>;
+export interface InternalLinkProps extends PropsWithChildren<NextLinkProps & Omit<LinkProps, 'as'>> {
+  withUnderline?: boolean;
+}
 
 export const InternalLink = ({
   href,
@@ -14,11 +16,14 @@ export const InternalLink = ({
   shallow,
   prefetch,
   children,
+  withUnderline = true,
   ...chakraProps
 }: InternalLinkProps) => {
+  const underlineProps = withUnderline ? { textDecoration: 'underline', textUnderlineOffset: '2px' } : {};
+
   return (
     <NextLink passHref href={href} as={as} replace={replace} scroll={scroll} shallow={shallow} prefetch={prefetch}>
-      <Link {...chakraProps} textDecoration="underline" textUnderlineOffset="2px">
+      <Link {...chakraProps} {...underlineProps}>
         {children}
       </Link>
     </NextLink>

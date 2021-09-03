@@ -35,15 +35,15 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({ step, date, informat
         width="48px"
         height="48px"
         size="4xl"
-        fontWeight="extrabold"
+        weight="extrabold"
       >
         {step}
       </Typography>
-      <Typography my={dateVerticalMargin} fontFamily="inter" size="xl" color="gray.900" fontWeight="extrabold">
+      <Typography my={dateVerticalMargin} size="xl" color="gray.900" weight="extrabold">
         {date}
       </Typography>
 
-      <Typography size="lg" fontFamily="inter" color="gray.700">
+      <Typography size="lg" color="gray.700">
         {information}
       </Typography>
     </Center>

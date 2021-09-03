@@ -9,9 +9,9 @@ export interface NavbarItemProps {
   text: string;
   href: string;
 }
+
 const commonStyle = {
   size: 'md',
-  lineHeight: '24px',
   mx: '24px',
   cursor: 'pointer',
 } as const;

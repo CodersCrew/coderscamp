@@ -4,22 +4,25 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-import { env } from '@/common/env';
+import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from '@/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
+import { UserProfileModule } from '@/crud/user-profile/user-profile.module';
+import { PrismaModule } from '@/prisma/prisma.module';
+import { CourseProgressReadModule } from '@/read/course-progress/course-progress.read-module';
+import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
+import { env } from '@/shared/env';
+import { LearningMaterialsUrlWriteModule } from '@/write/learning-materials-url/learning-materials-url.write-module';
+import { UserRegistrationWriteModule } from '@/write/user-registration/user-registration.write-module';
 
-import { AuthModule } from './auth/auth.module';
-import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from './module/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
-import { CourseProgressReadModule } from './module/read/course-progress/course-progress.read-module';
-import { LearningMaterialsReadModule } from './module/read/learning-materials/learning-materials.read-module';
-import { LearningMaterialsUrlWriteModule } from './module/write/learning-materials-url/learning-materials-url.write-module';
-import { PrismaModule } from './prisma/prisma.module';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from './crud/auth/auth.module';
+import { CoursesModule } from './crud/courses/courses.module';
 
 const isProduction = env.NODE_ENV === 'production';
 
-const writeModules = [LearningMaterialsUrlWriteModule];
+const writeModules = [LearningMaterialsUrlWriteModule, UserRegistrationWriteModule];
 const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
 const automationModules = [SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule];
 const eventModelingModules = [...writeModules, ...readModules, ...automationModules];
+const crudModules = [UserProfileModule, CoursesModule, AuthModule];
 
 const imports: ModuleMetadata['imports'] = [
   EventEmitterModule.forRoot({
@@ -32,8 +35,7 @@ const imports: ModuleMetadata['imports'] = [
     ignoreErrors: false,
   }),
   PrismaModule,
-  UsersModule,
-  AuthModule,
+  ...crudModules,
   ...eventModelingModules,
 ];
 

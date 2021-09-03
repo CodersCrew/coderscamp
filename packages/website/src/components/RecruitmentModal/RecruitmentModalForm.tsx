@@ -58,6 +58,7 @@ export const RecruitmentModalForm = ({ modalType, onClose }: RecruitmentModalFor
           disabled={isSending}
           invalid={Boolean(errors.name)}
           placeholder="Imię"
+          autoFocus
         />
       </FormField>
       <FormField size={size} maxW={inputMaxWidth} error={errors.email?.message}>

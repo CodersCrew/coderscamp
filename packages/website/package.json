@@ -10,19 +10,20 @@
   },
   "dependencies": {
     "@coderscamp/ui": "0.0.1",
-    "@supabase/supabase-js": "1.22.3",
+    "@supabase/supabase-js": "1.22.4",
     "next": "11.1.0",
     "next-images": "1.8.1",
     "nodemailer": "6.6.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "7.12.2",
-    "sass": "1.38.0",
-    "swiper": "6.8.3"
+    "react-headroom": "3.1.1",
+    "react-hook-form": "7.14.2",
+    "swiper": "7.0.2"
   },
   "devDependencies": {
     "@types/nodemailer": "6.4.4",
     "@types/react": "17.0.19",
+    "@types/react-headroom": "2.2.2",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "8.0.0"
   }

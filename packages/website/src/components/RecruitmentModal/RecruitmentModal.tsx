@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -24,6 +25,7 @@ interface RecruitmentModalProps {
 export const RecruitmentModal = ({ isOpen, config, onClose, modalType }: RecruitmentModalProps) => {
   const modalContentPaddings = useBreakpointValue({ base: '32px 16px 16px 32px', md: '56px 64px 64px 64px' } as const);
   const modalBodyMarginBottom = useBreakpointValue({ base: '16px', lg: '32px' } as const);
+  const modalHeaderTextMargin = useBreakpointValue({ base: '32px', md: '64px' } as const);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -36,8 +38,18 @@ export const RecruitmentModal = ({ isOpen, config, onClose, modalType }: Recruit
         boxShadow="large"
         textAlign="center"
       >
+        <ModalCloseButton
+          variant="ghost"
+          onClick={onClose}
+          size="lg"
+          position="absolute"
+          top="12px"
+          right="12px"
+          aria-label="Zamknij modal"
+        />
+
         <ModalHeader p={0}>
-          <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" style={{ whiteSpace: 'pre-line' }}>
+          <Typography as="h2" size="4xl" weight="extrabold" color="gray.900" mx={modalHeaderTextMargin}>
             {config.header}
           </Typography>
         </ModalHeader>
