@@ -4,7 +4,7 @@ import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { Logo } from '@coderscamp/ui/components/Logo';
 import { Typography } from '@coderscamp/ui/components/Typography';
-import { SolidGitHubIcon } from '@coderscamp/ui/icons';
+import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
 
 export const SignUpPageForCandidates = () => {
   return (
