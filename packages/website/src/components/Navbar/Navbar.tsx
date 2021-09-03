@@ -1,4 +1,7 @@
+import React from 'react';
+
 import { Center } from '@coderscamp/ui/components/Center';
+import { Link } from '@coderscamp/ui/components/Link';
 import { Logo } from '@coderscamp/ui/components/Logo';
 import { HStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
@@ -22,7 +25,11 @@ export const Navbar = () => {
         alignItems="center"
         position="relative"
       >
-        {logoLayout && <Logo maxWidth="280px" color="black" layout={logoLayout} />}
+        {logoLayout && (
+          <Link href="/">
+            <Logo maxWidth="280px" color="black" layout={logoLayout} style={{ cursor: 'pointer' }} />
+          </Link>
+        )}
         {baseNavbar}
         {isGreaterThan560px && <NavActionButtons />}
       </HStack>
