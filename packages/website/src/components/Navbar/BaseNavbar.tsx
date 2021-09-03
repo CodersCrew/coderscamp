@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
-import { Logo } from '@coderscamp/ui/components/Logo';
 import { Menu as ChakraMenu, MenuButton, MenuItem, MenuList } from '@coderscamp/ui/components/Menu';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
+import { LogoBlackHorizontal, LogoBlackSquare } from '@coderscamp/ui/svg/logos';
 
 import { NavbarItem } from './NavbarItem';
 
@@ -29,10 +29,13 @@ const NavbarElements = [
   },
 ];
 
+const baseLogoProps = { cursor: 'pointer', width: '100%', maxWidth: '280px', height: '100%', maxHeight: '40px' };
+
 export const MobileBaseNavbar = () => {
   const logoLayout = useBreakpointValue({ sm: 'square', md: 'horizontal' } as const);
   const { route } = useRouter();
   const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
+  const logoProps = { ...baseLogoProps, ml: '24px' };
 
   return (
     <Flex alignItems="center">
@@ -46,7 +49,9 @@ export const MobileBaseNavbar = () => {
           ))}
         </MenuList>
       </ChakraMenu>
-      {logoLayout && <Logo ml="6" maxWidth="280px" color="black" layout={logoLayout} />}
+      <Link href="/">
+        {logoLayout === 'horizontal' ? <LogoBlackHorizontal {...logoProps} /> : <LogoBlackSquare {...logoProps} />}
+      </Link>
     </Flex>
   );
 };
@@ -56,11 +61,13 @@ export const DesktopBaseNavbar = () => {
 
   return (
     <>
-      {logoLayout && (
-        <Link href="/">
-          <Logo maxWidth="280px" color="black" layout={logoLayout} style={{ cursor: 'pointer' }} />
-        </Link>
-      )}
+      <Link href="/">
+        {logoLayout === 'horizontal' ? (
+          <LogoBlackHorizontal {...baseLogoProps} />
+        ) : (
+          <LogoBlackSquare {...baseLogoProps} />
+        )}
+      </Link>
       <Flex>
         {NavbarElements.map((element) => (
           <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
