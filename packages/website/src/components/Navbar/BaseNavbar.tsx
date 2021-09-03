@@ -1,9 +1,9 @@
 import React from 'react';
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { Button } from '@coderscamp/ui/components/Button';
+import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from '@coderscamp/ui/components/Drawer';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Logo } from '@coderscamp/ui/components/Logo';
@@ -41,13 +41,14 @@ export const MobileBaseNavbar = () => {
   const [isSmallerThan560px] = useMediaQuery('(max-width: 560px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { openModal } = useRecruitmentModal();
+  const drawerSize = useBreakpointValue({ base: 'xs', sm: 'md', md: 'lg' } as const);
 
   return (
     <Flex order={2}>
       <IconButton aria-label="Nawigacja" icon={<OutlinedMenuIcon />} size="md" bg="transparent" onClick={onOpen} />
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+      <Drawer placement="left" size={drawerSize} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
-        <DrawerContent px="16px">
+        <DrawerContent px="16px" boxShadow="large">
           <DrawerHeader pt="31px" pb="41px" px={0}>
             <Logo maxWidth="250px" color="black" layout="horizontal" />
           </DrawerHeader>
@@ -58,7 +59,9 @@ export const MobileBaseNavbar = () => {
                   <Button
                     width="100%"
                     variant="ghost"
-                    weight={fontWeight(element.destinationLink)}
+                    justifyContent="start"
+                    _focus={{ outline: 'none' }}
+                    fontWeight={fontWeight(element.destinationLink)}
                     onClick={() => onClose()}
                   >
                     {element.text}
