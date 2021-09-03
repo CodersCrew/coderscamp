@@ -10,7 +10,8 @@ import { Center } from '@coderscamp/ui/components/Center';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Spinner } from '@coderscamp/ui/components/Spinner';
 import { Typography } from '@coderscamp/ui/components/Typography';
-import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '@coderscamp/ui/icons';
+import { OutlinedArrowLeftIcon } from '@coderscamp/ui/icons/OutlinedArrowLeft';
+import { OutlinedArrowRightIcon } from '@coderscamp/ui/icons/OutlinedArrowRight';
 
 import { useCalendar } from './useCalendar';
 

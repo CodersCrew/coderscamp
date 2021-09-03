@@ -2842,6 +2842,7 @@ __metadata:
   resolution: "@coderscamp/website@workspace:packages/website"
   dependencies:
     "@coderscamp/ui": 0.0.1
+    "@next/bundle-analyzer": 11.1.2
     "@supabase/supabase-js": 1.22.4
     "@types/nodemailer": 6.4.4
     "@types/react": 17.0.19
@@ -2851,6 +2852,7 @@ __metadata:
     next-images: 1.8.1
     next-transpile-modules: 8.0.0
     nodemailer: 6.6.3
+    preact: 10.5.14
     react: 17.0.2
     react-dom: 17.0.2
     react-headroom: 3.1.1
@@ -4208,6 +4210,15 @@ __metadata:
     "@nestjs/platform-express":
       optional: true
   checksum: e596b54e2502a9e56f786ff7078b6e4d195c4d8a8f2e0acd86b09900eadef40e7f6355761bdf45f1f6aa59718a708cdd0ddda7f0d5ec3d59d45115a0566c25fe
+  languageName: node
+  linkType: hard
+
+"@next/bundle-analyzer@npm:11.1.2":
+  version: 11.1.2
+  resolution: "@next/bundle-analyzer@npm:11.1.2"
+  dependencies:
+    webpack-bundle-analyzer: 4.3.0
+  checksum: f869e7067a612b5ebb78dab4225fa3159ffa52d0f33c43e51941f21daff96b24e2d0519f4ba2899917cb353ad1b963f1d1b0d718b5947a17d760e9279d8df55a
   languageName: node
   linkType: hard
 
@@ -19735,6 +19746,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"preact@npm:10.5.14":
+  version: 10.5.14
+  resolution: "preact@npm:10.5.14"
+  checksum: d936f83a2afad13aa5870812d7fa8fec111d4a1bb6b0bea6485f2656a062bcc01717398d8184c4bc589cba455f3b2def8e43ba23db846b208d9823e3804658ad
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -24905,6 +24923,25 @@ typescript@4.4.2:
   version: 6.1.0
   resolution: "webidl-conversions@npm:6.1.0"
   checksum: 1f526507aa491f972a0c1409d07f8444e1d28778dfa269a9971f2e157182f3d496dc33296e4ed45b157fdb3bf535bb90c90bf10c50dcf1dd6caacb2a34cc84fb
+  languageName: node
+  linkType: hard
+
+"webpack-bundle-analyzer@npm:4.3.0":
+  version: 4.3.0
+  resolution: "webpack-bundle-analyzer@npm:4.3.0"
+  dependencies:
+    acorn: ^8.0.4
+    acorn-walk: ^8.0.0
+    chalk: ^4.1.0
+    commander: ^6.2.0
+    gzip-size: ^6.0.0
+    lodash: ^4.17.20
+    opener: ^1.5.2
+    sirv: ^1.0.7
+    ws: ^7.3.1
+  bin:
+    webpack-bundle-analyzer: lib/bin/analyzer.js
+  checksum: 00b7bf4ac9fca17062b66b6897145b94e87153d3ec8815f0e0c05a3b8a1ca75320262db01a5fa634f604ee3d41aecde1ee59838d05b6d03cd5be62eb1addbcf8
   languageName: node
   linkType: hard
 

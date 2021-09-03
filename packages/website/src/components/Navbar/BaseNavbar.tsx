@@ -11,7 +11,7 @@ import { VStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
-import { OutlinedMenuIcon } from '@coderscamp/ui/icons';
+import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
 
 import { useRecruitmentModal } from '../RecruitmentModal';
 import { NavbarItem } from './NavbarItem';

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Center } from '@chakra-ui/react';
 
-import { OutlinedArrowLeftIcon, OutlinedArrowRightIcon } from '../../icons';
+import { OutlinedArrowLeftIcon } from '../../icons/OutlinedArrowLeft';
+import { OutlinedArrowRightIcon } from '../../icons/OutlinedArrowRight';
 import { IconButton } from '../IconButton';
 import { Typography } from '../Typography';
 import { SliderStep } from './SliderStep';
