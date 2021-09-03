@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 
 import { PrismaModule } from '@/prisma/prisma.module';
 
-import { UserRegistrationCompletedHandler } from './handlers/user-registration-completed.handler';
+import { CreateUserProfileWhenRegistrationCompletedAutomation } from './automation/create-user-profile-when-registration-completed.automation';
 import { UserProfileController } from './user-profile.controller';
 import { UserProfileRepository } from './user-profile.repository';
 import { UserProfileService } from './user-profile.service';
 
-const handlers = [UserRegistrationCompletedHandler];
+const handlers = [CreateUserProfileWhenRegistrationCompletedAutomation];
 @Module({
   imports: [PrismaModule],
   controllers: [UserProfileController],

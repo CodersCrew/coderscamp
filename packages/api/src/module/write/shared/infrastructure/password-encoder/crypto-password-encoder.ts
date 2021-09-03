@@ -1,5 +1,7 @@
 import { BinaryLike, randomBytes, scrypt as _scrypt, ScryptOptions } from 'crypto';
 
+import { PasswordEncoder } from '@/write/shared/application/password-encoder';
+
 const scrypt = (
   password: BinaryLike,
   salt: BinaryLike,
@@ -33,3 +35,13 @@ export const checkPassword = async (password: string, hashedPassword: string): P
 
   return storedHash === hash.toString('hex');
 };
+
+export class CryptoPasswordEncoder implements PasswordEncoder {
+  encode(plainPassword: string): Promise<string> {
+    return hashPassword(plainPassword);
+  }
+
+  matches(plainPassword: string, encodedPassword: string): Promise<boolean> {
+    return checkPassword(plainPassword, encodedPassword);
+  }
+}

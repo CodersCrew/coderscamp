@@ -1,8 +1,9 @@
-export type UserRegistrationCompleted = {
-  type: 'UserRegistrationCompleted';
+export type UserRegistrationWasCompleted = {
+  type: 'UserRegistrationWasCompleted';
   data: {
     userId: string;
     fullName: string;
-    email: string;
+    emailAddress: string;
+    hashedPassword: string;
   };
 };
