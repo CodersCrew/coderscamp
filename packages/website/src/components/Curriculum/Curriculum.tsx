@@ -4,7 +4,7 @@ import { Button } from '@coderscamp/ui/components/Button';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidDownloadIcon } from '@coderscamp/ui/icons';
+import { SolidDownloadIcon } from '@coderscamp/ui/icons/SolidDownload';
 
 import { COURSE_PLAN_URL } from '@/constants';
 

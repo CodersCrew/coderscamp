@@ -6,7 +6,8 @@ import { Grid } from '@coderscamp/ui/components/Grid';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidArrowDownIcon, SolidArrowUpIcon } from '@coderscamp/ui/icons';
+import { SolidArrowDownIcon } from '@coderscamp/ui/icons/SolidArrowDown';
+import { SolidArrowUpIcon } from '@coderscamp/ui/icons/SolidArrowUp';
 
 import { Section } from '../Section';
 

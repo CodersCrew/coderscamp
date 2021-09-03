@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { SolidGitHubIcon } from '../../icons';
+import { SolidGitHubIcon } from '../../icons/SolidGitHub';
 import { BenefitCard } from './BenefitCard';
 
 describe('BenefitCard', () => {

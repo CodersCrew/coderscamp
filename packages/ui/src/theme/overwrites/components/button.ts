@@ -1,4 +1,5 @@
 import type { ComponentStyleConfig } from '@chakra-ui/react';
+import { SystemStyleFunction } from '@chakra-ui/theme-tools';
 
 const iconSize: Record<string, string> = {
   xs: '16px',
@@ -6,6 +7,13 @@ const iconSize: Record<string, string> = {
   md: '24px',
   lg: '28px',
 };
+
+const linkVariant: SystemStyleFunction = ({ size }) => ({
+  minWidth: iconSize[size ?? 'md'],
+  _hover: {
+    textDecoration: 'none',
+  },
+});
 
 export const Button: ComponentStyleConfig = {
   baseStyle: {
@@ -18,13 +26,6 @@ export const Button: ComponentStyleConfig = {
     lg: { svg: { height: iconSize.lg, width: iconSize.lg } },
   },
   variants: {
-    link({ size }: { size?: string }) {
-      return {
-        minWidth: iconSize[size ?? 'md'],
-        _hover: {
-          textDecoration: 'none',
-        },
-      };
-    },
+    link: linkVariant,
   },
 };

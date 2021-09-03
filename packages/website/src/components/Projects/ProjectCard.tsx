@@ -5,7 +5,8 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidGitHubIcon, SolidWindowIcon } from '@coderscamp/ui/icons';
+import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
+import { SolidWindowIcon } from '@coderscamp/ui/icons/SolidWindow';
 
 import { Project } from './Projects.data';
 
