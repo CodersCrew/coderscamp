@@ -6,8 +6,10 @@ import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Logo } from '@coderscamp/ui/components/Logo';
 import { Menu as ChakraMenu, MenuButton, MenuItem, MenuList } from '@coderscamp/ui/components/Menu';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidMenuIcon } from '@coderscamp/ui/icons';
+import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
+import { OutlinedMenuIcon } from '@coderscamp/ui/icons';
 
+import { NavActionButtons } from './NavActionButtons';
 import { NavbarItem } from './NavbarItem';
 
 const NavbarElements = [
@@ -33,30 +35,30 @@ export const MobileBaseNavbar = () => {
   const logoLayout = useBreakpointValue({ sm: 'square', md: 'horizontal' } as const);
   const { route } = useRouter();
   const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
+  const [isSmallerThan560px] = useMediaQuery('(max-width: 560px)');
 
   return (
-    <Flex alignItems="center">
+    <Flex alignItems="center" order={2}>
       <ChakraMenu>
-        <MenuButton as={IconButton} aria-label="Options" icon={<SolidMenuIcon />} size="md" />
+        <MenuButton as={IconButton} aria-label="Options" icon={<OutlinedMenuIcon />} size="md" bg="transparent" />
+
         <MenuList>
+          {logoLayout && <Logo ml="6" maxWidth="280px" color="black" layout={logoLayout} />}
           {NavbarElements.map((element) => (
             <Link key={element.text} href={element.destinationLink}>
               <MenuItem fontWeight={fontWeight(element.destinationLink)}>{element.text}</MenuItem>
             </Link>
           ))}
+          {isSmallerThan560px && <NavActionButtons direction="column" />}
         </MenuList>
       </ChakraMenu>
-      {logoLayout && <Logo ml="6" maxWidth="280px" color="black" layout={logoLayout} />}
     </Flex>
   );
 };
 
 export const DesktopBaseNavbar = () => {
-  const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
-
   return (
     <>
-      {logoLayout && <Logo maxWidth="280px" color="black" layout={logoLayout} />}
       <Flex>
         {NavbarElements.map((element) => (
           <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />

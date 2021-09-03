@@ -1,38 +1,30 @@
-import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
-import { Flex } from '@coderscamp/ui/components/Flex';
+import { Logo } from '@coderscamp/ui/components/Logo';
 import { HStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 
-import { useRecruitmentModal } from '@/components/RecruitmentModal';
-
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
+import { NavActionButtons } from './NavActionButtons';
 
 export const Navbar = () => {
-  const [isSmallerThan370px] = useMediaQuery('(max-width: 370px)');
+  const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
+  const [isGreaterThan560px] = useMediaQuery('(min-width: 560px)');
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
-  const { openModal } = useRecruitmentModal();
 
   return (
     <Center width="100%">
       <HStack
-        py="18px"
-        px={{ base: '8px', sm: '18px', md: '24px', lg: '40px' }}
+        pt={{ base: '32px', lg: '18px' }}
+        px={{ base: '32px', lg: '40px' }}
         width="min(1920px, 100%)"
         justifyContent="space-between"
         alignItems="center"
         position="relative"
       >
+        {logoLayout && <Logo maxWidth="280px" color="black" layout={logoLayout} />}
         {baseNavbar}
-        <Flex>
-          <Button size="md" mr="12px" onClick={() => openModal('mentor')}>
-            Zostań mentorem
-          </Button>
-          <Button size="md" color="brand" onClick={() => openModal('participant')}>
-            {isSmallerThan370px ? 'Zapisz się' : 'Zapisz się na kurs'}
-          </Button>
-        </Flex>
+        {isGreaterThan560px && <NavActionButtons />}
       </HStack>
     </Center>
   );
