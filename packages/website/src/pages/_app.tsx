@@ -2,6 +2,7 @@ import 'swiper/css';
 
 import type { CSSProperties } from 'react';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
 
@@ -15,16 +16,40 @@ const globalStyles: Record<string, CSSProperties> = {
   '.swiper-slide': { height: 'unset' },
 };
 
+const userPrefersDark =
+  typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ThemeProvider globalStyles={globalStyles}>
-      <RecruitmentModalProvider>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footer />
-      </RecruitmentModalProvider>
-    </ThemeProvider>
+    <>
+      <Head>
+        <title>CodersCamp - otwarty kurs programowania webowego online</title>
+        <meta
+          name="description"
+          content="CodersCamp to 6-miesięczny, darmowy kurs programowania webowego. Naszym celem jest przeprowadzić każdego od pierwszych linii kodu do rozpoczęcia kariery w branży IT."
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="https://res.cloudinary.com/coderscamp/image/upload/v1630711865/favicon/favicon.svg"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          href={`https://res.cloudinary.com/coderscamp/image/upload/v1630711899/favicon/favicon-${
+            userPrefersDark ? 'white' : 'black'
+          }.png`}
+        />
+      </Head>
+      <ThemeProvider globalStyles={globalStyles}>
+        <RecruitmentModalProvider>
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </RecruitmentModalProvider>
+      </ThemeProvider>
+    </>
   );
 };
 
