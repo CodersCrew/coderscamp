@@ -15,7 +15,7 @@ import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { RecruitmentModalForm } from './RecruitmentModalForm';
 import type { ModalConfig, ModalType } from './RecruitmentModalProvider';
 
-interface RecruitmentModalProps {
+export interface RecruitmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   config: ModalConfig;
