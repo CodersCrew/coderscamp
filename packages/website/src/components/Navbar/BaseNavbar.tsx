@@ -48,8 +48,8 @@ export const MobileBaseNavbar = () => {
       <IconButton aria-label="Nawigacja" icon={<OutlinedMenuIcon />} size="md" bg="transparent" onClick={onOpen} />
       <Drawer placement="left" size={drawerSize} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
-        <DrawerContent px="16px" boxShadow="large">
-          <DrawerHeader pt="31px" pb="41px" px={0}>
+        <DrawerContent boxShadow="large">
+          <DrawerHeader pt="31px" pb="41px" px="16px">
             <Logo maxWidth="250px" color="black" layout="horizontal" />
           </DrawerHeader>
           <DrawerBody p={0}>
@@ -70,7 +70,7 @@ export const MobileBaseNavbar = () => {
               ))}
             </VStack>
             {isSmallerThan560px && (
-              <VStack mt="26px" spacing="16px" width="100%" alignItems="stretch">
+              <VStack mt="26px" px="16px" spacing="16px" width="100%" alignItems="stretch">
                 <Button
                   size="md"
                   color="brand"
