@@ -20,32 +20,36 @@ export class EventsSubscription {
     private readonly eventRepository: EventRepository,
   ) {}
 
-  handleEvent<DomainEventType extends DomainEvent>(
+  //todo: add registerEventHandler methods? z tych zbiore razem nazwy (typy) i utworze suba. Jak to sie robi nie dla typu strumienia? Zobaczyc.
+  //wyglada to w miare OK wtedy. Mowie od razu, ktore eventy subuje.
+  async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
     handlerFn: (prisma: PrismaTransactionManager, event: ApplicationEvent<DomainEventType>) => Promise<void>,
-  ) {
+  ): Promise<void> {
     const subscriptionId = this.config.id;
 
-    this.prismaService.$transaction(async (prisma) => {
+    await this.prismaService.$transaction(async (prisma) => {
       const subscription = await prisma.eventsSubscription.findUnique({ where: { id: subscriptionId } });
       const currentPosition = subscription?.currentPosition ?? this.config.fromPosition - 1;
 
-      if (event.globalOrder >= currentPosition) {
-        await handlerFn(prisma, event);
-        await prisma.eventsSubscription.upsert({
-          where: {
-            id: subscriptionId,
-          },
-          create: {
-            id: subscriptionId,
-            eventTypes: this.config.eventTypes,
-            position: event.globalOrder,
-          },
-          update: {
-            position: event.globalOrder,
-          },
-        });
+      if (event.globalOrder < currentPosition) {
+        return;
       }
+
+      await handlerFn(prisma, event);
+      await prisma.eventsSubscription.upsert({
+        where: {
+          id: subscriptionId,
+        },
+        create: {
+          id: subscriptionId,
+          eventTypes: this.config.eventTypes,
+          position: event.globalOrder,
+        },
+        update: {
+          position: event.globalOrder,
+        },
+      });
     });
   }
 }
