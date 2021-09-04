@@ -7,9 +7,10 @@ import { EventRepository } from '@/write/shared/application/event-repository';
 
 /**
  * Event types tylko do wyszukiwania na co sa subskrypcje
+ * rebuildOnChange = useful especially for read models
  */
-export type EventSubscriptionConfig = Partial<{ from: { globalPosition: number } }>;
-const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 0 } };
+export type EventSubscriptionConfig = Partial<{ from: { globalPosition: number }; rebuildOnChange: boolean }>;
+const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 0 }, rebuildOnChange: false };
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
 
 // todo: hash of handlers and change code, event sub version change
@@ -43,14 +44,17 @@ interface CanCreateSubscription {
   subscription(id: SubscriptionId): NeedsEventHandlers;
 }
 
-interface NeedsEventHandlers {}
+interface NeedsEventHandlers {
+  onEvent<DomainEventType extends DomainEvent>(event: DomainEventType['type'], handle: OnEventFn<DomainEventType>): MoreEventHandlersOrSubscribe
+}
 
-// todo: one builder class!?
-class EventHandlers implements NeedsEventHandlers {
-  constructor(private readonly id: SubscriptionId, private readonly configuration: EventSubscriptionConfig) {
-  }
+interface MoreEventHandlersOrSubscribe extends NeedsEventHandlers{
+  subscribe(): Promise<SubscriptionId> //todo: !
+}
 
-
+// todo: one builder class!? przy zmianie rebuildzie tworzy sie nowa wersja, stara jest nie aktywna.
+class SubscriptionBuilder implements NeedsEventHandlers {
+  constructor(private readonly id: SubscriptionId, private readonly configuration: EventSubscriptionConfig) {}
 }
 
 export class EventsSubscriptions implements CanCreateSubscription {
@@ -62,7 +66,7 @@ export class EventsSubscriptions implements CanCreateSubscription {
       ...config,
     };
 
-    return new EventHandlers(id, configuration);
+    return new SubscriptionBuilder(id, configuration);
   }
 }
 
