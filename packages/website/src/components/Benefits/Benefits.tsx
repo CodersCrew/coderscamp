@@ -2,12 +2,14 @@ import { useRef, useState } from 'react';
 
 import { BenefitCard, BenefitCardProps } from '@coderscamp/ui/components/BenefitCard';
 import { Button } from '@coderscamp/ui/components/Button';
-import { Center } from '@coderscamp/ui/components/Center';
 import { Grid } from '@coderscamp/ui/components/Grid';
+import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { SolidArrowDownIcon } from '@coderscamp/ui/icons/SolidArrowDown';
 import { SolidArrowUpIcon } from '@coderscamp/ui/icons/SolidArrowUp';
+
+import { Section } from '../Section';
 
 export interface BenefitsProps {
   title: string;
@@ -45,38 +47,33 @@ export const Benefits = ({ title, benefitItems, shrinkSize }: BenefitsProps) => 
     showExpandProfitButton && !isExpanded ? benefitItems.slice(0, shrinkSize) : benefitItems;
 
   return (
-    <Center
-      flexDirection="column"
-      bg="white"
-      py={{ base: '40px', lg: '80px' }}
-      px={{ base: '16px', sm: '32px', lg: '64px' }}
-      textAlign="center"
-    >
+    <Section spacing={{ base: '80px', lg: '96px' }}>
       <Typography
         ref={benefitTitleRef}
         size={{ base: '3xl', lg: '4xl' }}
         color="gray.900"
         weight="extrabold"
-        mb={{ base: '80px', lg: '92px' }}
+        textAlign="center"
       >
         {title}
       </Typography>
-      <Grid templateColumns={`repeat(${columnsCount}, 1fr)`} gap="64px 40px">
-        {displayedBenefitItems.map((item) => (
-          <BenefitCard key={item.title} {...item} />
-        ))}
-      </Grid>
-      {showExpandProfitButton && (
-        <Button
-          mt="48px"
-          icon={profitButtonValues.icon}
-          size={profitButtonSize}
-          color="brand"
-          onClick={handleExpandButtonClick}
-        >
-          {profitButtonValues.text}
-        </Button>
-      )}
-    </Center>
+      <VStack spacing="48px">
+        <Grid templateColumns={`repeat(${columnsCount}, 1fr)`} gap="64px 40px">
+          {displayedBenefitItems.map((item) => (
+            <BenefitCard key={item.title} {...item} />
+          ))}
+        </Grid>
+        {showExpandProfitButton && (
+          <Button
+            icon={profitButtonValues.icon}
+            size={profitButtonSize}
+            color="brand"
+            onClick={handleExpandButtonClick}
+          >
+            {profitButtonValues.text}
+          </Button>
+        )}
+      </VStack>
+    </Section>
   );
 };
