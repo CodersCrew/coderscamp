@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { MAIN_TEST_FULL_DATE } from '@/constants';
+import { MAIN_TEST_FULL_DATE, MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
 
 import { ExternalLink } from '../ExternalLink';
 
@@ -57,15 +57,13 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
 };
 
 export const useMentorSchedule = (): ScheduleListItem[] => {
-  const { openModal } = useRecruitmentModal();
-
   return [
     {
       index: 1,
       date: '03.09 - 17.09.2021',
       description: (
         <>
-          Wypełnij <ExternalLink onClick={() => openModal('mentor')}>formularz zgłoszeniowy</ExternalLink>, aby zapisać
+          Wypełnij <ExternalLink href={MENTOR_RECRUITMENT_FORM_URL}>formularz zgłoszeniowy</ExternalLink>, aby zapisać
           się na rekrutację.
         </>
       ),
