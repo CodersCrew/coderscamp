@@ -6,7 +6,7 @@ import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Logo } from '@coderscamp/ui/components/Logo';
 import { Menu as ChakraMenu, MenuButton, MenuItem, MenuList } from '@coderscamp/ui/components/Menu';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidMenuIcon } from '@coderscamp/ui/icons';
+import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
 
 import { NavbarItem } from './NavbarItem';
 

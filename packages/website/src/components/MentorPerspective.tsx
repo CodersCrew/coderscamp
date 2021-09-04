@@ -2,7 +2,7 @@ import { Button } from '@coderscamp/ui/components/Button';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidBookIcon } from '@coderscamp/ui/icons';
+import { SolidBookIcon } from '@coderscamp/ui/icons/SolidBook';
 
 import { MENTORS_GUIDE_URL } from '@/constants';
 
