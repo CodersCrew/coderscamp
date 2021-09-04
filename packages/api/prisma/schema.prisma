@@ -68,5 +68,6 @@ model EventsSubscription {
     currentPosition     Int
     eventTypes          String[]
     checksum            String
+    commitSha           String - commitSha of code
     version             Int
 }
