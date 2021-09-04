@@ -1,5 +1,4 @@
 const withTranspileModules = require('next-transpile-modules');
-const withImages = require('next-images');
 const withPlugins = require('next-compose-plugins');
 const { dependencies } = require('./package.json');
 
@@ -11,11 +10,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withPlugins([withBundleAnalyzer, withTranspileModules(monorepoPackageNames), withImages], {
+module.exports = withPlugins([withBundleAnalyzer, withTranspileModules(monorepoPackageNames)], {
   reactStrictMode: true,
   images: {
-    disableStaticImages: true,
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'randomuser.me'],
   },
   eslint: {
     ignoreDuringBuilds: true,

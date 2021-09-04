@@ -2849,7 +2849,6 @@ __metadata:
     "@types/react-headroom": 2.2.2
     next: 11.1.1
     next-compose-plugins: 2.2.1
-    next-images: 1.8.1
     next-transpile-modules: 8.0.0
     nodemailer: 6.6.3
     preact: 10.5.14
@@ -17814,18 +17813,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"next-images@npm:1.8.1":
-  version: 1.8.1
-  resolution: "next-images@npm:1.8.1"
-  dependencies:
-    file-loader: ^6.2.0
-    url-loader: ^4.1.0
-  peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 89f4b795649ab96fb76cc622662efdf669900e8fbf60b48b54b6c50d0a7e3a8d8bf917c9afaf1056ae83c9baf31e8b570eec88ffa13a72550db2417cc65ea4c2
-  languageName: node
-  linkType: hard
-
 "next-tick@npm:~1.0.0":
   version: 1.0.0
   resolution: "next-tick@npm:1.0.0"
@@ -24436,7 +24423,7 @@ typescript@4.4.2:
   languageName: node
   linkType: hard
 
-"url-loader@npm:4.1.1, url-loader@npm:^4.1.0, url-loader@npm:^4.1.1":
+"url-loader@npm:4.1.1, url-loader@npm:^4.1.1":
   version: 4.1.1
   resolution: "url-loader@npm:4.1.1"
   dependencies:
