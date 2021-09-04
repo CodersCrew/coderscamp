@@ -24,7 +24,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>CodersCamp - otwarty kurs programowania webowego online</title>
+        <title>CodersCamp - największy otwarty kurs programowania webowego w Polsce</title>
         <meta
           name="description"
           content="CodersCamp to 6-miesięczny, darmowy kurs programowania webowego. Naszym celem jest przeprowadzić każdego od pierwszych linii kodu do rozpoczęcia kariery w branży IT."
