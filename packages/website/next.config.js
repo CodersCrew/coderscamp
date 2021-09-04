@@ -15,6 +15,7 @@ module.exports = withPlugins([withBundleAnalyzer, withTranspileModules(monorepoP
   reactStrictMode: true,
   images: {
     disableStaticImages: true,
+    domains: ['res.cloudinary.com'],
   },
   eslint: {
     ignoreDuringBuilds: true,
