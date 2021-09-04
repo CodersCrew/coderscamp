@@ -65,7 +65,7 @@ model CourseProgress {
 
 model EventsSubscription {
     id                  String @id
-    fromPosition        Int @default(0)
     currentPosition     Int
     eventTypes          String[]
+    checksum            String
 }
