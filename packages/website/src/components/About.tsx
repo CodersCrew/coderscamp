@@ -6,7 +6,6 @@ import { Circle } from '@coderscamp/ui/components/Circle';
 import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
-import code from '@/assets/code.jpg';
 import { MODULES_COUNT, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 import { Section } from './Section';
@@ -69,7 +68,11 @@ export const About = () => {
           borderRadius="8px"
           overflow="hidden"
         >
-          <Image layout="fill" src={code} alt="Lines of code" />
+          <Image
+            layout="fill"
+            src="https://res.cloudinary.com/coderscamp/image/upload/v1630772316/images/code.jpg"
+            alt="Lines of code"
+          />
         </Box>
       </HStack>
     </Section>
