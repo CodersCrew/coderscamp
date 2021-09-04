@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Center } from '@coderscamp/ui/components/Center';
 import { Flex } from '@coderscamp/ui/components/Flex';
-import { Link } from '@coderscamp/ui/components/Link';
 import { SimpleGrid } from '@coderscamp/ui/components/SimpleGrid';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
+import { ExternalLink } from '../ExternalLink';
 import { learningSources } from './LearningSources.data';
 
 export const LearningSources = () => {
@@ -27,7 +27,7 @@ export const LearningSources = () => {
         <SimpleGrid columns={{ base: 1, sm: 2, md: 3, xl: 4 }} spacing="4px" width="100%">
           {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
           {learningSources.map(({ name, url, image: Image }) => (
-            <Link key={name} href={url} target="_blank" rel="nofollow">
+            <ExternalLink key={name} href={url} aria-label={`Przejdź na stronę ${name}`}>
               <Center
                 bgColor="gray.50"
                 borderRadius="8px"
@@ -39,7 +39,7 @@ export const LearningSources = () => {
               >
                 <Image width="100%" height="100%" maxW="216px" />
               </Center>
-            </Link>
+            </ExternalLink>
           ))}
         </SimpleGrid>
       </VStack>
