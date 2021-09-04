@@ -64,6 +64,7 @@ if (env.EVENT_REPOSITORY === 'prisma') {
     ID_GENERATOR,
     APPLICATION_SERVICE,
     PASSWORD_ENCODER,
+    EVENT_REPOSITORY,
   ],
 })
 export class SharedModule {}
