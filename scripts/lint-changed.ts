@@ -1,28 +1,20 @@
-import { spawn } from 'child_process';
 import { exit } from 'shelljs';
 
-import { exec, log } from './_helpers';
-
-const gitDiff = (targetBranch: string): Promise<string> => {
-  const git = spawn('git', ['diff', '--name-only', '--diff-filter=ACMRTUXB', targetBranch]);
-
-  let buffer = Buffer.alloc(0);
-
-  return new Promise((resolve, reject) => {
-    git.stdout.on('data', (data) => {
-      buffer = Buffer.concat([buffer, data]);
-    });
-    git.stderr.on('data', (data) => reject(data.toString()));
-    git.on('close', () => resolve(buffer.toString()));
-  });
-};
+import { command, log, query } from './_helpers';
 
 /**
  * Runs ESLint only on changed files.
  */
 const main = async () => {
   const targetBranch = process.env.TARGET_BRANCH || 'main';
-  const diff = await gitDiff(targetBranch);
+  const currentBranch = query('git branch --show-current');
+
+  if (targetBranch === currentBranch) {
+    log('No files to be checked by ESLint. Target branch is the current branch.');
+    exit(0);
+  }
+
+  const diff = query(`git diff --name-only --diff-filter=ACMRTUXB ${targetBranch}`);
   const filteredDiffArr = diff.split('\n').filter((path) => path.match(/\.(ts|tsx|js)$/));
 
   if (!filteredDiffArr.length) {
@@ -31,7 +23,7 @@ const main = async () => {
   }
 
   log(`Running ESLint on ${filteredDiffArr.length} files`);
-  exec(`yarn eslint ${filteredDiffArr.join(' ')}`);
+  command(`yarn eslint ${filteredDiffArr.join(' ')}`);
 };
 
 main();

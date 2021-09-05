@@ -1,4 +1,4 @@
-import { exec, log, terminate } from './_helpers';
+import { command, log, terminate } from './_helpers';
 
 const WORKSPACES = ['api', 'docs', 'panel', 'ui', 'website', 'shared'];
 
@@ -13,13 +13,13 @@ const getWorkspaceName = () => {
 };
 
 const getWorkspaceScript = () => {
-  const command = process.argv.slice(3).join(' ');
+  const script = process.argv.slice(3).join(' ');
 
-  if (!command) {
+  if (!script) {
     terminate(`Error: No workspace script to execute`);
   }
 
-  return command;
+  return script;
 };
 
 /**
@@ -30,7 +30,7 @@ const main = () => {
   const script = `yarn workspace @coderscamp/${getWorkspaceName()} ${getWorkspaceScript()}`;
 
   log(`Running script: ${script}`);
-  exec(script);
+  command(script);
 };
 
 main();
