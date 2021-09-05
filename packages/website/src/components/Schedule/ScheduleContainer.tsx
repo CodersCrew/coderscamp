@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 
-import { Center } from '@coderscamp/ui/components/Center';
 import { Typography } from '@coderscamp/ui/components/Typography';
+
+import { Section } from '../Section';
 
 interface ScheduleContainerProps {
   title: string;
@@ -10,11 +11,11 @@ interface ScheduleContainerProps {
 
 export const ScheduleContainer = ({ title, children }: ScheduleContainerProps) => {
   return (
-    <Center flexDirection="column" mx="auto" w="100%" my="80px">
-      <Typography size="4xl" weight="extrabold" mb="64px" textAlign="center" color="gray.900">
+    <Section spacing="64px">
+      <Typography size="4xl" weight="extrabold" textAlign="center" color="gray.900">
         {title}
       </Typography>
       {children}
-    </Center>
+    </Section>
   );
 };

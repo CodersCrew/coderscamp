@@ -3,10 +3,11 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidDownloadIcon } from '@coderscamp/ui/icons/SolidDownload';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { COURSE_PLAN_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
+import { MENTOR_RECRUITMENT_FORM_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
+
+import { externalLinkBaseProps } from './ExternalLink';
 
 export const Hero = () => {
   const { openModal } = useRecruitmentModal();
@@ -32,11 +33,11 @@ export const Hero = () => {
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
-            Zapisz się na kurs
+          <Button {...buttonProps} color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+            Zostań mentorem
           </Button>
-          <Button {...buttonProps} as="a" href={COURSE_PLAN_URL} icon={<SolidDownloadIcon />}>
-            Pobierz plan kursu
+          <Button {...buttonProps} onClick={() => openModal('participant')}>
+            Zapisz się na kurs
           </Button>
         </Stack>
       </VStack>

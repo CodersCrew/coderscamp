@@ -19,7 +19,7 @@ const sliding = keyframes`
     transform: translateX(-50%);
   }
 `;
-const animation = `${sliding} linear infinite 25s`;
+const animation = `${sliding} linear infinite 60s`;
 
 export const TechSliding = ({ techIcons, reverse }: TechSlidingProps) => {
   const { width } = useWindowDimensions();
