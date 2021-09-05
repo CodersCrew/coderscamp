@@ -54,10 +54,10 @@ export const MobileBaseNavbar = () => {
       <Drawer placement="left" size={drawerSize} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent boxShadow="large">
-          <DrawerHeader pt="31px" pb="41px" px="16px">
+          <DrawerHeader pt="31px" px="16px" pb={0}>
             <LogoBlackHorizontal {...baseLogoProps} />
           </DrawerHeader>
-          <DrawerBody p={0}>
+          <DrawerBody p="41px 0 0 0 ">
             <VStack spacing="10px" alignItems="flex-start">
               {NavbarElements.map((element) => (
                 <Link key={element.text} href={element.destinationLink}>
@@ -67,6 +67,7 @@ export const MobileBaseNavbar = () => {
                     justifyContent="start"
                     fontWeight={fontWeight(element.destinationLink)}
                     onClick={() => onClose()}
+                    borderRadius="none"
                   >
                     {element.text}
                   </Button>
