@@ -10,12 +10,12 @@ import {
 } from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
-import { EventsSubscriptions } from '@/write/shared/application/events-subscription/events-subscriptions';
+import { EventsSubscriptionsFactory } from '@/write/shared/application/events-subscription/events-subscriptions.factory';
 
 async function initTestEventsSubscription() {
   const app = await initWriteTestModule();
 
-  const eventsSubscriptions: EventsSubscriptions = app.get<EventsSubscriptions>(EventsSubscriptions);
+  const eventsSubscriptions: EventsSubscriptionsFactory = app.get<EventsSubscriptionsFactory>(EventsSubscriptionsFactory);
 
   return { eventsSubscriptions, ...app };
 }
@@ -49,7 +49,7 @@ describe('Events subscription', () => {
       .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
       .build();
 
-    await subscription.catchUp();
+    await subscription.start();
 
     await sut.expectSubscriptionPosition({
       subscriptionId,
@@ -76,7 +76,7 @@ describe('Events subscription', () => {
       .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', onAnotherSampleDomainEvent)
       .build();
 
-    await subscription.subscribe();
+    await subscription.start();
 
     await sut.eventsOccurred(eventStream1, [sampleEvent, anotherSampleEvent, sampleEvent, anotherSampleEvent]);
 
@@ -116,8 +116,7 @@ describe('Events subscription', () => {
       })
       .build();
 
-    subscription.catchUp();
-    await subscription.subscribe();
+    await subscription.start();
 
     const lastEvent = anotherSampleDomainEvent({ value1: 'lastEventValue', value2: 2 });
 
@@ -136,6 +135,5 @@ describe('Events subscription', () => {
     expect(onInitialPosition).toHaveBeenCalledTimes(1);
     expect(onSampleDomainEvent).toHaveBeenCalledTimes(102);
     expect(lastEventValue).toBe(lastEvent.data.value2);
-    //todo: chec if events processed in sequence - do not wait for catchup
   });
 });

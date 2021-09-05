@@ -6,32 +6,10 @@ import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
-import { NeedsEventOrPositionHandlers } from '@/write/shared/application/events-subscription/events-subscription-builder';
 
-/**
- * Event types tylko do wyszukiwania na co sa subskrypcje
- * rebuildOnChange = useful especially for read models
- */
 export type EventSubscriptionConfig = Partial<{ from: { globalPosition: number }; rebuildOnChange: boolean }>;
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
-// how to unsubscribe!?
-// todo: hash of handlers and change code, event sub version change
-/**
- * val subscrption = EventsSubscriptions
- * subscription('id', {from: {position?: 0, date?: '21-22-22'}})
- * .fromPosition() // .fromBeginning() // .fromDate()
- * .reprocessOnChanges() // better to change id for version - np.
- * .onEvent<DomainEvent>(type, handler (appEvent) => Promise<void>)
- * .onEvent<DomainEvent>(type, handler
- * .build();
- *
- * //healthy app only ready is sub up-to-date?
- * //catchup mechanism?
- * subscription.handleEvent()
- * subscription.rebuild()
- * subscription.close()
- */
-// healthcheck endpoint!?
+//
 // https://www.typescriptlang.org/play?#code/CYUwxgNghgTiAEkoGdnwKIDcQDsAu6AtgJZ54gzwDeAUPPCCXgBQjb4Bc8UOAngJRdMAe2LAaAXxo0kqeAEEweYTAA8AFQB81OvAAOMYpijl4AfUJRiEAEbCAHl3UBtALrwAvPDe6DRkwhmBsJgIKjEOADmnvAAZlAQyCC+hsamZoyk5JReOCAA7hjsBEzZzPy6ukk4wKzFTvw69PR4ABbEyAB0Fla2Dp16AK7IrXW4eBW69MSx8MxtHd3BoeFRjbTNzXB4gzA4U-BSBwtdQTAhYcgR0V54MIPJBxAgeAyYTvAAPvCDNSCxERA4k2xxgvCam3g+XazzmbBiJ26lmsdnsnRGMxY-EaEMh8ERGVKFE6mRYbAqeKkmwkcQiCQg4I2kIJy0u1xi8USyWp8F0UgkQA
 // task queue (promise - event) - https://www.codementor.io/@edafeadjekeemunotor/building-a-concurrent-promise-queue-with-javascript-1ano2eof0v
 
@@ -57,16 +35,6 @@ export type PositionHandler = {
 
 export type SubscriptionId = string;
 
-export interface CanCreateSubscription {
-  subscription(id: SubscriptionId): NeedsEventOrPositionHandlers;
-}
-
-// todo: zmiana listy eventow (typow) z pewnoscia oznacza reset i rebuild.
-// wyliczanie checksum na podstawie handlerow, kodu i fromPosition. Jesli cos z tego sie zmieni, nastepuje reset pozycji do nowego configa subscribe i rebuild.
-// catchup
-// subscribe
-// introduce readmodel rebuild
-// reset position
 export class EventsSubscription {
   constructor(
     private readonly subscriptionId: SubscriptionId,
@@ -77,18 +45,29 @@ export class EventsSubscription {
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
     private readonly mutex = new Mutex(),
+    private readonly eventListener: (_: unknown, event: ApplicationEvent) => Promise<void> = async (
+      _: unknown,
+      event: ApplicationEvent,
+    ) => {
+      await this.handleEvent(event);
+    },
   ) {}
 
-  subscribe(): EventsSubscription {
-    // todo: priority queue
-    this.eventEmitter.onAny(async (_, event) => {
-      await this.handleEvent(event);
-    });
-
-    return this;
+  async start(): Promise<void> {
+    await this.catchUp();
+    await this.subscribe();
   }
 
-  async catchUp() {
+  async stop(): Promise<void> {
+    this.mutex.cancel();
+    this.eventEmitter.offAny(this.eventListener);
+  }
+
+  private async subscribe(): Promise<void> {
+    this.eventEmitter.onAny(this.eventListener);
+  }
+
+  private async catchUp(): Promise<void> {
     const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
       where: { id: this.subscriptionId },
     });
@@ -98,8 +77,6 @@ export class EventsSubscription {
     });
 
     await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
-
-    return this;
   }
 
   private async handleEvent<DomainEventType extends DomainEvent>(
@@ -128,22 +105,26 @@ export class EventsSubscription {
             .map((handler) => handler.onEvent(event, { transaction })),
         );
 
-        await transaction.eventsSubscription.upsert({
-          where: {
-            id: this.subscriptionId,
-          },
-          create: {
-            id: this.subscriptionId,
-            eventTypes: this.handlingEventTypes(),
-            fromPosition: this.config.from?.globalPosition ?? 0,
-            currentPosition: event.globalOrder,
-            checksum: 'test',
-          },
-          update: {
-            currentPosition: event.globalOrder,
-          },
-        });
+        await this.onEventProcessed(transaction, event);
       });
+    });
+  }
+
+  private async onEventProcessed(transaction: PrismaTransactionManager, event: ApplicationEvent) {
+    await transaction.eventsSubscription.upsert({
+      where: {
+        id: this.subscriptionId,
+      },
+      create: {
+        id: this.subscriptionId,
+        eventTypes: this.handlingEventTypes(),
+        fromPosition: this.config.from?.globalPosition ?? 1,
+        currentPosition: event.globalOrder,
+      },
+      update: {
+        currentPosition: event.globalOrder,
+        eventTypes: this.handlingEventTypes(),
+      },
     });
   }
 

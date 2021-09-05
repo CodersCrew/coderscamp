@@ -4,7 +4,6 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EVENT_REPOSITORY, EventRepository } from '@/write/shared/application/event-repository';
 import {
-  CanCreateSubscription,
   EventSubscriptionConfig,
   SubscriptionId,
 } from '@/write/shared/application/events-subscription/events-subscription';
@@ -13,10 +12,12 @@ import {
   SubscriptionBuilder,
 } from '@/write/shared/application/events-subscription/events-subscription-builder';
 
-const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 1 }, rebuildOnChange: false };
+export interface CanCreateSubscription {
+  subscription(id: SubscriptionId): NeedsEventOrPositionHandlers;
+}
 
 @Injectable()
-export class EventsSubscriptions implements CanCreateSubscription {
+export class EventsSubscriptionsFactory implements CanCreateSubscription {
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(EVENT_REPOSITORY) private readonly eventRepository: EventRepository,
@@ -24,6 +25,7 @@ export class EventsSubscriptions implements CanCreateSubscription {
   ) {}
 
   subscription(id: SubscriptionId, config?: EventSubscriptionConfig): NeedsEventOrPositionHandlers {
+    const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 1 }, rebuildOnChange: false };
     const configuration: EventSubscriptionConfig = {
       ...defaultSubscriptionConfig,
       ...config,

@@ -68,5 +68,4 @@ model EventsSubscription {
     currentPosition     Int
     fromPosition        Int
     eventTypes          String[]
-    checksum            String
 }
