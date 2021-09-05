@@ -7,19 +7,13 @@ import { ApplicationEvent } from '@/module/application-command-events';
 export class ApplicationEventBus {
   constructor(private readonly eventEmitter: EventEmitter2) {}
 
-  publishAll<EventType extends ApplicationEvent>(events: EventType[]): void {
-    events.map((e) => {
-      // eslint-disable-next-line no-console
-      console.log('[ApplicationEventBus] Event published', {
-        stream: e.streamName.raw,
-        type: e.type,
-        id: e.id,
-        data: e.data,
-      });
+  async publishAll<EventType extends ApplicationEvent>(events: EventType[]): Promise<void> {
+    await Promise.all(
+      events.map((e) => {
+        const event = `${e.streamName.streamCategory}.${e.type}`;
 
-      const event = `${e.streamName.streamCategory}.${e.type}`;
-
-      return this.eventEmitter.emit(event, e);
-    });
+        return this.eventEmitter.emitAsync(event, e);
+      }),
+    );
   }
 }

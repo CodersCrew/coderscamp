@@ -1,7 +1,9 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
-import { OutlinedCalendarIcon, SolidChecklistIcon, SolidGitHubIcon } from '../../icons';
+import { OutlinedCalendarIcon } from '../../icons/OutlinedCalendar';
+import { SolidChecklistIcon } from '../../icons/SolidChecklist';
+import { SolidGitHubIcon } from '../../icons/SolidGitHub';
 import { HStack } from '../Stack';
 import { IconButton, IconButtonProps } from './IconButton';
 

@@ -4,7 +4,8 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidFacebookIcon, SolidMailIcon } from '@coderscamp/ui/icons';
+import { SolidFacebookIcon } from '@coderscamp/ui/icons/SolidFacebook';
+import { SolidMailIcon } from '@coderscamp/ui/icons/SolidMail';
 
 import { CONTACT_EMAIL } from '@/constants';
 

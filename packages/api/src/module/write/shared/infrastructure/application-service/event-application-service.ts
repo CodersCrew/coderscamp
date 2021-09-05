@@ -5,7 +5,7 @@ import { DomainEvent } from '@/module/domain.event';
 
 import { ApplicationEventBus } from '../../application/application.event-bus';
 import { ApplicationExecutionContext, ApplicationService, DomainLogic } from '../../application/application-service';
-import { EVENT_REPOSITORY, EventRepository } from '../../application/event-repository';
+import { EVENT_REPOSITORY, EventRepository, StorableEvent } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { ID_GENERATOR, IdGenerator } from '../../application/id-generator';
@@ -27,13 +27,13 @@ export class EventApplicationService implements ApplicationService {
     const eventStream = await this.eventRepository.read(streamName);
     const streamVersion = EventApplicationService.streamVersion(eventStream);
 
-    const resultDomainEvents = domainLogic(
+    const resultDomainEvents = await domainLogic(
       eventStream.map((e) => {
         return { type: e.type, data: e.data } as DomainEventType;
       }),
     );
 
-    const uncommitedEvents: ApplicationEvent[] = resultDomainEvents.map((e, index) => ({
+    const eventsToStore: StorableEvent[] = resultDomainEvents.map((e, index) => ({
       data: e.data,
       type: e.type,
       id: this.idGenerator.generate(),
@@ -43,9 +43,9 @@ export class EventApplicationService implements ApplicationService {
       streamName,
     }));
 
-    await this.eventRepository.write(streamName, uncommitedEvents, streamVersion);
+    const eventsToPublish = await this.eventRepository.write(streamName, eventsToStore, streamVersion);
 
-    await this.eventBus.publishAll(uncommitedEvents);
+    await this.eventBus.publishAll(eventsToPublish);
   }
 
   private static streamVersion(eventStream?: ApplicationEvent[]): EventStreamVersion {

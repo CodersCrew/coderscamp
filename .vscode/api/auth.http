@@ -1,0 +1,29 @@
+@fullName = Test User
+@email = test-user@email.test
+@password = password123
+
+###
+
+# Register a new user
+POST {{serverUrl}}/user-registration
+
+{
+  "fullName": "{{fullName}}",
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+
+# Login the existing user
+POST {{serverUrl}}/auth/login
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+
+# Logout the current user
+POST {{serverUrl}}/auth/logout
