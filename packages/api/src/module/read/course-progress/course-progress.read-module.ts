@@ -24,7 +24,7 @@ export class CourseProgressReadModule implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
-      .subscription('LearningMaterialsReadModel_v1')
+      .subscription('CourseProgressReadModel_v1')
       .onInitialPosition(this.onInitialPosition)
       .onEvent<LearningMaterialsUrlWasGenerated>(
         'LearningMaterialsUrlWasGenerated',

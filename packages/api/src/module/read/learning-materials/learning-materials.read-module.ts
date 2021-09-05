@@ -44,6 +44,7 @@ export class LearningMaterialsReadModule implements OnModuleInit, OnModuleDestro
     event: ApplicationEvent<LearningMaterialsUrlWasGenerated>,
     context: { transaction: PrismaTransactionManager },
   ) {
+    console.log('onLearningMaterialsUrlWasGenerated', event.data.learningMaterialsId);
     await context.transaction.learningMaterials.create({
       data: {
         id: event.data.learningMaterialsId,
