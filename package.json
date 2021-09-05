@@ -30,6 +30,7 @@
     "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
+    "@coderscamp/eslint-plugin": "0.0.1",
     "@types/jest": "27.0.1",
     "@types/shelljs": "0.8.9",
     "@typescript-eslint/eslint-plugin": "4.30.0",
