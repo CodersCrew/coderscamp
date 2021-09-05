@@ -28,14 +28,14 @@ export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconn
  * subscription.close()
  */
 
-export type OnEventFn<DomainEventType extends DomainEvent> = (
+export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
   event: ApplicationEvent<DomainEventType>,
   context: { transaction: PrismaTransactionManager },
 ) => Promise<void>;
 
 type ApplicationEventHandler = {
   readonly eventType: string;
-  readonly onEvent: (event: ApplicationEvent) => Promise<void>;
+  readonly onEvent: OnEventFn;
 };
 
 export type SubscriptionId = string;
@@ -45,16 +45,39 @@ interface CanCreateSubscription {
 }
 
 interface NeedsEventHandlers {
-  onEvent<DomainEventType extends DomainEvent>(event: DomainEventType['type'], handle: OnEventFn<DomainEventType>): MoreEventHandlersOrSubscribe
+  onEvent<DomainEventType extends DomainEvent>(
+    eventType: DomainEventType['type'],
+    handle: OnEventFn<DomainEventType>,
+  ): MoreEventHandlersOrSubscribe;
 }
 
-interface MoreEventHandlersOrSubscribe extends NeedsEventHandlers{
-  subscribe(): Promise<SubscriptionId> //todo: !
+interface MoreEventHandlersOrSubscribe extends NeedsEventHandlers {
+  subscribe(): Promise<SubscriptionId>; // todo: !
 }
 
 // todo: one builder class!? przy zmianie rebuildzie tworzy sie nowa wersja, stara jest nie aktywna.
-class SubscriptionBuilder implements NeedsEventHandlers {
-  constructor(private readonly id: SubscriptionId, private readonly configuration: EventSubscriptionConfig) {}
+class SubscriptionBuilder implements NeedsEventHandlers, MoreEventHandlersOrSubscribe {
+  constructor(
+    private readonly id: SubscriptionId,
+    private readonly configuration: EventSubscriptionConfig,
+    private readonly handlers: ApplicationEventHandler[] = [],
+  ) {}
+
+  onEvent<DomainEventType extends DomainEvent>(
+    eventType: DomainEventType['type'],
+    handle: OnEventFn<DomainEventType>,
+  ): MoreEventHandlersOrSubscribe {
+    const handlerToRegister: ApplicationEventHandler = {
+      eventType,
+      onEvent: handle as OnEventFn,
+    };
+
+    return new SubscriptionBuilder(this.id, this.configuration, [...this.handlers, handlerToRegister]);
+  }
+
+  subscribe(): Promise<SubscriptionId> {
+    return Promise.resolve(undefined);
+  }
 }
 
 export class EventsSubscriptions implements CanCreateSubscription {
