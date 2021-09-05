@@ -140,5 +140,5 @@ describe('Events subscription', () => {
     expect(onInitialPosition).toHaveBeenCalledTimes(1);
     expect(onSampleDomainEvent).toHaveBeenCalledTimes(102);
     expect(lastEventValue).toBe(lastEvent.data.value2);
-  });
+  }, 10000);
 });
