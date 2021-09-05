@@ -7,11 +7,11 @@ import { ApplicationCommandFactory } from '@/write/shared/application/applicatio
 import { TaskCompletedRequestBody } from '../../types/taskCompletedRequestBody';
 
 @Controller('process-st/events')
-export class LearningMaterialsUrlRestController {
+export class LearningMaterialsTaskRestController {
   constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
 
   @Post('task-checked-unchecked')
-  @HttpCode(204)
+  @HttpCode(200)
   async taskCheckedUnchecked(
     @Body() { id: learningMaterialsId, data: { id: taskId, status } }: TaskCompletedRequestBody,
   ): Promise<void> {
