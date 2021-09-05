@@ -6,28 +6,49 @@ import {
   EventsSubscription,
   EventSubscriptionConfig,
   OnEventFn,
+  OnPositionFn,
+  PositionHandler,
   SubscriptionId,
 } from '@/write/shared/application/events-subscription/events-subscription';
 
-export interface NeedsEventHandlers {
+export interface NeedsEventOrPositionHandlers {
+  onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild;
+
   onEvent<DomainEventType extends DomainEvent>(
     eventType: DomainEventType['type'],
     handle: OnEventFn<DomainEventType>,
   ): MoreEventHandlersOrBuild;
 }
 
-export interface MoreEventHandlersOrBuild extends NeedsEventHandlers {
+export interface MoreEventHandlersOrBuild extends NeedsEventOrPositionHandlers {
   build(): EventsSubscription;
 }
 
-export class SubscriptionBuilder implements NeedsEventHandlers, MoreEventHandlersOrBuild {
+export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEventHandlersOrBuild {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
     private readonly id: SubscriptionId,
     private readonly configuration: EventSubscriptionConfig,
-    private readonly handlers: ApplicationEventHandler[] = [],
+    private readonly positionHandlers: PositionHandler[] = [],
+    private readonly eventHandlers: ApplicationEventHandler[] = [],
   ) {}
+
+  onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild {
+    const handlerToRegister: PositionHandler = {
+      position: this.configuration.from?.globalPosition ?? 0,
+      onPosition: handle,
+    };
+
+    return new SubscriptionBuilder(
+      this.prismaService,
+      this.eventRepository,
+      this.id,
+      this.configuration,
+      [...this.positionHandlers, handlerToRegister],
+      this.eventHandlers,
+    );
+  }
 
   onEvent<DomainEventType extends DomainEvent>(
     eventType: DomainEventType['type'],
@@ -38,13 +59,24 @@ export class SubscriptionBuilder implements NeedsEventHandlers, MoreEventHandler
       onEvent: handle as OnEventFn,
     };
 
-    return new SubscriptionBuilder(this.prismaService, this.eventRepository, this.id, this.configuration, [
-      ...this.handlers,
-      handlerToRegister,
-    ]);
+    return new SubscriptionBuilder(
+      this.prismaService,
+      this.eventRepository,
+      this.id,
+      this.configuration,
+      this.positionHandlers,
+      [...this.eventHandlers, handlerToRegister],
+    );
   }
 
   build(): EventsSubscription {
-    return new EventsSubscription(this.id, this.configuration, this.handlers, this.prismaService, this.eventRepository);
+    return new EventsSubscription(
+      this.id,
+      this.configuration,
+      this.positionHandlers,
+      this.eventHandlers,
+      this.prismaService,
+      this.eventRepository,
+    );
   }
 }

@@ -66,8 +66,7 @@ model CourseProgress {
 model EventsSubscription {
     id                  String @id
     currentPosition     Int
+    fromPosition        Int
     eventTypes          String[]
     checksum            String
-    commitSha           String - commitSha of code
-    version             Int
 }

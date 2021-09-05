@@ -4,7 +4,7 @@ import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
-import { NeedsEventHandlers } from '@/write/shared/application/events-subscription/events-subscription-builder';
+import { NeedsEventOrPositionHandlers } from '@/write/shared/application/events-subscription/events-subscription-builder';
 
 /**
  * Event types tylko do wyszukiwania na co sa subskrypcje
@@ -38,25 +38,38 @@ export type ApplicationEventHandler = {
   readonly onEvent: OnEventFn;
 };
 
+export type OnPositionFn = (
+  position: number,
+  context: { transaction: PrismaTransactionManager },
+) => Promise<void> | void;
+
+export type PositionHandler = {
+  readonly position: number;
+  readonly onPosition: OnPositionFn;
+};
+
 export type SubscriptionId = string;
 
 export interface CanCreateSubscription {
-  subscription(id: SubscriptionId): NeedsEventHandlers;
+  subscription(id: SubscriptionId): NeedsEventOrPositionHandlers;
 }
 
 // todo: zmiana listy eventow (typow) z pewnoscia oznacza reset i rebuild.
 // wyliczanie checksum na podstawie handlerow, kodu i fromPosition. Jesli cos z tego sie zmieni, nastepuje reset pozycji do nowego configa start i rebuild.
+// catchup
+// subscribe
+// introduce readmodel rebuild
+// reset position
 export class EventsSubscription {
   constructor(
     private readonly subscriptionId: SubscriptionId,
     private readonly config: EventSubscriptionConfig,
-    private readonly handlers: ApplicationEventHandler[] = [],
+    private readonly positionHandlers: PositionHandler[] = [],
+    private readonly eventHandlers: ApplicationEventHandler[] = [],
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
   ) {}
 
-  // todo: add registerEventHandler methods? z tych zbiore razem nazwy (typy) i utworze suba. Jak to sie robi nie dla typu strumienia? Zobaczyc.
-  // wyglada to w miare OK wtedy. Mowie od razu, ktore eventy subuje.
   async handleEvent<DomainEventType extends DomainEvent>(event: ApplicationEvent<DomainEventType>): Promise<void> {
     await this.prismaService.$transaction(async (transaction) => {
       const subscription = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
@@ -67,7 +80,13 @@ export class EventsSubscription {
       }
 
       await Promise.all(
-        this.handlers
+        this.positionHandlers
+          .filter((handler) => handler.position === currentPosition)
+          .map((handler) => handler.onPosition(currentPosition, { transaction })),
+      );
+
+      await Promise.all(
+        this.eventHandlers
           .filter((handler) => handler.eventType === event.type)
           .map((handler) => handler.onEvent(event, { transaction })),
       );
@@ -83,7 +102,7 @@ export class EventsSubscription {
       create: {
         id: this.subscriptionId,
         eventTypes: this.handlingEventTypes(),
-        fromPosition: 0,
+        fromPosition: this.config.from?.globalPosition ?? 0,
         currentPosition: event.globalOrder,
       },
       update: {
@@ -93,6 +112,6 @@ export class EventsSubscription {
   }
 
   private handlingEventTypes() {
-    return this.handlers.map((h) => h.eventType);
+    return this.eventHandlers.map((h) => h.eventType);
   }
 }
