@@ -1,3 +1,4 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
 
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -55,7 +56,7 @@ export interface CanCreateSubscription {
 }
 
 // todo: zmiana listy eventow (typow) z pewnoscia oznacza reset i rebuild.
-// wyliczanie checksum na podstawie handlerow, kodu i fromPosition. Jesli cos z tego sie zmieni, nastepuje reset pozycji do nowego configa start i rebuild.
+// wyliczanie checksum na podstawie handlerow, kodu i fromPosition. Jesli cos z tego sie zmieni, nastepuje reset pozycji do nowego configa subscribe i rebuild.
 // catchup
 // subscribe
 // introduce readmodel rebuild
@@ -68,12 +69,34 @@ export class EventsSubscription {
     private readonly eventHandlers: ApplicationEventHandler[] = [],
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
+
+  subscribe(): EventsSubscription {
+    // todo: priority queue
+    this.eventEmitter.onAny((_, event) => this.handleEvent(event as ApplicationEvent));
+
+    return this;
+  }
+
+  async catchUp() {
+    const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
+      where: { id: this.subscriptionId },
+    });
+    const eventsToCatchup = await this.eventRepository.readAll({
+      eventTypes: this.handlingEventTypes(),
+      fromGlobalPosition: subscriptionState?.currentPosition ?? this.config.from?.globalPosition ?? 0,
+    });
+
+    await Promise.all(eventsToCatchup.map(this.handleEvent));
+
+    return this;
+  }
 
   async handleEvent<DomainEventType extends DomainEvent>(event: ApplicationEvent<DomainEventType>): Promise<void> {
     await this.prismaService.$transaction(async (transaction) => {
-      const subscription = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
-      const currentPosition = subscription?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
+      const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
+      const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
 
       if (event.globalOrder < currentPosition) {
         return;

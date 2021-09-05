@@ -65,6 +65,7 @@ describe('Events subscription', () => {
     const subscriptionId = 'sample-sub-id';
     const subscription = eventsSubscriptions
       .subscription(subscriptionId)
+      .onInitialPosition(() => console.log('initial position'))
       .onEvent<SampleDomainEvent>('SampleDomainEvent', (e) => console.log(e))
       .build();
   });
