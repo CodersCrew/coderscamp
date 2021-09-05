@@ -22,9 +22,8 @@ async function initTestPrismaEventRepository() {
   await cleanupDatabase(prismaService);
 
   async function close() {
-    await app.close();
     await cleanupDatabase(prismaService);
-    await prismaService.$disconnect();
+    await app.close();
   }
 
   function randomEventStreamId() {
