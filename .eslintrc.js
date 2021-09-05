@@ -187,6 +187,7 @@ module.exports = {
               '*.expectReadModel',
               '*.expectEventPublishedLastly',
               '*.expectEventsPublishedLastly',
+              '*.expectSubscriptionPosition',
             ],
           },
         ],

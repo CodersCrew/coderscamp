@@ -1,15 +1,16 @@
 import { AsyncReturnType } from 'type-fest';
 
 import {
-  anotherSampleDomainEvent,
   AnotherSampleDomainEvent,
+  anotherSampleDomainEvent,
   initWriteTestModule,
   SampleDomainEvent,
-  sampleDomainEvent
+  sampleDomainEvent,
+  sequence,
 } from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
 import { EventsSubscriptions } from '@/write/shared/application/events-subscription/events-subscriptions';
-import {EventsSubscription} from "@/write/shared/application/events-subscription/events-subscription";
 
 async function initTestEventsSubscription() {
   const app = await initWriteTestModule();
@@ -86,5 +87,55 @@ describe('Events subscription', () => {
     expect(onInitialPosition).toHaveBeenCalledTimes(1);
     expect(onSampleDomainEvent).toHaveBeenCalledTimes(2);
     expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(2);
+  });
+
+  it('catchup and subscribe for new events', async () => {
+    const { eventsSubscriptions } = sut;
+
+    const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
+
+    const sampleEvent = sampleDomainEvent({ value1: 'value1', value2: 2 });
+    const anotherSampleEvent = anotherSampleDomainEvent({ value1: 'value1', value2: 2 });
+
+    let lastEventValue;
+
+    await sut.eventsOccurred(
+      eventStream1,
+      sequence(100).map(() => sampleEvent),
+    );
+
+    const onInitialPosition = jest.fn();
+    const onSampleDomainEvent = jest.fn();
+    const subscriptionId = 'sample-sub-id';
+    const subscription: EventsSubscription = eventsSubscriptions
+      .subscription(subscriptionId)
+      .onInitialPosition(onInitialPosition)
+      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
+      .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', (e) => {
+        lastEventValue = e.data.value2;
+      })
+      .build();
+
+    subscription.catchUp();
+    await subscription.subscribe();
+
+    const lastEvent = anotherSampleDomainEvent({ value1: 'lastEventValue', value2: 2 });
+
+    await sut.eventsOccurred(eventStream1, [
+      sampleEvent,
+      anotherSampleEvent,
+      sampleEvent,
+      anotherSampleEvent,
+      lastEvent,
+    ]);
+
+    await sut.expectSubscriptionPosition({
+      subscriptionId,
+      position: 105,
+    });
+    expect(onInitialPosition).toHaveBeenCalledTimes(1);
+    expect(onSampleDomainEvent).toHaveBeenCalledTimes(102);
+    expect(lastEventValue).toBe(lastEvent.data.value2);
+    //todo: chec if events processed in sequence - do not wait for catchup
   });
 });
