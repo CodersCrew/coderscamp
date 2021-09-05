@@ -1,3 +1,5 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
@@ -28,6 +30,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
   constructor(
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
+    private readonly eventEmitter: EventEmitter2,
     private readonly id: SubscriptionId,
     private readonly configuration: EventSubscriptionConfig,
     private readonly positionHandlers: PositionHandler[] = [],
@@ -43,6 +46,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     return new SubscriptionBuilder(
       this.prismaService,
       this.eventRepository,
+      this.eventEmitter,
       this.id,
       this.configuration,
       [...this.positionHandlers, handlerToRegister],
@@ -62,6 +66,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     return new SubscriptionBuilder(
       this.prismaService,
       this.eventRepository,
+      this.eventEmitter,
       this.id,
       this.configuration,
       this.positionHandlers,
@@ -77,6 +82,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.eventHandlers,
       this.prismaService,
       this.eventRepository,
+      this.eventEmitter,
     );
   }
 }

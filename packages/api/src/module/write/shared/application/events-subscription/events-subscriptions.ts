@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { EVENT_REPOSITORY, EventRepository } from '@/write/shared/application/event-repository';
@@ -19,6 +20,7 @@ export class EventsSubscriptions implements CanCreateSubscription {
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(EVENT_REPOSITORY) private readonly eventRepository: EventRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   subscription(id: SubscriptionId, config?: EventSubscriptionConfig): NeedsEventOrPositionHandlers {
@@ -27,6 +29,6 @@ export class EventsSubscriptions implements CanCreateSubscription {
       ...config,
     };
 
-    return new SubscriptionBuilder(this.prismaService, this.eventRepository, id, configuration);
+    return new SubscriptionBuilder(this.prismaService, this.eventRepository, this.eventEmitter, id, configuration);
   }
 }

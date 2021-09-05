@@ -13,11 +13,13 @@ import { NeedsEventOrPositionHandlers } from '@/write/shared/application/events-
  */
 export type EventSubscriptionConfig = Partial<{ from: { globalPosition: number }; rebuildOnChange: boolean }>;
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
-
+// how to unsubscribe!?
 // todo: hash of handlers and change code, event sub version change
 /**
  * val subscrption = EventsSubscriptions
  * subscription('id', {from: {position?: 0, date?: '21-22-22'}})
+ * .fromPosition() // .fromBeginning() // .fromDate()
+ * .reprocessOnChanges() // better to change id for version - np.
  * .onEvent<DomainEvent>(type, handler (appEvent) => Promise<void>)
  * .onEvent<DomainEvent>(type, handler
  * .build();
@@ -28,6 +30,7 @@ export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconn
  * subscription.rebuild()
  * subscription.close()
  */
+// healthcheck endpoint!?
 
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
   event: ApplicationEvent<DomainEventType>,
@@ -88,32 +91,35 @@ export class EventsSubscription {
       fromGlobalPosition: subscriptionState?.currentPosition ?? this.config.from?.globalPosition ?? 0,
     });
 
-    await Promise.all(eventsToCatchup.map(this.handleEvent));
+    await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
 
     return this;
   }
 
-  async handleEvent<DomainEventType extends DomainEvent>(event: ApplicationEvent<DomainEventType>): Promise<void> {
+  private async handleEvent<DomainEventType extends DomainEvent>(
+    event: ApplicationEvent<DomainEventType>,
+  ): Promise<void> {
     await this.prismaService.$transaction(async (transaction) => {
-      const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
-      const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
-
-      if (event.globalOrder < currentPosition) {
-        return;
-      }
+      // const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
+      // const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
+      //
+      // if (event.globalOrder < currentPosition) {
+      //   return;
+      // }
+      //todo: change this.prismaService to transaction. Whats wrong?
 
       await Promise.all(
         this.positionHandlers
-          .filter((handler) => handler.position === currentPosition)
-          .map((handler) => handler.onPosition(currentPosition, { transaction })),
+          .filter((handler) => handler.position === event.globalOrder)
+          .map((handler) => handler.onPosition(event.globalOrder, { transaction: this.prismaService })),
       );
 
       await Promise.all(
         this.eventHandlers
           .filter((handler) => handler.eventType === event.type)
-          .map((handler) => handler.onEvent(event, { transaction })),
+          .map((handler) => handler.onEvent(event, { transaction: this.prismaService })),
       );
-      await this.onEventHandled(transaction, event);
+      await this.onEventHandled(this.prismaService, event);
     });
   }
 
@@ -127,6 +133,7 @@ export class EventsSubscription {
         eventTypes: this.handlingEventTypes(),
         fromPosition: this.config.from?.globalPosition ?? 0,
         currentPosition: event.globalOrder,
+        checksum: 'test',
       },
       update: {
         currentPosition: event.globalOrder,

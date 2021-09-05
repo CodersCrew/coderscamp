@@ -1,15 +1,20 @@
+import { Abstract } from '@nestjs/common/interfaces';
+import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
+import waitForExpect from 'wait-for-expect';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '@/write/shared/application/application-command.factory';
-import { EVENT_REPOSITORY, EventRepository, StorableEvent } from '@/write/shared/application/event-repository';
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-import { EventStreamVersion } from '@/write/shared/application/event-stream-version';
+import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
+import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 
 import { AppModule } from '../app.module';
@@ -80,7 +85,9 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
 
   const appBuilder: TestingModuleBuilder = await Test.createTestingModule({
     imports: [AppModule],
-  });
+  })
+    .overrideProvider(TIME_PROVIDER)
+    .useValue(testTimeProvider);
   const app = await (configureModule ? configureModule(appBuilder) : appBuilder).compile();
 
   await app.init();
@@ -88,7 +95,7 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
   const commandBus = app.get<CommandBus>(CommandBus);
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
-  const eventRepository: EventRepository = app.get<EventRepository>(EVENT_REPOSITORY);
+  const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
 
   await cleanupDatabase(prismaService);
@@ -132,19 +139,34 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     return uuid();
   }
 
-  async function eventOccurred(
-    eventStreamName: EventStreamName,
-    event: DomainEvent,
-    streamVersion: EventStreamVersion,
-  ) {
-    const eventToStore: StorableEvent = {
-      ...event,
-      id: randomEventId(),
-      occurredAt: testTimeProvider.currentTime(),
-      metadata: { correlationId: uuid(), causationId: uuid() },
-    };
+  async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent) {
+    const sourceCommandId = uuid();
 
-    await eventRepository.write(eventStreamName, [eventToStore], streamVersion);
+    await applicationService.execute(
+      eventStreamName,
+      { correlationId: sourceCommandId, causationId: sourceCommandId },
+      () => [event],
+    );
+  }
+
+  async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
+    const sourceCommandId = uuid();
+
+    await applicationService.execute(
+      eventStreamName,
+      { correlationId: sourceCommandId, causationId: sourceCommandId },
+      () => events,
+    );
+  }
+
+  async function expectSubscriptionPosition(expectation: { subscriptionId: SubscriptionId; position: number }) {
+    await waitForExpect(async () => {
+      const subscription = await prismaService.eventsSubscription.findUnique({
+        where: { id: expectation.subscriptionId },
+      });
+
+      expect(subscription?.currentPosition).toBe(expectation.position);
+    });
   }
 
   async function executeCommand(builder: CommandBuilder) {
@@ -161,13 +183,55 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     await app.close();
   }
 
+  function get<TInput = any, TResult = TInput>(
+    typeOrToken: Type<TInput> | Abstract<TInput> | string | symbol,
+    options?: {
+      strict: boolean;
+    },
+  ): TResult {
+    return app.get<TInput, TResult>(typeOrToken, options);
+  }
+
   return {
+    get,
     executeCommand,
     eventOccurred,
+    eventsOccurred,
     randomUserId,
     randomEventId,
     close,
     expectEventPublishedLastly,
     expectEventsPublishedLastly,
+    expectSubscriptionPosition,
+  };
+}
+
+export type SampleDomainEvent = {
+  type: 'SampleDomainEvent';
+  data: {
+    value1: string;
+    value2: number;
+  };
+};
+
+export function sampleDomainEvent(data: SampleDomainEvent['data']): SampleDomainEvent {
+  return {
+    type: 'SampleDomainEvent',
+    data,
+  };
+}
+
+export type AnotherSampleDomainEvent = {
+  type: 'AnotherSampleDomainEvent';
+  data: {
+    value1: string;
+    value2: number;
+  };
+};
+
+export function anotherSampleDomainEvent(data: AnotherSampleDomainEvent['data']): AnotherSampleDomainEvent {
+  return {
+    type: 'AnotherSampleDomainEvent',
+    data,
   };
 }

@@ -1,52 +1,16 @@
-import { Test } from '@nestjs/testing';
 import { AsyncReturnType } from 'type-fest';
-import { v4 as uuid } from 'uuid';
 
-import { PrismaModule } from '@/prisma/prisma.module';
-import { PrismaService } from '@/prisma/prisma.service';
-import { cleanupDatabase } from '@/shared/test-utils';
+import { initWriteTestModule, SampleDomainEvent, sampleDomainEvent } from '@/shared/test-utils';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscriptions } from '@/write/shared/application/events-subscription/events-subscriptions';
-import { PrismaEventRepository } from '@/write/shared/infrastructure/event-repository/prisma-event-repository.service';
 
 async function initTestEventsSubscription() {
-  const app = await Test.createTestingModule({
-    imports: [PrismaModule],
-  }).compile();
+  const app = await initWriteTestModule();
 
-  await app.init();
+  const eventsSubscriptions = app.get<EventsSubscriptions>(EventsSubscriptions);
 
-  const prismaService = app.get<PrismaService>(PrismaService);
-  const eventRepository = new PrismaEventRepository(prismaService, { currentTime: () => new Date() });
-  const eventsSubscriptions = new EventsSubscriptions(prismaService, eventRepository);
-
-  await cleanupDatabase(prismaService);
-
-  function close() {
-    return app.close();
-  }
-
-  function randomEventStreamId() {
-    return uuid();
-  }
-
-  return { eventsSubscriptions, randomEventStreamId, close };
+  return { eventsSubscriptions, ...app };
 }
-
-type SampleDomainEvent = {
-  type: 'SampleDomainEvent';
-  data: {
-    value1: string;
-    value2: number;
-  };
-};
-
-type AnotherSampleDomainEvent = {
-  type: 'AnotherSampleDomainEvent';
-  data: {
-    value1: string;
-    value2: number;
-  };
-};
 
 describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
@@ -59,14 +23,40 @@ describe('Events subscription', () => {
     await sut.close();
   });
 
-  it('test', () => {
+  it('test', async () => {
     const { eventsSubscriptions } = sut;
 
+    const eventStream = EventStreamName.from('StreamCategory', sut.randomEventId());
+
+    const event = sampleDomainEvent({ value1: 'value1', value2: 2 });
+
+    await sut.eventsOccurred(eventStream, [event, event, event, event]);
+
+    const onInitialPosition = jest.fn();
+    const onSampleDomainEvent = jest.fn();
     const subscriptionId = 'sample-sub-id';
     const subscription = eventsSubscriptions
       .subscription(subscriptionId)
-      .onInitialPosition(() => console.log('initial position'))
-      .onEvent<SampleDomainEvent>('SampleDomainEvent', (e) => console.log(e))
+      .onInitialPosition(onInitialPosition)
+      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
       .build();
+
+    await subscription.catchUp();
+
+    await sut.expectSubscriptionPosition({
+      subscriptionId,
+      position: 4,
+    });
+
+    await subscription.subscribe();
+
+    await sut.eventsOccurred(eventStream, [event, event, event, event]);
+
+    await sut.expectSubscriptionPosition({
+      subscriptionId,
+      position: 8,
+    });
+    expect(onInitialPosition).toBeCalledWith(0);
+    expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
   });
 });
