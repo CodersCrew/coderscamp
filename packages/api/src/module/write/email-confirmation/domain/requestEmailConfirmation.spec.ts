@@ -4,14 +4,14 @@ import { requestEmailConfirmation } from './requestEmailConfirmation';
 
 describe('Request email confirmation', () => {
   it('create event EmailConfirmationWasRequested when requestEmailConfirmation is invoked', () => {
-    const exampleUserId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
-    const exampleConfirmationToken = 'sbAPITNMsl2wW6j2cg1H2A';
-    const exampleConfirmationFor = 'user-registration';
+    const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
+    const confirmationToken = 'sbAPITNMsl2wW6j2cg1H2A';
+    const confirmationFor = 'user-registration';
 
     const command = requestEmailConfirmationCommand({
-      userId: exampleUserId,
-      confirmationToken: exampleConfirmationToken,
-      confirmationFor: exampleConfirmationFor,
+      userId,
+      confirmationToken,
+      confirmationFor,
     });
     const result = requestEmailConfirmation(command)();
 

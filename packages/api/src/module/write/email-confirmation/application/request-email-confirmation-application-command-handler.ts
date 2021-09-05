@@ -5,7 +5,7 @@ import { RequestEmailConfirmationApplicationCommand } from '@/module/commands/re
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
-import { RequestEmailConfirmationDomainEvent } from '../domain/events';
+import { EmailConfirmationDomainEvent } from '../domain/events';
 import { requestEmailConfirmation } from '../domain/requestEmailConfirmation';
 
 @CommandHandler(RequestEmailConfirmationApplicationCommand)
@@ -19,7 +19,7 @@ export class RequestEmailConfirmationApplicationCommandHandler {
     const { userId, confirmationFor } = command.data;
     const eventStream = EventStreamName.from('EmailConfirmation', `${userId}_${confirmationFor}`);
 
-    await this.applicationService.execute<RequestEmailConfirmationDomainEvent>(
+    await this.applicationService.execute<EmailConfirmationDomainEvent>(
       eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId },
       requestEmailConfirmation(command),

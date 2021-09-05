@@ -25,28 +25,28 @@ describe('Email confirmation', () => {
 
   it('creates EmailConfirmationWasRequested event when RequestEmailConfirmation has been executed', async () => {
     // Given
-    const exampleUserId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
-    const exampleConfirmationToken = 'sbAPITNMsl2wW6j2cg1H2A';
-    const exampleConfirmationFor = 'user-registration';
+    const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
+    const confirmationToken = 'sbAPITNMsl2wW6j2cg1H2A';
+    const confirmationFor = 'user-registration';
 
     // When
     await moduleUnderTest.executeCommand(() => ({
       class: RequestEmailConfirmationApplicationCommand,
       ...requestEmailConfirmationCommand({
-        userId: exampleUserId,
-        confirmationToken: exampleConfirmationToken,
-        confirmationFor: exampleConfirmationFor,
+        userId,
+        confirmationToken,
+        confirmationFor,
       }),
     }));
 
     // Then
     await moduleUnderTest.expectEventPublishedLastly<EmailConfirmationWasRequested>({
       ...emailConfirmationWasRequestedEvent({
-        userId: exampleUserId,
-        confirmationToken: exampleConfirmationToken,
-        confirmationFor: exampleConfirmationFor,
+        userId,
+        confirmationToken,
+        confirmationFor,
       }),
-      streamName: EventStreamName.from('EmailConfirmation', `${exampleUserId}_${exampleConfirmationFor}`),
+      streamName: EventStreamName.from('EmailConfirmation', `${userId}_${confirmationFor}`),
     });
   });
 });
