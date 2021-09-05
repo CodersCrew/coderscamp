@@ -25,7 +25,7 @@ export class EventsSubscriptionsFactory implements CanCreateSubscription {
   ) {}
 
   subscription(id: SubscriptionId, config?: EventSubscriptionConfig): NeedsEventOrPositionHandlers {
-    const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 1 }, rebuildOnChange: false };
+    const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 1 } };
     const configuration: EventSubscriptionConfig = {
       ...defaultSubscriptionConfig,
       ...config,

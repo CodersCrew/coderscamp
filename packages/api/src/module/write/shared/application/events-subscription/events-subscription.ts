@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
 import { Mutex } from 'async-mutex';
@@ -7,12 +8,8 @@ import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
-export type EventSubscriptionConfig = Partial<{ from: { globalPosition: number }; rebuildOnChange: boolean }>;
+export type EventSubscriptionConfig = Partial<{ from: { globalPosition: number } }>;
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
-//
-// https://www.typescriptlang.org/play?#code/CYUwxgNghgTiAEkoGdnwKIDcQDsAu6AtgJZ54gzwDeAUPPCCXgBQjb4Bc8UOAngJRdMAe2LAaAXxo0kqeAEEweYTAA8AFQB81OvAAOMYpijl4AfUJRiEAEbCAHl3UBtALrwAvPDe6DRkwhmBsJgIKjEOADmnvAAZlAQyCC+hsamZoyk5JReOCAA7hjsBEzZzPy6ukk4wKzFTvw69PR4ABbEyAB0Fla2Dp16AK7IrXW4eBW69MSx8MxtHd3BoeFRjbTNzXB4gzA4U-BSBwtdQTAhYcgR0V54MIPJBxAgeAyYTvAAPvCDNSCxERA4k2xxgvCam3g+XazzmbBiJ26lmsdnsnRGMxY-EaEMh8ERGVKFE6mRYbAqeKkmwkcQiCQg4I2kIJy0u1xi8USyWp8F0UgkQA
-// task queue (promise - event) - https://www.codementor.io/@edafeadjekeemunotor/building-a-concurrent-promise-queue-with-javascript-1ano2eof0v
-
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
   event: ApplicationEvent<DomainEventType>,
   context: { transaction: PrismaTransactionManager },
@@ -36,6 +33,8 @@ export type PositionHandler = {
 export type SubscriptionId = string;
 
 export class EventsSubscription {
+  private readonly logger = new Logger(EventsSubscription.name);
+
   constructor(
     private readonly subscriptionId: SubscriptionId,
     private readonly config: EventSubscriptionConfig,
@@ -73,7 +72,9 @@ export class EventsSubscription {
     });
     const eventsToCatchup = await this.eventRepository.readAll({
       eventTypes: this.handlingEventTypes(),
-      fromGlobalPosition: subscriptionState?.currentPosition ?? this.config.from?.globalPosition ?? 0,
+      fromGlobalPosition: subscriptionState?.currentPosition
+        ? subscriptionState.currentPosition + 1
+        : this.config.from?.globalPosition ?? 0,
     });
 
     await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
@@ -82,32 +83,41 @@ export class EventsSubscription {
   private async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
   ): Promise<void> {
-    await this.mutex.runExclusive(async () => {
-      await this.prismaService.$transaction(async (transaction) => {
-        const subscriptionState = await transaction.eventsSubscription.findUnique({
-          where: { id: this.subscriptionId },
-        });
-        const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
+    await this.mutex
+      .runExclusive(async () => {
+        await this.prismaService
+          .$transaction(async (transaction) => {
+            const subscriptionState = await transaction.eventsSubscription.findUnique({
+              where: { id: this.subscriptionId },
+            });
+            const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
 
-        if (event.globalOrder < currentPosition) {
-          return;
-        }
+            if (event.globalOrder < currentPosition) {
+              return;
+            }
 
-        await Promise.all(
-          this.positionHandlers
-            .filter((handler) => handler.position === event.globalOrder)
-            .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
-        );
+            await Promise.all(
+              this.positionHandlers
+                .filter((handler) => handler.position === event.globalOrder)
+                .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
+            );
 
-        await Promise.all(
-          this.eventHandlers
-            .filter((handler) => handler.eventType === event.type)
-            .map((handler) => handler.onEvent(event, { transaction })),
-        );
+            await Promise.all(
+              this.eventHandlers
+                .filter((handler) => handler.eventType === event.type)
+                .map((handler) => handler.onEvent(event, { transaction })),
+            );
 
-        await this.onEventProcessed(transaction, event);
-      });
-    });
+            await this.onEventProcessed(transaction, event);
+          })
+          .catch(() => this.stop());
+      })
+      .catch((e) =>
+        this.logger.warn(
+          `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}.`,
+          e,
+        ),
+      );
   }
 
   private async onEventProcessed(transaction: PrismaTransactionManager, event: ApplicationEvent) {

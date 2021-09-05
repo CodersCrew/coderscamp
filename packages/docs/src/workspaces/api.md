@@ -472,6 +472,64 @@ export class CourseProgressReadModule {
 }
 ```
 
+#### Resilient event subscribers
+Provided by NestJs `@OnEvent` mechanism doesn't quarantee event processing. 
+Let's imagine simple situation. 
+1. We published TaskWasCompleted event.
+2. Read slice should take this event and increase completed tasks amount in CourseProgress by one.
+3. Before CourseProgress update, the application break or there was some exception in handling logic.
+
+After app rerun or fix deploy, the event won't be processed once more. 
+So we introduced mechanism based on EventRepository.
+Now, instead of using `@OnEvent` you should inject `EventsSubscriptionsFactory`. 
+Usage is so simple with provided fluent api.
+It's also type-safe, and you won't make a mistake in event pattern like in inside @OnEvent.
+An example you can find in CourseProgressReadModule.
+
+First step is to compose subscription definition by using the API.
+```ts
+this.eventsSubscription = this.eventsSubscriptionsFactory
+      .subscription('CourseProgressReadModel_v1') // unique subscription id
+      .onInitialPosition(this.onInitialPosition) // what to do if subscription just start
+      .onEvent<LearningMaterialsUrlWasGenerated>( // what to do on certain event type
+        'LearningMaterialsUrlWasGenerated',
+        this.onLearningMaterialsUrlWasGenerated,
+      )
+      .onEvent<TaskWasCompleted>('TaskWasCompleted', this.onTaskWasCompleted)
+      .onEvent<TaskWasUncompleted>('TaskWasUncompleted', this.onTaskWasUncompleted)
+      .build(); // return subscription configured like below
+```
+Then you need to start your subscription:
+```ts
+await this.eventsSubscription.start()
+```
+This method will read all events which were not processed by the subscription and will pass them to event handlers.
+Best place to invoke it is `OnModuleInit` lifecycle hook.
+Last piece is:
+```ts
+await this.eventsSubscription.stop()
+```
+This method will stop all event listeners.
+Best place to invoke it is `OnModuleDestroy` lifecycle hook.
+
+
+##### Best practices & use cases of EventSubscriptions
+
+###### Error handling & processing quarante
+
+###### Change in read model logic
+If your subscription purpose is to build read model. 
+Example of read model is processing TaskWasChecked / TaskWasUnchecked event to be able to show CourseProgress.
+Let's say we want to change logic, and give 10 points per task.
+If there is no past events stored, we would have a big problem.
+But they are. Now we can just process events from the beginning and build a new one CourseProgress.
+So we should delete all data while starting processing events.
+You can do it in `onInitialPosition` method. 
+Whenever you want to rebuild some read model just change subscription id (for example from `'CourseProgressReadModel_v1'` to `'CourseProgressReadModel_v2'`)
+You should have one subscription per read model to maintain.
+
+
+
 
 # ADR - Architecture Decision Records
 
@@ -492,6 +550,5 @@ export class CourseProgressReadModule {
 1. Swagger for REST API
 2. Publishing certain events via WebSocket for frontend
 3. WebSocket documentation with AsyncAPI
-4. Rebuilding read slices state (database) from events.
-5. How to test e2e? Generate valid JWT...
-6. Monitoring with Grafana 
+4. How to test e2e? Generate valid JWT...
+5. Monitoring with Grafana
