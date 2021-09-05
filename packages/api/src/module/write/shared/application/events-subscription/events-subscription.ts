@@ -106,13 +106,12 @@ export class EventsSubscription {
     event: ApplicationEvent<DomainEventType>,
     transaction: PrismaTransactionManager,
   ): Promise<void> {
-    // const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
-    // const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
-    //
-    // if (event.globalOrder < currentPosition) {
-    //   return;
-    // }
-    // todo: change this.prismaService to transaction. Whats wrong?
+    const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
+    const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
+
+    if (event.globalOrder < currentPosition) {
+      return;
+    }
 
     await Promise.all(
       this.positionHandlers
