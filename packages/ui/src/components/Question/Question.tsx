@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { AccordionButton, AccordionItem, AccordionItemProps, AccordionPanel } from '@chakra-ui/react';
 
-import { OutlinedArrowDownIcon } from '../../icons';
+import { OutlinedArrowDownIcon } from '../../icons/OutlinedArrowDown';
 import { Typography } from '../Typography';
 
 export interface QuestionProps extends AccordionItemProps {

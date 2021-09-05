@@ -8,7 +8,7 @@ export interface ProfitDescriptionProps extends FlexProps {
 
 export const ProfitDescription = ({ title, content, ...props }: ProfitDescriptionProps) => {
   return (
-    <Flex flexDirection="column" textAlign="start" {...props}>
+    <Flex flexDirection="column" {...props}>
       <Typography size="xl" weight="medium" color="gray.900">
         {title}
       </Typography>
