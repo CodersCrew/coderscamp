@@ -70,9 +70,9 @@ describe('Events subscription', () => {
     const sampleEvent = sampleDomainEvent({ value1: 'value1', value2: 2 });
     const anotherSampleEvent = anotherSampleDomainEvent({ value1: 'value1', value2: 2 });
 
-    const onInitialPosition = jest.fn().mockImplementation(() => console.log('onInitialPosition'));
-    const onSampleDomainEvent = jest.fn().mockImplementation(() => console.log('onSampleDomainEvent'));
-    const onAnotherSampleDomainEvent = jest.fn().mockImplementation(() => console.log('onAnotherSampleDomainEvent'));
+    const onInitialPosition = jest.fn();
+    const onSampleDomainEvent = jest.fn();
+    const onAnotherSampleDomainEvent = jest.fn();
     const subscriptionId = sut.randomUuid();
     const subscription: EventsSubscription = eventsSubscriptions
       .subscription(subscriptionId)
