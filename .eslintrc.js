@@ -1,17 +1,10 @@
 const TSCONFIG_PROJECTS = ['tsconfig.eslint.json', 'packages/**/tsconfig.json'];
 
 const FILES_WITH_DEV_DEPENDENCIES = [
-  '**/*.test.*',
-  '**/*.spec.*',
   '**/vite.config.ts',
   '**/next.config.js',
-  'jest.config.ts',
   '**/*.stories.tsx',
-  '**/setupTests.ts',
   'scripts/*.js',
-  '**/testHelpers.tsx',
-  '**/*.test-module.ts',
-  '**/test-utils.ts',
   'scripts/**',
 ];
 
@@ -171,7 +164,16 @@ module.exports = {
     },
     {
       // Enable plugins rules only for test files.
-      files: ['**/?(*.)+(spec|test).ts?(x)'],
+      files: [
+        '**/?(*.)+(spec|test).ts?(x)',
+        'jest.config.ts',
+        'setupTests.ts',
+        'testHelpers.tsx',
+        '*.test-module.ts',
+        'test-utils.ts',
+        '*Handlers.ts',
+        '**/mocks/*',
+      ],
       extends: [
         'plugin:testing-library/react',
         'plugin:jest-dom/recommended',
@@ -179,6 +181,7 @@ module.exports = {
         'plugin:jest-formatting/recommended',
       ],
       rules: {
+        'import/no-extraneous-dependencies': [2, { devDependencies: true }],
         'jest/expect-expect': [
           2,
           {
