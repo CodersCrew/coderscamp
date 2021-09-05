@@ -21,6 +21,7 @@ async function initTestEventsSubscription() {
   return { eventsSubscriptions, ...app };
 }
 
+// todo: tests for transaction consistency and failures!
 describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
 

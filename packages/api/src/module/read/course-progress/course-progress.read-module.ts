@@ -1,11 +1,14 @@
-import { Module } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
 import { TaskWasUncompleted } from '@/module/events/task-was-uncompleted-event.domain-event';
-import { PrismaService } from '@/prisma/prisma.service';
+import {
+  EventsSubscription,
+  PrismaTransactionManager,
+} from '@/write/shared/application/events-subscription/events-subscription';
+import { EventsSubscriptionsFactory } from '@/write/shared/application/events-subscription/events-subscriptions.factory';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { CourseProgressRestController } from './course-progress.rest-controller';
@@ -14,12 +17,38 @@ import { CourseProgressRestController } from './course-progress.rest-controller'
   imports: [SharedModule],
   controllers: [CourseProgressRestController],
 })
-export class CourseProgressReadModule {
-  constructor(private readonly prismaService: PrismaService) {}
+export class CourseProgressReadModule implements OnModuleInit, OnModuleDestroy {
+  private eventsSubscription: EventsSubscription;
 
-  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
-  async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    await this.prismaService.courseProgress.create({
+  constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsFactory) {}
+
+  async onModuleInit() {
+    this.eventsSubscription = this.eventsSubscriptionsFactory
+      .subscription('LearningMaterialsReadModel_v1')
+      .onInitialPosition(this.onInitialPosition)
+      .onEvent<LearningMaterialsUrlWasGenerated>(
+        'LearningMaterialsUrlWasGenerated',
+        this.onLearningMaterialsUrlWasGenerated,
+      )
+      .onEvent<TaskWasCompleted>('TaskWasCompleted', this.onTaskWasCompleted)
+      .onEvent<TaskWasUncompleted>('TaskWasUncompleted', this.onTaskWasUncompleted)
+      .build();
+    await this.eventsSubscription.start();
+  }
+
+  async onModuleDestroy() {
+    await this.eventsSubscription.stop();
+  }
+
+  async onInitialPosition(_position: number, context: { transaction: PrismaTransactionManager }) {
+    await context.transaction.courseProgress.deleteMany({});
+  }
+
+  async onLearningMaterialsUrlWasGenerated(
+    event: ApplicationEvent<LearningMaterialsUrlWasGenerated>,
+    context: { transaction: PrismaTransactionManager },
+  ) {
+    await context.transaction.courseProgress.create({
       data: {
         courseUserId: event.data.courseUserId,
         learningMaterialsId: event.data.learningMaterialsId,
@@ -28,26 +57,11 @@ export class CourseProgressReadModule {
     });
   }
 
-  @OnEvent('LearningMaterialsTasks.TaskWasUncompleted')
-  async onTaskWasUncompleted(event: ApplicationEvent<TaskWasUncompleted>) {
-    const where = { learningMaterialsId: event.data.learningMaterialsId };
-    const courseProgress = await this.prismaService.courseProgress.findUnique({ where });
-
-    if (!courseProgress || courseProgress.learningMaterialsCompletedTasks === 0) {
-      return;
-    }
-
-    await this.prismaService.courseProgress.update({
-      where,
-      data: {
-        learningMaterialsCompletedTasks: { decrement: 1 },
-      },
-    });
-  }
-
-  @OnEvent('LearningMaterialsTasks.TaskWasCompleted')
-  async onTaskWasCompleted(event: ApplicationEvent<TaskWasCompleted>) {
-    await this.prismaService.courseProgress.update({
+  async onTaskWasCompleted(
+    event: ApplicationEvent<TaskWasCompleted>,
+    context: { transaction: PrismaTransactionManager },
+  ) {
+    await context.transaction.courseProgress.update({
       where: {
         learningMaterialsId: event.data.learningMaterialsId,
       },
@@ -55,6 +69,25 @@ export class CourseProgressReadModule {
         learningMaterialsCompletedTasks: {
           increment: 1,
         },
+      },
+    });
+  }
+
+  async onTaskWasUncompleted(
+    event: ApplicationEvent<TaskWasUncompleted>,
+    context: { transaction: PrismaTransactionManager },
+  ) {
+    const where = { learningMaterialsId: event.data.learningMaterialsId };
+    const courseProgress = await context.transaction.courseProgress.findUnique({ where });
+
+    if (!courseProgress || courseProgress.learningMaterialsCompletedTasks === 0) {
+      return;
+    }
+
+    await context.transaction.courseProgress.update({
+      where,
+      data: {
+        learningMaterialsCompletedTasks: { decrement: 1 },
       },
     });
   }
