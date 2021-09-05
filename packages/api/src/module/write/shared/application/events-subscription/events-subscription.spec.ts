@@ -106,7 +106,7 @@ describe('Events subscription', () => {
 
     await sut.eventsOccurred(
       eventStream1,
-      sequence(100).map(() => sampleEvent),
+      sequence(50).map(() => sampleEvent),
     );
 
     const onInitialPosition = jest.fn();
@@ -135,10 +135,10 @@ describe('Events subscription', () => {
 
     await sut.expectSubscriptionPosition({
       subscriptionId,
-      position: 105,
+      position: 55,
     });
     expect(onInitialPosition).toHaveBeenCalledTimes(1);
-    expect(onSampleDomainEvent).toHaveBeenCalledTimes(102);
+    expect(onSampleDomainEvent).toHaveBeenCalledTimes(52);
     expect(lastEventValue).toBe(lastEvent.data.value2);
   }, 10000);
 });
