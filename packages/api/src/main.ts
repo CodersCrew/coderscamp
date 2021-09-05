@@ -2,8 +2,8 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 
-import { AppModule } from '../app.module';
-import { env, validateEnv } from './env';
+import { AppModule } from './app.module';
+import { env, validateEnv } from './shared/env';
 
 const logger = new Logger('bootstrap');
 

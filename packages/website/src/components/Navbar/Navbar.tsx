@@ -3,13 +3,14 @@ import ReactHeadroom from 'react-headroom';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Center } from '@coderscamp/ui/components/Center';
-import { Flex } from '@coderscamp/ui/components/Flex';
 import { HStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useTheme } from '@coderscamp/ui/hooks/useTheme';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
+import { MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
 
+import { externalLinkBaseProps } from '../ExternalLink';
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 export const Navbar = () => {
@@ -35,14 +36,20 @@ export const Navbar = () => {
           position="relative"
         >
           {baseNavbar}
-          <Flex>
-            <Button size={buttonSize} mr="12px" onClick={() => openModal('mentor')}>
+          <HStack spacing="12px">
+            <Button
+              size={buttonSize}
+              color="brand"
+              as="a"
+              href={MENTOR_RECRUITMENT_FORM_URL}
+              {...externalLinkBaseProps}
+            >
               Zostań mentorem
             </Button>
-            <Button size={buttonSize} color="brand" onClick={() => openModal('participant')}>
+            <Button size={buttonSize} onClick={() => openModal('participant')}>
               Zapisz się na kurs
             </Button>
-          </Flex>
+          </HStack>
         </HStack>
       </Center>
     </ReactHeadroom>
