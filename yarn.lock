@@ -2743,6 +2743,7 @@ __metadata:
     supertest: 6.1.6
     ts-loader: 9.2.5
     ts-node: 10.2.1
+    ts-retry-promise: 0.6.0
     tsconfig-paths: 3.11.0
     type-fest: 2.1.0
     uuid: 8.3.2
@@ -23824,6 +23825,13 @@ resolve@^2.0.0-next.3:
     typescript:
       optional: true
   checksum: c2a698b85d521298fe6f2435fbf2d3dc5834b423ea25abd321805ead3f399dbeedce7ca09492d7eb005b9d2c009c6b9587055bc3ab273dc6b9e40eefd7edb5b2
+  languageName: node
+  linkType: hard
+
+"ts-retry-promise@npm:0.6.0":
+  version: 0.6.0
+  resolution: "ts-retry-promise@npm:0.6.0"
+  checksum: a8b2c884026a249caab7ffb7b90765aaeddbdc5f759450802d0d53c30117d9ecbbf256d7352fdd6cc39b15f1b8d71ea25060d2fc6fb3aa94ae0a9029a42d1b52
   languageName: node
   linkType: hard
 

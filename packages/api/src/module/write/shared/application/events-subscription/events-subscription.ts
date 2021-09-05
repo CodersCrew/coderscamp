@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
 import { Mutex } from 'async-mutex';
+import { retry } from 'ts-retry-promise';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
@@ -53,8 +54,13 @@ export class EventsSubscription {
   ) {}
 
   async start(): Promise<void> {
-    await this.catchUp();
-    await this.subscribe();
+    await retry(
+      async () => {
+        await this.catchUp();
+        await this.subscribe();
+      },
+      { retries: 2 },
+    );
   }
 
   async stop(): Promise<void> {
@@ -112,11 +118,12 @@ export class EventsSubscription {
           })
           .catch(() => this.stop());
       })
-      .catch((e) =>
-        this.logger.warn(
-          `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}.`,
-          e,
-        ),
+      .catch(
+        (e) =>
+          this.logger.warn(
+            `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}.`,
+            e,
+          ), // todo: retry, longer setting. No retries because of the catch
       );
   }
 
