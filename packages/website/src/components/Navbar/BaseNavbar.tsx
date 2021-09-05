@@ -1,15 +1,21 @@
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { Button } from '@coderscamp/ui/components/Button';
 import { Flex } from '@coderscamp/ui/components/Flex';
 import { IconButton } from '@coderscamp/ui/components/IconButton';
 import { Menu as ChakraMenu, MenuButton, MenuItem, MenuList } from '@coderscamp/ui/components/Menu';
+import { VStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
 import { LogoBlackHorizontal, LogoBlackSquare } from '@coderscamp/ui/svg/logos';
 
-import { NavActionButtons } from './NavActionButtons';
+import { MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
+
+import { externalLinkBaseProps } from '../ExternalLink';
+import { useRecruitmentModal } from '../RecruitmentModal';
 import { NavbarItem } from './NavbarItem';
 
 const NavbarElements = [
@@ -39,6 +45,7 @@ export const MobileBaseNavbar = () => {
   const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
   const [isSmallerThan560px] = useMediaQuery('(max-width: 560px)');
   const logoProps = { ...baseLogoProps, ml: '24px' };
+  const { openModal } = useRecruitmentModal();
 
   return (
     <Flex alignItems="center" order={2}>
@@ -54,7 +61,16 @@ export const MobileBaseNavbar = () => {
               <MenuItem fontWeight={fontWeight(element.destinationLink)}>{element.text}</MenuItem>
             </Link>
           ))}
-          {isSmallerThan560px && <NavActionButtons direction="column" />}
+          {isSmallerThan560px && (
+            <VStack spacing="12px">
+              <Button size="md" color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+                Zostań mentorem
+              </Button>
+              <Button size="md" onClick={() => openModal('participant')}>
+                Zapisz się na kurs
+              </Button>
+            </VStack>
+          )}
         </MenuList>
       </ChakraMenu>
     </Flex>

@@ -18,12 +18,18 @@ import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 export const Navbar = () => {
   const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
+  const buttonContainerWidth = useBreakpointValue({ base: '100%', lg: 'fit-content' } as const);
   const { openModal } = useRecruitmentModal();
   const [isGreaterThan560px] = useMediaQuery('(min-width: 560px)');
   const { zIndices } = useTheme();
   const [hasShadow, setHasShadow] = useState(false);
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
-  const baseLogoProps = { cursor: 'pointer', width: '100%', maxWidth: '280px', height: '100%', maxHeight: '40px' };
+  const baseLogoProps = {
+    cursor: 'pointer',
+    maxWidth: '280px',
+    height: '100%',
+    maxHeight: '40px',
+  };
 
   return (
     <ReactHeadroom
@@ -51,7 +57,7 @@ export const Navbar = () => {
 
           {baseNavbar}
           {isGreaterThan560px && (
-            <HStack spacing="12px">
+            <HStack spacing="12px" pr="24px" width={buttonContainerWidth} justifyContent="flex-end">
               <Button size="md" color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
                 Zostań mentorem
               </Button>
