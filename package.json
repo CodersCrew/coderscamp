@@ -26,6 +26,7 @@
     "lint": "yarn eslint \"**/*.{js,ts,tsx}\"",
     "lint:fix": "yarn lint --fix",
     "lint:perf": "cross-env TIMING=50 yarn lint",
+    "lint:changed": "ts-node scripts/lint-changed.ts",
     "heroku-postbuild": "yarn generate && concurrently \"yarn w api build\" \"yarn w panel build\""
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "rimraf": "3.0.2",
     "serve": "12.0.0",
     "shelljs": "0.8.4",
+    "simple-git": "2.45.1",
     "ts-jest": "27.0.5",
     "ts-node": "10.2.1",
     "typescript": "4.4.2"
