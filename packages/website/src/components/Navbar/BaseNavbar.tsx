@@ -42,12 +42,11 @@ const baseLogoProps = { cursor: 'pointer', width: '100%', maxWidth: '280px', hei
 
 export const MobileBaseNavbar = () => {
   const { route } = useRouter();
-  const fontWeight = (link: string) => (link === route ? 'bold' : 'normal');
+  const fontWeight = (link: string) => (link === route ? 'bold' : 'medium');
   const [isSmallerThan560px] = useMediaQuery('(max-width: 560px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { openModal } = useRecruitmentModal();
   const drawerSize = useBreakpointValue({ base: 'xs', sm: 'md', md: 'lg' } as const);
-  const logoProps = { ...baseLogoProps, ml: '24px' };
 
   return (
     <Flex order={2}>
@@ -56,17 +55,16 @@ export const MobileBaseNavbar = () => {
         <DrawerOverlay />
         <DrawerContent boxShadow="large">
           <DrawerHeader pt="31px" pb="41px" px="16px">
-            <LogoBlackHorizontal {...logoProps} />
+            <LogoBlackHorizontal {...baseLogoProps} />
           </DrawerHeader>
           <DrawerBody p={0}>
-            <VStack spacing="20px" alignItems="flex-start">
+            <VStack spacing="10px" alignItems="flex-start">
               {NavbarElements.map((element) => (
                 <Link key={element.text} href={element.destinationLink}>
                   <Button
                     width="100%"
                     variant="ghost"
                     justifyContent="start"
-                    _focus={{ outline: 'none' }}
                     fontWeight={fontWeight(element.destinationLink)}
                     onClick={() => onClose()}
                   >
@@ -77,11 +75,11 @@ export const MobileBaseNavbar = () => {
             </VStack>
             {isSmallerThan560px && (
               <VStack mt="26px" px="16px" spacing="16px" width="100%" alignItems="stretch">
-                <Button size="md" color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
-                  Zostań mentorem
-                </Button>
-                <Button size="md" onClick={() => openModal('participant')}>
+                <Button size="md" color="brand" onClick={() => openModal('participant')}>
                   Zapisz się na kurs
+                </Button>
+                <Button size="md" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+                  Zostań mentorem
                 </Button>
               </VStack>
             )}
