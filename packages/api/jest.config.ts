@@ -7,7 +7,7 @@ export default createJestConfig({
   tsconfig: resolve(__dirname, 'tsconfig.json'),
   paths: compilerOptions.paths,
   overrides: {
-    testTimeout: 6000,
+    testTimeout: 10000,
     collectCoverageFrom: ['**/*.ts'],
   },
 });

@@ -472,12 +472,17 @@ export class CourseProgressReadModule {
 }
 ```
 
-#### Resilient event subscribers
-Provided by NestJs `@OnEvent` mechanism doesn't quarantee event processing. 
-Let's imagine simple situation. 
+
+### Read & Automation - Resilient event subscribers
+Provided by NestJs `@OnEvent` mechanism doesn't guarantee event re-processing in case of failure. 
+Let's imagine example situation. 
 1. We published TaskWasCompleted event.
 2. Read slice should take this event and increase completed tasks amount in CourseProgress by one.
 3. Before CourseProgress update, the application break or there was some exception in handling logic.
+
+We provide self-healing solution and exactly-once delivery using Prisma transactions support.
+All handlers as a second argument has context, which contain a reference to current database transaction.
+Thanks for that handling event and saving last processed event globalOrder (as EventSubscription.currentPosition) is an atomic operation.
 
 After app rerun or fix deploy, the event won't be processed once more. 
 So we introduced mechanism based on EventRepository.
