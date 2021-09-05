@@ -84,6 +84,7 @@ describe('Events subscription', () => {
       position: 4,
     });
     expect(onInitialPosition).toHaveBeenCalledTimes(1);
-    expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
+    expect(onSampleDomainEvent).toHaveBeenCalledTimes(2);
+    expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(2);
   });
 });

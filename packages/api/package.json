@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "8.0.6",
     "@nestjs/serve-static": "2.2.2",
     "@prisma/client": "2.30.3",
+    "async-mutex": "0.3.2",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
     "cookie-parser": "1.4.5",

@@ -1,5 +1,6 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
+import { Mutex } from 'async-mutex';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
@@ -31,6 +32,7 @@ export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconn
  * subscription.close()
  */
 // healthcheck endpoint!?
+// https://www.typescriptlang.org/play?#code/CYUwxgNghgTiAEkoGdnwKIDcQDsAu6AtgJZ54gzwDeAUPPCCXgBQjb4Bc8UOAngJRdMAe2LAaAXxo0kqeAEEweYTAA8AFQB81OvAAOMYpijl4AfUJRiEAEbCAHl3UBtALrwAvPDe6DRkwhmBsJgIKjEOADmnvAAZlAQyCC+hsamZoyk5JReOCAA7hjsBEzZzPy6ukk4wKzFTvw69PR4ABbEyAB0Fla2Dp16AK7IrXW4eBW69MSx8MxtHd3BoeFRjbTNzXB4gzA4U-BSBwtdQTAhYcgR0V54MIPJBxAgeAyYTvAAPvCDNSCxERA4k2xxgvCam3g+XazzmbBiJ26lmsdnsnRGMxY-EaEMh8ERGVKFE6mRYbAqeKkmwkcQiCQg4I2kIJy0u1xi8USyWp8F0UgkQA
 // task queue (promise - event) - https://www.codementor.io/@edafeadjekeemunotor/building-a-concurrent-promise-queue-with-javascript-1ano2eof0v
 
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
@@ -74,14 +76,13 @@ export class EventsSubscription {
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
+    private readonly mutex = new Mutex(),
   ) {}
 
   subscribe(): EventsSubscription {
     // todo: priority queue
     this.eventEmitter.onAny(async (_, event) => {
-      await this.prismaService.$transaction(async (transaction) => {
-        await this.handleEvent(event, transaction);
-      });
+      await this.handleEvent(event);
     });
 
     return this;
@@ -96,50 +97,53 @@ export class EventsSubscription {
       fromGlobalPosition: subscriptionState?.currentPosition ?? this.config.from?.globalPosition ?? 0,
     });
 
-    await this.prismaService.$transaction(async (transaction) => {
-      await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e, transaction)));
-    });
+    await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
 
     return this;
   }
 
   private async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
-    transaction: PrismaTransactionManager,
   ): Promise<void> {
-    const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
-    const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
+    await this.mutex.runExclusive(async () => {
+      await this.prismaService.$transaction(async (transaction) => {
+        const subscriptionState = await transaction.eventsSubscription.findUnique({
+          where: { id: this.subscriptionId },
+        });
+        const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
 
-    if (event.globalOrder < currentPosition) {
-      return;
-    }
+        if (event.globalOrder < currentPosition) {
+          return;
+        }
 
-    await Promise.all(
-      this.positionHandlers
-        .filter((handler) => handler.position === event.globalOrder)
-        .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
-    );
+        await Promise.all(
+          this.positionHandlers
+            .filter((handler) => handler.position === event.globalOrder)
+            .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
+        );
 
-    await Promise.all(
-      this.eventHandlers
-        .filter((handler) => handler.eventType === event.type)
-        .map((handler) => handler.onEvent(event, { transaction })),
-    );
+        await Promise.all(
+          this.eventHandlers
+            .filter((handler) => handler.eventType === event.type)
+            .map((handler) => handler.onEvent(event, { transaction })),
+        );
 
-    await this.prismaService.eventsSubscription.upsert({
-      where: {
-        id: this.subscriptionId,
-      },
-      create: {
-        id: this.subscriptionId,
-        eventTypes: this.handlingEventTypes(),
-        fromPosition: this.config.from?.globalPosition ?? 0,
-        currentPosition: event.globalOrder,
-        checksum: 'test',
-      },
-      update: {
-        currentPosition: event.globalOrder,
-      },
+        await transaction.eventsSubscription.upsert({
+          where: {
+            id: this.subscriptionId,
+          },
+          create: {
+            id: this.subscriptionId,
+            eventTypes: this.handlingEventTypes(),
+            fromPosition: this.config.from?.globalPosition ?? 0,
+            currentPosition: event.globalOrder,
+            checksum: 'test',
+          },
+          update: {
+            currentPosition: event.globalOrder,
+          },
+        });
+      });
     });
   }
 
