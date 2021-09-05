@@ -13,7 +13,7 @@ import {
   SubscriptionBuilder,
 } from '@/write/shared/application/events-subscription/events-subscription-builder';
 
-const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 0 }, rebuildOnChange: false };
+const defaultSubscriptionConfig: EventSubscriptionConfig = { from: { globalPosition: 1 }, rebuildOnChange: false };
 
 @Injectable()
 export class EventsSubscriptions implements CanCreateSubscription {

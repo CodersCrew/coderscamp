@@ -31,6 +31,7 @@ export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconn
  * subscription.close()
  */
 // healthcheck endpoint!?
+// task queue (promise - event) - https://www.codementor.io/@edafeadjekeemunotor/building-a-concurrent-promise-queue-with-javascript-1ano2eof0v
 
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
   event: ApplicationEvent<DomainEventType>,
@@ -124,11 +125,8 @@ export class EventsSubscription {
         .filter((handler) => handler.eventType === event.type)
         .map((handler) => handler.onEvent(event, { transaction })),
     );
-    await this.onEventHandled(transaction, event);
-  }
 
-  private async onEventHandled(transaction: PrismaTransactionManager, event: { globalOrder: number }) {
-    await transaction.eventsSubscription.upsert({
+    await this.prismaService.eventsSubscription.upsert({
       where: {
         id: this.subscriptionId,
       },

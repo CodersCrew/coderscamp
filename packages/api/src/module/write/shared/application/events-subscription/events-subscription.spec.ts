@@ -1,13 +1,20 @@
 import { AsyncReturnType } from 'type-fest';
 
-import { initWriteTestModule, SampleDomainEvent, sampleDomainEvent } from '@/shared/test-utils';
+import {
+  anotherSampleDomainEvent,
+  AnotherSampleDomainEvent,
+  initWriteTestModule,
+  SampleDomainEvent,
+  sampleDomainEvent
+} from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscriptions } from '@/write/shared/application/events-subscription/events-subscriptions';
+import {EventsSubscription} from "@/write/shared/application/events-subscription/events-subscription";
 
 async function initTestEventsSubscription() {
   const app = await initWriteTestModule();
 
-  const eventsSubscriptions = app.get<EventsSubscriptions>(EventsSubscriptions);
+  const eventsSubscriptions: EventsSubscriptions = app.get<EventsSubscriptions>(EventsSubscriptions);
 
   return { eventsSubscriptions, ...app };
 }
@@ -23,7 +30,7 @@ describe('Events subscription', () => {
     await sut.close();
   });
 
-  it('test', async () => {
+  it('catchUp past events', async () => {
     const { eventsSubscriptions } = sut;
 
     const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
@@ -47,18 +54,36 @@ describe('Events subscription', () => {
       subscriptionId,
       position: 4,
     });
+  });
+
+  it('subscribe new events', async () => {
+    const { eventsSubscriptions } = sut;
+
+    const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
+
+    const sampleEvent = sampleDomainEvent({ value1: 'value1', value2: 2 });
+    const anotherSampleEvent = anotherSampleDomainEvent({ value1: 'value1', value2: 2 });
+
+    const onInitialPosition = jest.fn().mockImplementation(() => console.log('onInitialPosition'));
+    const onSampleDomainEvent = jest.fn().mockImplementation(() => console.log('onSampleDomainEvent'));
+    const onAnotherSampleDomainEvent = jest.fn().mockImplementation(() => console.log('onAnotherSampleDomainEvent'));
+    const subscriptionId = 'sample-sub-id';
+    const subscription: EventsSubscription = eventsSubscriptions
+      .subscription(subscriptionId)
+      .onInitialPosition(onInitialPosition)
+      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
+      .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', onAnotherSampleDomainEvent)
+      .build();
 
     await subscription.subscribe();
 
-    const eventStream2 = EventStreamName.from('StreamCategory', sut.randomEventId());
-
-    await sut.eventsOccurred(eventStream2, [event, event, event, event]);
+    await sut.eventsOccurred(eventStream1, [sampleEvent, anotherSampleEvent, sampleEvent, anotherSampleEvent]);
 
     await sut.expectSubscriptionPosition({
       subscriptionId,
-      position: 8,
+      position: 4,
     });
-    expect(onInitialPosition).toBeCalledWith(1);
+    expect(onInitialPosition).toHaveBeenCalledTimes(1);
     expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
   });
 });
