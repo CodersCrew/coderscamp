@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import { EventCardProps, EventsCard } from './EventsCard';
-import { EVENTS as events } from './EventsCard.mocks';
+import { events } from './EventsCard.mocks';
 
 const meta: Meta = {
   title: 'Components/EventsCard',
@@ -16,5 +16,5 @@ export const Playground = Template.bind({});
 
 Playground.args = {
   events,
-  width: '784px',
+  width: 784,
 };

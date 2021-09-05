@@ -7,7 +7,7 @@ const eventDescription =
   'A cras fames a ullamcorper. Laoreet ut orci semper massa integer ut consequat aliquam. Commodo enim, sed' +
   'lorem nibh vivamus neque congue...';
 
-export const EVENTS = [
+export const events = [
   {
     id: 1,
     title: 'Test kwalifikacyjny na CodersCamp',

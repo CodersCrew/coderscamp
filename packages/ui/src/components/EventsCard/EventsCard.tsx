@@ -1,4 +1,5 @@
 import React from 'react';
+import { Flex, Stack } from '@chakra-ui/react';
 
 import { Box, BoxProps } from '../Box';
 import { Button } from '../Button';
@@ -14,22 +15,18 @@ export type Event = {
   url: string;
 };
 
-export type EventCardProps = { events: Event[] } & BoxProps;
-
-const addZeroToDateValue = (dateValue: number): string => {
-  if (dateValue === undefined) {
-    return '';
-  }
-
-  return dateValue >= 10 ? `${dateValue}` : `0${dateValue}`;
-};
+export interface EventCardProps extends BoxProps {
+  events: Event[];
+}
 
 const getDayAndMonth = (date: Date): string => {
   if (date === undefined) {
     return '';
   }
 
-  return `${addZeroToDateValue(date.getDate())}.${addZeroToDateValue(date.getMonth() + 1)}`;
+  const month = date.getMonth() + 1;
+
+  return `${date.getDate()?.toString().padStart(2, '0')}.${month?.toString().padStart(2, '0')}`;
 };
 
 const getHourAndMinute = (date: Date): string => {
@@ -37,55 +34,42 @@ const getHourAndMinute = (date: Date): string => {
     return '';
   }
 
-  return `${addZeroToDateValue(date.getHours())}:${addZeroToDateValue(date.getMinutes())}`;
+  return `${date.getHours()?.toString().padStart(2, '0')}:${date.getMinutes()?.toString().padStart(2, '0')}`;
 };
 
-export const EventsCard = ({ events, ...props }: EventCardProps) => {
+export const EventsCard = ({ events = [], ...props }: EventCardProps) => {
   return (
     <Box width="100%" borderRadius={8} padding="32px" boxShadow="base" backgroundColor="white" {...props}>
-      <Typography size="xl" color="gray.900" fontWeight={800} lineHeight="28px" mb="24px">
+      <Typography size="xl" color="gray.900" weight="extrabold" mb="24px">
         {MAIN_TITLE}
       </Typography>
-      {(events || []).map(({ id, title, date, description, url }: Event, index: number) => (
-        <Box
-          key={id}
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          w="100%"
-          mb={index !== events.length - 1 ? '32px' : '0px'}
-          data-testid="event"
-        >
-          <Typography data-testid="eventDate" size="5xl" lineHeight="48px" color="gray.900" fontWeight={400} mr="20px">
-            {date && 'from' in date ? getDayAndMonth(date.from) : getDayAndMonth(date)}
-          </Typography>
-          <Box maxW="570px">
-            <Typography data-testid="eventTitle" size="lg" lineHeight="28px" color="gray.900" fontWeight={700}>
-              {title}
+      <Stack spacing="32px">
+        {events?.map(({ id, title, date, description, url }: Event) => (
+          <Flex key={id} wrap="wrap" data-testid="event" overflow="auto">
+            <Typography data-testid="eventDate" size="5xl" color="gray.900" mr="20px" check="10">
+              {'from' in date ? getDayAndMonth(date.from) : getDayAndMonth(date)}
             </Typography>
-            <Typography data-testid="eventHours" size="sm" lineHeight="20px" color="gray.500" fontWeight={500} mb="8px">
-              {date && 'from' in date && 'to' in date
-                ? `${getHourAndMinute(date.from)}-${getHourAndMinute(date.to)}`
-                : getHourAndMinute(date)}
-            </Typography>
-            <Typography
-              data-testid="eventDescription"
-              size="md"
-              lineHeight="24px"
-              color="gray.700"
-              fontWeight={400}
-              mb="16px"
-            >
-              {description}
-            </Typography>
-            <Link href={url}>
-              <Button variant="outline" size="sm">
-                {BUTTON_TEXT}
-              </Button>
-            </Link>
-          </Box>
-        </Box>
-      ))}
+            <Box maxW="570px">
+              <Typography data-testid="eventTitle" size="lg" color="gray.900" weight="bold">
+                {title}
+              </Typography>
+              <Typography data-testid="eventHours" size="sm" color="gray.500" weight="medium" mb="8px">
+                {'from' in date && 'to' in date
+                  ? `${getHourAndMinute(date.from)}-${getHourAndMinute(date.to)}`
+                  : getHourAndMinute(date)}
+              </Typography>
+              <Typography data-testid="eventDescription" size="md" color="gray.700" mb="16px">
+                {description}
+              </Typography>
+              <Link href={url}>
+                <Button variant="outline" size="sm">
+                  {BUTTON_TEXT}
+                </Button>
+              </Link>
+            </Box>
+          </Flex>
+        ))}
+      </Stack>
     </Box>
   );
 };
