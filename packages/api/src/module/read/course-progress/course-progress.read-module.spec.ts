@@ -93,8 +93,8 @@ describe('Read Slice | CourseProgress', () => {
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
+      learningMaterialsUrlWasGeneratedWithId(id),
     );
 
     await moduleUnderTest.expectReadModel({
@@ -108,8 +108,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasCompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
+      statusTask(learningMaterialsId, 'TaskWasCompleted'),
     );
 
     // Then
@@ -130,8 +130,8 @@ describe('Read Slice | CourseProgress', () => {
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
+      learningMaterialsUrlWasGeneratedWithId(id),
     );
 
     await moduleUnderTest.expectReadModel({
@@ -145,8 +145,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasCompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
+      statusTask(learningMaterialsId, 'TaskWasCompleted'),
     );
 
     // Then
@@ -163,8 +163,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
+      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
     );
 
     // Then
@@ -184,8 +184,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
+      learningMaterialsUrlWasGeneratedWithId(id),
     );
 
     // Then
@@ -200,8 +200,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
+      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
     );
     // Then
     await moduleUnderTest.expectReadModel({

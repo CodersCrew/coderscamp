@@ -34,8 +34,8 @@ export async function initReadTestModule() {
 
   await app.init();
 
-  const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
   const prismaService = app.get<PrismaService>(PrismaService);
+  const applicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
 
   await cleanupDatabase(prismaService);
 
@@ -43,14 +43,21 @@ export async function initReadTestModule() {
     await app.close();
   }
 
-  let publishedEvents = 0;
+  async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
+    const sourceCommandId = uuid();
 
-  async function eventOccurred(event: StorableEvent, streamName: EventStreamName): Promise<void> {
-    publishedEvents += 1;
-    await eventBus.publishAll([{ ...event, globalOrder: publishedEvents, streamVersion: publishedEvents, streamName }]);
+    await applicationService.execute(
+      eventStreamName,
+      { correlationId: sourceCommandId, causationId: sourceCommandId },
+      () => events,
+    );
   }
 
-  return { prismaService, close, eventOccurred };
+  async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent): Promise<void> {
+    await eventsOccurred(eventStreamName, [event]);
+  }
+
+  return { prismaService, close, eventOccurred, eventsOccurred };
 }
 
 export function storableEvent<EventType extends DomainEvent>(event: EventType): StorableEvent<EventType> {

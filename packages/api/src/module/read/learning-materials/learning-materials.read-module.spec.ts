@@ -61,8 +61,8 @@ describe('Read Slice | Learning Materials', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedForUser(userId1),
       EventStreamName.from('LearningMaterialsUrl', userId1),
+      learningMaterialsUrlWasGeneratedForUser(userId1),
     );
 
     // Then
@@ -81,8 +81,8 @@ describe('Read Slice | Learning Materials', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedForUser(userId2),
       EventStreamName.from('LearningMaterialsUrl', userId2),
+      learningMaterialsUrlWasGeneratedForUser(userId2),
     );
 
     // Then
