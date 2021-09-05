@@ -1,10 +1,10 @@
-import {PrismaClient} from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-import {ApplicationEvent} from '@/module/application-command-events';
-import {DomainEvent} from '@/module/domain.event';
-import {PrismaService} from '@/prisma/prisma.service';
-import {EventRepository} from '@/write/shared/application/event-repository';
-import {NeedsEventHandlers,} from '@/write/shared/application/events-subscription/events-subscription-builder';
+import { ApplicationEvent } from '@/module/application-command-events';
+import { DomainEvent } from '@/module/domain.event';
+import { PrismaService } from '@/prisma/prisma.service';
+import { EventRepository } from '@/write/shared/application/event-repository';
+import { NeedsEventHandlers } from '@/write/shared/application/events-subscription/events-subscription-builder';
 
 /**
  * Event types tylko do wyszukiwania na co sa subskrypcje
@@ -31,7 +31,7 @@ export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconn
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
   event: ApplicationEvent<DomainEventType>,
   context: { transaction: PrismaTransactionManager },
-) => Promise<void>;
+) => Promise<void> | void;
 
 export type ApplicationEventHandler = {
   readonly eventType: string;
@@ -48,7 +48,7 @@ export interface CanCreateSubscription {
 // wyliczanie checksum na podstawie handlerow, kodu i fromPosition. Jesli cos z tego sie zmieni, nastepuje reset pozycji do nowego configa start i rebuild.
 export class EventsSubscription {
   constructor(
-    private readonly id: SubscriptionId,
+    private readonly subscriptionId: SubscriptionId,
     private readonly config: EventSubscriptionConfig,
     private readonly handlers: ApplicationEventHandler[] = [],
     private readonly prismaService: PrismaService,
@@ -57,35 +57,42 @@ export class EventsSubscription {
 
   // todo: add registerEventHandler methods? z tych zbiore razem nazwy (typy) i utworze suba. Jak to sie robi nie dla typu strumienia? Zobaczyc.
   // wyglada to w miare OK wtedy. Mowie od razu, ktore eventy subuje.
-  async handleEvent<DomainEventType extends DomainEvent>(
-    event: ApplicationEvent<DomainEventType>,
-    handlerFn: OnEventFn<DomainEventType>,
-  ): Promise<void> {
-    const subscriptionId = this.config.id;
-
+  async handleEvent<DomainEventType extends DomainEvent>(event: ApplicationEvent<DomainEventType>): Promise<void> {
     await this.prismaService.$transaction(async (transaction) => {
-      const subscription = await transaction.eventsSubscription.findUnique({ where: { id: subscriptionId } });
-      const currentPosition = subscription?.currentPosition ?? this.config.fromPosition - 1;
+      const subscription = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
+      const currentPosition = subscription?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
 
       if (event.globalOrder < currentPosition) {
         return;
       }
 
-      await handlerFn(event, { transaction });
-      await transaction.eventsSubscription.upsert({
-        where: {
-          id: subscriptionId,
-        },
-        create: {
-          id: subscriptionId,
-          eventTypes: this.config.eventTypes,
-          fromPosition: 0,
-          currentPosition: event.globalOrder,
-        },
-        update: {
-          currentPosition: event.globalOrder,
-        },
-      });
+      await Promise.all(
+        this.handlers
+          .filter((handler) => handler.eventType === event.type)
+          .map((handler) => handler.onEvent(event, { transaction })),
+      );
+      await this.onEventHandled(transaction, event);
     });
+  }
+
+  private async onEventHandled(transaction: PrismaTransactionManager, event: { globalOrder: number }) {
+    await transaction.eventsSubscription.upsert({
+      where: {
+        id: this.subscriptionId,
+      },
+      create: {
+        id: this.subscriptionId,
+        eventTypes: this.handlingEventTypes(),
+        fromPosition: 0,
+        currentPosition: event.globalOrder,
+      },
+      update: {
+        currentPosition: event.globalOrder,
+      },
+    });
+  }
+
+  private handlingEventTypes() {
+    return this.handlers.map((h) => h.eventType);
   }
 }
