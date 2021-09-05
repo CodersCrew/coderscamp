@@ -26,11 +26,11 @@ describe('Events subscription', () => {
   it('test', async () => {
     const { eventsSubscriptions } = sut;
 
-    const eventStream = EventStreamName.from('StreamCategory', sut.randomEventId());
+    const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
 
     const event = sampleDomainEvent({ value1: 'value1', value2: 2 });
 
-    await sut.eventsOccurred(eventStream, [event, event, event, event]);
+    await sut.eventsOccurred(eventStream1, [event, event, event, event]);
 
     const onInitialPosition = jest.fn();
     const onSampleDomainEvent = jest.fn();
@@ -50,13 +50,15 @@ describe('Events subscription', () => {
 
     await subscription.subscribe();
 
-    await sut.eventsOccurred(eventStream, [event, event, event, event]);
+    const eventStream2 = EventStreamName.from('StreamCategory', sut.randomEventId());
+
+    await sut.eventsOccurred(eventStream2, [event, event, event, event]);
 
     await sut.expectSubscriptionPosition({
       subscriptionId,
       position: 8,
     });
-    expect(onInitialPosition).toBeCalledWith(0);
+    expect(onInitialPosition).toBeCalledWith(1);
     expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
   });
 });

@@ -77,7 +77,11 @@ export class EventsSubscription {
 
   subscribe(): EventsSubscription {
     // todo: priority queue
-    this.eventEmitter.onAny((_, event) => this.handleEvent(event as ApplicationEvent));
+    this.eventEmitter.onAny(async (_, event) => {
+      await this.prismaService.$transaction(async (transaction) => {
+        await this.handleEvent(event, transaction);
+      });
+    });
 
     return this;
   }
@@ -91,36 +95,37 @@ export class EventsSubscription {
       fromGlobalPosition: subscriptionState?.currentPosition ?? this.config.from?.globalPosition ?? 0,
     });
 
-    await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
+    await this.prismaService.$transaction(async (transaction) => {
+      await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e, transaction)));
+    });
 
     return this;
   }
 
   private async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
+    transaction: PrismaTransactionManager,
   ): Promise<void> {
-    await this.prismaService.$transaction(async (transaction) => {
-      // const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
-      // const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
-      //
-      // if (event.globalOrder < currentPosition) {
-      //   return;
-      // }
-      //todo: change this.prismaService to transaction. Whats wrong?
+    // const subscriptionState = await transaction.eventsSubscription.findUnique({ where: { id: this.subscriptionId } });
+    // const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
+    //
+    // if (event.globalOrder < currentPosition) {
+    //   return;
+    // }
+    // todo: change this.prismaService to transaction. Whats wrong?
 
-      await Promise.all(
-        this.positionHandlers
-          .filter((handler) => handler.position === event.globalOrder)
-          .map((handler) => handler.onPosition(event.globalOrder, { transaction: this.prismaService })),
-      );
+    await Promise.all(
+      this.positionHandlers
+        .filter((handler) => handler.position === event.globalOrder)
+        .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
+    );
 
-      await Promise.all(
-        this.eventHandlers
-          .filter((handler) => handler.eventType === event.type)
-          .map((handler) => handler.onEvent(event, { transaction: this.prismaService })),
-      );
-      await this.onEventHandled(this.prismaService, event);
-    });
+    await Promise.all(
+      this.eventHandlers
+        .filter((handler) => handler.eventType === event.type)
+        .map((handler) => handler.onEvent(event, { transaction })),
+    );
+    await this.onEventHandled(transaction, event);
   }
 
   private async onEventHandled(transaction: PrismaTransactionManager, event: { globalOrder: number }) {

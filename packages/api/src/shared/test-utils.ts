@@ -160,13 +160,13 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
   }
 
   async function expectSubscriptionPosition(expectation: { subscriptionId: SubscriptionId; position: number }) {
-    await waitForExpect(async () => {
-      const subscription = await prismaService.eventsSubscription.findUnique({
+    const subscription = () =>
+      prismaService.eventsSubscription.findUnique({
         where: { id: expectation.subscriptionId },
+        select: { currentPosition: true },
       });
 
-      expect(subscription?.currentPosition).toBe(expectation.position);
-    });
+    await waitForExpect(() => expect(subscription()).resolves.toStrictEqual({ currentPosition: expectation.position }));
   }
 
   async function executeCommand(builder: CommandBuilder) {
