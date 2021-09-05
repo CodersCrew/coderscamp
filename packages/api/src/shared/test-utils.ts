@@ -146,6 +146,14 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     return uuid();
   }
 
+  function randomUuid() {
+    return uuid();
+  }
+
+  function randomEventStreamName(): EventStreamName {
+    return EventStreamName.from('RandomEventStream', uuid());
+  }
+
   async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent) {
     const sourceCommandId = uuid();
 
@@ -210,6 +218,8 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     expectEventPublishedLastly,
     expectEventsPublishedLastly,
     expectSubscriptionPosition,
+    randomUuid,
+    randomEventStreamName,
   };
 }
 
@@ -221,7 +231,9 @@ export type SampleDomainEvent = {
   };
 };
 
-export function sampleDomainEvent(data: SampleDomainEvent['data']): SampleDomainEvent {
+export function sampleDomainEvent(
+  data: SampleDomainEvent['data'] = { value1: 'sampleValue1', value2: 2 },
+): SampleDomainEvent {
   return {
     type: 'SampleDomainEvent',
     data,
@@ -236,7 +248,9 @@ export type AnotherSampleDomainEvent = {
   };
 };
 
-export function anotherSampleDomainEvent(data: AnotherSampleDomainEvent['data']): AnotherSampleDomainEvent {
+export function anotherSampleDomainEvent(
+  data: AnotherSampleDomainEvent['data'] = { value1: 'anotherSampleValue1', value2: 2 },
+): AnotherSampleDomainEvent {
   return {
     type: 'AnotherSampleDomainEvent',
     data,

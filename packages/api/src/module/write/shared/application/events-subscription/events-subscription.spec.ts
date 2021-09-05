@@ -15,7 +15,8 @@ import { EventsSubscriptionsFactory } from '@/write/shared/application/events-su
 async function initTestEventsSubscription() {
   const app = await initWriteTestModule();
 
-  const eventsSubscriptions: EventsSubscriptionsFactory = app.get<EventsSubscriptionsFactory>(EventsSubscriptionsFactory);
+  const eventsSubscriptions: EventsSubscriptionsFactory =
+    app.get<EventsSubscriptionsFactory>(EventsSubscriptionsFactory);
 
   return { eventsSubscriptions, ...app };
 }
@@ -31,18 +32,18 @@ describe('Events subscription', () => {
     await sut.close();
   });
 
-  it('catchUp past events', async () => {
+  it('given some events occurred, when subscription start, then should process old events', async () => {
+    // Given
     const { eventsSubscriptions } = sut;
+    const eventStream = sut.randomEventStreamName();
+    const event = sampleDomainEvent();
 
-    const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
+    await sut.eventsOccurred(eventStream, [event, event, event, event]);
 
-    const event = sampleDomainEvent({ value1: 'value1', value2: 2 });
-
-    await sut.eventsOccurred(eventStream1, [event, event, event, event]);
-
+    // When
     const onInitialPosition = jest.fn();
     const onSampleDomainEvent = jest.fn();
-    const subscriptionId = 'sample-sub-id';
+    const subscriptionId = sut.randomUuid();
     const subscription = eventsSubscriptions
       .subscription(subscriptionId)
       .onInitialPosition(onInitialPosition)
@@ -51,10 +52,13 @@ describe('Events subscription', () => {
 
     await subscription.start();
 
+    // Then
     await sut.expectSubscriptionPosition({
       subscriptionId,
       position: 4,
     });
+    await expect(onInitialPosition).toHaveBeenCalledTimes(1);
+    await expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
   });
 
   it('subscribe new events', async () => {
@@ -68,7 +72,7 @@ describe('Events subscription', () => {
     const onInitialPosition = jest.fn().mockImplementation(() => console.log('onInitialPosition'));
     const onSampleDomainEvent = jest.fn().mockImplementation(() => console.log('onSampleDomainEvent'));
     const onAnotherSampleDomainEvent = jest.fn().mockImplementation(() => console.log('onAnotherSampleDomainEvent'));
-    const subscriptionId = 'sample-sub-id';
+    const subscriptionId = sut.randomUuid();
     const subscription: EventsSubscription = eventsSubscriptions
       .subscription(subscriptionId)
       .onInitialPosition(onInitialPosition)
@@ -106,7 +110,7 @@ describe('Events subscription', () => {
 
     const onInitialPosition = jest.fn();
     const onSampleDomainEvent = jest.fn();
-    const subscriptionId = 'sample-sub-id';
+    const subscriptionId = sut.randomUuid();
     const subscription: EventsSubscription = eventsSubscriptions
       .subscription(subscriptionId)
       .onInitialPosition(onInitialPosition)
