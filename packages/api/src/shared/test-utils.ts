@@ -46,8 +46,6 @@ export async function initReadTestModule() {
 
   const prismaService = app.get<PrismaService>(PrismaService);
 
-  await prismaService.enableShutdownHooks(app);
-
   const applicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
 
   await cleanupDatabase(prismaService);
@@ -125,8 +123,6 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
   const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
-
-  await prismaService.enableShutdownHooks(app);
 
   await cleanupDatabase(prismaService);
 

@@ -2,8 +2,6 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 
-import { PrismaService } from '@/prisma/prisma.service';
-
 import { AppModule } from './app.module';
 import { env, validateEnv } from './shared/env';
 
@@ -19,9 +17,6 @@ async function bootstrap() {
     app.use(cookieParser(env.COOKIE_SECRET));
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-    const prismaService: PrismaService = app.get(PrismaService);
-
-    await prismaService.enableShutdownHooks(app);
     await app.listen(env.PORT);
   } catch (ex) {
     logger.error(ex);

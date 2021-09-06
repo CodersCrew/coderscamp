@@ -19,8 +19,6 @@ async function initTestPrismaEventRepository() {
   const prismaService = app.get<PrismaService>(PrismaService);
   const eventRepository = new PrismaEventRepository(prismaService, { currentTime: () => new Date() });
 
-  await prismaService.enableShutdownHooks(app);
-
   await cleanupDatabase(prismaService);
 
   async function close() {
