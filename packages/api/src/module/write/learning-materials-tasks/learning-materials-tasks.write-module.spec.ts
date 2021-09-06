@@ -13,14 +13,14 @@ describe('learning materials tasks', () => {
     taskId?: string,
     learningMaterialsId?: string,
   ) => ReturnType<CommandBuilder<CompleteTaskApplicationCommand>>;
-  let learningMaterialsEventTrigger: (learningMaterialsId?: string) => Promise<void>;
+  let generateLearningMaterials: (learningMaterialsId?: string) => Promise<void>;
 
   it('should change state of the task to complete', async () => {
     // Given
     const command = commandBuilder();
 
     // When
-    await learningMaterialsEventTrigger();
+    await generateLearningMaterials();
     await module.executeCommand(() => command);
 
     // Then
@@ -39,7 +39,7 @@ describe('learning materials tasks', () => {
     const command = commandBuilder();
 
     // When
-    await learningMaterialsEventTrigger();
+    await generateLearningMaterials();
     await module.executeCommand(() => command);
 
     // Then
@@ -66,7 +66,7 @@ describe('learning materials tasks', () => {
       data: { taskId, learningMaterialsId },
     });
 
-    learningMaterialsEventTrigger = async (learningMaterialsId = LEARNING_MATERIALS_ID) => {
+    generateLearningMaterials = async (learningMaterialsId = LEARNING_MATERIALS_ID) => {
       return module.eventOccurred(
         EventStreamName.from('LearningMaterialsUrl', COURSE_USER_ID),
         {
