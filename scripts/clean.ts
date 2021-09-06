@@ -2,7 +2,7 @@ import del from 'del';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { exec, log } from './_helpers';
+import { command, log } from './_helpers';
 
 const toMonorepoPath = (path: string) => [path, `packages/**/${path}`];
 
@@ -15,7 +15,7 @@ const main = () => {
     .split('\n')
     .filter((str) => str.trim() && !str.startsWith('#') && !str.startsWith('.env'));
 
-  exec('yarn cache clean');
+  command('yarn cache clean');
   log('Yarn cache cleaned');
 
   del.sync(rootPaths.flatMap(toMonorepoPath), { expandDirectories: true, dot: true });
