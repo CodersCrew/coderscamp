@@ -9858,7 +9858,6 @@ __metadata:
     "@types/shelljs": 0.8.9
     "@typescript-eslint/eslint-plugin": 4.30.0
     "@typescript-eslint/parser": 4.30.0
-    async-mutex: 0.3.2
     concurrently: 6.2.1
     cross-env: 7.0.3
     del: 6.0.0
