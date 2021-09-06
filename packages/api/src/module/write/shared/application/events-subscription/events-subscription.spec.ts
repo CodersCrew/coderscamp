@@ -62,7 +62,7 @@ describe('Events subscription', () => {
       await expect(onInitialPosition).toHaveBeenCalledTimes(1);
       await expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
     });
-  });
+  }, 10000);
 
   it('when event processing fail, then subscription position should not be moved', async () => {
     // Given
@@ -110,7 +110,7 @@ describe('Events subscription', () => {
       await expect(onInitialPosition).toHaveBeenCalledTimes(1);
       await expect(onSampleDomainEvent).toHaveBeenCalledTimes(6);
     });
-  });
+  }, 10000);
 
   it('given no events before, when subscription start, then should process events occurred after subscription start', async () => {
     // Given
@@ -158,7 +158,7 @@ describe('Events subscription', () => {
       expect(onSampleDomainEvent).toHaveBeenCalledTimes(6);
       expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(4);
     });
-  });
+  }, 10000);
 
   it('when start, then should catchup with previous events and then process new events', async () => {
     // Given

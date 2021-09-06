@@ -200,7 +200,10 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
         select: { currentPosition: true },
       });
 
-    await waitForExpect(() => expect(subscription()).resolves.toStrictEqual({ currentPosition: expectation.position }));
+    await waitForExpect(
+      () => expect(subscription()).resolves.toStrictEqual({ currentPosition: expectation.position }),
+      7000,
+    );
   }
 
   async function executeCommand(builder: CommandBuilder) {
