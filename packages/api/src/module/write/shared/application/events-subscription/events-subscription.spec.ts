@@ -1,3 +1,4 @@
+import { Test } from '@nestjs/testing';
 import { AsyncReturnType } from 'type-fest';
 import waitForExpect from 'wait-for-expect';
 
@@ -13,9 +14,16 @@ import { using } from '@/shared/using';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
+import { SharedModule } from '@/write/shared/shared.module';
+
+import { eventEmitterRootModule } from '../../../../../event-emitter.root-module';
 
 async function initTestEventsSubscription() {
-  const app = await initWriteTestModule();
+  const app = await initWriteTestModule(
+    Test.createTestingModule({
+      imports: [eventEmitterRootModule, SharedModule],
+    }),
+  );
 
   const eventsSubscriptions: EventsSubscriptionsRegistry =
     app.get<EventsSubscriptionsRegistry>(EventsSubscriptionsRegistry);

@@ -105,15 +105,20 @@ export function getEventBusSpy(app: TestingModule): EventBusSpy {
   return jest.spyOn(eventBus, 'publishAll');
 }
 
-export async function initWriteTestModule(configureModule?: (app: TestingModuleBuilder) => TestingModuleBuilder) {
+export async function initWriteTestModule(
+  configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder),
+) {
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
 
-  const appBuilder: TestingModuleBuilder = await Test.createTestingModule({
+  const appBuilder: TestingModuleBuilder = Test.createTestingModule({
     imports: [AppModule],
   })
     .overrideProvider(TIME_PROVIDER)
     .useValue(testTimeProvider);
-  const app = await (configureModule ? configureModule(appBuilder) : appBuilder).compile();
+  const app = await (configureModule && !(configureModule instanceof TestingModuleBuilder)
+    ? configureModule(appBuilder)
+    : configureModule || appBuilder
+  ).compile();
 
   await app.init();
 
