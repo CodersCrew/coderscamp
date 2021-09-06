@@ -22,8 +22,10 @@ async function initTestEventsSubscription() {
   return { eventsSubscriptions, ...app };
 }
 
+// fixme: unstable tests
 // todo: tests for transaction consistency and failures!
-xdescribe('Events subscription', () => {
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
 
   beforeEach(async () => {
