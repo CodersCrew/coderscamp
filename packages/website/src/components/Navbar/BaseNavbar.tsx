@@ -11,7 +11,7 @@ import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useDisclosure } from '@coderscamp/ui/hooks/useDisclosure';
 import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
-import { LogoBlackHorizontal, LogoBlackSquare } from '@coderscamp/ui/svg/logos';
+import { LogoBlackHorizontal } from '@coderscamp/ui/svg/logos';
 
 import { MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
 
@@ -99,17 +99,8 @@ export const MobileBaseNavbar = () => {
 };
 
 export const DesktopBaseNavbar = () => {
-  const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
-
   return (
     <>
-      <Link href="/">
-        {logoLayout === 'horizontal' ? (
-          <LogoBlackHorizontal {...baseLogoProps} />
-        ) : (
-          <LogoBlackSquare {...baseLogoProps} />
-        )}
-      </Link>
       <Flex>
         {NavbarElements.map((element) => (
           <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
