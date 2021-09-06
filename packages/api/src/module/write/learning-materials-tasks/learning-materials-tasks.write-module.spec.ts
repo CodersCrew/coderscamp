@@ -46,7 +46,7 @@ describe('learning materials tasks', () => {
     await expect(() => module.executeCommand(() => command)).rejects.toThrow();
   });
 
-  it.todo("should throw exception if materials wasn't yet generated");
+  it.todo("should throw exception if materials haven't been yet generated");
 
   beforeEach(async () => {
     module = await learningMaterialsTasksTestModule();
@@ -66,14 +66,14 @@ describe('learning materials tasks', () => {
       data: { taskId, learningMaterialsId },
     });
 
-    generateLearningMaterials = async (learningMaterialsId = LEARNING_MATERIALS_ID) => {
+    generateLearningMaterials = (learningMaterialsId = LEARNING_MATERIALS_ID) => {
       return module.eventOccurred(
         EventStreamName.from('LearningMaterialsUrl', COURSE_USER_ID),
         {
           type: 'LearningMaterialsUrlWasGenerated',
           data: {
             learningMaterialsId,
-            COURSE_USER_ID,
+            courseUserId: COURSE_USER_ID,
             materialsUrl:
               'https://app.process.st/runs/Jan%20Kowalski-sbAPITNMsl2wW6j2cg1H2A/tasks/oFBpTVsw_DS_O5B-OgtHXA',
           },
