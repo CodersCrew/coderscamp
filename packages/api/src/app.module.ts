@@ -31,7 +31,7 @@ const imports: ModuleMetadata['imports'] = [
     newListener: false,
     removeListener: false,
     maxListeners: 40,
-    verboseMemoryLeak: false,
+    verboseMemoryLeak: true,
     ignoreErrors: false,
   }),
   PrismaModule,
