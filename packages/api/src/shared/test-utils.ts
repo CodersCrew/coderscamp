@@ -201,7 +201,7 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
 
     await waitForExpect(
       () => expect(subscription()).resolves.toStrictEqual({ currentPosition: expectation.position }),
-      7000,
+      10000,
     );
   }
 
