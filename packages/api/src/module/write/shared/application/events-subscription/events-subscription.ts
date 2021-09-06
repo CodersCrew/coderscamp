@@ -106,13 +106,21 @@ export class EventsSubscription {
             await Promise.all(
               this.positionHandlers
                 .filter((handler) => handler.position === event.globalOrder)
-                .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
+                .map((handler) => {
+                  this.logger.log(`EventSubscription ${this.subscriptionId} handling position ${event.globalOrder}`);
+
+                  return handler.onPosition(event.globalOrder, { transaction });
+                }),
             );
 
             await Promise.all(
               this.eventHandlers
                 .filter((handler) => handler.eventType === event.type)
-                .map((handler) => handler.onEvent(event, { transaction })),
+                .map((handler) => {
+                  this.logger.log(`EventSubscription ${this.subscriptionId} handling event`, event);
+
+                  return handler.onEvent(event, { transaction });
+                }),
             );
 
             await this.onEventProcessed(transaction, event);
@@ -122,7 +130,7 @@ export class EventsSubscription {
       .catch(
         (e) =>
           this.logger.warn(
-            `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}.`,
+            `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
             e,
           ), // todo: retry, longer setting. No retries because of the catch
       );

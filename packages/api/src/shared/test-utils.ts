@@ -218,6 +218,7 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
   async function close() {
     await cleanupDatabase(prismaService);
     await app.close();
+    await prismaService.$disconnect();
   }
 
   function get<TInput = any, TResult = TInput>(
