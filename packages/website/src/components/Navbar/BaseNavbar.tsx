@@ -29,7 +29,7 @@ const NavbarElements = [
   },
 ];
 
-const baseLogoProps = { cursor: 'pointer', width: '100%', maxWidth: '280px', height: '100%', maxHeight: '40px' };
+const baseLogoProps = { cursor: 'pointer', maxWidth: '280px', maxHeight: '40px' };
 
 export const MobileBaseNavbar = () => {
   const logoLayout = useBreakpointValue({ sm: 'square', md: 'horizontal' } as const);
@@ -68,7 +68,7 @@ export const DesktopBaseNavbar = () => {
           <LogoBlackSquare {...baseLogoProps} />
         )}
       </Link>
-      <Flex>
+      <Flex align="center">
         {NavbarElements.map((element) => (
           <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
         ))}

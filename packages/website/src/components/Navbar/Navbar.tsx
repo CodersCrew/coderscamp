@@ -28,7 +28,7 @@ export const Navbar = () => {
     >
       <Center bgColor="white" shadow={hasShadow ? 'large' : undefined}>
         <HStack
-          py="18px"
+          py="16px"
           px={{ base: '8px', sm: '18px', md: '24px', lg: '40px' }}
           width="min(1920px, 100%)"
           justifyContent="space-between"
