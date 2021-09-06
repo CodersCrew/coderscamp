@@ -37,7 +37,7 @@ export class EventsSubscription {
   private readonly logger = new Logger(EventsSubscription.name);
 
   constructor(
-    private readonly subscriptionId: SubscriptionId,
+    readonly subscriptionId: SubscriptionId,
     private readonly config: EventSubscriptionConfig,
     private readonly positionHandlers: PositionHandler[] = [],
     private readonly eventHandlers: ApplicationEventHandler[] = [],

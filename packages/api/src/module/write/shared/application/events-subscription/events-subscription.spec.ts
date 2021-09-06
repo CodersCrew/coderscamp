@@ -11,7 +11,7 @@ import {
 } from '@/shared/test-utils';
 import { using } from '@/shared/using';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
+import { EventsSubscription} from '@/write/shared/application/events-subscription/events-subscription';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 
 async function initTestEventsSubscription() {
@@ -28,40 +28,45 @@ async function initTestEventsSubscription() {
 // eslint-disable-next-line jest/no-disabled-tests
 describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
+  let subscription: EventsSubscription;
+
+  const onInitialPosition = jest.fn();
+  const onSampleDomainEvent = jest.fn();
+  const onAnotherSampleDomainEvent = jest.fn();
 
   beforeEach(async () => {
+    onInitialPosition.mockReset();
+    onSampleDomainEvent.mockReset();
+    onAnotherSampleDomainEvent.mockReset();
+
     sut = await initTestEventsSubscription();
+
+    subscription = sut.eventsSubscriptions
+      .subscription(sut.randomUuid())
+      .onInitialPosition(onInitialPosition)
+      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
+      .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', onAnotherSampleDomainEvent)
+      .build();
   });
 
   afterEach(async () => {
+    await subscription.stop();
     await sut.close();
   });
 
   it('given some events occurred, when subscription start, then should process old events', async () => {
     // Given
-    const { eventsSubscriptions } = sut;
     const eventStream = sut.randomEventStreamName();
     const event = sampleDomainEvent();
 
     await sut.eventsOccurred(eventStream, [event, event, event, event]);
 
-    // When
-    const onInitialPosition = jest.fn();
-    const onSampleDomainEvent = jest.fn();
-    const subscriptionId = sut.randomUuid();
-
-    const subscription = eventsSubscriptions
-      .subscription(subscriptionId)
-      .onInitialPosition(onInitialPosition)
-      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
-      .build();
-
-    // Then
+    // When - Then
     await using(subscription, async () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(4));
       await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
-        subscriptionId,
+        subscriptionId: subscription.subscriptionId,
         position: 4,
       });
     });
@@ -69,16 +74,12 @@ describe('Events subscription', () => {
 
   it('when event processing fail, then subscription position should not be moved', async () => {
     // Given
-    const { eventsSubscriptions } = sut;
     const eventStream = sut.randomEventStreamName();
     const event = sampleDomainEvent();
 
     await sut.eventsOccurred(eventStream, [event, event, event, event, event]);
 
-    // When
-    const onInitialPosition = jest.fn();
-    const onSampleDomainEvent = jest
-      .fn()
+    onSampleDomainEvent
       .mockImplementationOnce(() => {})
       .mockImplementationOnce(() => {})
       .mockImplementationOnce(() => {
@@ -87,19 +88,13 @@ describe('Events subscription', () => {
       .mockImplementationOnce(() => {})
       .mockImplementationOnce(() => {})
       .mockImplementationOnce(() => {});
-    const subscriptionId = sut.randomUuid();
-    const subscription = eventsSubscriptions
-      .subscription(subscriptionId)
-      .onInitialPosition(onInitialPosition)
-      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
-      .build();
 
-    // Then
+    // When - Then
     await using(subscription, async () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(3));
       await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
-        subscriptionId,
+        subscriptionId: subscription.subscriptionId,
         position: 2,
       });
     });
@@ -109,7 +104,7 @@ describe('Events subscription', () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(6));
       await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
-        subscriptionId,
+        subscriptionId: subscription.subscriptionId,
         position: 5,
       });
     });
@@ -117,26 +112,12 @@ describe('Events subscription', () => {
 
   it('given no events before, when subscription start, then should process events occurred after subscription start', async () => {
     // Given
-    const { eventsSubscriptions } = sut;
-
     const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
     const eventStream2 = EventStreamName.from('StreamCategory', sut.randomEventId());
     const sampleEvent = sampleDomainEvent({ value1: 'value1', value2: 2 });
     const anotherSampleEvent = anotherSampleDomainEvent({ value1: 'value1', value2: 2 });
 
-    // When
-    const onInitialPosition = jest.fn();
-    const onSampleDomainEvent = jest.fn();
-    const onAnotherSampleDomainEvent = jest.fn();
-    const subscriptionId = sut.randomUuid();
-    const subscription: EventsSubscription = eventsSubscriptions
-      .subscription(subscriptionId)
-      .onInitialPosition(onInitialPosition)
-      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
-      .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', onAnotherSampleDomainEvent)
-      .build();
-
-    // Then
+    // When - Then
     await using(subscription, async () => {
       await sut.eventsOccurred(eventStream1, [
         sampleEvent,
@@ -158,7 +139,7 @@ describe('Events subscription', () => {
       await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
 
       await sut.expectSubscriptionPosition({
-        subscriptionId,
+        subscriptionId: subscription.subscriptionId,
         position: 10,
       });
     });
@@ -166,8 +147,6 @@ describe('Events subscription', () => {
 
   it('when start, then should catchup with previous events and then process new events', async () => {
     // Given
-    const { eventsSubscriptions } = sut;
-
     const eventStream1 = EventStreamName.from('StreamCategory', sut.randomEventId());
 
     const sampleEvent = sampleDomainEvent({ value1: 'value1', value2: 2 });
@@ -178,21 +157,13 @@ describe('Events subscription', () => {
       sequence(25).map(() => sampleEvent),
     );
 
-    // When
     let lastEventValue: string | undefined;
-    const onInitialPosition = jest.fn();
-    const onSampleDomainEvent = jest.fn();
-    const subscriptionId = sut.randomUuid();
-    const subscription: EventsSubscription = eventsSubscriptions
-      .subscription(subscriptionId)
-      .onInitialPosition(onInitialPosition)
-      .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
-      .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', (e) => {
-        lastEventValue = e.data.value1;
-      })
-      .build();
 
-    // Then
+    onAnotherSampleDomainEvent.mockImplementation((e) => {
+      lastEventValue = e.data.value1;
+    });
+
+    // When - Then
     await using(subscription, async () => {
       const lastEvent = anotherSampleDomainEvent({ value1: 'lastEventValue', value2: 2 });
 
@@ -208,7 +179,7 @@ describe('Events subscription', () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(27));
       await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
-        subscriptionId,
+        subscriptionId: subscription.subscriptionId,
         position: 30,
       });
 
