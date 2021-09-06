@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AsyncReturnType } from 'type-fest';
 import waitForExpect from 'wait-for-expect';
 
+import { PrismaModule } from '@/prisma/prisma.module';
 import {
   AnotherSampleDomainEvent,
   anotherSampleDomainEvent,
@@ -21,7 +22,7 @@ import { eventEmitterRootModule } from '../../../../../event-emitter.root-module
 async function initTestEventsSubscription() {
   const app = await initWriteTestModule(
     Test.createTestingModule({
-      imports: [eventEmitterRootModule, SharedModule],
+      imports: [eventEmitterRootModule, PrismaModule, SharedModule],
     }),
   );
 
