@@ -59,7 +59,7 @@ describe('Events subscription', () => {
     // Then
     await using(subscription, async () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(4));
-      expect(onInitialPosition).toHaveBeenCalledTimes(1);
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 4,
@@ -97,7 +97,7 @@ describe('Events subscription', () => {
     // Then
     await using(subscription, async () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(3));
-      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 2,
@@ -107,7 +107,7 @@ describe('Events subscription', () => {
     // When restart - Then should process events
     await using(subscription, async () => {
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(6));
-      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 5,
@@ -155,7 +155,7 @@ describe('Events subscription', () => {
 
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(6));
       await waitForExpect(() => expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(4));
-      expect(onInitialPosition).toHaveBeenCalledTimes(1);
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
 
       await sut.expectSubscriptionPosition({
         subscriptionId,
@@ -206,7 +206,7 @@ describe('Events subscription', () => {
 
       // all events published in the meantime should be processed
       await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(27));
-      expect(onInitialPosition).toHaveBeenCalledTimes(1);
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 30,
