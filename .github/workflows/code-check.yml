@@ -13,7 +13,7 @@ jobs:
     env:
       NODE_ENV: test
       APP_ENV: review
-      DATABASE_URL: postgresql://root:root@postgres:5432/main-db
+      DATABASE_URL: postgresql://root:root@localhost:5432/main-db
       PORT: 4000
       JWT_SECRET: kljsr89qwh89YT89gvedstfg
       TOKEN_EXPIRATION_TIME: 3600
@@ -33,6 +33,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
