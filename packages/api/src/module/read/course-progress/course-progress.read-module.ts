@@ -8,7 +8,7 @@ import {
   EventsSubscription,
   PrismaTransactionManager,
 } from '@/write/shared/application/events-subscription/events-subscription';
-import { EventsSubscriptionsFactory } from '@/write/shared/application/events-subscription/events-subscriptions.factory';
+import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { CourseProgressRestController } from './course-progress.rest-controller';
@@ -20,7 +20,7 @@ import { CourseProgressRestController } from './course-progress.rest-controller'
 export class CourseProgressReadModule implements OnModuleInit, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
 
-  constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsFactory) {}
+  constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
   async onModuleInit() {
     this.eventsSubscription = this.eventsSubscriptionsFactory

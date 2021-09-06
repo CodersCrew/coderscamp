@@ -486,7 +486,7 @@ Thanks for that handling event and saving last processed event globalOrder (as E
 
 After app rerun or fix deploy, the event won't be processed once more. 
 So we introduced mechanism based on EventRepository.
-Now, instead of using `@OnEvent` you should inject `EventsSubscriptionsFactory`. 
+Now, instead of using `@OnEvent` you should inject `EventsSubscriptionsRegistry`. 
 Usage is so simple with provided fluent api.
 It's also type-safe, and you won't make a mistake in event pattern like in inside @OnEvent.
 An example you can find in CourseProgressReadModule.

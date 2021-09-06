@@ -53,6 +53,7 @@ export class EventsSubscription {
     },
   ) {}
 
+  // fixme: use retry somehow
   async start(): Promise<void> {
     await retry(
       async () => {

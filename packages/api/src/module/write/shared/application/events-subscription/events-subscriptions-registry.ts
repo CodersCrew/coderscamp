@@ -17,7 +17,7 @@ export interface CanCreateSubscription {
 }
 
 @Injectable()
-export class EventsSubscriptionsFactory implements CanCreateSubscription {
+export class EventsSubscriptionsRegistry implements CanCreateSubscription {
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(EVENT_REPOSITORY) private readonly eventRepository: EventRepository,
