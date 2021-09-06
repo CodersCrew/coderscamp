@@ -1,4 +1,5 @@
 import { AsyncReturnType } from 'type-fest';
+import waitForExpect from 'wait-for-expect';
 
 import {
   AnotherSampleDomainEvent,
@@ -25,7 +26,7 @@ async function initTestEventsSubscription() {
 // fixme: unstable tests
 // todo: tests for transaction consistency and failures!
 // eslint-disable-next-line jest/no-disabled-tests
-describe.skip('Events subscription', () => {
+describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
 
   beforeEach(async () => {
@@ -57,12 +58,12 @@ describe.skip('Events subscription', () => {
 
     // Then
     await using(subscription, async () => {
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(4));
+      expect(onInitialPosition).toHaveBeenCalledTimes(1);
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 4,
       });
-      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
-      await expect(onSampleDomainEvent).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -95,22 +96,22 @@ describe.skip('Events subscription', () => {
 
     // Then
     await using(subscription, async () => {
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(3));
+      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 2,
       });
-      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
-      await expect(onSampleDomainEvent).toHaveBeenCalledTimes(3);
     });
 
     // When restart - Then should process events
     await using(subscription, async () => {
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(6));
+      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 5,
       });
-      await expect(onInitialPosition).toHaveBeenCalledTimes(1);
-      await expect(onSampleDomainEvent).toHaveBeenCalledTimes(6);
     });
   });
 
@@ -152,13 +153,14 @@ describe.skip('Events subscription', () => {
         sampleEvent,
       ]);
 
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(6));
+      await waitForExpect(() => expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(4));
+      expect(onInitialPosition).toHaveBeenCalledTimes(1);
+
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 10,
       });
-      expect(onInitialPosition).toHaveBeenCalledTimes(1);
-      expect(onSampleDomainEvent).toHaveBeenCalledTimes(6);
-      expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -203,12 +205,12 @@ describe.skip('Events subscription', () => {
       ]);
 
       // all events published in the meantime should be processed
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(27));
+      expect(onInitialPosition).toHaveBeenCalledTimes(1);
       await sut.expectSubscriptionPosition({
         subscriptionId,
         position: 30,
       });
-      expect(onInitialPosition).toHaveBeenCalledTimes(1);
-      expect(onSampleDomainEvent).toHaveBeenCalledTimes(27);
 
       // value should be from last published event
       expect(lastEventValue).toBe(lastEvent.data.value1);
