@@ -53,7 +53,6 @@ export async function initReadTestModule() {
   async function close() {
     await cleanupDatabase(prismaService);
     await app.close();
-    await prismaService.$disconnect();
   }
 
   async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
@@ -219,7 +218,6 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
   async function close() {
     await cleanupDatabase(prismaService);
     await app.close();
-    await prismaService.$disconnect();
   }
 
   function get<TInput = any, TResult = TInput>(
