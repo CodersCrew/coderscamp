@@ -9,5 +9,6 @@ export default createJestConfig({
   overrides: {
     testTimeout: 10000,
     collectCoverageFrom: ['**/*.ts'],
+    setupFiles: ['./jest-setup.ts'],
   },
 });
