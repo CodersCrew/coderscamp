@@ -5,9 +5,9 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
-import { SolidWindowIcon } from '@coderscamp/ui/icons/SolidWindow';
+import { SolidGitHubIcon, SolidWindowIcon } from '@coderscamp/ui/icons';
 
+import { externalLinkBaseProps } from '../ExternalLink';
 import { Project } from './Projects.data';
 
 interface ProjectCardProps {
@@ -16,8 +16,8 @@ interface ProjectCardProps {
 }
 
 const buttonProps = {
+  ...externalLinkBaseProps,
   as: 'a',
-  target: '_blank',
   variant: 'solid',
   color: 'default',
   flex: 1,
