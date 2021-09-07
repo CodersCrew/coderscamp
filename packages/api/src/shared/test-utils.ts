@@ -23,16 +23,6 @@ export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
     Object.values(prismaService).map((table) => (table?.deleteMany ? table.deleteMany() : Promise.resolve())),
   );
-  await prismaService.$transaction([
-    prismaService.authUser.deleteMany(),
-    prismaService.course.deleteMany(),
-    prismaService.courseProgress.deleteMany(),
-    prismaService.event.deleteMany(),
-    prismaService.eventsSubscription.deleteMany(),
-    prismaService.learningMaterials.deleteMany(),
-    prismaService.registeredEmails.deleteMany(),
-    prismaService.userProfile.deleteMany(),
-  ]);
 
   await prismaService.$executeRaw`ALTER SEQUENCE "Event_globalOrder_seq" RESTART WITH 1`;
 }

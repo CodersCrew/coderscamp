@@ -33,7 +33,6 @@ async function initTestEventsSubscription() {
   return { eventsSubscriptions, ...app };
 }
 
-// fixme: unstable tests
 // todo: tests for transaction consistency and failures!
 // eslint-disable-next-line jest/no-disabled-tests
 describe('Events subscription', () => {

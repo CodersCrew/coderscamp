@@ -9,7 +9,7 @@ import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
-export type EventSubscriptionConfig = {
+export type EventsSubscriptionConfig = {
   readonly start: SubscriptionStart;
   readonly positionHandlers: PositionHandler[];
   readonly eventHandlers: ApplicationEventHandler[];
@@ -58,7 +58,7 @@ export class EventsSubscription {
 
   constructor(
     readonly subscriptionId: SubscriptionId,
-    private readonly configuration: EventSubscriptionConfig,
+    private readonly configuration: EventsSubscriptionConfig,
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
@@ -78,18 +78,18 @@ export class EventsSubscription {
     await retry(
       async () => {
         await this.catchUp().catch((e) => {
-          this.logger.warn(`EventSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
+          this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
           throw e;
         });
         await this.listen().catch((e) => {
-          this.logger.warn(`EventSubscription ${this.subscriptionId} processing error in listen phase.`, e);
+          this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in listen phase.`, e);
           throw e;
         });
       },
       { retries: maxRetries },
     ).catch((e) =>
       this.logger.error(
-        `EventSubscription ${this.subscriptionId} stopped processing of events after ${maxRetries} retries.`,
+        `EventsSubscription ${this.subscriptionId} stopped processing of events after ${maxRetries} retries.`,
         e,
       ),
     );
@@ -154,7 +154,7 @@ export class EventsSubscription {
       .catch(async (e) => {
         await this.stop();
         this.logger.warn(
-          `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
+          `EventsSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
           e,
         );
         throw e;
@@ -164,7 +164,7 @@ export class EventsSubscription {
   private throwIfSomeEventsWasMissed(event: ApplicationEvent, expectedEventPosition: number) {
     if (event.globalOrder !== expectedEventPosition) {
       throw new Error(
-        `EventSubscription ${this.subscriptionId} missed some events! Expected position: ${expectedEventPosition}, but current event position is: ${event.globalOrder}`,
+        `EventsSubscription ${this.subscriptionId} missed some events! Expected position: ${expectedEventPosition}, but current event position is: ${event.globalOrder}`,
       );
     }
   }
