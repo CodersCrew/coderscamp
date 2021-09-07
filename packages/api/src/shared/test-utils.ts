@@ -284,3 +284,20 @@ export function anotherSampleDomainEvent(
     data,
   };
 }
+
+export type SampleDomainEventType2 = {
+  type: 'SampleDomainEventType2';
+  data: {
+    value1: string;
+    value2: number;
+  };
+};
+
+export function sampleDomainEventType2(
+  data: SampleDomainEventType2['data'] = { value1: 'anotherSampleValue1', value2: 2 },
+): SampleDomainEventType2 {
+  return {
+    type: 'SampleDomainEventType2',
+    data,
+  };
+}

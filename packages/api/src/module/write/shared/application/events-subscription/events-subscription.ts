@@ -99,7 +99,8 @@ export class EventsSubscription {
             });
             const currentPosition = subscriptionState?.currentPosition ?? (this.config.from?.globalPosition ?? 1) - 1;
 
-            if (event.globalOrder < currentPosition) {
+            console.log(`globalOrder: ${event.globalOrder} currentPosition: ${currentPosition}`);
+            if (event.globalOrder !== currentPosition + 1) {
               return;
             }
 
