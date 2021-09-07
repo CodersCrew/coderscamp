@@ -36,6 +36,7 @@ describe('Approve email confirmation', () => {
   });
 
   it('throws exception if correspond requestEmailConfirmation does not exists', () => {
+    // given
     const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
     const confirmationToken = 'sbAPITNMsl2wW6j2cg1H2A';
     const confirmationFor = 'user-registration';
@@ -48,6 +49,7 @@ describe('Approve email confirmation', () => {
 
     const pastEvents: EmailConfirmationDomainEvent[] = [];
 
+    // when - then
     expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow();
   });
 
@@ -75,21 +77,20 @@ describe('Approve email confirmation', () => {
       newEmailConfirmationWasRequested,
     ];
 
-    const emailConfirmation = approveEmailConfirmationCommand({
+    const emailConfirmationWithOldToken = approveEmailConfirmationCommand({
       userId,
       confirmationToken: oldConfirmationToken,
       confirmationFor,
     });
 
     // when - them
-    expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow();
+    expect(() => approveEmailConfirmation(emailConfirmationWithOldToken)(pastEvents)).toThrow();
   });
 
   it('throws exception if email has been already confirmed', () => {
     // givem
     const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
     const confirmationFor = 'user-registration';
-
     const confirmationToken = 'kljawAKJJIJslKJjijlhjd';
 
     const newEmailConfirmationWasRequested = emailConfirmationWasRequestedEvent({
@@ -115,10 +116,3 @@ describe('Approve email confirmation', () => {
     expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow();
   });
 });
-
-// const event = <TEvent extends { type: string; data: TEvent['data'] }>(data: TEvent['data']) => {
-//   return {
-//     type: 'EmailConfirmationWasRequested',
-//     data,
-//   } as TEvent;
-// };
