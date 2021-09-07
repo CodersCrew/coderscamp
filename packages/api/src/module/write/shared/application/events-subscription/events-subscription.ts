@@ -41,6 +41,15 @@ export type SubscriptionId = string;
 export class EventsSubscription {
   private readonly logger = new Logger(EventsSubscription.name);
 
+  private readonly mutex = new Mutex();
+
+  private readonly eventEmitterListener: (_: unknown, event: ApplicationEvent) => Promise<void> = async (
+    _: unknown,
+    event: ApplicationEvent,
+  ) => {
+    await this.handleEvent(event);
+  };
+
   constructor(
     readonly subscriptionId: SubscriptionId,
     private readonly startConfig: SubscriptionStart,
@@ -49,13 +58,6 @@ export class EventsSubscription {
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
-    private readonly mutex = new Mutex(),
-    private readonly eventListener: (_: unknown, event: ApplicationEvent) => Promise<void> = async (
-      _: unknown,
-      event: ApplicationEvent,
-    ) => {
-      await this.handleEvent(event);
-    },
   ) {}
 
   /**
@@ -86,12 +88,12 @@ export class EventsSubscription {
    * Cancel processing of currently handling event.
    */
   async stop(): Promise<void> {
-    this.eventEmitter.offAny(this.eventListener);
+    this.eventEmitter.offAny(this.eventEmitterListener);
     this.mutex.cancel();
   }
 
   private async listen(): Promise<void> {
-    this.eventEmitter.onAny(this.eventListener);
+    this.eventEmitter.onAny(this.eventEmitterListener);
   }
 
   private async catchUp(): Promise<void> {
