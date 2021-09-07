@@ -21,6 +21,7 @@ jobs:
       TOKEN_COOKIE_NAME: access_token
       COOKIE_SECRET: 786Tgiu3564Rti8oh89YG6re6
       PROCESS_ST_CHECKLIST_URL: test_url
+      EVENT_REPOSITORY: prisma
     services:
       postgres:
         image: postgres:13
