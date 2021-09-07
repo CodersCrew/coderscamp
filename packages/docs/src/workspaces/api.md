@@ -332,7 +332,7 @@ export class SendEmailWhenLearningMaterialsUrlWasGenerated {
     }
   }
 
-  //or build just for certain event
+  //or subscribe just for certain event
   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
   handleLearningMaterialsUrlDomainEvent(event: ApplicationEvent<LearningMaterilsUrlWasGenerated>) {
     this.commandBus.execute(/*SendEmailApplicationCommand etc...*/)
@@ -368,7 +368,7 @@ model LearningMaterials {
 }
 ```
 
-Just build for certain events (one or many) and collect data needed to be read after by REST API.
+Just subscribe for certain events (one or many) and collect data needed to be read after by REST API.
 Every handler read some data from event and create/update an entity in the database.
 This database is denormalized and prepared for fast reads. No complex queries with many joins anymore!
 ```ts

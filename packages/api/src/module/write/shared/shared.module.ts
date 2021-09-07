@@ -20,11 +20,7 @@ import { PrismaEventRepository } from './infrastructure/event-repository/prisma-
 import { UuidGenerator } from './infrastructure/id-generator/uuid-generator';
 import { SystemTimeProvider } from './infrastructure/time-provider/system-time-provider';
 
-const imports: ModuleMetadata['imports'] = [CqrsModule];
-
-if (env.EVENT_REPOSITORY === 'prisma') {
-  imports.push(PrismaModule);
-}
+const imports: ModuleMetadata['imports'] = [CqrsModule, PrismaModule];
 
 @Module({
   imports,

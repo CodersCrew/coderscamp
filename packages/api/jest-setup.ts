@@ -1,7 +1,8 @@
 import { set } from 'leaked-handles';
 
+// detect where are memory leaks in test
 set({
-  fullStack: true, // use full stack traces
-  timeout: 30000, // run every 30 seconds instead of 5.
-  debugSockets: true, // pretty print tcp thrown exceptions.
+  fullStack: true,
+  timeout: 30000,
+  debugSockets: true,
 });

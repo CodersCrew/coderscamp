@@ -41,7 +41,6 @@ export async function initReadTestModule() {
   await cleanupDatabase(prismaService);
 
   async function close() {
-    await cleanupDatabase(prismaService);
     await app.close();
   }
 
@@ -211,9 +210,7 @@ export async function initWriteTestModule(
   }
 
   async function close() {
-    await cleanupDatabase(prismaService);
     await app.close();
-    await prismaService.$disconnect();
   }
 
   function get<TInput = any, TResult = TInput>(

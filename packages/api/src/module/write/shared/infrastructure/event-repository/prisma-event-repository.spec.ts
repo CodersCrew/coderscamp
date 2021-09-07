@@ -22,7 +22,6 @@ async function initTestPrismaEventRepository() {
   await cleanupDatabase(prismaService);
 
   async function close() {
-    await cleanupDatabase(prismaService);
     await app.close();
   }
 

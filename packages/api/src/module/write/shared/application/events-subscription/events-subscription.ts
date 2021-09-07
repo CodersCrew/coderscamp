@@ -156,7 +156,7 @@ export class EventsSubscription {
             where: { id: this.subscriptionId },
           });
           const currentPosition =
-            subscriptionState?.currentPosition ?? (this.configuration.start.from.globalPosition - 1);
+            subscriptionState?.currentPosition ?? this.configuration.start.from.globalPosition - 1;
 
           const expectedEventPosition = currentPosition + 1;
 
