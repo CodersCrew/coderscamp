@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Inject, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { EmailConfirmationBody } from '@coderscamp/shared/models/email-confirmation';
@@ -11,16 +11,10 @@ import {
 import { UserId } from '@/shared/domain.types';
 import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
-import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
 
 @Controller('email-confirmation')
 export class EmailConfirmationRestController {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly commandFactory: ApplicationCommandFactory,
-    @Inject(ID_GENERATOR)
-    private readonly idGenerator: IdGenerator,
-  ) {}
+  constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('')
@@ -29,10 +23,9 @@ export class EmailConfirmationRestController {
     @JwtUserId() userId: UserId,
     @Body() { confirmationFor }: EmailConfirmationBody,
   ): Promise<void> {
-    const confirmationToken = this.idGenerator.generate();
-    const command = this.commandFactory.applicationCommand(() => ({
+    const command = this.commandFactory.applicationCommand((idGenerator) => ({
       class: RequestEmailConfirmationApplicationCommand,
-      ...requestEmailConfirmationCommand({ userId, confirmationToken, confirmationFor }),
+      ...requestEmailConfirmationCommand({ userId, confirmationToken: idGenerator.generate(), confirmationFor }),
     }));
 
     await this.commandBus.execute(command);
