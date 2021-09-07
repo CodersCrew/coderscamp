@@ -14,7 +14,7 @@ export class CourseProgressRestController {
 
   @Get()
   async getCourseProgress(@JwtUserId() courseUserId: UserId): Promise<GetCourseProgressResponse> {
-    const courseProgress = await this.prismaService.courseProgress.findUnique({ where: { courseUserId } });
+    const courseProgress = await this.prismaService.courseProgress.findFirst({ where: { courseUserId } });
 
     if (!courseProgress) {
       throw new NotFoundException();
