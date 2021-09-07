@@ -47,14 +47,19 @@ export class CourseProgressReadModule {
 
   @OnEvent('LearningMaterialsTasks.TaskWasCompleted')
   async onTaskWasCompleted(event: ApplicationEvent<TaskWasCompleted>) {
-    await this.prismaService.courseProgress.update({
+    await this.prismaService.courseProgress.upsert({
       where: {
         learningMaterialsId: event.data.learningMaterialsId,
       },
-      data: {
+      update: {
         learningMaterialsCompletedTasks: {
           increment: 1,
         },
+      },
+      create: {
+        courseUserId: null,
+        learningMaterialsId: event.data.learningMaterialsId,
+        learningMaterialsCompletedTasks: 1,
       },
     });
   }
