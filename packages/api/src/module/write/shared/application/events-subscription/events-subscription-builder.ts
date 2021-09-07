@@ -32,14 +32,14 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
     private readonly id: SubscriptionId,
-    private readonly configuration: SubscriptionStart,
+    private readonly start: SubscriptionStart,
     private readonly positionHandlers: PositionHandler[] = [],
     private readonly eventHandlers: ApplicationEventHandler[] = [],
   ) {}
 
   onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild {
     const handlerToRegister: PositionHandler = {
-      position: this.configuration.from?.globalPosition ?? 1,
+      position: this.start.from?.globalPosition ?? 1,
       onPosition: handle,
     };
 
@@ -48,7 +48,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.eventRepository,
       this.eventEmitter,
       this.id,
-      this.configuration,
+      this.start,
       [...this.positionHandlers, handlerToRegister],
       this.eventHandlers,
     );
@@ -68,7 +68,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.eventRepository,
       this.eventEmitter,
       this.id,
-      this.configuration,
+      this.start,
       this.positionHandlers,
       [...this.eventHandlers, handlerToRegister],
     );
@@ -77,9 +77,11 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
   build(): EventsSubscription {
     return new EventsSubscription(
       this.id,
-      this.configuration,
-      this.positionHandlers,
-      this.eventHandlers,
+      {
+        start: this.start,
+        eventHandlers: this.eventHandlers,
+        positionHandlers: this.positionHandlers,
+      },
       this.prismaService,
       this.eventRepository,
       this.eventEmitter,

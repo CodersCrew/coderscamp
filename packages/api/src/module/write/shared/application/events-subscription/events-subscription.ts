@@ -9,6 +9,11 @@ import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
+export type EventSubscriptionConfig = {
+  readonly start: SubscriptionStart;
+  readonly positionHandlers: PositionHandler[];
+  readonly eventHandlers: ApplicationEventHandler[];
+};
 export type SubscriptionStart = Partial<{ from: { globalPosition: number } }>;
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
@@ -52,9 +57,7 @@ export class EventsSubscription {
 
   constructor(
     readonly subscriptionId: SubscriptionId,
-    private readonly startConfig: SubscriptionStart,
-    private readonly positionHandlers: PositionHandler[] = [],
-    private readonly eventHandlers: ApplicationEventHandler[] = [],
+    private readonly configuration: EventSubscriptionConfig,
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
@@ -103,7 +106,7 @@ export class EventsSubscription {
     const eventsToCatchup = await this.eventRepository.readAll({
       fromGlobalPosition: subscriptionState?.currentPosition
         ? subscriptionState.currentPosition + 1
-        : this.startConfig.from?.globalPosition ?? 1,
+        : this.configuration.start.from?.globalPosition ?? 1,
     });
 
     await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
@@ -128,7 +131,7 @@ export class EventsSubscription {
             where: { id: this.subscriptionId },
           });
           const currentPosition =
-            subscriptionState?.currentPosition ?? (this.startConfig.from?.globalPosition ?? 1) - 1;
+            subscriptionState?.currentPosition ?? (this.configuration.start.from?.globalPosition ?? 1) - 1;
 
           const expectedEventPosition = currentPosition + 1;
 
@@ -159,7 +162,7 @@ export class EventsSubscription {
 
   private async processEvent(event: ApplicationEvent, transaction: PrismaTransactionManager) {
     await Promise.all(
-      this.eventHandlers
+      this.configuration.eventHandlers
         .filter((handler) => handler.eventType === event.type)
         .map((handler) => handler.onEvent(event, { transaction })),
     );
@@ -167,7 +170,7 @@ export class EventsSubscription {
 
   private async processSubscriptionPositionChange(event: ApplicationEvent, transaction: PrismaTransactionManager) {
     await Promise.all(
-      this.positionHandlers
+      this.configuration.positionHandlers
         .filter((handler) => handler.position === event.globalOrder)
         .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
     );
@@ -181,7 +184,7 @@ export class EventsSubscription {
       create: {
         id: this.subscriptionId,
         eventTypes: this.handlingEventTypes(),
-        fromPosition: this.startConfig.from?.globalPosition ?? 1,
+        fromPosition: this.configuration.start.from?.globalPosition ?? 1,
         currentPosition: event.globalOrder,
       },
       update: {
@@ -192,6 +195,6 @@ export class EventsSubscription {
   }
 
   private handlingEventTypes() {
-    return this.eventHandlers.map((h) => h.eventType);
+    return this.configuration.eventHandlers.map((h) => h.eventType);
   }
 }
