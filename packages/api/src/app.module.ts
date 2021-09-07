@@ -9,6 +9,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 import { CourseProgressReadModule } from '@/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
 import { env } from '@/shared/env';
+import { EmailConfirmationWriteModule } from '@/write/email-confirmation/email-confirmation.write-module';
 import { LearningMaterialsUrlWriteModule } from '@/write/learning-materials-url/learning-materials-url.write-module';
 import { UserRegistrationWriteModule } from '@/write/user-registration/user-registration.write-module';
 
@@ -18,7 +19,7 @@ import { eventEmitterRootModule } from './event-emitter.root-module';
 
 const isProduction = env.NODE_ENV === 'production';
 
-const writeModules = [LearningMaterialsUrlWriteModule, UserRegistrationWriteModule];
+const writeModules = [LearningMaterialsUrlWriteModule, UserRegistrationWriteModule, EmailConfirmationWriteModule];
 const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
 const automationModules = [SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule];
 const eventModelingModules = [...writeModules, ...readModules, ...automationModules];

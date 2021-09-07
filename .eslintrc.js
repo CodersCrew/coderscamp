@@ -37,6 +37,7 @@ module.exports = {
     'simple-import-sort',
     'testing-library',
     'jest-formatting',
+    '@coderscamp',
   ],
   extends: [
     'eslint:recommended',
@@ -48,6 +49,9 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   rules: {
+    // Tracks progress of linting.
+    '@coderscamp/progress': 1,
+
     // Prevents from writing functions that are too complex (in terms of cyclomatic complexity).
     complexity: [2, 10],
 
