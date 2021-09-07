@@ -15,7 +15,9 @@ export type EventsSubscriptionConfig = {
   readonly eventHandlers: ApplicationEventHandler[];
 };
 export type SubscriptionStart = Partial<{ from: { globalPosition: number } }>;
+
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
+
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
   event: ApplicationEvent<DomainEventType>,
   context: { transaction: PrismaTransactionManager },
@@ -73,7 +75,7 @@ export class EventsSubscription {
    * See handleEvent for more details how handling event working.
    */
   async start(): Promise<void> {
-    const maxRetries = 0;
+    const maxRetries = 3;
 
     await retry(
       async () => {
@@ -102,6 +104,19 @@ export class EventsSubscription {
   async stop(): Promise<void> {
     this.eventEmitter.offAny(this.eventEmitterListener);
     this.mutex.cancel();
+  }
+
+  /**
+   * Stops processing.
+   * Reset currentPosition to initialPosition.
+   * Start processing from initialPosition.
+   */
+  async reset(): Promise<void> {
+    await this.stop();
+    await this.prismaService.$transaction(async (transaction) => {
+      await this.moveCurrentPosition((this.configuration.start.from?.globalPosition ?? 1) - 1, transaction);
+    });
+    await this.start();
   }
 
   private async listen(): Promise<void> {
@@ -148,7 +163,7 @@ export class EventsSubscription {
 
           await this.processSubscriptionPositionChange(event, transaction);
           await this.processEvent(event, transaction);
-          await this.onEventProcessed(event, transaction);
+          await this.moveCurrentPosition(event.globalOrder, transaction);
         });
       })
       .catch(async (e) => {
@@ -185,7 +200,7 @@ export class EventsSubscription {
     );
   }
 
-  private async onEventProcessed(event: ApplicationEvent, transaction: PrismaTransactionManager) {
+  private async moveCurrentPosition(position: number, transaction: PrismaTransactionManager) {
     await transaction.eventsSubscription.upsert({
       where: {
         id: this.subscriptionId,
@@ -194,10 +209,10 @@ export class EventsSubscription {
         id: this.subscriptionId,
         eventTypes: this.handlingEventTypes(),
         fromPosition: this.configuration.start.from?.globalPosition ?? 1,
-        currentPosition: event.globalOrder,
+        currentPosition: position,
       },
       update: {
-        currentPosition: event.globalOrder,
+        currentPosition: position,
         eventTypes: this.handlingEventTypes(),
       },
     });

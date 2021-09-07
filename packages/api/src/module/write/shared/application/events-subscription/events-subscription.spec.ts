@@ -33,8 +33,6 @@ async function initTestEventsSubscription() {
   return { eventsSubscriptions, ...app };
 }
 
-// todo: tests for transaction consistency and failures!
-// eslint-disable-next-line jest/no-disabled-tests
 describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
   let subscription: EventsSubscription;
@@ -82,41 +80,54 @@ describe('Events subscription', () => {
     });
   });
 
-  it('when event processing fail, then subscription position should not be moved', async () => {
+  it('when event processing fail (after 3 retries), then subscription position should not be moved', async () => {
     // Given
     const eventStream = sut.randomEventStreamName();
     const event = sampleDomainEvent();
 
-    await sut.eventsOccurred(eventStream, [event, event, event, event, event]);
+    await sut.eventsOccurred(
+      eventStream,
+      sequence(6).map(() => event),
+    );
 
     onSampleDomainEvent
-      .mockImplementationOnce(() => {})
-      .mockImplementationOnce(() => {})
+      .mockImplementationOnce(() => {}) // 1. event #1 - success
       .mockImplementationOnce(() => {
-        throw new Error('Event processing failure');
+        throw new Error('Event processing failure'); // 2. event #2 - fail
       })
-      .mockImplementationOnce(() => {})
-      .mockImplementationOnce(() => {})
-      .mockImplementationOnce(() => {});
+      .mockImplementationOnce(() => {}) // 3. event #2 - success (retry: 1)
+      .mockImplementationOnce(() => {
+        throw new Error('Event processing failure'); // 4. event #3 - fail
+      })
+      .mockImplementationOnce(() => {}) // 5. event #3 - success (retry: 2)
+      .mockImplementationOnce(() => {
+        throw new Error('Event processing failure'); // 6. event #4 - failure
+      })
+      .mockImplementationOnce(() => {}) // 7. event #4 - success (retry: 3)
+      .mockImplementationOnce(() => {
+        throw new Error('Event processing failure'); // 8. event #5 - failure - no retries!
+      })
+      .mockImplementationOnce(() => {}) // 9. event #5 - success (after next start)
+      .mockImplementationOnce(() => {}); // 10. event #6 - success (after next start)
 
     // When - Then
     await using(subscription, async () => {
-      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(3));
-      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId: subscription.subscriptionId,
-        position: 2,
+        position: 4,
       });
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(8));
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
     });
 
-    // When restart - Then should process events
+    // When invoke start once more - Then should start processing from last successfully processed event
     await using(subscription, async () => {
-      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(6));
-      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId: subscription.subscriptionId,
-        position: 5,
+        position: 6,
       });
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(10));
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
     });
   });
 
@@ -196,5 +207,34 @@ describe('Events subscription', () => {
       // value should be from last published event
       expect(lastEventValue).toBe(lastEvent.data.value1);
     });
+  });
+
+  it('when reset, should process events from initial position', async () => {
+    // Given
+    const eventStream = EventStreamName.from('StreamCategory', sut.randomEventId());
+
+    await sut.eventsOccurred(
+      eventStream,
+      sequence(10).map(() => sampleDomainEvent()),
+    );
+
+    await subscription.start();
+
+    await sut.expectSubscriptionPosition({
+      subscriptionId: subscription.subscriptionId,
+      position: 10,
+    });
+    await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(10));
+    await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
+
+    // When
+    await subscription.reset();
+
+    await sut.expectSubscriptionPosition({
+      subscriptionId: subscription.subscriptionId,
+      position: 10,
+    });
+    await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(20));
+    await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(2));
   });
 });
