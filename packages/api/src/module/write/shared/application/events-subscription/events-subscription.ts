@@ -77,8 +77,14 @@ export class EventsSubscription {
 
     await retry(
       async () => {
-        await this.catchUp();
-        await this.listen();
+        await this.catchUp().catch((e) => {
+          this.logger.warn(`EventSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
+          throw e;
+        });
+        await this.listen().catch((e) => {
+          this.logger.warn(`EventSubscription ${this.subscriptionId} processing error in listen phase.`, e);
+          throw e;
+        });
       },
       { retries: maxRetries },
     ).catch((e) =>
