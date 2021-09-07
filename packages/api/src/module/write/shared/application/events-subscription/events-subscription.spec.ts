@@ -8,7 +8,7 @@ import {
   anotherSampleDomainEvent,
   initWriteTestModule,
   SampleDomainEvent,
-  sampleDomainEvent,
+  sampleDomainEvent, sampleDomainEventType2,
   sequence,
 } from '@/shared/test-utils';
 import { using } from '@/shared/using';
@@ -67,13 +67,14 @@ describe('Events subscription', () => {
     // Given
     const eventStream = sut.randomEventStreamName();
     const event = sampleDomainEvent();
+    const notSubscribedEvent = sampleDomainEventType2();
 
-    await sut.eventsOccurred(eventStream, [event, event, event, event]);
+    await sut.eventsOccurred(eventStream, [event, event, notSubscribedEvent, event, event]);
 
     // When - Then
     await using(subscription, async () => {
-      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(4), 10000);
-      // await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1), 10000);
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(4));
+      await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId: subscription.subscriptionId,
         position: 4,

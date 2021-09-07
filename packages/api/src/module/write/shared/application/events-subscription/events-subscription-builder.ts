@@ -6,7 +6,7 @@ import { EventRepository } from '@/write/shared/application/event-repository';
 import {
   ApplicationEventHandler,
   EventsSubscription,
-  EventSubscriptionConfig,
+  SubscriptionStart,
   OnEventFn,
   OnPositionFn,
   PositionHandler,
@@ -32,7 +32,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
     private readonly id: SubscriptionId,
-    private readonly configuration: EventSubscriptionConfig,
+    private readonly configuration: SubscriptionStart,
     private readonly positionHandlers: PositionHandler[] = [],
     private readonly eventHandlers: ApplicationEventHandler[] = [],
   ) {}
