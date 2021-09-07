@@ -39,7 +39,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
 
   onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild {
     const handlerToRegister: PositionHandler = {
-      position: this.start.from?.globalPosition ?? 1,
+      position: this.start.from.globalPosition,
       onPosition: handle,
     };
 

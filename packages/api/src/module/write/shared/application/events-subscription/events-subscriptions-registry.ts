@@ -21,7 +21,7 @@ export class EventsSubscriptionsRegistry implements CanCreateSubscription {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  subscription(id: SubscriptionId, start?: SubscriptionStart): NeedsEventOrPositionHandlers {
+  subscription(id: SubscriptionId, start?: Partial<SubscriptionStart>): NeedsEventOrPositionHandlers {
     const defaultSubscriptionConfig: SubscriptionStart = { from: { globalPosition: 1 } };
     const startConfig: SubscriptionStart = {
       ...defaultSubscriptionConfig,
