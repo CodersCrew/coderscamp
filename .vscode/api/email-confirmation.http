@@ -1,0 +1,10 @@
+# email-confirmation.rest-controller.ts
+
+@confirmationFor = 'user-registration'
+
+# Request email-confirmation for user
+POST {{serverUrl}}/email-confirmation
+
+{
+  "confirmationFor": "{{confirmationFor}}"
+}

@@ -1,6 +1,8 @@
 import { Body, Controller, HttpCode, Inject, Post, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
+import { EmailConfirmationBody } from '@coderscamp/shared/models/email-confirmation';
+
 import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
 import {
   RequestEmailConfirmationApplicationCommand,
@@ -23,11 +25,14 @@ export class EmailConfirmationRestController {
   @UseGuards(JwtAuthGuard)
   @Post('')
   @HttpCode(204)
-  async emailConfirmation(@JwtUserId() userId: UserId, @Body() body: { confirmationFor: string }): Promise<void> {
+  async emailConfirmation(
+    @JwtUserId() userId: UserId,
+    @Body() { confirmationFor }: EmailConfirmationBody,
+  ): Promise<void> {
     const confirmationToken = this.idGenerator.generate();
     const command = this.commandFactory.applicationCommand(() => ({
       class: RequestEmailConfirmationApplicationCommand,
-      ...requestEmailConfirmationCommand({ userId, confirmationToken, confirmationFor: body.confirmationFor }),
+      ...requestEmailConfirmationCommand({ userId, confirmationToken, confirmationFor }),
     }));
 
     await this.commandBus.execute(command);
