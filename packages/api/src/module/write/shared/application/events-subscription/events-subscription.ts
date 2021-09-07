@@ -103,27 +103,9 @@ export class EventsSubscription {
               return;
             }
 
-            await Promise.all(
-              this.positionHandlers
-                .filter((handler) => handler.position === event.globalOrder)
-                .map((handler) => {
-                  this.logger.log(`EventSubscription ${this.subscriptionId} handling position ${event.globalOrder}`);
-
-                  return handler.onPosition(event.globalOrder, { transaction });
-                }),
-            );
-
-            await Promise.all(
-              this.eventHandlers
-                .filter((handler) => handler.eventType === event.type)
-                .map((handler) => {
-                  this.logger.log(`EventSubscription ${this.subscriptionId} handling event`, event);
-
-                  return handler.onEvent(event, { transaction });
-                }),
-            );
-
-            await this.onEventProcessed(transaction, event);
+            await this.processSubscriptionPositionChange(event, transaction);
+            await this.processEvent(event, transaction);
+            await this.onEventProcessed(event, transaction);
           })
           .catch(() => this.stop());
       })
@@ -136,7 +118,34 @@ export class EventsSubscription {
       );
   }
 
-  private async onEventProcessed(transaction: PrismaTransactionManager, event: ApplicationEvent) {
+  private async processEvent(event: ApplicationEvent, transaction: PrismaTransactionManager) {
+    await Promise.all(
+      this.eventHandlers
+        .filter((handler) => handler.eventType === event.type)
+        .map((handler) => {
+          this.logger.log(`EventSubscription ${this.subscriptionId} handling event`, event);
+
+          return handler.onEvent(event, { transaction });
+        }),
+    );
+  }
+
+  private async processSubscriptionPositionChange(
+    event: ApplicationEvent,
+    transaction: PrismaTransactionManager,
+  ) {
+    await Promise.all(
+      this.positionHandlers
+        .filter((handler) => handler.position === event.globalOrder)
+        .map((handler) => {
+          this.logger.log(`EventSubscription ${this.subscriptionId} handling position ${event.globalOrder}`);
+
+          return handler.onPosition(event.globalOrder, { transaction });
+        }),
+    );
+  }
+
+  private async onEventProcessed(event: ApplicationEvent, transaction: PrismaTransactionManager) {
     await transaction.eventsSubscription.upsert({
       where: {
         id: this.subscriptionId,
