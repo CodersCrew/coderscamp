@@ -8,7 +8,8 @@ import {
   anotherSampleDomainEvent,
   initWriteTestModule,
   SampleDomainEvent,
-  sampleDomainEvent, sampleDomainEventType2,
+  sampleDomainEvent,
+  sampleDomainEventType2,
   sequence,
 } from '@/shared/test-utils';
 import { using } from '@/shared/using';
@@ -77,7 +78,7 @@ describe('Events subscription', () => {
       await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
       await sut.expectSubscriptionPosition({
         subscriptionId: subscription.subscriptionId,
-        position: 4,
+        position: 5,
       });
     });
   });

@@ -58,23 +58,39 @@ export class EventsSubscription {
     },
   ) {}
 
-  // fixme: use retry somehow
+  /**
+   * Run subscription in two steps:
+   *    1.  CatchUp - it's a processing during subscription processing all events which have occurred in the past (before start() invocation).
+   *        Assuming that currentPosition of subscription is 10, and last event globalOrder is 15, then subscription will process events 11,12,13,14 and 15.
+   *    2.  Listen - after catchup phase, the subscription will start listening for new events (with global order greater than 15).
+   */
   async start(): Promise<void> {
+    const maxRetries = 0;
+
     await retry(
       async () => {
         await this.catchUp();
-        await this.subscribe();
+        await this.listen();
       },
-      { retries: 2 },
+      { retries: maxRetries },
+    ).catch((e) =>
+      this.logger.error(
+        `EventSubscription ${this.subscriptionId} stopped processing of events after ${maxRetries} retries.`,
+        e,
+      ),
     );
   }
 
+  /**
+   * Stops listening for new events.
+   * Cancel processing of currently handling event.
+   */
   async stop(): Promise<void> {
-    this.mutex.cancel();
     this.eventEmitter.offAny(this.eventListener);
+    this.mutex.cancel();
   }
 
-  private async subscribe(): Promise<void> {
+  private async listen(): Promise<void> {
     this.eventEmitter.onAny(this.eventListener);
   }
 
@@ -94,7 +110,7 @@ export class EventsSubscription {
   /**
    * Handle event sequentially one after another by mean of mutex pattern.
    * Handling an event is an atomic operation. While handling:
-   *  - Run position handlers for handling event.globalOrder.
+   *  - Run position handlers for handling event.globalOrder. Initial position handler is usable for preparing initial state of read model while resetting subscription associated with the read model.
    *  - Run event handlers for handling event.type.
    *  - Move subscription current position to event.globalOrder.
    *
@@ -105,31 +121,30 @@ export class EventsSubscription {
   ): Promise<void> {
     await this.mutex
       .runExclusive(async () => {
-        await this.prismaService
-          .$transaction(async (transaction) => {
-            const subscriptionState = await transaction.eventsSubscription.findUnique({
-              where: { id: this.subscriptionId },
-            });
-            const currentPosition =
-              subscriptionState?.currentPosition ?? (this.startConfig.from?.globalPosition ?? 1) - 1;
+        await this.prismaService.$transaction(async (transaction) => {
+          const subscriptionState = await transaction.eventsSubscription.findUnique({
+            where: { id: this.subscriptionId },
+          });
+          const currentPosition =
+            subscriptionState?.currentPosition ?? (this.startConfig.from?.globalPosition ?? 1) - 1;
 
-            const expectedEventPosition = currentPosition + 1;
+          const expectedEventPosition = currentPosition + 1;
 
-            this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
+          this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
 
-            await this.processSubscriptionPositionChange(event, transaction);
-            await this.processEvent(event, transaction);
-            await this.onEventProcessed(event, transaction);
-          })
-          .catch(() => this.stop());
+          await this.processSubscriptionPositionChange(event, transaction);
+          await this.processEvent(event, transaction);
+          await this.onEventProcessed(event, transaction);
+        });
       })
-      .catch(
-        (e) =>
-          this.logger.warn(
-            `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
-            e,
-          ), // todo: retry, longer setting. No retries because of the catch
-      );
+      .catch(async (e) => {
+        await this.stop();
+        this.logger.warn(
+          `EventSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
+          e,
+        );
+        throw e;
+      });
   }
 
   private throwIfSomeEventsWasMissed(event: ApplicationEvent, expectedEventPosition: number) {

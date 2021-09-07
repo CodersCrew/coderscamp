@@ -6,11 +6,11 @@ import { EventRepository } from '@/write/shared/application/event-repository';
 import {
   ApplicationEventHandler,
   EventsSubscription,
-  SubscriptionStart,
   OnEventFn,
   OnPositionFn,
   PositionHandler,
   SubscriptionId,
+  SubscriptionStart,
 } from '@/write/shared/application/events-subscription/events-subscription';
 
 export interface NeedsEventOrPositionHandlers {

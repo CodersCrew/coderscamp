@@ -3,10 +3,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { EVENT_REPOSITORY, EventRepository } from '@/write/shared/application/event-repository';
-import {
-  SubscriptionStart,
-  SubscriptionId,
-} from '@/write/shared/application/events-subscription/events-subscription';
+import { SubscriptionId, SubscriptionStart } from '@/write/shared/application/events-subscription/events-subscription';
 import {
   NeedsEventOrPositionHandlers,
   SubscriptionBuilder,
