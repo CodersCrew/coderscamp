@@ -22,7 +22,7 @@ export class LearningMaterialsReadModule implements OnModuleInit, OnModuleDestro
 
   async onModuleInit() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
-      .subscription('LearningMaterialsReadModel_v1')
+      .subscription('LearningMaterials_ReadModel_v1')
       .onInitialPosition(this.onInitialPosition)
       .onEvent<LearningMaterialsUrlWasGenerated>(
         'LearningMaterialsUrlWasGenerated',

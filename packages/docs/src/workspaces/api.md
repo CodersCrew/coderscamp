@@ -315,33 +315,104 @@ Automation it's place where you automate reaction on certain events.
 We're using EventEmitter with NestJS instead of EventBus from CQRS, because it's allow for simple usage of
 types (without classes) as events. So we don't need wrapper like for application command. Also have more options for subscriptions (wildcards etc.)
 You can read about it in NestJS documentation: [NestJS | Techniques | Events](https://docs.nestjs.com/techniques/events)
+Instead `@OnEvent` decorator we use our implementation of events subscription, which is resilient and can recover from failures.
+We can also track which events was processed by which handler.
 
 ```ts
-@Injectable()
-export class SendEmailWhenLearningMaterialsUrlWasGenerated {
-  
-  constructor(private readonly commandBus: CommandBus){}
-  
-  @OnEvent('LearningMaterialsUrl.*')
-  handleLearningMaterialsUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlDomainEvent>) {
-    switch(event.type){ //you can use type guard to read certain event data
-      case 'LearningMaterialsWere':
-        this.commandBus.execute(/*SendEmailApplicationCommand etc...*/)
-      default: 
-        return;
-    }
-  }
+export class LearningMaterialsUrlWasGeneratedEventHandler {
+   private eventsSubscription: EventsSubscription;
 
-  //or subscribe just for certain event
-  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
-  handleLearningMaterialsUrlDomainEvent(event: ApplicationEvent<LearningMaterilsUrlWasGenerated>) {
-    this.commandBus.execute(/*SendEmailApplicationCommand etc...*/)
-  }
+   constructor(
+       private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry,
+       private readonly commandBus: CommandBus,
+   ) {}
+
+   async onModuleInit() {
+      this.eventsSubscription = this.eventsSubscriptionsFactory
+              .subscription('SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1')
+              .onEvent<LearningMaterialsUrlWasGenerated>('LearningMaterialsUrlWasGenerated', this.onLearningMaterialsUrlWasGenerated)
+              .build();
+      await this.eventsSubscription.start();
+   }
+
+   async onModuleDestroy() {
+      await this.eventsSubscription.stop();
+   }
+
+   onLearningMaterialsUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
+      this.commandBus.execute(/*SendEmailApplicationCommand etc...*/)
+   }
 }
+
 ```
 
 Of course if you need to react after some sequence of events, you need to keep some state in database between those events.
 
+
+## Read & Automation - Resilient event subscribers
+Now it's time to learn more about how EventsSubscription works.
+EventsSubscription is a custom implementation of listening for events which give us:   
+- Failures recovery - we can reprocess events in case of failures
+- Data source for new features. If you introduce new module for production you need to process old events to fill it with that (event those which are occurred before the module even exists). It can be done by using this implementation.
+- Monitoring - we can track which events what processed by which handlers.
+- Fast reactions for read models changes with ability to reset subscription and reprocess events.
+- Type-safe fluent-api for event handling.
+- Atomic event processing and handling acknowledgement.
+
+To learn more you can read about Outbox Pattern, which is widely used in microservices or modular monoliths:
+- http://www.kamilgrzybek.com/design/the-outbox-pattern/
+- https://microservices.io/patterns/data/transactional-outbox.html
+
+### Context
+Provided by NestJs `@OnEvent` mechanism doesn't guarantee event re-processing in case of failure.
+Let's imagine example scenario:
+1. We published TaskWasCompleted event.
+2. Read slice should take this event and increase completed tasks amount in CourseProgress by one.
+3. Before CourseProgress update, the application break / there is bug in implementation / or there was some exception in handling logic. In fact, completed tasks count was not increased.
+
+Look how we can create new EventsSubscription and how it works for given scenario.
+
+First step is to compose subscription definition by using the API.
+```ts
+this.eventsSubscription = this.eventsSubscriptionsFactory
+      .subscription('CourseProgressReadModel_v1') // unique subscription id
+      .onInitialPosition(this.onInitialPosition) // what to do if subscription just start
+      .onEvent<LearningMaterialsUrlWasGenerated>( // what to do on certain event type
+        'LearningMaterialsUrlWasGenerated',
+        this.onLearningMaterialsUrlWasGenerated,
+      )
+      .onEvent<TaskWasCompleted>('TaskWasCompleted', this.onTaskWasCompleted)
+      .onEvent<TaskWasUncompleted>('TaskWasUncompleted', this.onTaskWasUncompleted)
+      .build(); // return subscription configured like below
+```
+
+Then you need to start your subscription:
+```ts
+await this.eventsSubscription.start()
+```
+This method will read all events which were not processed by the subscription (subscription with given ID didn't exist while published, or was failure while processing) and will pass them to event handlers.
+Best place to invoke it is `OnModuleInit` lifecycle hook.
+
+Last piece of usage is to invoke stop() method. Best place to invoke it is `OnModuleDestroy` lifecycle hook.
+This method will stop all event listeners.
+
+```ts
+await this.eventsSubscription.stop()
+```
+
+Now read docs for every method to grasp it better! You can find it in file `events-subscription.ts`.
+
+Return to use case scenario from the beginning.
+Let's say that there was a bug, and you have increased by 2 for every completed tasks instead of one.
+How to fix it? Do you need to run some raw SQL and edit entries for all users? NO!
+Just fix bug in the `onTaskWasCompleted` method. 
+In `onInitialPosition` remove all data from CourseProgress table (where count of completed tasks is stored).
+As a last change introduce new subscription id like `CourseProgressReadModel_v2` in order to reset subscription position (last processed event).
+On the next application run. All wrong calculated CourseProgress rows will be removed, events reprocessed from beginning and every user will have properly calculated CourseProgress.
+
+We provide self-healing solution and exactly-once delivery using Prisma transactions support.
+All handlers as a second argument has context, which contain a reference to current database transaction.
+Thanks for that handling event and saving last processed event globalOrder (as EventSubscription.currentPosition) is an atomic operation.
 
 ## Read Slice
 
@@ -376,13 +447,36 @@ This database is denormalized and prepared for fast reads. No complex queries wi
    imports: [SharedModule],
    controllers: [LearningMaterialsRestController],
 })
-export class LearningMaterialsReadModule {
-   constructor(private readonly prismaService: PrismaService) {}
+export class LearningMaterialsReadModule implements OnModuleInit, OnModuleDestroy {
+   private eventsSubscription: EventsSubscription;
 
-   // define certain type in the @OnEvent or use wildcards and switch-case inside the handler like in domain logic
-   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
-   async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-      await this.prismaService.learningMaterials.create({
+   constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
+
+   async onModuleInit() {
+      this.eventsSubscription = this.eventsSubscriptionsFactory
+              .subscription('LearningMaterials_ReadModel_v1')
+              .onInitialPosition(this.onInitialPosition)
+              .onEvent<LearningMaterialsUrlWasGenerated>(
+                      'LearningMaterialsUrlWasGenerated',
+                      this.onLearningMaterialsUrlWasGenerated,
+              )
+              .build();
+      await this.eventsSubscription.start();
+   }
+
+   async onModuleDestroy() {
+      await this.eventsSubscription.stop();
+   }
+
+   async onInitialPosition(_position: number, context: { transaction: PrismaTransactionManager }) {
+      await context.transaction.learningMaterials.deleteMany({});
+   }
+
+   async onLearningMaterialsUrlWasGenerated(
+           event: ApplicationEvent<LearningMaterialsUrlWasGenerated>,
+           context: { transaction: PrismaTransactionManager },
+   ) {
+      await context.transaction.learningMaterials.create({
          data: {
             id: event.data.learningMaterialsId,
             courseUserId: event.data.courseUserId,
@@ -440,99 +534,82 @@ Then we will be increasing and decreasing counter for learningMaterialsCompleted
 TaskWasCompleted and TaskWasUncompleted.
 
 ```ts
-export class CourseProgressReadModule {
-  constructor(private readonly prismaService: PrismaService) {}
+export class CourseProgressReadModule implements OnModuleInit, OnModuleDestroy {
+   private eventsSubscription: EventsSubscription;
 
-  @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
-  async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    await this.prismaService.courseProgress.create({
-      data: {
-        courseUserId: event.data.courseUserId,
-        learningMaterialsId: event.data.learningMaterialsId,
-        learningMaterialsCompletedTasks: 0,
-      },
-    });
-  }
+   constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
-  //should be transaction here, ommited for readability
-   @OnEvent('LearningMaterialsTask.TaskWasCompleted')
-   async onTaskWasCompleted(event: ApplicationEvent<TaskWasCompleted>) {
-      const where = { learningMaterialsId: event.data.learningMaterialsId }
-      const courseProgress = await this.prismaService.findUnique({where})
-      if(!courseProgress){
-        return;
-      }
-      await this.prismaService.courseProgress.update({
+   async onModuleInit() {
+      this.eventsSubscription = this.eventsSubscriptionsFactory
+              .subscription('CourseProgress_ReadModel_v1')
+              .onInitialPosition(this.onInitialPosition)
+              .onEvent<LearningMaterialsUrlWasGenerated>(
+                      'LearningMaterialsUrlWasGenerated',
+                      this.onLearningMaterialsUrlWasGenerated,
+              )
+              .onEvent<TaskWasCompleted>('TaskWasCompleted', this.onTaskWasCompleted)
+              .onEvent<TaskWasUncompleted>('TaskWasUncompleted', this.onTaskWasUncompleted)
+              .build();
+      await this.eventsSubscription.start();
+   }
+
+   async onModuleDestroy() {
+      await this.eventsSubscription.stop();
+   }
+
+   async onInitialPosition(_position: number, context: { transaction: PrismaTransactionManager }) {
+      await context.transaction.courseProgress.deleteMany({});
+   }
+
+   async onLearningMaterialsUrlWasGenerated(
+           event: ApplicationEvent<LearningMaterialsUrlWasGenerated>,
+           context: { transaction: PrismaTransactionManager },
+   ) {
+      await context.transaction.courseProgress.create({
          data: {
-            learningMaterialsCompletedTasks: courseProgress.learningMaterialsCompletedTasks + 1,
+            courseUserId: event.data.courseUserId,
+            learningMaterialsId: event.data.learningMaterialsId,
+            learningMaterialsCompletedTasks: 0,
          },
-         where
+      });
+   }
+
+   async onTaskWasCompleted(
+           event: ApplicationEvent<TaskWasCompleted>,
+           context: { transaction: PrismaTransactionManager },
+   ) {
+      await context.transaction.courseProgress.update({
+         where: {
+            learningMaterialsId: event.data.learningMaterialsId,
+         },
+         data: {
+            learningMaterialsCompletedTasks: {
+               increment: 1,
+            },
+         },
+      });
+   }
+
+   async onTaskWasUncompleted(
+           event: ApplicationEvent<TaskWasUncompleted>,
+           context: { transaction: PrismaTransactionManager },
+   ) {
+      const where = { learningMaterialsId: event.data.learningMaterialsId };
+      const courseProgress = await context.transaction.courseProgress.findUnique({ where });
+
+      if (!courseProgress || courseProgress.learningMaterialsCompletedTasks === 0) {
+         return;
+      }
+
+      await context.transaction.courseProgress.update({
+         where,
+         data: {
+            learningMaterialsCompletedTasks: { decrement: 1 },
+         },
       });
    }
 }
 ```
-
-
-### Read & Automation - Resilient event subscribers
-Provided by NestJs `@OnEvent` mechanism doesn't guarantee event re-processing in case of failure. 
-Let's imagine example situation. 
-1. We published TaskWasCompleted event.
-2. Read slice should take this event and increase completed tasks amount in CourseProgress by one.
-3. Before CourseProgress update, the application break or there was some exception in handling logic.
-
-We provide self-healing solution and exactly-once delivery using Prisma transactions support.
-All handlers as a second argument has context, which contain a reference to current database transaction.
-Thanks for that handling event and saving last processed event globalOrder (as EventSubscription.currentPosition) is an atomic operation.
-
-After app rerun or fix deploy, the event won't be processed once more. 
-So we introduced mechanism based on EventRepository.
-Now, instead of using `@OnEvent` you should inject `EventsSubscriptionsRegistry`. 
-Usage is so simple with provided fluent api.
-It's also type-safe, and you won't make a mistake in event pattern like in inside @OnEvent.
-An example you can find in CourseProgressReadModule.
-
-First step is to compose subscription definition by using the API.
-```ts
-this.eventsSubscription = this.eventsSubscriptionsFactory
-      .subscription('CourseProgressReadModel_v1') // unique subscription id
-      .onInitialPosition(this.onInitialPosition) // what to do if subscription just start
-      .onEvent<LearningMaterialsUrlWasGenerated>( // what to do on certain event type
-        'LearningMaterialsUrlWasGenerated',
-        this.onLearningMaterialsUrlWasGenerated,
-      )
-      .onEvent<TaskWasCompleted>('TaskWasCompleted', this.onTaskWasCompleted)
-      .onEvent<TaskWasUncompleted>('TaskWasUncompleted', this.onTaskWasUncompleted)
-      .build(); // return subscription configured like below
-```
-Then you need to start your subscription:
-```ts
-await this.eventsSubscription.start()
-```
-This method will read all events which were not processed by the subscription and will pass them to event handlers.
-Best place to invoke it is `OnModuleInit` lifecycle hook.
-Last piece is:
-```ts
-await this.eventsSubscription.stop()
-```
-This method will stop all event listeners.
-Best place to invoke it is `OnModuleDestroy` lifecycle hook.
-
-
-##### Best practices & use cases of EventSubscriptions
-
-###### Error handling & processing quarante
-
-###### Change in read model logic
-If your subscription purpose is to build read model. 
-Example of read model is processing TaskWasChecked / TaskWasUnchecked event to be able to show CourseProgress.
-Let's say we want to change logic, and give 10 points per task.
-If there is no past events stored, we would have a big problem.
-But they are. Now we can just process events from the beginning and build a new one CourseProgress.
-So we should delete all data while starting processing events.
-You can do it in `onInitialPosition` method. 
-Whenever you want to rebuild some read model just change subscription id (for example from `'CourseProgressReadModel_v1'` to `'CourseProgressReadModel_v2'`)
-You should have one subscription per read model to maintain.
-
 
 
 
