@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { MAIN_TEST_FULL_DATE, MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
+import { MAIN_TEST_FULL_DATE, MENTOR_RECRUITMENT_FORM_URL, PLACES_COUNT } from '@/constants';
 
 import { ExternalLink } from '../ExternalLink';
 
@@ -45,7 +45,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
       index: 4,
       date: MAIN_TEST_FULL_DATE,
       description:
-        'Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród 200 osób z najlepszymi wynikami.',
+        `Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród ${PLACES_COUNT} osób z najlepszymi wynikami.`,
     },
     {
       index: 5,

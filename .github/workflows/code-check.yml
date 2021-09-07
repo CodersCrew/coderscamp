@@ -35,7 +35,7 @@ jobs:
         run: docker-compose up -d
       - name: Prisma migrate
         working-directory: ./packages/api
-        run: yarn prisma migrate deploy
+        run: yarn prisma db push --accept-data-loss
       - name: Run tests for all files
         run: yarn test --coverage --detectOpenHandles
       - name: Stop database
