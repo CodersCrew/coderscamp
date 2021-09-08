@@ -22,6 +22,7 @@ import { eventEmitterRootModule } from '../../../../../event-emitter.root-module
 
 async function initTestEventsSubscription() {
   const app = await initWriteTestModule(
+    [],
     Test.createTestingModule({
       imports: [eventEmitterRootModule, PrismaModule, SharedModule],
     }),

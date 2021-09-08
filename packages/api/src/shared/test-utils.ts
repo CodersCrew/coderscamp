@@ -119,10 +119,11 @@ export function getIdGeneratorSpy(app: TestingModule): IdGeneratorSpy {
   return jest.spyOn(idGenerator, 'generate');
 }
 
-export async function initWriteTestModule(
-  modules?: ModuleMetadata['imports'],
-  configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder),
-) {
+export async function initWriteTestModule(config?: {
+  modules?: ModuleMetadata['imports'];
+  configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder);
+}) {
+  const { modules, configureModule } = config ?? { modules: undefined, configureModule: undefined };
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
 
   const appBuilder: TestingModuleBuilder = Test.createTestingModule({
@@ -341,3 +342,8 @@ export function sampleDomainEventType2(
     data,
   };
 }
+
+export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
+  register: jest.fn(),
+  execute: jest.fn(),
+};

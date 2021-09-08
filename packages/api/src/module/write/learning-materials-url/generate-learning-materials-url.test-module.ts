@@ -1,6 +1,5 @@
 import { initWriteTestModule } from '@/shared/test-utils';
 
-import { AppModule } from '../../../app.module';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrlGenerator,
@@ -24,11 +23,12 @@ export async function generateLearningMaterialsUrlTestModule() {
     getUserFullNameById: jest.fn().mockResolvedValue('Jan Kowalski'),
   };
 
-  return initWriteTestModule([AppModule], (app) =>
-    app
-      .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)
-      .useValue(mockedLearningResourcesGenerator)
-      .overrideProvider(USERS_PORT)
-      .useValue(mockedUsersPort),
-  );
+  return initWriteTestModule({
+    configureModule: (app) =>
+      app
+        .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)
+        .useValue(mockedLearningResourcesGenerator)
+        .overrideProvider(USERS_PORT)
+        .useValue(mockedUsersPort),
+  });
 }
