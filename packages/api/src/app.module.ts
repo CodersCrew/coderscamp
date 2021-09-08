@@ -11,6 +11,7 @@ import { CourseProgressReadModule } from '@/read/course-progress/course-progress
 import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
 import { env } from '@/shared/env';
 import { EmailConfirmationWriteModule } from '@/write/email-confirmation/email-confirmation.write-module';
+import { LearningMaterialsTasksModule } from '@/write/learning-materials-tasks/learning-materials-tasks.write-module';
 import { LearningMaterialsUrlWriteModule } from '@/write/learning-materials-url/learning-materials-url.write-module';
 import { UserRegistrationWriteModule } from '@/write/user-registration/user-registration.write-module';
 
@@ -19,7 +20,12 @@ import { CoursesModule } from './crud/courses/courses.module';
 
 const isProduction = env.NODE_ENV === 'production';
 
-const writeModules = [LearningMaterialsUrlWriteModule, UserRegistrationWriteModule, EmailConfirmationWriteModule];
+const writeModules = [
+  LearningMaterialsUrlWriteModule,
+  UserRegistrationWriteModule,
+  LearningMaterialsTasksModule,
+  EmailConfirmationWriteModule,
+];
 const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
 const automationModules = [SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule];
 const eventModelingModules = [...writeModules, ...readModules, ...automationModules];
