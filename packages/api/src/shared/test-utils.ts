@@ -1,11 +1,13 @@
 import { Abstract } from '@nestjs/common/interfaces';
+import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { ApplicationEvent } from '@/module/application-command-events';
+import { ApplicationCommand, ApplicationEvent } from '@/module/application-command-events';
+import { DomainCommand } from '@/module/domain.command';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
@@ -14,10 +16,13 @@ import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/applicat
 import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
+import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
+import { SharedModule } from '@/write/shared/shared.module';
 
 import { AppModule } from '../app.module';
+import { eventEmitterRootModule } from '../event-emitter.root-module';
 
 export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
@@ -83,6 +88,8 @@ export function sequence(length: number) {
 }
 
 type EventBusSpy = jest.SpyInstance<Promise<void>, [ApplicationEvent[]]>;
+type CommandBusSpy = jest.SpyInstance<Promise<unknown>, ICommand[]>;
+type IdGeneratorSpy = jest.SpyInstance<string>;
 
 export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   type: EventType['type'];
@@ -90,19 +97,37 @@ export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   streamName: EventStreamName;
 };
 
+export type ExpectedExecuteCommand<CommandType extends DomainCommand> = {
+  type: CommandType['type'];
+  data: Partial<CommandType['data']>;
+};
+
 export function getEventBusSpy(app: TestingModule): EventBusSpy {
   const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
 
   return jest.spyOn(eventBus, 'publishAll');
 }
+export function getCommandBusSpy(app: TestingModule): CommandBusSpy {
+  const commandBus = app.get<CommandBus>(CommandBus);
 
-export async function initWriteTestModule(
-  configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder),
-) {
+  return jest.spyOn(commandBus, 'execute');
+}
+
+export function getIdGeneratorSpy(app: TestingModule): IdGeneratorSpy {
+  const idGenerator = app.get<IdGenerator>(ID_GENERATOR);
+
+  return jest.spyOn(idGenerator, 'generate');
+}
+
+export async function initWriteTestModule(config?: {
+  modules?: ModuleMetadata['imports'];
+  configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder);
+}) {
+  const { modules, configureModule } = config ?? { modules: undefined, configureModule: undefined };
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
 
   const appBuilder: TestingModuleBuilder = Test.createTestingModule({
-    imports: [AppModule],
+    imports: modules ? [SharedModule, eventEmitterRootModule, ...modules] : [AppModule],
   })
     .overrideProvider(TIME_PROVIDER)
     .useValue(testTimeProvider);
@@ -116,6 +141,8 @@ export async function initWriteTestModule(
   const commandBus = app.get<CommandBus>(CommandBus);
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
+  const commandBusSpy = getCommandBusSpy(app);
+  const idGeneratorSpy = getIdGeneratorSpy(app);
   const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
 
@@ -217,13 +244,34 @@ export async function initWriteTestModule(
     await prismaService.$disconnect();
   }
 
-  function get<TInput = any, TResult = TInput>(
+  function get<TInput = never, TResult = TInput>(
     typeOrToken: Type<TInput> | Abstract<TInput> | string | symbol,
     options?: {
       strict: boolean;
     },
   ): TResult {
     return app.get<TInput, TResult>(typeOrToken, options);
+  }
+
+  async function expectCommandExecutedLastly<CommandType extends DomainCommand>(
+    expectations: ExpectedExecuteCommand<CommandType>,
+  ) {
+    return waitForExpect(() => {
+      const lastExecuteIndex = commandBusSpy.mock.calls.length - 1;
+
+      const lastPublishedCommand = commandBusSpy.mock.calls[lastExecuteIndex][0] as ApplicationCommand;
+
+      expect({
+        type: lastPublishedCommand.type,
+        data: lastPublishedCommand.data,
+      }).toMatchObject(expectations);
+    });
+  }
+
+  function lastGeneratedId(): string {
+    const ids = idGeneratorSpy.mock.results;
+
+    return ids[ids.length - 1].value;
   }
 
   return {
@@ -235,10 +283,12 @@ export async function initWriteTestModule(
     randomEventId,
     close,
     expectEventPublishedLastly,
+    expectCommandExecutedLastly,
     expectEventsPublishedLastly,
     expectSubscriptionPosition,
     randomUuid,
     randomEventStreamName,
+    lastGeneratedId,
   };
 }
 
@@ -292,3 +342,8 @@ export function sampleDomainEventType2(
     data,
   };
 }
+
+export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
+  register: jest.fn(),
+  execute: jest.fn(),
+};

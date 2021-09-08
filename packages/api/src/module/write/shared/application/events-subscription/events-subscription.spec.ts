@@ -21,12 +21,12 @@ import { SharedModule } from '@/write/shared/shared.module';
 import { eventEmitterRootModule } from '../../../../../event-emitter.root-module';
 
 async function initTestEventsSubscription() {
-  const app = await initWriteTestModule(
-    Test.createTestingModule({
+  const app = await initWriteTestModule({
+    modules: [],
+    configureModule: Test.createTestingModule({
       imports: [eventEmitterRootModule, PrismaModule, SharedModule],
     }),
-  );
-
+  });
   const eventsSubscriptions: EventsSubscriptionsRegistry =
     app.get<EventsSubscriptionsRegistry>(EventsSubscriptionsRegistry);
 

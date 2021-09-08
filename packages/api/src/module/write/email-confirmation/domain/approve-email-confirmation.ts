@@ -6,7 +6,7 @@ import { EmailConfirmationDomainEvent } from './events';
 export const approveEmailConfirmation =
   (command: ApproveEmailConfirmation) =>
   (pastEvents: EmailConfirmationDomainEvent[]): EmailConfirmationDomainEvent[] => {
-    const lastPublishedEmailConfirmation = pastEvents.pop();
+    const lastPublishedEmailConfirmation = pastEvents[pastEvents.length - 1];
 
     if (!lastPublishedEmailConfirmation) throw new Error("Couldn't find request which could be approved");
 

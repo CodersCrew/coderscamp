@@ -23,11 +23,12 @@ export async function generateLearningMaterialsUrlTestModule() {
     getUserFullNameById: jest.fn().mockResolvedValue('Jan Kowalski'),
   };
 
-  return initWriteTestModule((app) =>
-    app
-      .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)
-      .useValue(mockedLearningResourcesGenerator)
-      .overrideProvider(USERS_PORT)
-      .useValue(mockedUsersPort),
-  );
+  return initWriteTestModule({
+    configureModule: (app) =>
+      app
+        .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)
+        .useValue(mockedLearningResourcesGenerator)
+        .overrideProvider(USERS_PORT)
+        .useValue(mockedUsersPort),
+  });
 }

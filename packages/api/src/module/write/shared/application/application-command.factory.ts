@@ -12,6 +12,7 @@ export type CommandBuilder<CommandType extends ApplicationCommand = ApplicationC
   class: Type<CommandType>;
   type: CommandType['type'];
   data: CommandType['data'];
+  metadata?: CommandType['metadata'];
 };
 
 @Injectable()
@@ -34,7 +35,7 @@ export class ApplicationCommandFactory {
       id: generateId(),
       issuedAt: currentTime(),
       data: command.data,
-      metadata: { correlationId: generateId() },
+      metadata: { correlationId: generateId(), ...command.metadata },
     });
   }
 }
