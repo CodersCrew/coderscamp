@@ -10,10 +10,5 @@ export default createJestConfig({
     testTimeout: 6000,
     collectCoverageFrom: ['**/*.ts'],
     setupFiles: ['./jest-setup.ts'],
-    globals: {
-      'ts-jest': {
-        astTransformers: ['ts-nameof'],
-      },
-    },
   },
 });
