@@ -161,6 +161,14 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     await app.close();
   }
 
+  async function expectCommandPublishLastly<CommandType extends DomainEvent>(expectations: CommandType) {
+    const command = jest.spyOn(commandBus, 'execute');
+
+    // const { calls } = command.mock;
+
+    expect(command.mock).toStrictEqual(expectations);
+  }
+
   return {
     executeCommand,
     eventOccurred,
@@ -168,6 +176,7 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     randomEventId,
     close,
     expectEventPublishedLastly,
+    expectCommandPublishLastly,
     expectEventsPublishedLastly,
   };
 }

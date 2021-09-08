@@ -5,6 +5,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from '@/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
+import { WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule } from '@/automation/when-user-registration-was-started-then-request-email-confirmation/when-user-registration-was-started-then-request-email-confirmation-automation.module';
 import { UserProfileModule } from '@/crud/user-profile/user-profile.module';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { CourseProgressReadModule } from '@/read/course-progress/course-progress.read-module';
@@ -21,7 +22,10 @@ const isProduction = env.NODE_ENV === 'production';
 
 const writeModules = [LearningMaterialsUrlWriteModule, UserRegistrationWriteModule, EmailConfirmationWriteModule];
 const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
-const automationModules = [SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule];
+const automationModules = [
+  SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule,
+  WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule,
+];
 const eventModelingModules = [...writeModules, ...readModules, ...automationModules];
 const crudModules = [UserProfileModule, CoursesModule, AuthModule];
 
