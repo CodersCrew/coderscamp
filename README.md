@@ -10,9 +10,7 @@ Monorepo containing CodersCamp's internal application, its website, and all deve
 
 ## What is CodersCamp?
 
-CodersCamp is a 6 month long, free, and open web development bootcamp organized in Poland by the CodersCrew Association.
-Our mission is to guide everyone from the first lines of code to a career as a web developer. During the course,
-participants receive an interactive learning plan containing 5 modules:
+CodersCamp is a 6 month long, free, and open web development bootcamp organized in Poland by the CodersCrew Association. Our mission is to guide everyone from the first lines of code to a career as a web developer. During the course, participants receive an interactive learning plan containing 5 modules:
 
 - HTML, CSS, JavaScript - web development basics.
 - Scalable web applications with TypeScript.
@@ -22,8 +20,4 @@ participants receive an interactive learning plan containing 5 modules:
   - Advanced back-end development with Nest.js.
   - Advanced front-end development with Redux.js.
 
-CodersCamp students work in 6-people teams guided by an experienced mentor. After the end of the module, the team
-creates a fully-featured web application and presents it during a demo session. As a result, each student has a
-portfolio of 5 practical projects with live demos at the end of the course. The entire bootcamp ends with a 24h
-hackathon where participants create an application that meets business requirements specified by the hackathon's
-partner.
+CodersCamp students work in 6-people teams guided by an experienced mentor. After the end of the module, the team creates a fully-featured web application and presents it during a demo session. As a result, each student has a portfolio of 5 practical projects with live demos at the end of the course. The entire bootcamp ends with a 24h hackathon where participants create an application that meets business requirements specified by the hackathon's partner.
