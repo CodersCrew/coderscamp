@@ -13,7 +13,7 @@ const UserRegistrationWasStartedEvent = (data: UserRegistrationWasStarted['data'
   };
 };
 
-describe('Email confirmation', () => {
+describe('RequestEmailConfirmation when UserRegistrationWasStarted', () => {
   let moduleUnderTest: AsyncReturnType<
     typeof whenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule
   >;
@@ -26,7 +26,7 @@ describe('Email confirmation', () => {
     await moduleUnderTest.close();
   });
 
-  it('RequestEmailConfirmation when UserRegistrationWasStarted', async () => {
+  it('test', async () => {
     // Given
     const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
     const fullName = 'test user';

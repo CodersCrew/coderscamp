@@ -43,6 +43,7 @@ export class UserRegistrationWasStartedEventHandler implements OnModuleInit, OnM
         confirmationToken: idGenerator.generate(),
         confirmationFor: 'user-registration',
       }),
+      metadata: { correlationId: event.metadata.correlationId, causationId: event.id },
     }));
 
     await this.commandBus.execute(command);
