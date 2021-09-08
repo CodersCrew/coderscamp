@@ -8,10 +8,10 @@ export const approveEmailConfirmation =
   (pastEvents: EmailConfirmationDomainEvent[]): EmailConfirmationDomainEvent[] => {
     const lastPublishedEmailConfirmation = pastEvents.pop();
 
-    if (!lastPublishedEmailConfirmation) throw new Error("Could't find request which could be approved");
+    if (!lastPublishedEmailConfirmation) throw new Error("Couldn't find request which could be approved");
 
     if (lastPublishedEmailConfirmation.type === 'EmailConfirmationWasApproved')
-      throw new Error('Email has been already confirmed');
+      throw new Error('Email confirmation has been already approved');
 
     if (lastPublishedEmailConfirmation.data.confirmationToken !== command.data.confirmationToken)
       throw new Error('An attempt was made on obsolete token');

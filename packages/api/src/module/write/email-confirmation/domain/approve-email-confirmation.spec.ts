@@ -50,7 +50,9 @@ describe('Approve email confirmation', () => {
     const pastEvents: EmailConfirmationDomainEvent[] = [];
 
     // when - then
-    expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow();
+    expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow(
+      "Couldn't find request which could be approved",
+    );
   });
 
   it('throws exception if last published requestEmailConfirmation does not correspond with invoked approveEmailConfirmation', () => {
@@ -84,7 +86,9 @@ describe('Approve email confirmation', () => {
     });
 
     // when - them
-    expect(() => approveEmailConfirmation(emailConfirmationWithOldToken)(pastEvents)).toThrow();
+    expect(() => approveEmailConfirmation(emailConfirmationWithOldToken)(pastEvents)).toThrow(
+      'An attempt was made on obsolete token',
+    );
   });
 
   it('throws exception if email has been already confirmed', () => {
@@ -113,6 +117,8 @@ describe('Approve email confirmation', () => {
     });
 
     // when - them
-    expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow();
+    expect(() => approveEmailConfirmation(emailConfirmation)(pastEvents)).toThrow(
+      'Email confirmation has been already approved',
+    );
   });
 });
