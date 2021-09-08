@@ -58,7 +58,7 @@ enum Role {
 
 model CourseProgress {
   id                              String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  courseUserId                    String?
+  courseUserId                    String? @unique
   learningMaterialsId             String  @unique
   learningMaterialsCompletedTasks Int
 }

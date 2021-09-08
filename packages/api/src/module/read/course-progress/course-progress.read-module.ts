@@ -18,49 +18,45 @@ export class CourseProgressReadModule {
   constructor(private readonly prismaService: PrismaService) {}
 
   @OnEvent('LearningMaterialsUrl.LearningMaterialsUrlWasGenerated')
-  async onLearningResourcesUrlWasGenerated(event: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
-    await this.prismaService.courseProgress.create({
-      data: {
-        courseUserId: event.data.courseUserId,
-        learningMaterialsId: event.data.learningMaterialsId,
-        learningMaterialsCompletedTasks: 0,
-      },
+  async onLearningResourcesUrlWasGenerated({
+    data: { learningMaterialsId, courseUserId },
+  }: ApplicationEvent<LearningMaterialsUrlWasGenerated>) {
+    await this.prismaService.courseProgress.upsert({
+      where: { learningMaterialsId },
+      create: { learningMaterialsId, learningMaterialsCompletedTasks: 0, courseUserId },
+      update: { courseUserId },
     });
   }
 
   @OnEvent('LearningMaterialsTasks.TaskWasUncompleted')
-  async onTaskWasUncompleted(event: ApplicationEvent<TaskWasUncompleted>) {
-    const where = { learningMaterialsId: event.data.learningMaterialsId };
-    const courseProgress = await this.prismaService.courseProgress.findUnique({ where });
-
-    if (!courseProgress || courseProgress.learningMaterialsCompletedTasks === 0) {
-      return;
-    }
-
-    await this.prismaService.courseProgress.update({
-      where,
-      data: {
-        learningMaterialsCompletedTasks: { decrement: 1 },
-      },
-    });
+  async onTaskWasUncompleted({ data: { learningMaterialsId } }: ApplicationEvent<TaskWasUncompleted>) {
+    await this.prismaService.courseProgress.upsert(
+      this.courseProgressStateUpdateObject({ learningMaterialsId, increment: false }),
+    );
   }
 
   @OnEvent('LearningMaterialsTasks.TaskWasCompleted')
-  async onTaskWasCompleted(event: ApplicationEvent<TaskWasCompleted>) {
-    await this.prismaService.courseProgress.upsert({
-      where: {
-        learningMaterialsId: event.data.learningMaterialsId,
-      },
+  async onTaskWasCompleted({ data: { learningMaterialsId } }: ApplicationEvent<TaskWasCompleted>) {
+    await this.prismaService.courseProgress.upsert(
+      this.courseProgressStateUpdateObject({ learningMaterialsId, increment: true }),
+    );
+  }
+
+  private courseProgressStateUpdateObject({ learningMaterialsId, increment }: GenerateCourseProgressUpsertObjectArgs) {
+    return {
+      where: { learningMaterialsId },
       update: {
-        learningMaterialsCompletedTasks: {
-          increment: 1,
-        },
+        learningMaterialsCompletedTasks: increment ? { increment: 1 } : { decrement: 1 },
       },
       create: {
-        courseUserId: null,
-        learningMaterialsId: event.data.learningMaterialsId,
-        learningMaterialsCompletedTasks: 1,
+        learningMaterialsId,
+        learningMaterialsCompletedTasks: increment ? 1 : 0,
       },
-    });
+    };
   }
 }
+
+type GenerateCourseProgressUpsertObjectArgs = {
+  learningMaterialsId: string;
+  increment: boolean;
+};

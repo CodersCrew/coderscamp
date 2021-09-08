@@ -5,19 +5,21 @@ export function completeTask(
   pastEvents: TaskWasCompleted[],
   { data: { learningMaterialsId, taskId } }: CompleteTask,
 ): TaskWasCompleted[] {
-  const state = pastEvents.reduce<{ completed: boolean }>(
-    (acc, event) => {
-      switch (event.type) {
-        case 'TaskWasCompleted': {
-          return { completed: true };
+  const state = pastEvents
+    .filter(({ data }) => data.taskId === taskId)
+    .reduce<{ completed: boolean }>(
+      (acc, event) => {
+        switch (event.type) {
+          case 'TaskWasCompleted': {
+            return { completed: true };
+          }
+          default: {
+            return acc;
+          }
         }
-        default: {
-          return acc;
-        }
-      }
-    },
-    { completed: false },
-  );
+      },
+      { completed: false },
+    );
 
   if (state.completed) {
     throw new Error('Task was already completed');
