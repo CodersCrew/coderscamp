@@ -4,7 +4,7 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -23,18 +23,18 @@ model AuthUser {
 }
 
 model RegisteredEmails {
-  userId        String @id
-  email         String @unique
+  userId String @id
+  email  String @unique
 }
 
 model LearningMaterials {
-  id             String @id
-  url            String
-  courseUserId   String @unique
+  id           String @id
+  url          String
+  courseUserId String @unique
 }
 
 model Event {
-  id             String @id
+  id             String   @id
   type           String
   streamId       String
   streamCategory String
@@ -42,7 +42,7 @@ model Event {
   occurredAt     DateTime
   data           Json
   metadata       Json
-  globalOrder    Int @default(autoincrement())
+  globalOrder    Int      @default(autoincrement())
 }
 
 model Course {
@@ -57,10 +57,10 @@ enum Role {
 }
 
 model CourseProgress {
-  id                                String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  courseUserId                      String @unique
-  learningMaterialsId               String @unique
-  learningMaterialsCompletedTasks   Int
+  id                              String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  courseUserId                    String? @unique
+  learningMaterialsId             String  @unique
+  learningMaterialsCompletedTasks Int
 }
 
 model EventsSubscription {

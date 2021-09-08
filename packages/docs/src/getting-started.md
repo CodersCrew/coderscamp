@@ -18,12 +18,7 @@ sidebar_position: 2
 
 3. Copy `.env.example` file in `packages/api` directory and rename it to `.env`.
 
-4. Copy `.env.example` file in `packages/panel` directory and rename it to `.env`. In order to generate valid Google API key:
-    - Head over to [google developer console](https://console.cloud.google.com/)
-    - Create a new project
-    - Add Google Calendar API library
-    - Generate new API key for that project.
-
+4. Copy `.env.example` file in `packages/panel` directory and rename it to `.env`. 
 
 5. Run `yarn bootstrap` command to generate some necessary files.
 
