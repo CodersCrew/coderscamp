@@ -1,10 +1,7 @@
 import { AsyncReturnType } from 'type-fest';
-import { v4 as uuid } from 'uuid';
+import waitForExpect from 'wait-for-expect';
 
-import { RegisterUserApplicationCommand } from '@/module/commands/register-user';
-import { EmailConfirmationWasRequested } from '@/module/events/email-confirmation-was-requested.domain-event';
 import { UserRegistrationWasStarted } from '@/module/events/user-registration-was-started.domain-event';
-import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 import { WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule } from './when-user-registration-was-started-then-request-email.test-module';
@@ -39,27 +36,24 @@ describe('Email confirmation', () => {
     const event = UserRegistrationWasStartedEvent({ userId, fullName, emailAddress, hashedPassword });
 
     // Then
-    await moduleUnderTest.eventOccurred(EventStreamName.from('UserRegistration', userId), event, 0);
+    await moduleUnderTest.eventOccurred(EventStreamName.from('UserRegistration', userId), event);
 
-    await moduleUnderTest.expectCommandPublishLastly({
-      type: 'RequestEmailConfirmation',
-      data: {
-        userId,
-        fullName,
-        emailAddress,
-        hashedPassword,
-      },
-    });
+    waitForExpect(() =>
+      moduleUnderTest.expectCommandPublishLastly({
+        type: 'RequestEmailConfirmation',
+        data: {
+          userId,
+          fullName,
+          emailAddress,
+          hashedPassword,
+        },
+      }),
+    );
 
     // await moduleUnderTest.expectEventPublishedLastly<EmailConfirmationWasRequested>({
     //   type: 'EmailConfirmationWasRequested',
-    //   data: {
-    //     userId,
-    //     fullName,
-    //     emailAddress,
-    //     hashedPassword,
-    //   },
-    //   streamName: EventStreamName.from('UserRegistration', userId),
+    //   data: { userId: '', confirmationToken: '', confirmationFor: '' },
+    //   streamName: EventStreamName.from('EmailConfirmation', userId),
     // });
   });
 });

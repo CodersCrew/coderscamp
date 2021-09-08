@@ -1,6 +1,6 @@
 import { Abstract } from '@nestjs/common/interfaces';
 import { Type } from '@nestjs/common/interfaces/type.interface';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
@@ -83,6 +83,7 @@ export function sequence(length: number) {
 }
 
 type EventBusSpy = jest.SpyInstance<Promise<void>, [ApplicationEvent[]]>;
+type CommandBusSpy = jest.SpyInstance<Promise<unknown>, [command: ICommand]>;
 
 export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   type: EventType['type'];
@@ -94,6 +95,11 @@ export function getEventBusSpy(app: TestingModule): EventBusSpy {
   const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
 
   return jest.spyOn(eventBus, 'publishAll');
+}
+export function getCommandBysSpy(app: TestingModule): CommandBusSpy {
+  const newBus = app.get<CommandBus>(CommandBus);
+
+  return jest.spyOn(newBus, 'execute');
 }
 
 export async function initWriteTestModule(
@@ -116,6 +122,7 @@ export async function initWriteTestModule(
   const commandBus = app.get<CommandBus>(CommandBus);
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
+  const commandBusSpy = getCommandBysSpy(app);
   const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
 
@@ -227,11 +234,11 @@ export async function initWriteTestModule(
   }
 
   async function expectCommandPublishLastly<CommandType extends DomainEvent>(expectations: CommandType) {
-    const command = jest.spyOn(commandBus, 'execute');
+    // const command = jest.spyOn(newBus, 'register');
 
     // const { calls } = command.mock;
 
-    expect(command.mock).toStrictEqual(expectations);
+    expect(commandBusSpy.mock).toStrictEqual(expectations);
   }
 
   return {
