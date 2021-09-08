@@ -3,6 +3,15 @@ import { SendEmailMessage } from '@/module/commands/send-email-message.domain-co
 import { EmailMessageWasSentDomainEvent } from './events';
 import { sendEmailMessage } from './sendEmailMessage';
 
+const userData = {
+  emailMessageId: '1',
+  to: 'user1@coderscrew.pl',
+  subject: 'coderscamp',
+  text: 'description',
+  html: 'html',
+};
+const appEmailAddress = 'test@test.com';
+
 describe('send Email Message', () => {
   it('generated EmailMessageWasSent, on every email message', () => {
     // Given
@@ -11,29 +20,16 @@ describe('send Email Message', () => {
     // When
     const command: SendEmailMessage = {
       type: 'SendEmailMessage',
-      data: {
-        emailMessageId: '1',
-        to: '2',
-        subject: '3',
-        text: '4',
-        html: '5',
-      },
+      data: userData,
     };
-    const appEmailAddress = 'test@test.com';
+
     const events = sendEmailMessage(pastEvents, command, appEmailAddress);
 
     // Then
     expect(events).toStrictEqual([
       {
         type: 'EmailMessageWasSent',
-        data: {
-          emailMessageId: '1',
-          to: '2',
-          subject: '3',
-          text: '4',
-          html: '5',
-          from: appEmailAddress,
-        },
+        data: { ...userData, from: appEmailAddress },
       },
     ]);
   });
