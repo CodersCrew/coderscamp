@@ -16,8 +16,6 @@ export class UserRegistrationWasStartedEventHandler {
 
   @OnEvent('UserRegistration.UserRegistrationWasStarted')
   async handleUserRegistrationWasStartedDomainEvent(event: ApplicationEvent<UserRegistrationWasStarted>) {
-    console.log('IM HERE');
-
     const command = this.commandFactory.applicationCommand((idGenerator) => ({
       class: RequestEmailConfirmationApplicationCommand,
       ...requestEmailConfirmationCommand({

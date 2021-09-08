@@ -1,5 +1,6 @@
 import { AsyncReturnType } from 'type-fest';
 
+import { RequestEmailConfirmation } from '@/commands/request-email-conformation';
 import { UserRegistrationWasStarted } from '@/module/events/user-registration-was-started.domain-event';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
@@ -37,20 +38,13 @@ describe('Email confirmation', () => {
     // Then
     await moduleUnderTest.eventOccurred(EventStreamName.from('UserRegistration', userId), event);
 
-    await moduleUnderTest.expectCommandExecutedLastly({
+    await moduleUnderTest.expectCommandExecutedLastly<RequestEmailConfirmation>({
       type: 'RequestEmailConfirmation',
       data: {
         userId,
-        fullName,
-        emailAddress,
-        hashedPassword,
+        confirmationFor: 'user-registration',
+        confirmationToken: moduleUnderTest.lastGeneratedId(), //fixme: how to get that?
       },
     });
-
-    // await moduleUnderTest.expectEventPublishedLastly<EmailConfirmationWasRequested>({
-    //   type: 'EmailConfirmationWasRequested',
-    //   data: { userId: '', confirmationToken: '', confirmationFor: '' },
-    //   streamName: EventStreamName.from('EmailConfirmation', userId),
-    // });
   });
 });

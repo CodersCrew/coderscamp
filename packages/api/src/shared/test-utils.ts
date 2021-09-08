@@ -15,6 +15,7 @@ import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/applicat
 import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
+import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 
@@ -85,6 +86,7 @@ export function sequence(length: number) {
 
 type EventBusSpy = jest.SpyInstance<Promise<void>, [ApplicationEvent[]]>;
 type CommandBusSpy = jest.SpyInstance<Promise<unknown>, ICommand[]>;
+type IdGeneratorSpy = jest.SpyInstance<string>;
 
 export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   type: EventType['type'];
@@ -103,9 +105,15 @@ export function getEventBusSpy(app: TestingModule): EventBusSpy {
   return jest.spyOn(eventBus, 'publishAll');
 }
 export function getCommandBusSpy(app: TestingModule): CommandBusSpy {
-  const newBus = app.get<CommandBus>(CommandBus);
+  const commandBus = app.get<CommandBus>(CommandBus);
 
-  return jest.spyOn(newBus, 'execute');
+  return jest.spyOn(commandBus, 'execute');
+}
+
+export function getIdGeneratorSpy(app: TestingModule): IdGeneratorSpy {
+  const idGenerator = app.get<IdGenerator>(ID_GENERATOR);
+
+  return jest.spyOn(idGenerator, 'generate');
 }
 
 export async function initWriteTestModule(
@@ -129,6 +137,7 @@ export async function initWriteTestModule(
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
   const commandBusSpy = getCommandBusSpy(app);
+  const idGeneratorSpy = getIdGeneratorSpy(app);
   const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
 
@@ -230,7 +239,7 @@ export async function initWriteTestModule(
     await prismaService.$disconnect();
   }
 
-  function get<TInput = any, TResult = TInput>(
+  function get<TInput = never, TResult = TInput>(
     typeOrToken: Type<TInput> | Abstract<TInput> | string | symbol,
     options?: {
       strict: boolean;
@@ -254,6 +263,12 @@ export async function initWriteTestModule(
     });
   }
 
+  function lastGeneratedId(): string {
+    const ids = idGeneratorSpy.mock.results;
+
+    return ids[ids.length - 1].value;
+  }
+
   return {
     get,
     executeCommand,
@@ -268,6 +283,7 @@ export async function initWriteTestModule(
     expectSubscriptionPosition,
     randomUuid,
     randomEventStreamName,
+    lastGeneratedId,
   };
 }
 
