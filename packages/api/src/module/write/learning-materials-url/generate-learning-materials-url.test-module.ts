@@ -1,5 +1,6 @@
 import { initWriteTestModule } from '@/shared/test-utils';
 
+import { AppModule } from '../../../app.module';
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
   LearningMaterialsUrlGenerator,
@@ -23,7 +24,7 @@ export async function generateLearningMaterialsUrlTestModule() {
     getUserFullNameById: jest.fn().mockResolvedValue('Jan Kowalski'),
   };
 
-  return initWriteTestModule((app) =>
+  return initWriteTestModule([AppModule], (app) =>
     app
       .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)
       .useValue(mockedLearningResourcesGenerator)

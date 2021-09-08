@@ -4,7 +4,7 @@ import { RequestEmailConfirmation } from '@/commands/request-email-conformation'
 import { UserRegistrationWasStarted } from '@/module/events/user-registration-was-started.domain-event';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
-import { WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule } from './when-user-registration-was-started-then-request-email.test-module';
+import { whenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule } from './when-user-registration-was-started-then-request-email.test-module';
 
 const UserRegistrationWasStartedEvent = (data: UserRegistrationWasStarted['data']): UserRegistrationWasStarted => {
   return {
@@ -15,11 +15,11 @@ const UserRegistrationWasStartedEvent = (data: UserRegistrationWasStarted['data'
 
 describe('Email confirmation', () => {
   let moduleUnderTest: AsyncReturnType<
-    typeof WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule
+    typeof whenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule
   >;
 
   beforeEach(async () => {
-    moduleUnderTest = await WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule();
+    moduleUnderTest = await whenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule();
   });
 
   afterEach(async () => {
@@ -43,7 +43,6 @@ describe('Email confirmation', () => {
       data: {
         userId,
         confirmationFor: 'user-registration',
-        confirmationToken: moduleUnderTest.lastGeneratedId(), //fixme: how to get that?
       },
     });
   });

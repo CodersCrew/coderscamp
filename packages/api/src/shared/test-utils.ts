@@ -1,4 +1,5 @@
 import { Abstract } from '@nestjs/common/interfaces';
+import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
@@ -18,8 +19,10 @@ import { SubscriptionId } from '@/write/shared/application/events-subscription/e
 import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
+import { SharedModule } from '@/write/shared/shared.module';
 
 import { AppModule } from '../app.module';
+import { eventEmitterRootModule } from '../event-emitter.root-module';
 
 export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
@@ -96,7 +99,7 @@ export type ExpectedPublishEvent<EventType extends DomainEvent> = {
 
 export type ExpectedExecuteCommand<CommandType extends DomainCommand> = {
   type: CommandType['type'];
-  data: CommandType['data'];
+  data: Partial<CommandType['data']>;
 };
 
 export function getEventBusSpy(app: TestingModule): EventBusSpy {
@@ -117,12 +120,13 @@ export function getIdGeneratorSpy(app: TestingModule): IdGeneratorSpy {
 }
 
 export async function initWriteTestModule(
+  modules?: ModuleMetadata['imports'],
   configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder),
 ) {
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
 
   const appBuilder: TestingModuleBuilder = Test.createTestingModule({
-    imports: [AppModule],
+    imports: modules ? [SharedModule, eventEmitterRootModule, ...modules] : [AppModule],
   })
     .overrideProvider(TIME_PROVIDER)
     .useValue(testTimeProvider);
@@ -259,7 +263,7 @@ export async function initWriteTestModule(
       expect({
         type: lastPublishedCommand.type,
         data: lastPublishedCommand.data,
-      }).toStrictEqual(expectations);
+      }).toMatchObject(expectations);
     });
   }
 
