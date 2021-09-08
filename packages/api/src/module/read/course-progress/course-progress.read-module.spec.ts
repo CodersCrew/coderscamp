@@ -177,5 +177,4 @@ describe('Read Slice | CourseProgress', () => {
       },
     });
   });
-
 });
