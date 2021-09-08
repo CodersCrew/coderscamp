@@ -2723,7 +2723,6 @@ __metadata:
     "@types/passport-jwt": 3.0.6
     "@types/passport-local": 1.0.34
     "@types/supertest": 2.0.11
-    "@types/ts-nameof": 4.2.1
     "@types/uuid": 8.3.1
     async-mutex: 0.3.2
     class-transformer: 0.4.0
@@ -2744,7 +2743,6 @@ __metadata:
     rxjs: 7.3.0
     supertest: 6.1.6
     ts-loader: 9.2.5
-    ts-nameof: 5.0.0
     ts-node: 10.2.1
     ts-retry-promise: 0.6.0
     tsconfig-paths: 3.11.0
@@ -6184,32 +6182,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-nameof/common@npm:^4.2.0":
-  version: 4.2.1
-  resolution: "@ts-nameof/common@npm:4.2.1"
-  checksum: fd107fbbc1c46d6c918858786536275ed330d85d91a9a4afe33c29e269d747c626438e78c2786a6104e02f8609ff18ffacedfa16971cc44fef86c89775bd91bf
-  languageName: node
-  linkType: hard
-
-"@ts-nameof/transforms-common@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "@ts-nameof/transforms-common@npm:4.2.1"
-  dependencies:
-    "@ts-nameof/common": ^4.2.0
-  checksum: 434f9e632cd932d0b152018074731d2cd59b9b053a6213b59b8393befeb7fb5c94d5c3df9c886a790d690793d4f02ecefb135a77f4e2462a74cf33f3c37dfe2a
-  languageName: node
-  linkType: hard
-
-"@ts-nameof/transforms-ts@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "@ts-nameof/transforms-ts@npm:4.2.1"
-  dependencies:
-    "@ts-nameof/common": ^4.2.0
-    "@ts-nameof/transforms-common": ^4.2.1
-  checksum: 9c1d3f5dbed313d471bfd2d1ba419ce4435aa4313a592afd84cfb8e1574b4b5b9bd201ede81a13cfc8695322fac4fed0162e417b561dcd012a81ec08ecd3e18a
-  languageName: node
-  linkType: hard
-
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.8
   resolution: "@tsconfig/node10@npm:1.0.8"
@@ -6992,13 +6964,6 @@ __metadata:
   version: 1.4.2
   resolution: "@types/tinycolor2@npm:1.4.2"
   checksum: 4687c4c7081d08e8758f8238daf48d5fb19bb0ad15a14354dd742ad1d61ff6b66fcbd8f4cd6388ecb9e6b155bfec104883c550495ec0e0ff5333b6e5bcc56795
-  languageName: node
-  linkType: hard
-
-"@types/ts-nameof@npm:4.2.1":
-  version: 4.2.1
-  resolution: "@types/ts-nameof@npm:4.2.1"
-  checksum: 586c4bb8269193671b61c327ca7032b9581b67a1faf3b78d908c405aeae40324621bf9c1090da2bd00685569e30c52fcc7eb55f03d0112b38541effb6372c178
   languageName: node
   linkType: hard
 
@@ -23817,19 +23782,6 @@ resolve@^2.0.0-next.3:
     typescript: "*"
     webpack: ^5.0.0
   checksum: e39fab0caac55dc3c57789ea690aca687d033f0d202e2a27cc37aa0f57f987e7a70d033750d4079253e549fdd5c4379e3b5049c17dd1665ab89263dee06f2d1c
-  languageName: node
-  linkType: hard
-
-"ts-nameof@npm:5.0.0":
-  version: 5.0.0
-  resolution: "ts-nameof@npm:5.0.0"
-  dependencies:
-    "@ts-nameof/common": ^4.2.0
-    "@ts-nameof/transforms-ts": ^4.2.1
-    glob: ^7.1.6
-  peerDependencies:
-    typescript: "*"
-  checksum: bbbe5aeed2375d82865e04fdbca0ebe601536ce52c9b5aca75761cdb602c8c844ee7be929984a7f7ee4beeb5a328d066f56b7da829d523436cda518c3aeb4cfb
   languageName: node
   linkType: hard
 
