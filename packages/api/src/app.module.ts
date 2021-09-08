@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
@@ -17,6 +16,7 @@ import { UserRegistrationWriteModule } from '@/write/user-registration/user-regi
 
 import { AuthModule } from './crud/auth/auth.module';
 import { CoursesModule } from './crud/courses/courses.module';
+import { eventEmitterRootModule } from './event-emitter.root-module';
 
 const isProduction = env.NODE_ENV === 'production';
 
@@ -32,15 +32,7 @@ const eventModelingModules = [...writeModules, ...readModules, ...automationModu
 const crudModules = [UserProfileModule, CoursesModule, AuthModule];
 
 const imports: ModuleMetadata['imports'] = [
-  EventEmitterModule.forRoot({
-    wildcard: true,
-    delimiter: '.',
-    newListener: false,
-    removeListener: false,
-    maxListeners: 40,
-    verboseMemoryLeak: false,
-    ignoreErrors: false,
-  }),
+  eventEmitterRootModule,
   PrismaModule,
   ...crudModules,
   ...eventModelingModules,

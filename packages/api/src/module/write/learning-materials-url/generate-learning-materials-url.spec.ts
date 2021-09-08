@@ -56,7 +56,6 @@ describe('Generate Learning Materials URL', () => {
     await moduleUnderTest.eventOccurred(
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
       learningMaterialsUrlWasGenerated,
-      0,
     );
 
     // When - Then
@@ -84,7 +83,6 @@ describe('Generate Learning Materials URL', () => {
     await moduleUnderTest.eventOccurred(
       EventStreamName.from('LearningMaterialsUrl', anotherUserId),
       learningMaterialsUrlWasGeneratedForAnotherUser,
-      0,
     );
 
     // When

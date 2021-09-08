@@ -2724,12 +2724,14 @@ __metadata:
     "@types/passport-local": 1.0.34
     "@types/supertest": 2.0.11
     "@types/uuid": 8.3.1
+    async-mutex: 0.3.2
     class-transformer: 0.4.0
     class-validator: 0.13.1
     cookie-parser: 1.4.5
     dayjs: 1.10.6
     dotenv: 10.0.0
     express: 4.17.1
+    leaked-handles: 5.2.0
     node-mocks-http: 1.10.1
     passport: 0.4.1
     passport-github2: 0.1.12
@@ -2742,6 +2744,7 @@ __metadata:
     supertest: 6.1.6
     ts-loader: 9.2.5
     ts-node: 10.2.1
+    ts-retry-promise: 0.6.0
     tsconfig-paths: 3.11.0
     type-fest: 2.1.0
     uuid: 8.3.2
@@ -8363,6 +8366,15 @@ __metadata:
   version: 1.0.1
   resolution: "async-limiter@npm:1.0.1"
   checksum: 2b849695b465d93ad44c116220dee29a5aeb63adac16c1088983c339b0de57d76e82533e8e364a93a9f997f28bbfc6a92948cefc120652bd07f3b59f8d75cf2b
+  languageName: node
+  linkType: hard
+
+"async-mutex@npm:0.3.2":
+  version: 0.3.2
+  resolution: "async-mutex@npm:0.3.2"
+  dependencies:
+    tslib: ^2.3.1
+  checksum: 620b771dfdea1cad0a6b712915c31a1e3ca880a8cf1eae92b4590f435995e0260929c6ebaae0b9126b1456790ea498064b5bb9a506948cda760f48d3d0dcc4c8
   languageName: node
   linkType: hard
 
@@ -16726,6 +16738,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"leaked-handles@npm:5.2.0":
+  version: 5.2.0
+  resolution: "leaked-handles@npm:5.2.0"
+  dependencies:
+    process: ^0.10.0
+    weakmap-shim: ^1.1.0
+    xtend: ^4.0.0
+  checksum: 4d4d950a01a42ff9084a8ed9f70df47e94ebbf9553846ad7fe269821382c97f4ac97034a023c4dad6457514877e0ae427443c326e7723ad87e73b73e5045cb8f
+  languageName: node
+  linkType: hard
+
 "leven@npm:^3.1.0":
   version: 3.1.0
   resolution: "leven@npm:3.1.0"
@@ -20127,6 +20150,13 @@ fsevents@^1.2.7:
   version: 0.11.10
   resolution: "process@npm:0.11.10"
   checksum: bfcce49814f7d172a6e6a14d5fa3ac92cc3d0c3b9feb1279774708a719e19acd673995226351a082a9ae99978254e320ccda4240ddc474ba31a76c79491ca7c3
+  languageName: node
+  linkType: hard
+
+"process@npm:^0.10.0":
+  version: 0.10.1
+  resolution: "process@npm:0.10.1"
+  checksum: bdaaa28a8edf96d5daa0f5c1faf4adfedce512ebca829a82e846d991492780c34eb934decf4fa5b311c698881d07a8d4592b4d7ea53ec03d51580a2f364d3e30
   languageName: node
   linkType: hard
 
@@ -24027,6 +24057,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"ts-retry-promise@npm:0.6.0":
+  version: 0.6.0
+  resolution: "ts-retry-promise@npm:0.6.0"
+  checksum: a8b2c884026a249caab7ffb7b90765aaeddbdc5f759450802d0d53c30117d9ecbbf256d7352fdd6cc39b15f1b8d71ea25060d2fc6fb3aa94ae0a9029a42d1b52
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths-webpack-plugin@npm:3.5.1":
   version: 3.5.1
   resolution: "tsconfig-paths-webpack-plugin@npm:3.5.1"
@@ -24075,7 +24112,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1":
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
@@ -25140,6 +25177,13 @@ typescript@4.4.2:
   dependencies:
     defaults: ^1.0.3
   checksum: 814e9d1ddcc9798f7377ffa448a5a3892232b9275ebb30a41b529607691c0491de47cba426e917a4d08ded3ee7e9ba2f3fe32e62ee3cd9c7d3bafb7754bd553c
+  languageName: node
+  linkType: hard
+
+"weakmap-shim@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "weakmap-shim@npm:1.1.1"
+  checksum: 27669feb2a05d881211a298fafb1e771fd960a5e308b89a66db2902328f0afdb9c91524bd401d45700918baa84f082017c70cbd56a89ae37c18584c0f00ee0e6
   languageName: node
   linkType: hard
 

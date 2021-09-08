@@ -62,3 +62,10 @@ model CourseProgress {
   learningMaterialsId             String  @unique
   learningMaterialsCompletedTasks Int
 }
+
+model EventsSubscription {
+    id                  String @id
+    currentPosition     Int
+    fromPosition        Int
+    eventTypes          String[]
+}

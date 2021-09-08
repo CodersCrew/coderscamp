@@ -12,11 +12,11 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 
 async function learningMaterialsTestModule() {
-  const { prismaService, close, eventOccurred } = await initReadTestModule();
+  const module = await initReadTestModule();
 
   async function expectReadModel(expectation: { courseUserId: UserId; readModel: LearningMaterials | null }) {
     await waitForExpect(async () => {
-      const result = await prismaService.learningMaterials.findUnique({
+      const result = await module.prismaService.learningMaterials.findUnique({
         where: { courseUserId: expectation.courseUserId },
       });
 
@@ -24,7 +24,7 @@ async function learningMaterialsTestModule() {
     });
   }
 
-  return { eventOccurred, expectReadModel, close };
+  return { ...module, expectReadModel };
 }
 
 function learningMaterialsUrlWasGeneratedForUser(
@@ -44,29 +44,29 @@ function learningMaterialsUrlWasGeneratedForUser(
 }
 
 describe('Read Slice | Learning Materials', () => {
-  let moduleUnderTest: AsyncReturnType<typeof learningMaterialsTestModule>;
+  let sut: AsyncReturnType<typeof learningMaterialsTestModule>;
 
   beforeEach(async () => {
-    moduleUnderTest = await learningMaterialsTestModule();
+    sut = await learningMaterialsTestModule();
   });
 
   afterEach(async () => {
-    await moduleUnderTest.close();
+    await sut.close();
   });
 
   it('when LearningMaterialsUrlWasGenerated occurred, then read model should be updated', async () => {
     // Given
-    const userId1 = uuid();
-    const userId2 = uuid();
+    const userId1 = sut.randomUuid();
+    const userId2 = sut.randomUuid();
 
     // When
-    await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedForUser(userId1),
+    await sut.eventOccurred(
       EventStreamName.from('LearningMaterialsUrl', userId1),
+      learningMaterialsUrlWasGeneratedForUser(userId1),
     );
 
     // Then
-    await moduleUnderTest.expectReadModel({
+    await sut.expectReadModel({
       courseUserId: userId1,
       readModel: {
         id: `learningMaterialsId-${userId1}`,
@@ -74,19 +74,19 @@ describe('Read Slice | Learning Materials', () => {
         courseUserId: userId1,
       },
     });
-    await moduleUnderTest.expectReadModel({
+    await sut.expectReadModel({
       courseUserId: userId2,
       readModel: null,
     });
 
     // When
-    await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedForUser(userId2),
+    await sut.eventOccurred(
       EventStreamName.from('LearningMaterialsUrl', userId2),
+      learningMaterialsUrlWasGeneratedForUser(userId2),
     );
 
     // Then
-    await moduleUnderTest.expectReadModel({
+    await sut.expectReadModel({
       courseUserId: userId2,
       readModel: {
         id: `learningMaterialsId-${userId2}`,
