@@ -4,7 +4,3 @@ export type User = {
   email: string;
   image: string;
 };
-
-export type GetAllUsersResponse = User[];
-
-export type GetMeResponse = User | null;
