@@ -7,7 +7,7 @@ import { initWriteTestModule } from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { PASSWORD_ENCODER, PasswordEncoder } from '@/write/shared/application/password-encoder';
 import { UserRegistrationDomainEvent } from '@/write/user-registration/domain/events';
-import {UserRegistrationWriteModule} from "@/write/user-registration/user-registration.write-module";
+import { UserRegistrationWriteModule } from '@/write/user-registration/user-registration.write-module';
 
 const sampleHashedPassword = 'a47b21f855a558b9.8d9358adfea8a0a11fcff814eb957ee75b44620d0bae45069d83083ea7bb20f3';
 
@@ -19,7 +19,7 @@ async function initUserRegistrationTestModule() {
 
   return initWriteTestModule({
     modules: [UserRegistrationWriteModule],
-    configureModule: (app) => app.overrideProvider(PASSWORD_ENCODER).useValue(fakePasswordEncoder)
+    configureModule: (app) => app.overrideProvider(PASSWORD_ENCODER).useValue(fakePasswordEncoder),
   });
 }
 
