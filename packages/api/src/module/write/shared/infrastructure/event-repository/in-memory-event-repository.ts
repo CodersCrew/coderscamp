@@ -45,7 +45,7 @@ export class InMemoryEventRepository implements EventRepository {
 
     const storeEvent = {
       ...event,
-      globalOrder: this.globalEventsCount(),
+      globalOrder: this.globalEventsCount() + 1,
       streamName,
       streamVersion: expectedStreamVersion + 1,
     };

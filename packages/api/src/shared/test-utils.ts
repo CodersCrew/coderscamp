@@ -1,15 +1,20 @@
+import { Abstract } from '@nestjs/common/interfaces';
+import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
+import waitForExpect from 'wait-for-expect';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
 import { ApplicationCommandFactory, CommandBuilder } from '@/write/shared/application/application-command.factory';
-import { EVENT_REPOSITORY, EventRepository, StorableEvent } from '@/write/shared/application/event-repository';
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-import { EventStreamVersion } from '@/write/shared/application/event-stream-version';
+import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
+import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 
 import { AppModule } from '../app.module';
@@ -29,23 +34,39 @@ export async function initReadTestModule() {
 
   await app.init();
 
-  const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
   const prismaService = app.get<PrismaService>(PrismaService);
+
+  const applicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
 
   await cleanupDatabase(prismaService);
 
   async function close() {
     await app.close();
+    await cleanupDatabase(prismaService);
+    await prismaService.$disconnect();
   }
 
-  let publishedEvents = 0;
+  async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
+    const sourceCommandId = uuid();
 
-  async function eventOccurred(event: StorableEvent, streamName: EventStreamName): Promise<void> {
-    publishedEvents += 1;
-    await eventBus.publishAll([{ ...event, globalOrder: publishedEvents, streamVersion: publishedEvents, streamName }]);
+    await applicationService.execute(
+      eventStreamName,
+      { correlationId: sourceCommandId, causationId: sourceCommandId },
+      () => events,
+    );
   }
 
-  return { prismaService, close, eventOccurred };
+  async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent): Promise<void> {
+    await eventsOccurred(eventStreamName, [event]);
+  }
+
+  function randomUuid() {
+    const id = () => uuid();
+
+    return id();
+  }
+
+  return { prismaService, close, eventOccurred, eventsOccurred, randomUuid };
 }
 
 export function storableEvent<EventType extends DomainEvent>(event: EventType): StorableEvent<EventType> {
@@ -75,20 +96,27 @@ export function getEventBusSpy(app: TestingModule): EventBusSpy {
   return jest.spyOn(eventBus, 'publishAll');
 }
 
-export async function initWriteTestModule(configureModule?: (app: TestingModuleBuilder) => TestingModuleBuilder) {
+export async function initWriteTestModule(
+  configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder),
+) {
   const testTimeProvider: FixedTimeProvider = new FixedTimeProvider(new Date());
 
-  const appBuilder: TestingModuleBuilder = await Test.createTestingModule({
+  const appBuilder: TestingModuleBuilder = Test.createTestingModule({
     imports: [AppModule],
-  });
-  const app = await (configureModule ? configureModule(appBuilder) : appBuilder).compile();
+  })
+    .overrideProvider(TIME_PROVIDER)
+    .useValue(testTimeProvider);
+  const app = await (configureModule && !(configureModule instanceof TestingModuleBuilder)
+    ? configureModule(appBuilder)
+    : configureModule || appBuilder
+  ).compile();
 
   await app.init();
 
   const commandBus = app.get<CommandBus>(CommandBus);
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
-  const eventRepository: EventRepository = app.get<EventRepository>(EVENT_REPOSITORY);
+  const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
 
   await cleanupDatabase(prismaService);
@@ -132,19 +160,45 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
     return uuid();
   }
 
-  async function eventOccurred(
-    eventStreamName: EventStreamName,
-    event: DomainEvent,
-    streamVersion: EventStreamVersion,
-  ) {
-    const eventToStore: StorableEvent = {
-      ...event,
-      id: randomEventId(),
-      occurredAt: testTimeProvider.currentTime(),
-      metadata: { correlationId: uuid(), causationId: uuid() },
-    };
+  function randomUuid() {
+    return uuid();
+  }
 
-    await eventRepository.write(eventStreamName, [eventToStore], streamVersion);
+  function randomEventStreamName(): EventStreamName {
+    return EventStreamName.from('RandomEventStream', uuid());
+  }
+
+  async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent) {
+    const sourceCommandId = uuid();
+
+    await applicationService.execute(
+      eventStreamName,
+      { correlationId: sourceCommandId, causationId: sourceCommandId },
+      () => [event],
+    );
+  }
+
+  async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
+    const sourceCommandId = uuid();
+
+    await applicationService.execute(
+      eventStreamName,
+      { correlationId: sourceCommandId, causationId: sourceCommandId },
+      () => events,
+    );
+  }
+
+  async function expectSubscriptionPosition(expectation: { subscriptionId: SubscriptionId; position: number }) {
+    const subscription = () =>
+      prismaService.eventsSubscription.findUnique({
+        where: { id: expectation.subscriptionId },
+        select: { currentPosition: true },
+      });
+
+    await waitForExpect(
+      () => expect(subscription()).resolves.toStrictEqual({ currentPosition: expectation.position }),
+      10000,
+    );
   }
 
   async function executeCommand(builder: CommandBuilder) {
@@ -159,6 +213,17 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
 
   async function close() {
     await app.close();
+    await cleanupDatabase(prismaService);
+    await prismaService.$disconnect();
+  }
+
+  function get<TInput = any, TResult = TInput>(
+    typeOrToken: Type<TInput> | Abstract<TInput> | string | symbol,
+    options?: {
+      strict: boolean;
+    },
+  ): TResult {
+    return app.get<TInput, TResult>(typeOrToken, options);
   }
 
   async function expectCommandPublishLastly<CommandType extends DomainEvent>(expectations: CommandType) {
@@ -170,13 +235,69 @@ export async function initWriteTestModule(configureModule?: (app: TestingModuleB
   }
 
   return {
+    get,
     executeCommand,
     eventOccurred,
+    eventsOccurred,
     randomUserId,
     randomEventId,
     close,
     expectEventPublishedLastly,
     expectCommandPublishLastly,
     expectEventsPublishedLastly,
+    expectSubscriptionPosition,
+    randomUuid,
+    randomEventStreamName,
+  };
+}
+
+export type SampleDomainEvent = {
+  type: 'SampleDomainEvent';
+  data: {
+    value1: string;
+    value2: number;
+  };
+};
+
+export function sampleDomainEvent(
+  data: SampleDomainEvent['data'] = { value1: 'sampleValue1', value2: 2 },
+): SampleDomainEvent {
+  return {
+    type: 'SampleDomainEvent',
+    data,
+  };
+}
+
+export type AnotherSampleDomainEvent = {
+  type: 'AnotherSampleDomainEvent';
+  data: {
+    value1: string;
+    value2: number;
+  };
+};
+
+export function anotherSampleDomainEvent(
+  data: AnotherSampleDomainEvent['data'] = { value1: 'anotherSampleValue1', value2: 2 },
+): AnotherSampleDomainEvent {
+  return {
+    type: 'AnotherSampleDomainEvent',
+    data,
+  };
+}
+
+export type SampleDomainEventType2 = {
+  type: 'SampleDomainEventType2';
+  data: {
+    value1: string;
+    value2: number;
+  };
+};
+
+export function sampleDomainEventType2(
+  data: SampleDomainEventType2['data'] = { value1: 'anotherSampleValue1', value2: 2 },
+): SampleDomainEventType2 {
+  return {
+    type: 'SampleDomainEventType2',
+    data,
   };
 }

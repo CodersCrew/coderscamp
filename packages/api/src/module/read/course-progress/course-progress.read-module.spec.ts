@@ -93,8 +93,8 @@ describe('Read Slice | CourseProgress', () => {
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
+      learningMaterialsUrlWasGeneratedWithId(id),
     );
 
     await moduleUnderTest.expectReadModel({
@@ -108,8 +108,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasCompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
+      statusTask(learningMaterialsId, 'TaskWasCompleted'),
     );
 
     // Then
@@ -130,8 +130,8 @@ describe('Read Slice | CourseProgress', () => {
     const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
 
     await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedWithId(id),
       EventStreamName.from('LearningMaterialsUrl', courseUserId),
+      learningMaterialsUrlWasGeneratedWithId(id),
     );
 
     await moduleUnderTest.expectReadModel({
@@ -145,8 +145,8 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasCompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
+      statusTask(learningMaterialsId, 'TaskWasCompleted'),
     );
 
     // Then
@@ -163,46 +163,10 @@ describe('Read Slice | CourseProgress', () => {
 
     // When
     await moduleUnderTest.eventOccurred(
-      statusTask(learningMaterialsId, 'TaskWasUncompleted'),
       EventStreamName.from('LearningMaterialsTasks', courseUserId),
-    );
-
-    // Then
-    await moduleUnderTest.expectReadModel({
-      learningMaterialsId,
-      readModel: {
-        learningMaterialsId,
-        courseUserId,
-        learningMaterialsCompletedTasks: 0,
-      },
-    });
-  });
-
-  it('when taskWasUnCompleted and learningMaterialsCompletedTasks is equal to 0 then  learningMaterialsCompletedTasks should be 0', async () => {
-    // Given
-    const { id, courseUserId, learningMaterialsId, initialLearningMaterialCompletedTask } = givenData(uuid());
-
-    // When
-    await moduleUnderTest.eventOccurred(
-      learningMaterialsUrlWasGeneratedWithId(id),
-      EventStreamName.from('LearningMaterialsUrl', courseUserId),
-    );
-
-    // Then
-    await moduleUnderTest.expectReadModel({
-      learningMaterialsId,
-      readModel: {
-        learningMaterialsId,
-        courseUserId,
-        learningMaterialsCompletedTasks: initialLearningMaterialCompletedTask,
-      },
-    });
-
-    // When
-    await moduleUnderTest.eventOccurred(
       statusTask(learningMaterialsId, 'TaskWasUncompleted'),
-      EventStreamName.from('LearningMaterialsTasks', courseUserId),
     );
+
     // Then
     await moduleUnderTest.expectReadModel({
       learningMaterialsId,
