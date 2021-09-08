@@ -20,7 +20,8 @@
       "@/prisma/*": ["src/shared/prisma/*"]
     },
     "sourceMap": true,
-    "target": "es2017"
+    "target": "es2017",
+    "plugins": [{ "transform": "ts-nameof", "type": "raw" }]
   },
   "include": ["src", "../shared/src"]
 }
