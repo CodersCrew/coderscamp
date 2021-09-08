@@ -1,5 +1,4 @@
-import { Center } from '@coderscamp/ui/components/Center';
-import { VStack } from '@coderscamp/ui/components/Stack';
+import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
 import { MentorAvatar } from '../MentorAvatar';
@@ -11,8 +10,8 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
       <Typography size={{ base: 'md', sm: 'lg' }} color="gray.700">
         {content}
       </Typography>
-      <Center>
-        <MentorAvatar mr="16px" src={image} alt={name} />
+      <HStack spacing="16px">
+        <MentorAvatar src={image} alt={name} />
         <VStack alignItems="flex-start" spacing="0px">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}
@@ -24,7 +23,7 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
             {company}
           </Typography>
         </VStack>
-      </Center>
+      </HStack>
     </VStack>
   );
 };

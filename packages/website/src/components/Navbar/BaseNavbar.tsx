@@ -38,7 +38,7 @@ const NavbarElements = [
   },
 ];
 
-const baseLogoProps = { cursor: 'pointer', width: '100%', maxWidth: '280px', height: '100%', maxHeight: '40px' };
+const baseLogoProps = { cursor: 'pointer', maxWidth: '280px', maxHeight: '40px' };
 
 export const MobileBaseNavbar = () => {
   const { route } = useRouter();
@@ -100,12 +100,10 @@ export const MobileBaseNavbar = () => {
 
 export const DesktopBaseNavbar = () => {
   return (
-    <>
-      <Flex>
-        {NavbarElements.map((element) => (
-          <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
-        ))}
-      </Flex>
-    </>
+    <Flex>
+      {NavbarElements.map((element) => (
+        <NavbarItem key={element.text} text={element.text} href={element.destinationLink} />
+      ))}
+    </Flex>
   );
 };
