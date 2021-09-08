@@ -6,7 +6,7 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 
 import { whenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationTestModule } from './when-user-registration-was-started-then-request-email.test-module';
 
-const UserRegistrationWasStartedEvent = (data: UserRegistrationWasStarted['data']): UserRegistrationWasStarted => {
+const userRegistrationWasStartedEvent = (data: UserRegistrationWasStarted['data']): UserRegistrationWasStarted => {
   return {
     type: 'UserRegistrationWasStarted',
     data,
@@ -33,7 +33,7 @@ describe('RequestEmailConfirmation when UserRegistrationWasStarted', () => {
     const emailAddress = 'testUser@test.pl';
     const hashedPassword = '41c2c1fc8f6cdc15.d5ee8246071726582172f83d569287951a0d727c94dfc35e291fe17abec789c2';
 
-    const event = UserRegistrationWasStartedEvent({ userId, fullName, emailAddress, hashedPassword });
+    const event = userRegistrationWasStartedEvent({ userId, fullName, emailAddress, hashedPassword });
 
     // Then
     await moduleUnderTest.eventOccurred(EventStreamName.from('UserRegistration', userId), event);
