@@ -55,11 +55,11 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
   }
 
   onEvent<DomainEventType extends DomainEvent>(
-    eventType: DomainEventType['type'],
+    _eventType: DomainEventType['type'],
     handle: OnEventFn<DomainEventType>,
   ): MoreEventHandlersOrBuild {
     const handlerToRegister: ApplicationEventHandler = {
-      eventType,
+      eventType: nameof<DomainEventType>(),
       onEvent: handle as OnEventFn,
     };
 

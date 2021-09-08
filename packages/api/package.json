@@ -44,6 +44,7 @@
     "puppeteer": "10.2.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.3.0",
+    "ts-nameof": "5.0.0",
     "ts-retry-promise": "0.6.0",
     "type-fest": "2.1.0",
     "uuid": "8.3.2"
@@ -60,6 +61,7 @@
     "@types/passport-jwt": "3.0.6",
     "@types/passport-local": "1.0.34",
     "@types/supertest": "2.0.11",
+    "@types/ts-nameof": "4.2.1",
     "@types/uuid": "8.3.1",
     "node-mocks-http": "1.10.1",
     "prisma": "2.30.3",
