@@ -31,32 +31,35 @@ export class CourseProgressReadModule {
   @OnEvent('LearningMaterialsTasks.TaskWasUncompleted')
   async onTaskWasUncompleted({ data: { learningMaterialsId } }: ApplicationEvent<TaskWasUncompleted>) {
     await this.prismaService.courseProgress.upsert(
-      this.courseProgressStateUpdateObject({ learningMaterialsId, increment: false }),
+      this.courseProgressStateUpdated({ learningMaterialsId, completedTasks: 'decrement' }),
     );
   }
 
   @OnEvent('LearningMaterialsTasks.TaskWasCompleted')
   async onTaskWasCompleted({ data: { learningMaterialsId } }: ApplicationEvent<TaskWasCompleted>) {
     await this.prismaService.courseProgress.upsert(
-      this.courseProgressStateUpdateObject({ learningMaterialsId, increment: true }),
+      this.courseProgressStateUpdated({ learningMaterialsId, completedTasks: 'increment' }),
     );
   }
 
-  private courseProgressStateUpdateObject({ learningMaterialsId, increment }: GenerateCourseProgressUpsertObjectArgs) {
+  private courseProgressStateUpdated({
+    learningMaterialsId,
+    completedTasks,
+  }: {
+    learningMaterialsId: string;
+    completedTasks: 'increment' | 'decrement';
+  }) {
     return {
       where: { learningMaterialsId },
       update: {
-        learningMaterialsCompletedTasks: increment ? { increment: 1 } : { decrement: 1 },
+        learningMaterialsCompletedTasks: {
+          [completedTasks]: 1,
+        },
       },
       create: {
         learningMaterialsId,
-        learningMaterialsCompletedTasks: increment ? 1 : 0,
+        learningMaterialsCompletedTasks: completedTasks === 'increment' ? 1 : 0,
       },
     };
   }
 }
-
-type GenerateCourseProgressUpsertObjectArgs = {
-  learningMaterialsId: string;
-  increment: boolean;
-};
