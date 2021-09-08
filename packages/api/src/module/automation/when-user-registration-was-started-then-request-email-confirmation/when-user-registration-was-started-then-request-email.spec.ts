@@ -1,5 +1,4 @@
 import { AsyncReturnType } from 'type-fest';
-import waitForExpect from 'wait-for-expect';
 
 import { UserRegistrationWasStarted } from '@/module/events/user-registration-was-started.domain-event';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
@@ -26,7 +25,7 @@ describe('Email confirmation', () => {
     await moduleUnderTest.close();
   });
 
-  it('creates RequestEmailConfirmation command when UserRegistrationWasStarted ocurred', async () => {
+  it('RequestEmailConfirmation when UserRegistrationWasStarted', async () => {
     // Given
     const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
     const fullName = 'test user';
@@ -38,17 +37,15 @@ describe('Email confirmation', () => {
     // Then
     await moduleUnderTest.eventOccurred(EventStreamName.from('UserRegistration', userId), event);
 
-    waitForExpect(() =>
-      moduleUnderTest.expectCommandPublishLastly({
-        type: 'RequestEmailConfirmation',
-        data: {
-          userId,
-          fullName,
-          emailAddress,
-          hashedPassword,
-        },
-      }),
-    );
+    await moduleUnderTest.expectCommandExecutedLastly({
+      type: 'RequestEmailConfirmation',
+      data: {
+        userId,
+        fullName,
+        emailAddress,
+        hashedPassword,
+      },
+    });
 
     // await moduleUnderTest.expectEventPublishedLastly<EmailConfirmationWasRequested>({
     //   type: 'EmailConfirmationWasRequested',

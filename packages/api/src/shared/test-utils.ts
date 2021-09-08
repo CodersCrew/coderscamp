@@ -5,7 +5,8 @@ import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { ApplicationEvent } from '@/module/application-command-events';
+import { ApplicationCommand, ApplicationEvent } from '@/module/application-command-events';
+import { DomainCommand } from '@/module/domain.command';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { ApplicationEventBus } from '@/write/shared/application/application.event-bus';
@@ -83,7 +84,7 @@ export function sequence(length: number) {
 }
 
 type EventBusSpy = jest.SpyInstance<Promise<void>, [ApplicationEvent[]]>;
-type CommandBusSpy = jest.SpyInstance<Promise<unknown>, [command: ICommand]>;
+type CommandBusSpy = jest.SpyInstance<Promise<unknown>, ICommand[]>;
 
 export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   type: EventType['type'];
@@ -91,12 +92,17 @@ export type ExpectedPublishEvent<EventType extends DomainEvent> = {
   streamName: EventStreamName;
 };
 
+export type ExpectedExecuteCommand<CommandType extends DomainCommand> = {
+  type: CommandType['type'];
+  data: CommandType['data'];
+};
+
 export function getEventBusSpy(app: TestingModule): EventBusSpy {
   const eventBus = app.get<ApplicationEventBus>(ApplicationEventBus);
 
   return jest.spyOn(eventBus, 'publishAll');
 }
-export function getCommandBysSpy(app: TestingModule): CommandBusSpy {
+export function getCommandBusSpy(app: TestingModule): CommandBusSpy {
   const newBus = app.get<CommandBus>(CommandBus);
 
   return jest.spyOn(newBus, 'execute');
@@ -122,7 +128,7 @@ export async function initWriteTestModule(
   const commandBus = app.get<CommandBus>(CommandBus);
   const commandFactory = app.get<ApplicationCommandFactory>(ApplicationCommandFactory);
   const eventBusSpy: EventBusSpy = getEventBusSpy(app);
-  const commandBusSpy = getCommandBysSpy(app);
+  const commandBusSpy = getCommandBusSpy(app);
   const applicationService: ApplicationService = app.get<ApplicationService>(APPLICATION_SERVICE);
   const prismaService = app.get<PrismaService>(PrismaService);
 
@@ -233,12 +239,19 @@ export async function initWriteTestModule(
     return app.get<TInput, TResult>(typeOrToken, options);
   }
 
-  async function expectCommandPublishLastly<CommandType extends DomainEvent>(expectations: CommandType) {
-    // const command = jest.spyOn(newBus, 'register');
+  async function expectCommandExecutedLastly<CommandType extends DomainCommand>(
+    expectations: ExpectedExecuteCommand<CommandType>,
+  ) {
+    return waitForExpect(() => {
+      const lastExecuteIndex = commandBusSpy.mock.calls.length - 1;
 
-    // const { calls } = command.mock;
+      const lastPublishedCommand = commandBusSpy.mock.calls[lastExecuteIndex][0] as ApplicationCommand;
 
-    expect(commandBusSpy.mock).toStrictEqual(expectations);
+      expect({
+        type: lastPublishedCommand.type,
+        data: lastPublishedCommand.data,
+      }).toStrictEqual(expectations);
+    });
   }
 
   return {
@@ -250,7 +263,7 @@ export async function initWriteTestModule(
     randomEventId,
     close,
     expectEventPublishedLastly,
-    expectCommandPublishLastly,
+    expectCommandExecutedLastly,
     expectEventsPublishedLastly,
     expectSubscriptionPosition,
     randomUuid,
