@@ -30,6 +30,11 @@ class EnvVariables {
   @Expose()
   @IsString()
   @IsNotEmpty()
+  CURRENT_COURSE_ID: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
   JWT_SECRET: string;
 
   @Expose()
