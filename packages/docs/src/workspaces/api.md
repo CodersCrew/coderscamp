@@ -77,7 +77,7 @@ export type GenerateLearningMaterialsUrl = {
 #### Connect Command & Event by domain logic
 
 Domain logic is: how to react for certain user or external system action (command), based on info, which you have from past events.
-Extremely easy for testing, because it's output depends on the output. No external dependencies and side effects.
+Extremely easy for testing, because its output depends on the input. No external dependencies and side effects.
 
 Domain Logic:
 1. Create a function with parameters:
