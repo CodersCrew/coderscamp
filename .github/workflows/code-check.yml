@@ -15,6 +15,7 @@ jobs:
       APP_ENV: review
       DATABASE_URL: postgresql://root:root@localhost:5432/main-db
       PORT: 4000
+      CURRENT_COURSE_ID: CodersCamp_7
       JWT_SECRET: kljsr89qwh89YT89gvedstfg
       TOKEN_EXPIRATION_TIME: 3600
       TOKEN_PREFIX: Bearer
