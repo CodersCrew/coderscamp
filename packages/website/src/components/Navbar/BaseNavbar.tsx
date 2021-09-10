@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { pageNavigation } from 'src/PageNavigation';
+import { pageNavigation } from 'src/pageNavigation_';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from '@coderscamp/ui/components/Drawer';
