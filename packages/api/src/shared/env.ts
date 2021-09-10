@@ -61,6 +61,11 @@ class EnvVariables {
   @IsNotEmpty()
   @IsIn(EVENT_REPOSITORY_VALUES)
   EVENT_REPOSITORY: typeof EVENT_REPOSITORY_VALUES[number];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  APP_EMAIL_ADDRESS: string;
 }
 
 export const env = plainToClass(EnvVariables, process.env, {
