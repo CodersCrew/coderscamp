@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { pageNavigation } from 'src/PageNavigation';
 
 import { SolidFacebookIcon } from '@coderscamp/ui/icons/SolidFacebook';
 import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
@@ -36,12 +37,7 @@ interface NavColumn {
 export const footerNav: NavColumn[] = [
   {
     title: 'Nawigacja',
-    items: [
-      { href: '/', children: 'Strona główna' },
-      { href: '/mentor', children: 'Dla mentorów' },
-      { href: '/faq', children: 'FAQ' },
-      { href: '/kontakt', children: 'Kontakt' },
-    ],
+    items: pageNavigation,
   },
   {
     title: 'Do pobrania',
