@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { pageNavigation } from 'src/pageNavigation_';
+import { pageNavigation } from 'src/pageNavigation';
 
 import { SolidFacebookIcon } from '@coderscamp/ui/icons/SolidFacebook';
 import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
