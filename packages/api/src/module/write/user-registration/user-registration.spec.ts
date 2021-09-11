@@ -3,6 +3,9 @@ import { AsyncReturnType } from 'type-fest';
 import { registerError } from '@coderscamp/shared/models/auth/register';
 
 import { RegisterUserApplicationCommand } from '@/commands/register-user';
+import { CompleteUserRegistrationApplicationCommand } from '@/module/commands/complete-user-registration';
+import { userRegistrationWasCompletedEvent } from '@/module/events/user-registration-was-completed.domain-event';
+import { userRegistrationWasStartedEvent } from '@/module/events/user-registration-was-started.domain-event';
 import { initWriteTestModule } from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { PASSWORD_ENCODER, PasswordEncoder } from '@/write/shared/application/password-encoder';
@@ -34,7 +37,7 @@ describe('User Registration', () => {
     await moduleUnderTest.close();
   });
 
-  it('when register user, then registration should started and completed', async () => {
+  it('when register user, then registration should started', async () => {
     // Given
     const userId = moduleUnderTest.randomUserId();
     const fullName = 'Jan Nowak';
@@ -54,19 +57,9 @@ describe('User Registration', () => {
     }));
 
     // Then
-    await moduleUnderTest.expectEventsPublishedLastly<UserRegistrationDomainEvent>([
+    moduleUnderTest.expectEventsPublishedLastly<UserRegistrationDomainEvent>([
       {
         type: 'UserRegistrationWasStarted',
-        data: {
-          userId,
-          fullName,
-          emailAddress,
-          hashedPassword: sampleHashedPassword,
-        },
-        streamName: EventStreamName.from('UserRegistration', userId),
-      },
-      {
-        type: 'UserRegistrationWasCompleted',
         data: {
           userId,
           fullName,
@@ -111,5 +104,40 @@ describe('User Registration', () => {
       }));
 
     await expect(command).rejects.toEqual(new Error(registerError.REGISTRATION_FORM_ALREADY_EXISTS));
+  });
+
+  it('should create userRegistrationWasCompleted event when completeUserRegistration command will be invoked after user registration was started', async () => {
+    // given
+    const userId = moduleUnderTest.randomUserId();
+    const fullName = 'test name';
+    const emailAddress = 'test@test.pl';
+    const hashedPassword = 'testedPassword';
+
+    await moduleUnderTest.eventOccurred(
+      EventStreamName.from('UserRegistration', userId),
+      userRegistrationWasStartedEvent({ userId, fullName, emailAddress, hashedPassword }),
+    );
+
+    // when
+    await moduleUnderTest.executeCommand(() => ({
+      class: CompleteUserRegistrationApplicationCommand,
+      type: 'CompleteUserRegistration',
+      data: {
+        userId,
+      },
+    }));
+
+    // Then
+    moduleUnderTest.expectEventsPublishedLastly<UserRegistrationDomainEvent>([
+      {
+        ...userRegistrationWasCompletedEvent({
+          userId,
+          fullName,
+          emailAddress,
+          hashedPassword,
+        }),
+        streamName: EventStreamName.from('UserRegistration', userId),
+      },
+    ]);
   });
 });
