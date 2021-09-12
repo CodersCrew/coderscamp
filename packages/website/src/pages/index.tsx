@@ -6,6 +6,7 @@ import { BigNumbers } from '@/components/BigNumbers/BigNumbers';
 import { Curriculum } from '@/components/Curriculum';
 import { Hero } from '@/components/Hero';
 import { LearningSources } from '@/components/LearningSources';
+import { Partners } from '@/components/Partners';
 import { Projects } from '@/components/Projects';
 import { CandidateSchedule } from '@/components/Schedule';
 import { AboutTestimonials } from '@/components/Testimonials';
@@ -24,6 +25,7 @@ const Home = ({ testimonials }: InferGetStaticPropsType<typeof getTestimonialsSt
       <AboutBenefits />
       <AboutTestimonials testimonials={testimonials} />
       <CandidateSchedule />
+      <Partners />
     </>
   );
 };
