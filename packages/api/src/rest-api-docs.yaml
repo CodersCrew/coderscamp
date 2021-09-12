@@ -4,10 +4,17 @@ info:
   description: Internal REST API for CodersCamp
   version: '1.0'
   contact: {}
-tags: []
-servers: []
+tags:
+  - name: Process.st
+    description: Integration with checklist platform
+    externalDocs:
+      description: Find out more
+      url: https://www.process.st/webhooks/
+servers:
+  - url: /api
+    description: REST API v1
 paths:
-  /api/users:
+  /users:
     get:
       operationId: UserProfile_getAll
       parameters: []
@@ -15,9 +22,9 @@ paths:
         '200':
           description: ''
       tags:
-        - user-profile
-        - user
-  /api/users/me:
+        - User Profile
+        - User
+  /users/me:
     get:
       operationId: UserProfile_getMe
       parameters: []
@@ -25,9 +32,9 @@ paths:
         '200':
           description: ''
       tags:
-        - user-profile
-        - user
-  /api/courses:
+        - User Profile
+        - User
+  /courses:
     get:
       operationId: Courses_getAll
       parameters: []
@@ -35,7 +42,7 @@ paths:
         '200':
           description: ''
       tags:
-        - courses
+        - Courses
     post:
       operationId: Courses_createCourse
       parameters: []
@@ -49,8 +56,8 @@ paths:
         '201':
           description: ''
       tags:
-        - courses
-  /api/auth/login:
+        - Courses
+  /auth/login:
     post:
       operationId: Auth_login
       summary: ''
@@ -62,8 +69,8 @@ paths:
         '204':
           description: Authorization token successfully received as cookie
       tags:
-        - authentication
-  /api/auth/logout:
+        - Authentication
+  /auth/logout:
     post:
       operationId: Auth_logout
       parameters: []
@@ -71,8 +78,8 @@ paths:
         '201':
           description: ''
       tags:
-        - authentication
-  /api/learning-materials:
+        - Authentication
+  /learning-materials:
     post:
       operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
       parameters: []
@@ -80,7 +87,7 @@ paths:
         '204':
           description: ''
       tags:
-        - learning-materials
+        - Learning Materials
     get:
       operationId: LearningMaterials_getLearningMaterial
       parameters: []
@@ -88,8 +95,8 @@ paths:
         '200':
           description: ''
       tags:
-        - learning-materials
-  /api/user-registration:
+        - Learning Materials
+  /user-registration:
     post:
       operationId: UserRegistration_register
       parameters: []
@@ -103,9 +110,9 @@ paths:
         '204':
           description: ''
       tags:
-        - user-registration
-        - user
-  /api/process-st/events/task-checked-unchecked:
+        - User Registration
+        - User
+  /process-st/events/task-checked-unchecked:
     post:
       operationId: LearningMaterialsTask_taskCheckedUnchecked
       parameters: []
@@ -113,9 +120,9 @@ paths:
         '200':
           description: ''
       tags:
-        - learning-materials
-        - process-st
-  /api/email-confirmation:
+        - Learning Materials
+        - Process.st
+  /email-confirmation:
     post:
       operationId: EmailConfirmation_emailConfirmation
       parameters: []
@@ -129,10 +136,10 @@ paths:
         '204':
           description: ''
       tags:
-        - email-confirmation
-        - user-registration
-        - user
-  /api/course-progress:
+        - Email Confirmation
+        - User Registration
+        - User
+  /course-progress:
     get:
       operationId: CourseProgress_getCourseProgress
       parameters: []
@@ -140,7 +147,7 @@ paths:
         '200':
           description: ''
       tags:
-        - course-progress
+        - Course Progress
 components:
   schemas:
     CourseBody:
