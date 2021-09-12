@@ -29,7 +29,7 @@ export const Navbar = () => {
       onUnfix={() => setHasShadow(false)}
     >
       <Center
-        pt={{ base: '32px', lg: '18px' }}
+        pt="18px"
         pb="18px"
         px={{ base: '32px', lg: '40px' }}
         bgColor="white"

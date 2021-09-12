@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { pageNavigation } from 'src/pageNavigation';
 
 import { SolidFacebookIcon } from '@coderscamp/ui/icons/SolidFacebook';
 import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
@@ -7,7 +6,14 @@ import { SolidGlobalIcon } from '@coderscamp/ui/icons/SolidGlobal';
 import { SolidInstagramIcon } from '@coderscamp/ui/icons/SolidInstagram';
 import { SolidLinkedinIcon } from '@coderscamp/ui/icons/SolidLinkedin';
 
-import { COURSE_PLAN_URL, MENTORS_GUIDE_URL, PRIVACY_POLICY_URL, SCHEDULE_URL, TERMS_URL } from '@/constants';
+import {
+  COURSE_PLAN_URL,
+  MENTORS_GUIDE_URL,
+  pageNavigation,
+  PRIVACY_POLICY_URL,
+  SCHEDULE_URL,
+  TERMS_URL,
+} from '@/constants';
 
 interface Social {
   label: string;

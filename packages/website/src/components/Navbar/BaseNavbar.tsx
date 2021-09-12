@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { pageNavigation } from 'src/pageNavigation';
 
 import { Button } from '@coderscamp/ui/components/Button';
 import { Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from '@coderscamp/ui/components/Drawer';
@@ -14,13 +13,13 @@ import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
 import { LogoBlackHorizontal } from '@coderscamp/ui/svg/logos';
 
-import { MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
+import { MENTOR_RECRUITMENT_FORM_URL, pageNavigation } from '@/constants';
 
 import { externalLinkBaseProps } from '../ExternalLink';
 import { useRecruitmentModal } from '../RecruitmentModal';
 import { NavbarItem } from './NavbarItem';
 
-const BecomePartOfCourseButtons = () => {
+const NavbarButtons = () => {
   const { openModal } = useRecruitmentModal();
 
   return (
@@ -47,7 +46,7 @@ export const MobileBaseNavbar = () => {
     <Flex>
       {!isSmallerThan560px && (
         <HStack spacing="12px" pr="24px">
-          <BecomePartOfCourseButtons />
+          <NavbarButtons />
         </HStack>
       )}
       <IconButton aria-label="Nawigacja" icon={<SolidMenuIcon />} size="md" bg="transparent" onClick={onOpen} />
@@ -83,7 +82,7 @@ export const MobileBaseNavbar = () => {
             </VStack>
             {isSmallerThan560px && (
               <VStack mt="26px" px="16px" spacing="16px" width="100%" alignItems="stretch">
-                <BecomePartOfCourseButtons />
+                <NavbarButtons />
               </VStack>
             )}
           </DrawerBody>
@@ -102,7 +101,7 @@ export const DesktopBaseNavbar = () => {
         ))}
       </Flex>
       <HStack spacing="12px" pr="24px">
-        <BecomePartOfCourseButtons />
+        <NavbarButtons />
       </HStack>
     </>
   );
