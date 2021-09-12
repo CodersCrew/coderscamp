@@ -1,0 +1,99 @@
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [NestFactory] Starting Nest application...
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] AppModule dependencies initialized +171ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] PrismaModule dependencies initialized +0ms      
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] PassportModule dependencies initialized +1ms    
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] JwtModule dependencies initialized +2ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] DiscoveryModule dependencies initialized +1ms   
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] EventEmitterModule dependencies initialized +3ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] SharedModule dependencies initialized +2ms      
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] CqrsModule dependencies initialized +2ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule dependencies initialized +6ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule dependencies initialized +2ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] DevTestEvent1EventHandlerAutomationModule dependencies initialized +1ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] UserProfileModule dependencies initialized +2ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] CoursesModule dependencies initialized +1ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] UserRegistrationWriteModule dependencies initialized +1ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] LearningMaterialsTasksModule dependencies initialized +1ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] DevTestWriteModule dependencies initialized +0ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] EmailConfirmationWriteModule dependencies initialized +2ms   
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] LearningMaterialsReadModule dependencies initialized +2ms    
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] CourseProgressReadModule dependencies initialized +1ms       
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [InstanceLoader] LearningMaterialsUrlWriteModule dependencies initialized +1ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [RoutesResolver] UserProfileController {/api}: +32ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [RouterExplorer] Mapped {/api/users, GET} route +7ms   
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [RouterExplorer] Mapped {/api/users/me, GET} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:06     LOG [RoutesResolver] CoursesController {/api/courses}: +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/courses, GET} route +8ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/courses, POST} route +3ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] AuthController {/api}: +6ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/auth/login, POST} route +3ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/auth/logout, POST} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] LearningMaterialsUrlRestController {/api/learning-materials}: +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/learning-materials, POST} route +3ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] UserRegistrationRestController {/api}: +4ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/user-registration, POST} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] LearningMaterialsTaskRestController {/api/process-st/events}: +1ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/process-st/events/task-checked-unchecked, POST} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] EmailConfirmationRestController {/api/email-confirmation}: +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/email-confirmation, POST} route +3ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] DevTestRestController {/api/dev-test}: +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/dev-test/1, POST} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/dev-test/2, POST} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] LearningMaterialsRestController {/api/learning-materials}: +1ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/learning-materials, GET} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RoutesResolver] CourseProgressRestController {/api/course-progress}: +1ms
+[Nest] 18112  - 12.09.2021, 20:16:07     LOG [RouterExplorer] Mapped {/api/course-progress, GET} route +2ms
+[Nest] 18112  - 12.09.2021, 20:16:08     LOG [NestApplication] Nest application successfully started +1259ms
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventApplicationService] start reading events from stream(UserRegistration_b3d15947-2e18-4b21-8704-88edbcbc3025)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventApplicationService] read events from stream(UserRegistration_b3d15947-2e18-4b21-8704-88edbcbc3025) with version(0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventApplicationService] executed domain logic and recived events ["fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0","3e748c71-ea8d-4652-8add-9ddb60c1940a"]
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [PrismaEventRepository] BEGIN TREANSACTION(1827) on streamName UserRegistration_b3d15947-2e18-4b21-8704-88edbcbc3025 with events ["fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0","3e748c71-ea8d-4652-8add-9ddb60c1940a"]
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [PrismaEventRepository] TRANSACTION(1827) SELECT current stream version
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [PrismaEventRepository] TRANSACTION(1827) currentStreamVersion(0) expectedStreamVersion(0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [PrismaEventRepository] TRANSACTION(1827) INSERT events to db
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [PrismaEventRepository] TRANSACTION(1827) SELECT inserted events from db
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [PrismaEventRepository] COMMIT TREANSACTION(1827)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventApplicationService] start publishing events ["fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0","3e748c71-ea8d-4652-8add-9ddb60c1940a"]
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [ApplicationEventBus] Publishing event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0) of type UserRegistration.UserRegistrationWasStarted
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [LearningMaterials_ReadModel_v1] start acquiring mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [CourseProgress_ReadModel_v1] start acquiring mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1] start acquiring mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [WhenUserRegistrationWasStartedThenRequestEmailConfirmation_Automation_v1] start acquiring mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [DevTestEvent1_Automation_v1] start acquiring mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [ApplicationEventBus] Publishing event(3e748c71-ea8d-4652-8add-9ddb60c1940a) of type UserRegistration.UserRegistrationWasCompleted
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [LearningMaterials_ReadModel_v1] start acquiring mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [CourseProgress_ReadModel_v1] start acquiring mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1] start acquiring mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [WhenUserRegistrationWasStartedThenRequestEmailConfirmation_Automation_v1] start acquiring mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [DevTestEvent1_Automation_v1] start acquiring mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:53     LOG [EventsSubscription] [LearningMaterials_ReadModel_v1] released mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1] released mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [WhenUserRegistrationWasStartedThenRequestEmailConfirmation_Automation_v1] BEGIN TREANSACTION(1832) for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [WhenUserRegistrationWasStartedThenRequestEmailConfirmation_Automation_v1] TREANSACTION(1832) event position (1) expected position (1))
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventApplicationService] start reading events from stream(EmailConfirmation_b3d15947-2e18-4b21-8704-88edbcbc3025_user-registration)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [CourseProgress_ReadModel_v1] released mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [DevTestEvent1_Automation_v1] released mutex for event(fc2dcf1a-b9e5-43b0-8ec5-57a1176368b0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [DevTestEvent1_Automation_v1] released mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [LearningMaterials_ReadModel_v1] released mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventApplicationService] read events from stream(EmailConfirmation_b3d15947-2e18-4b21-8704-88edbcbc3025_user-registration) with version(0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventApplicationService] executed domain logic and recived events ["e92fb724-1ad1-47eb-8947-58daa56692b7"]
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [CourseProgress_ReadModel_v1] released mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [PrismaEventRepository] BEGIN TREANSACTION(1839) on streamName EmailConfirmation_b3d15947-2e18-4b21-8704-88edbcbc3025_user-registration with events ["e92fb724-1ad1-47eb-8947-58daa56692b7"]
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [PrismaEventRepository] TRANSACTION(1839) SELECT current stream version
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [PrismaEventRepository] TRANSACTION(1839) currentStreamVersion(0) expectedStreamVersion(0)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [PrismaEventRepository] TRANSACTION(1839) INSERT events to db
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1] released mutex for event(3e748c71-ea8d-4652-8add-9ddb60c1940a)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [PrismaEventRepository] TRANSACTION(1839) SELECT inserted events from db
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [PrismaEventRepository] COMMIT TREANSACTION(1839)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventApplicationService] start publishing events ["e92fb724-1ad1-47eb-8947-58daa56692b7"]
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [ApplicationEventBus] Publishing event(e92fb724-1ad1-47eb-8947-58daa56692b7) of type EmailConfirmation.EmailConfirmationWasRequested
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [LearningMaterials_ReadModel_v1] start acquiring mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [CourseProgress_ReadModel_v1] start acquiring mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1] start acquiring mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [WhenUserRegistrationWasStartedThenRequestEmailConfirmation_Automation_v1] start acquiring mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [DevTestEvent1_Automation_v1] start acquiring mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1] released mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:54     LOG [EventsSubscription] [LearningMaterials_ReadModel_v1] released mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:55     LOG [EventsSubscription] [DevTestEvent1_Automation_v1] released mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)
+[Nest] 18112  - 12.09.2021, 20:16:55     LOG [EventsSubscription] [CourseProgress_ReadModel_v1] released mutex for event(e92fb724-1ad1-47eb-8947-58daa56692b7)

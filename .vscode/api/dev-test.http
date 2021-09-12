@@ -1,0 +1,17 @@
+
+### recursive
+POST {{serverUrl}}/dev-test/1
+
+{
+    "id": 1,
+    "counter": 2
+}
+
+
+### non recursive
+POST {{serverUrl}}/dev-test/2
+
+{
+    "id": 1,
+    "counter": 2
+}

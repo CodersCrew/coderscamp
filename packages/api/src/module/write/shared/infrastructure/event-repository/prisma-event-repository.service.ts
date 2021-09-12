@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import { ApplicationEvent, DefaultCommandMetadata } from '@/module/application-command-events';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -25,6 +25,8 @@ const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, 
 
 @Injectable()
 export class PrismaEventRepository implements EventRepository {
+  private readonly logger = new Logger(PrismaEventRepository.name);
+
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider,
@@ -53,7 +55,19 @@ export class PrismaEventRepository implements EventRepository {
     expectedStreamVersion: EventStreamVersion,
   ): Promise<ApplicationEvent[]> {
     return this.prismaService.$transaction(async (prisma) => {
+      const qResp = await prisma.$queryRaw('select txid_current()');
+      const trxID = qResp[0].txid_current;
+      const eventsJSON = JSON.stringify(events.map((x) => x.id));
+
+      this.logger.log(`BEGIN TREANSACTION(${trxID}) on streamName ${streamName.raw} with events ${eventsJSON}`);
+
+      this.logger.log(`TRANSACTION(${trxID}) SELECT current stream version`);
+
       const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
+
+      this.logger.log(
+        `TRANSACTION(${trxID}) currentStreamVersion(${currentStreamVersion}) expectedStreamVersion(${expectedStreamVersion})`,
+      );
 
       if (currentStreamVersion !== expectedStreamVersion) {
         throw new Error(
@@ -72,13 +86,18 @@ export class PrismaEventRepository implements EventRepository {
         metadata: JSON.stringify(e.metadata),
       }));
 
+      this.logger.log(`TRANSACTION(${trxID}) INSERT events to db`);
       await prisma.event.createMany({ data: databaseEvents });
+
+      this.logger.log(`TRANSACTION(${trxID}) SELECT inserted events from db`);
 
       const storedEvents = await prisma.event.findMany({
         where: {
           id: { in: databaseEvents.map((e) => e.id) },
         },
       });
+
+      this.logger.log(`COMMIT TREANSACTION(${trxID})`);
 
       return storedEvents.map((e) => ({
         type: e.type,

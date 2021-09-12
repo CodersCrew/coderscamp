@@ -149,23 +149,40 @@ export class EventsSubscription {
   private async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
   ): Promise<void> {
+    this.logger.log(`[${this.subscriptionId}] start acquiring mutex for event(${event.id})`);
     await this.mutex
       .runExclusive(async () => {
-        await this.prismaService.$transaction(async (transaction) => {
-          const subscriptionState = await transaction.eventsSubscription.findUnique({
-            where: { id: this.subscriptionId },
+        if (!this.handlingEventTypes().includes(event.type)) {
+          await this.prismaService.$transaction(async (transaction) => {
+            await this.moveCurrentPosition(event.globalOrder, transaction);
           });
-          const currentPosition =
-            subscriptionState?.currentPosition ?? this.configuration.start.from.globalPosition - 1;
+        } else {
+          await this.prismaService.$transaction(async (transaction) => {
+            const qResp = await transaction.$queryRaw('select txid_current()');
+            const trxID = qResp[0].txid_current;
 
-          const expectedEventPosition = currentPosition + 1;
+            this.logger.log(`[${this.subscriptionId}] BEGIN TREANSACTION(${trxID}) for event(${event.id})`);
 
-          this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
+            const subscriptionState = await transaction.eventsSubscription.findUnique({
+              where: { id: this.subscriptionId },
+            });
+            const currentPosition =
+              subscriptionState?.currentPosition ?? this.configuration.start.from.globalPosition - 1;
 
-          await this.processSubscriptionPositionChange(event, transaction);
-          await this.processEvent(event, transaction);
-          await this.moveCurrentPosition(event.globalOrder, transaction);
-        });
+            const expectedEventPosition = currentPosition + 1;
+
+            this.logger.log(
+              `[${this.subscriptionId}] TREANSACTION(${trxID}) event position (${event.globalOrder}) expected position (${expectedEventPosition}))`,
+            );
+
+            this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
+
+            await this.processSubscriptionPositionChange(event, transaction);
+            await this.processEvent(event, transaction);
+            await this.moveCurrentPosition(event.globalOrder, transaction);
+            this.logger.log(`COMMIT TREANSACTION(${trxID})`);
+          });
+        }
       })
       .catch(async (e) => {
         await this.stop();
@@ -175,6 +192,7 @@ export class EventsSubscription {
         );
         throw e;
       });
+    this.logger.log(`[${this.subscriptionId}] released mutex for event(${event.id})`);
   }
 
   private throwIfSomeEventsWasMissed(event: ApplicationEvent, expectedEventPosition: number) {

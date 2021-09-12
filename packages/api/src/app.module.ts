@@ -3,6 +3,7 @@ import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadat
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
+import { DevTestEvent1EventHandlerAutomationModule } from '@/automation/dev-test-automation/dev-test-event-1-was-published.module';
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from '@/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
 import { WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule } from '@/automation/when-user-registration-was-started-then-request-email-confirmation/when-user-registration-was-started-then-request-email-confirmation-automation.module';
 import { UserProfileModule } from '@/crud/user-profile/user-profile.module';
@@ -10,6 +11,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 import { CourseProgressReadModule } from '@/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
 import { env } from '@/shared/env';
+import { DevTestWriteModule } from '@/write/dev-test-module/dev-test.write-module';
 import { EmailConfirmationWriteModule } from '@/write/email-confirmation/email-confirmation.write-module';
 import { LearningMaterialsTasksModule } from '@/write/learning-materials-tasks/learning-materials-tasks.write-module';
 import { LearningMaterialsUrlWriteModule } from '@/write/learning-materials-url/learning-materials-url.write-module';
@@ -26,11 +28,13 @@ const writeModules = [
   UserRegistrationWriteModule,
   LearningMaterialsTasksModule,
   EmailConfirmationWriteModule,
+  DevTestWriteModule,
 ];
 const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
 const automationModules = [
   SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule,
   WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule,
+  DevTestEvent1EventHandlerAutomationModule,
 ];
 const eventModelingModules = [...writeModules, ...readModules, ...automationModules];
 const crudModules = [UserProfileModule, CoursesModule, AuthModule];

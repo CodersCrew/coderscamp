@@ -56,3 +56,6 @@ out
 packages/ui/src/svg
 packages/ui/src/icons
 .cache-loader
+
+# Database
+data/
