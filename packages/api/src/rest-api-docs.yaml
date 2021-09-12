@@ -5,16 +5,20 @@ info:
   version: '1.0'
   contact: {}
 tags:
+  - name: User Registration
+    description: Registration of platform user. After that authentication will be possible.
   - name: Authentication
     description: Internal jwt token based authentication server.
+  - name: Email Confirmation
+    description: Authorization of any operation by email confirmation.
   - name: User Profile
     description: Personal data about users.
-  - name: User Account
-    description: Operations related to lifecycle of user account.
-  - name: Courses
-    description: CRUD for platform courses.
   - name: Learning Materials
     description: Generating and retrieving checklist URL.
+  - name: Course Progress
+    description: Tracking course progress by participant.
+  - name: Courses
+    description: CRUD for platform courses.
   - name: Process.st
     description: WebHooks endpoints. Integration with checklist platform.
     externalDocs:
@@ -33,7 +37,6 @@ paths:
           description: ''
       tags:
         - User Profile
-        - User Account
   /users/me:
     get:
       operationId: UserProfile_getMe
@@ -43,7 +46,6 @@ paths:
           description: ''
       tags:
         - User Profile
-        - User Account
   /courses:
     get:
       operationId: Courses_getAll
@@ -80,7 +82,6 @@ paths:
           description: Authorization token successfully received as cookie
       tags:
         - Authentication
-        - User Account
   /auth/logout:
     post:
       operationId: Auth_logout
@@ -90,7 +91,6 @@ paths:
           description: ''
       tags:
         - Authentication
-        - User Account
   /learning-materials:
     post:
       operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
@@ -123,7 +123,6 @@ paths:
           description: ''
       tags:
         - User Registration
-        - User Account
   /process-st/events/task-checked-unchecked:
     post:
       operationId: LearningMaterialsTask_taskCheckedUnchecked
@@ -148,8 +147,6 @@ paths:
           description: ''
       tags:
         - Email Confirmation
-        - User Registration
-        - User Account
   /course-progress:
     get:
       operationId: CourseProgress_getCourseProgress
