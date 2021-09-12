@@ -12,20 +12,21 @@ import { Project } from './Projects.data';
 
 interface ProjectCardProps {
   project: Project;
-  isSmallMobile: boolean;
 }
 
-const buttonProps = {
-  ...externalLinkBaseProps,
-  as: 'a',
-  variant: 'solid',
-  color: 'default',
-  flex: 1,
-  size: 'sm',
-} as const;
+export const ProjectCard = ({ project }: ProjectCardProps) => {
+  const buttonHasIcon = useBreakpointValue({ base: true, md: true, lg: true });
+  const buttonsDirection = useBreakpointValue({ base: 'column', sm: 'row', md: 'column', lg: 'row' } as const);
+  const buttonSize = useBreakpointValue({ base: 'md', sm: 'md', md: 'sm' } as const);
 
-export const ProjectCard = ({ project, isSmallMobile }: ProjectCardProps) => {
-  const buttonHasIcon = useBreakpointValue({ base: true, md: false, lg: true });
+  const buttonProps = {
+    ...externalLinkBaseProps,
+    as: 'a',
+    variant: 'solid',
+    color: 'default',
+    size: buttonSize,
+    width: 'max(164px)',
+  } as const;
 
   return (
     <Flex direction="column" p="24px" h="100%" border="1px solid" borderColor="gray.300" borderRadius="8px">
@@ -37,7 +38,14 @@ export const ProjectCard = ({ project, isSmallMobile }: ProjectCardProps) => {
           {project.description}
         </Typography>
       </VStack>
-      <Stack spacing="12px" width="100%" pt="32px" mt="auto" direction={isSmallMobile ? 'column' : 'row'}>
+      <Stack
+        spacing="12px"
+        pt="32px"
+        mt="auto"
+        justifyContent="center"
+        alignItems="center"
+        direction={buttonsDirection}
+      >
         <Button {...buttonProps} href={project.gitHubUrl} icon={buttonHasIcon ? <SolidGitHubIcon /> : undefined}>
           Zobacz kod
         </Button>

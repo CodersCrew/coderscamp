@@ -9,7 +9,7 @@ import { MENTORS_GUIDE_URL } from '@/constants';
 import { Section } from './Section';
 
 export const MentorPerspective = () => {
-  const downloadSize = useBreakpointValue({ base: 'sm', sm: 'lg' } as const, 'base');
+  const downloadSize = useBreakpointValue({ base: 'md', sm: 'md', md: 'lg' } as const, 'base');
 
   return (
     <Section spacing="32px" backgroundColor="gray.50">
