@@ -64,8 +64,8 @@ model CourseProgress {
 }
 
 model EventsSubscription {
-    id                  String @id
-    currentPosition     Int
-    fromPosition        Int
-    eventTypes          String[]
+  id              String   @id
+  currentPosition Int
+  fromPosition    Int
+  eventTypes      String[]
 }
