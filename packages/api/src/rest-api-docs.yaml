@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: CodersCamp REST API
+  description: Internal REST API for CodersCamp
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+paths:
+  /api/users:
+    get:
+      operationId: UserProfile_getAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - user-profile
+        - user
+  /api/users/me:
+    get:
+      operationId: UserProfile_getMe
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - user-profile
+        - user
+  /api/courses:
+    get:
+      operationId: Courses_getAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - courses
+    post:
+      operationId: Courses_createCourse
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseBody'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - courses
+  /api/auth/login:
+    post:
+      operationId: Auth_login
+      summary: ''
+      requestBody:
+        description: api credentials
+        content: {}
+      parameters: []
+      responses:
+        '204':
+          description: Authorization token successfully received as cookie
+      tags:
+        - authentication
+  /api/auth/logout:
+    post:
+      operationId: Auth_logout
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - authentication
+  /api/learning-materials:
+    post:
+      operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+        - learning-materials
+    get:
+      operationId: LearningMaterials_getLearningMaterial
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - learning-materials
+  /api/user-registration:
+    post:
+      operationId: UserRegistration_register
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterBody'
+      responses:
+        '204':
+          description: ''
+      tags:
+        - user-registration
+        - user
+  /api/process-st/events/task-checked-unchecked:
+    post:
+      operationId: LearningMaterialsTask_taskCheckedUnchecked
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - learning-materials
+        - process-st
+  /api/email-confirmation:
+    post:
+      operationId: EmailConfirmation_emailConfirmation
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailConfirmationBody'
+      responses:
+        '204':
+          description: ''
+      tags:
+        - email-confirmation
+        - user-registration
+        - user
+  /api/course-progress:
+    get:
+      operationId: CourseProgress_getCourseProgress
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - course-progress
+components:
+  schemas:
+    CourseBody:
+      type: object
+      properties: {}
+    RegisterBody:
+      type: object
+      properties: {}
+    EmailConfirmationBody:
+      type: object
+      properties: {}
