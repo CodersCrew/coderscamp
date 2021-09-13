@@ -30,10 +30,6 @@ export class PrismaEventRepository implements EventRepository {
     @Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider,
   ) {}
 
-  protected async thisIsSynchronizationBarierForTestingPurpose(): Promise<void> {
-    return Promise.resolve();
-  }
-
   async read(streamName: EventStreamName): Promise<EventStream> {
     const dbEvents = await this.prismaService.event.findMany({
       where: { streamId: streamName.streamId, occurredAt: { lte: this.timeProvider.currentTime() } },
@@ -68,19 +64,16 @@ export class PrismaEventRepository implements EventRepository {
       metadata: JSON.stringify(e.metadata),
     }));
 
-    await this.prismaService.$transaction(async (prisma) => {
-      const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
-
-      await this.thisIsSynchronizationBarierForTestingPurpose();
-
-      if (currentStreamVersion !== expectedStreamVersion) {
-        throw new Error(
-          `Event stream ${streamName.raw} expected version is: ${expectedStreamVersion}, but current version is: ${currentStreamVersion}`,
-        );
-      }
-
-      await prisma.event.createMany({ data: databaseEvents });
-    });
+    // HACK: This is workaround, because of bug in prisma implementation: https://github.com/prisma/prisma/issues/8707
+    await this.prismaService.$transaction([
+      this.prismaService.eventLock.createMany({
+        data: databaseEvents.map((x) => ({
+          streamId: x.streamId,
+          streamVersion: x.streamVersion,
+        })),
+      }),
+      this.prismaService.event.createMany({ data: databaseEvents }),
+    ]);
 
     const storedEvents = await this.prismaService.event.findMany({
       where: {
