@@ -1,8 +1,10 @@
+import { INestApplication } from '@nestjs/common';
 import { Abstract } from '@nestjs/common/interfaces';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
+import supertest from 'supertest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
@@ -347,3 +349,29 @@ export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
   register: jest.fn(),
   execute: jest.fn(),
 };
+
+export async function initTestModuleRestApi(
+  controller: Type,
+  config?: (module: TestingModuleBuilder) => TestingModuleBuilder,
+) {
+  const commandBusExecute = jest.fn();
+  const moduleBuilder = await Test.createTestingModule({
+    imports: [eventEmitterRootModule, SharedModule],
+    controllers: [controller],
+  })
+    .overrideProvider(CommandBus)
+    .useValue({ execute: commandBusExecute, register: jest.fn() });
+  const moduleRef = await (config ? config(moduleBuilder) : moduleBuilder).compile();
+
+  const app: INestApplication = moduleRef.createNestApplication();
+
+  await app.init();
+
+  const http = supertest.agent(app.getHttpServer());
+
+  function close() {
+    return app.close();
+  }
+
+  return { http, close, commandBusExecute };
+}
