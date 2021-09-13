@@ -1,9 +1,8 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: CodersCamp REST API
   description: Internal REST API for CodersCamp
   version: '1.0'
-  contact: {}
 tags:
   - name: User Registration
     description: Registration of platform user. After that authentication will be possible.
@@ -28,6 +27,62 @@ servers:
   - url: /api
     description: REST API v1
 paths:
+  /user-registration:
+    post:
+      description: Register new user account. Email must be unique.
+      operationId: UserRegistrationPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationPostRequestBody'
+      responses:
+        '204':
+          description: 'User successfully registered'
+      tags:
+        - User Registration
+  /auth/login:
+    post:
+      description: Store user JWT Token in "access_token" cookie.
+      operationId: Auth_login
+      summary: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthLoginPostRequestBody'
+      responses:
+        '204':
+          description: Authorization token successfully received as cookie
+      tags:
+        - Authentication
+  /auth/logout:
+    post:
+      description: Remove JWT Token from cookies.
+      operationId: Auth_logout
+      parameters: [ ]
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Authentication
+  /email-confirmation:
+    post:
+      description: Request email confirmation for some user action. May be used for resend of confirmation email.
+      operationId: EmailConfirmation_emailConfirmation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailConfirmationPostRequestBody'
+      responses:
+        '204':
+          description: 'Email confirmation was successfully requested. Email was sent.'
+      tags:
+        - Email Confirmation
   /users:
     get:
       operationId: UserProfile_getAll
@@ -46,6 +101,40 @@ paths:
           description: ''
       tags:
         - User Profile
+  /learning-materials:
+    post:
+      description: Generate user personal url for current course learning materials.
+      operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
+      responses:
+        '204':
+          description: Learning materials for current course
+      tags:
+        - Learning Materials
+    get:
+      description: Personal url for current course learning materials.
+      operationId: LearningMaterials_getLearningMaterial
+      responses:
+        '200':
+          description: 'Learning materials url was generated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningMaterialsGetResponseBody'
+      tags:
+        - Learning Materials
+  /course-progress:
+    get:
+      operationId: CourseProgress_getCourseProgress
+      parameters: [ ]
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseProgressGetResponseBody'
+      tags:
+        - Course Progress
   /courses:
     get:
       operationId: Courses_getAll
@@ -69,94 +158,20 @@ paths:
           description: ''
       tags:
         - Courses
-  /auth/login:
-    post:
-      operationId: Auth_login
-      summary: ''
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AuthLoginPostRequestBody'
-      responses:
-        '204':
-          description: Authorization token successfully received as cookie
-      tags:
-        - Authentication
-  /auth/logout:
-    post:
-      operationId: Auth_logout
-      parameters: []
-      responses:
-        '201':
-          description: ''
-      tags:
-        - Authentication
-  /learning-materials:
-    post:
-      operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
-      parameters: []
-      responses:
-        '204':
-          description: ''
-      tags:
-        - Learning Materials
-    get:
-      operationId: LearningMaterials_getLearningMaterial
-      parameters: []
-      responses:
-        '200':
-          description: ''
-      tags:
-        - Learning Materials
-  /user-registration:
-    post:
-      operationId: UserRegistrationPost
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRegistrationPostRequestBody'
-      responses:
-        '204':
-          description: 'User successfully registered'
-      tags:
-        - User Registration
   /process-st/events/task-checked-unchecked:
     post:
+      description: Process.st should invoke this endpoint when task was checked or unchecked.
       operationId: LearningMaterialsTask_taskCheckedUnchecked
-      parameters: []
-      responses:
-        '200':
-          description: ''
-      tags:
-        - Process.st
-  /email-confirmation:
-    post:
-      operationId: EmailConfirmation_emailConfirmation
-      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmailConfirmationBody'
-      responses:
-        '204':
-          description: ''
-      tags:
-        - Email Confirmation
-  /course-progress:
-    get:
-      operationId: CourseProgress_getCourseProgress
-      parameters: []
+              $ref: '#/components/schemas/ProcessStTaskCheckedUncheckedWebHookRequestBody'
       responses:
         '200':
-          description: ''
+          description: 'Process.st event was processed'
       tags:
-        - Course Progress
+        - Process.st
 components:
   schemas:
     UserRegistrationPostRequestBody:
@@ -205,6 +220,79 @@ components:
       required:
         - email
         - password
+    EmailConfirmationPostRequestBody:
+      type: object
+      properties:
+        confirmationFor:
+          description: Name of operation to be confirmed by email
+          type: string
+          example: user-registration
+      required:
+        - confirmationFor
+    CourseProgressGetResponseBody:
+      description: Current course progress of logged user
+      type: object
+      properties:
+        learningMaterials:
+          description: Progress of learning from materials
+          type: object
+          properties:
+            completedTasks:
+              description: How many tasks on checklist was completed
+              type: number
+              minimum: 0
+              example: 10
+          required:
+            - completedTasks
+      required:
+        - learningMaterials
+    LearningMaterialsGetResponseBody:
+      type: object
+      properties:
+        id:
+          description: Identificator of personal learning materials
+          type: string
+          example: jNMTGn96H8Xe3H8DbcpJOg
+        url:
+          description: Access url for checklist with learning materials
+          type: string
+          format: url
+          example: https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg
+      required:
+        - id
+        - url
+    ProcessStTaskCheckedUncheckedWebHookRequestBody:
+      type: object
+      properties:
+        id:
+          description: Identificator of personal learning materials
+          type: string
+          example: jNMTGn96H8Xe3H8DbcpJOg
+        type:
+          description: Type of event
+          type: string
+          example: TaskCheckedUnchecked
+        createdDate:
+          description: Date when event occurred
+          type: string
+          format: date-time
+          example: 2019-09-03T12:10:19.483+02:00
+        data:
+          properties:
+            id:
+              description: Identificator of the task
+              type: string
+              example: n97r3Z9bZClSK95H7shJ5g
+            status:
+              description: Status of the task.
+              type: string
+              enum:
+                - NotCompleted
+                - Completed
+              example: Completed
+      required:
+        - id
+        - type
   securitySchemes:
     jwtInternalCookieAuth:
       type: apiKey
