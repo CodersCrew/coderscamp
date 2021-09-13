@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpCode, InternalServerErrorException, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { REGISTER_ENDPOINT, RegisterBody, RegisterResponse } from '@coderscamp/shared/models/auth/register';
@@ -12,7 +12,6 @@ export class UserRegistrationRestController {
   constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
 
   @Post(REGISTER_ENDPOINT)
-  @HttpCode(204)
   async register(@Body() body: RegisterBody): Promise<RegisterResponse> {
     const command = this.commandFactory.applicationCommand((idGenerator) => ({
       class: RegisterUserApplicationCommand,
@@ -27,6 +26,8 @@ export class UserRegistrationRestController {
 
     try {
       await this.commandBus.execute(command);
+
+      return { userId: command.data.userId };
     } catch (ex) {
       if (isDomainRuleViolation(ex)) {
         throw new BadRequestException(ex);

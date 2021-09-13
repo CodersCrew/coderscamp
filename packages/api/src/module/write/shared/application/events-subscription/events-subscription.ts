@@ -89,7 +89,7 @@ export class EventsSubscription {
           throw e;
         });
       },
-      { retries: maxRetries },
+      { retries: maxRetries, delay: 5000, backoff: 'EXPONENTIAL' },
     ).catch((e) =>
       this.logger.error(
         `EventsSubscription ${this.subscriptionId} stopped processing of events after ${maxRetries} retries.`,

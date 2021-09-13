@@ -25,4 +25,4 @@ export class RegisterBody {
   password: string;
 }
 
-export type RegisterResponse = void;
+export type RegisterResponse = { userId: string };

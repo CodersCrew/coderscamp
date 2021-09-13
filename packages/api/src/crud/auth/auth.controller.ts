@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { Response } from 'express';
 
@@ -25,7 +25,7 @@ export class AuthController {
         expires: new Date(Date.now() + env.TOKEN_EXPIRATION_TIME * 1000),
         httpOnly: true,
       })
-      .sendStatus(204);
+      .sendStatus(HttpStatus.NO_CONTENT);
   }
 
   @Post(LOGOUT_ENDPOINT)

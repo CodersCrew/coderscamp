@@ -8,7 +8,7 @@ tags:
   - name: User Registration
     description: Registration of platform user. After that authentication will be possible.
   - name: Authentication
-    description: Internal jwt token based authentication server.
+    description: Internal jwt-token & cookie based authentication.
   - name: Email Confirmation
     description: Authorization of any operation by email confirmation.
   - name: User Profile
@@ -74,9 +74,11 @@ paths:
       operationId: Auth_login
       summary: ''
       requestBody:
-        description: api credentials
-        content: {}
-      parameters: []
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthLoginPostRequestBody'
       responses:
         '204':
           description: Authorization token successfully received as cookie
@@ -110,17 +112,16 @@ paths:
         - Learning Materials
   /user-registration:
     post:
-      operationId: UserRegistration_register
-      parameters: []
+      operationId: UserRegistrationPost
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterBody'
+              $ref: '#/components/schemas/UserRegistrationPostRequestBody'
       responses:
         '204':
-          description: ''
+          description: 'User successfully registered'
       tags:
         - User Registration
   /process-st/events/task-checked-unchecked:
@@ -184,3 +185,28 @@ components:
         - fullName
         - email
         - password
+    AuthLoginPostRequestBody:
+      description: Credentials of user to be logged
+      type: object
+      properties:
+        email:
+          description: Email address of the user
+          type: string
+          format: email
+          maxLength: 320
+          example: jan.kowalski@email.com
+        password:
+          description: Password of the user
+          type: string
+          format: password
+          minLength: 3
+          maxLength: 60
+          example: rZBv4G_xSvY#Mbsq4U
+      required:
+        - email
+        - password
+  securitySchemes:
+    jwtInternalCookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token

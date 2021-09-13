@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
+import { SwaggerCustomOptions } from '@nestjs/swagger/dist/interfaces';
 import cookieParser from 'cookie-parser';
 import YAML from 'yamljs';
 
@@ -19,7 +20,14 @@ async function bootstrap() {
     app.use(cookieParser(env.COOKIE_SECRET));
     app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-    SwaggerModule.setup('swagger', app, YAML.load('./src/rest-api-docs.yaml'));
+    const swaggerUiOptions: SwaggerCustomOptions = {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+      customSiteTitle: 'CodersCamp App REST API docs',
+    };
+
+    SwaggerModule.setup('swagger', app, YAML.load('./rest-api-docs.yaml'), swaggerUiOptions);
 
     await app.listen(env.PORT);
   } catch (ex) {
