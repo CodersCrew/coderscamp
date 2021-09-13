@@ -11,13 +11,16 @@ import { initOpenApiExpect } from '../../../../../../jest-setup';
 
 initOpenApiExpect();
 
-// eslint-disable-next-line jest/no-disabled-tests
 describe('User Registration | REST API', () => {
   let restUnderTest: AsyncReturnType<typeof initTestModuleRestApi>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     restUnderTest = await initTestModuleRestApi(UserRegistrationRestController);
     restUnderTest.commandBusExecute.mockClear();
+  });
+
+  afterAll(async () => {
+    await restUnderTest.close();
   });
 
   describe('/POST user-registration', () => {
@@ -77,9 +80,5 @@ describe('User Registration | REST API', () => {
       });
       expect(response).toSatisfyApiSpec();
     });
-  });
-
-  afterEach(async () => {
-    await restUnderTest.close();
   });
 });
