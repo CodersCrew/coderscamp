@@ -17,7 +17,7 @@ tags:
   - name: Course Progress
     description: Tracking course progress by participant.
   - name: Courses
-    description: CRUD for platform courses.
+    description: CRUD for platform courses. Just dates are supported. No impact on current course.
   - name: Process.st
     description: WebHooks endpoints. Integration with checklist platform.
     externalDocs:
@@ -29,7 +29,7 @@ servers:
 paths:
   /user-registration:
     post:
-      description: Register new user account. Email must be unique.
+      summary: Register new user account. Email must be unique.
       operationId: UserRegistrationPost
       requestBody:
         required: true
@@ -44,9 +44,8 @@ paths:
         - User Registration
   /auth/login:
     post:
-      description: Store user JWT Token in "access_token" cookie.
+      summary: Store user JWT Token in "access_token" cookie.
       operationId: Auth_login
-      summary: ''
       requestBody:
         required: true
         content:
@@ -60,9 +59,8 @@ paths:
         - Authentication
   /auth/logout:
     post:
-      description: Remove JWT Token from cookies.
+      summary: Remove JWT Token from cookies.
       operationId: Auth_logout
-      parameters: [ ]
       responses:
         '201':
           description: ''
@@ -70,7 +68,7 @@ paths:
         - Authentication
   /email-confirmation:
     post:
-      description: Request email confirmation for some user action. May be used for resend of confirmation email.
+      summary: Request email confirmation for some user action. May be used for resend of confirmation email.
       operationId: EmailConfirmation_emailConfirmation
       requestBody:
         required: true
@@ -85,25 +83,33 @@ paths:
         - Email Confirmation
   /users:
     get:
+      summary: All users registered in the platform
       operationId: UserProfile_getAll
-      parameters: []
       responses:
         '200':
-          description: ''
+          description: 'All users registered in the platform'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileGetResponseBody'
       tags:
         - User Profile
   /users/me:
     get:
+      summary: Currently logged uer
       operationId: UserProfile_getMe
-      parameters: []
       responses:
         '200':
-          description: ''
+          description: 'Current user logged into the platform'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileGetMeResponseBody'
       tags:
         - User Profile
   /learning-materials:
     post:
-      description: Generate user personal url for current course learning materials.
+      summary: Generate user personal url for current course learning materials.
       operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
       responses:
         '204':
@@ -111,7 +117,7 @@ paths:
       tags:
         - Learning Materials
     get:
-      description: Personal url for current course learning materials.
+      summary: Personal url for current course learning materials.
       operationId: LearningMaterials_getLearningMaterial
       responses:
         '200':
@@ -124,6 +130,7 @@ paths:
         - Learning Materials
   /course-progress:
     get:
+      summary: How many course activites was completed by user.
       operationId: CourseProgress_getCourseProgress
       parameters: [ ]
       responses:
@@ -137,30 +144,38 @@ paths:
         - Course Progress
   /courses:
     get:
+      summary: All courses in the platform
       operationId: Courses_getAll
-      parameters: []
       responses:
         '200':
-          description: ''
+          description: 'All courses available in the platform'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseGetResponseBody'
       tags:
         - Courses
     post:
+      summary: Create new course for the platform
       operationId: Courses_createCourse
-      parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CourseBody'
+              $ref: '#/components/schemas/CoursePostRequestBody'
       responses:
         '201':
-          description: ''
+          description: 'Created course'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePostResponseBody'
       tags:
         - Courses
   /process-st/events/task-checked-unchecked:
     post:
-      description: Process.st should invoke this endpoint when task was checked or unchecked.
+      summary: Process.st should invoke this endpoint when task was checked or unchecked.
       operationId: LearningMaterialsTask_taskCheckedUnchecked
       requestBody:
         content:
@@ -293,6 +308,75 @@ components:
       required:
         - id
         - type
+    UserProfileGetMeResponseBody:
+      type: object
+      properties:
+        id:
+          description: Identificator of the user
+          type: string
+          example: 2a7d8676-4db6-4e04-a5d1-dd48797a3917
+        fullName:
+          description: Full name of the user
+          type: string
+          maxLength: 100
+          example: Jan Kowalski
+        email:
+          description: Email address of the user
+          type: string
+          format: email
+          maxLength: 320
+          example: jan.kowalski@email.com
+        image:
+          description: URL to avatar
+          type: string
+          format: url
+          example: https://www.gravatar.com/avatar?d=mp
+      required:
+        - id
+        - fullName
+        - email
+        - image
+    UserProfileGetResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserProfileGetMeResponseBody'
+    CoursePostRequestBody:
+      type: object
+      properties:
+        dateStart:
+          type: string
+          format: date-time
+          example: 2021-07-21T17:32:28Z
+        dateEnd:
+          type: string
+          format: date-time
+          example: 2021-07-21T17:32:28Z
+      required:
+        - dateStart
+        - dateEnd
+    CoursePostResponseBody:
+      type: object
+      properties:
+        id:
+          description: Identificator of the course
+          type: string
+          example: 2a7d8676-4db6-4e04-a5d1-dd48797a3917
+        dateStart:
+          type: string
+          format: date-time
+          example: 2021-07-21T17:32:28Z
+        dateEnd:
+          type: string
+          format: date-time
+          example: 2021-07-21T17:32:28Z
+      required:
+        - id
+        - dateStart
+        - dateEnd
+    CourseGetResponseBody:
+      type: array
+      items:
+        $ref: '#/components/schemas/CoursePostResponseBody'
   securitySchemes:
     jwtInternalCookieAuth:
       type: apiKey
