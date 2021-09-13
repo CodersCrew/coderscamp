@@ -12,14 +12,11 @@ import { initOpenApiExpect } from '../../../../../../jest-setup';
 initOpenApiExpect();
 
 // eslint-disable-next-line jest/no-disabled-tests
-describe.skip('User Registration | REST API', () => {
+describe('User Registration | REST API', () => {
   let restUnderTest: AsyncReturnType<typeof initTestModuleRestApi>;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     restUnderTest = await initTestModuleRestApi(UserRegistrationRestController);
-  });
-
-  beforeEach(() => {
     restUnderTest.commandBusExecute.mockClear();
   });
 
@@ -82,7 +79,7 @@ describe.skip('User Registration | REST API', () => {
     });
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await restUnderTest.close();
   });
 });

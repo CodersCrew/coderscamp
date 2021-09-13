@@ -370,7 +370,7 @@ export async function initTestModuleRestApi(
 
   await app.init();
 
-  const http = supertest.agent(app.getHttpServer());
+  const http = supertest(app.getHttpServer());
 
   async function close() {
     await app.close();
