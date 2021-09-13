@@ -113,7 +113,7 @@ paths:
       operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
       responses:
         '204':
-          description: Learning materials for current course
+          description: Learning materials url for current course was generated.
       tags:
         - Learning Materials
     get:
@@ -377,6 +377,34 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CoursePostResponseBody'
+    ErrorResponseBody:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: "Learning materials url was already generated"
+      required:
+        - message
+  responses:
+    BadRequest:
+      description: Incorrect request body
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/ErrorResponseBody'
+    Forbidden:
+      description: Not allowed to execute request
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/ErrorResponseBody'
+    Unauthorized:
+      description: Invalid or missing authorization token
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/ErrorResponseBody'
   securitySchemes:
     jwtInternalCookieAuth:
       type: apiKey
