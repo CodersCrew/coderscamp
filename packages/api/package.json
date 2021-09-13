@@ -46,6 +46,7 @@
     "puppeteer": "10.2.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.3.0",
+    "swagger-ui-express": "4.1.6",
     "ts-retry-promise": "0.6.0",
     "type-fest": "2.1.0",
     "uuid": "8.3.2",

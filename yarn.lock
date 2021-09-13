@@ -2747,6 +2747,7 @@ __metadata:
     reflect-metadata: 0.1.13
     rxjs: 7.3.0
     supertest: 6.1.6
+    swagger-ui-express: 4.1.6
     ts-loader: 9.2.5
     ts-node: 10.2.1
     ts-retry-promise: 0.6.0
@@ -23641,6 +23642,24 @@ resolve@^2.0.0-next.3:
   bin:
     svgo: bin/svgo
   checksum: 9a07a0e7fceef3a2ca9e3977f0b847749493701368397002ede973699d08afc19780a91fffcf161eacaadeeb082f4c67eb2d6bd1351def81165369e376f6834d
+  languageName: node
+  linkType: hard
+
+"swagger-ui-dist@npm:^3.18.1":
+  version: 3.52.1
+  resolution: "swagger-ui-dist@npm:3.52.1"
+  checksum: 6d15c3f133a7a66688b16c412839fb0f7378eb60cc4e53b4bcb35eb6c019c09fc23b1394700cb97bbac9996a33a52426e6496b5674386c73c03e186b92abc456
+  languageName: node
+  linkType: hard
+
+"swagger-ui-express@npm:4.1.6":
+  version: 4.1.6
+  resolution: "swagger-ui-express@npm:4.1.6"
+  dependencies:
+    swagger-ui-dist: ^3.18.1
+  peerDependencies:
+    express: ">=4.0.0"
+  checksum: aff79812940fa1e693eb9a9f2abd7f6e38d62a9d60b9a70fc90749e572d997d70f4cc110b791774f09c5197f8da32941bec25da780ab4c6d58593df23628d735
   languageName: node
   linkType: hard
 
