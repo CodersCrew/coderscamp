@@ -372,8 +372,8 @@ export async function initTestModuleRestApi(
 
   const http = supertest.agent(app.getHttpServer());
 
-  function close() {
-    return app.close();
+  async function close() {
+    await app.close();
   }
 
   return { http, close, commandBusExecute };
