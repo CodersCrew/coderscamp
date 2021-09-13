@@ -8,13 +8,13 @@ export const LOGIN_ENDPOINT = '/auth/login';
 export class LoginBody implements Pick<AuthUser, 'email' | 'password'> {
   @Expose()
   @IsString()
-  @IsEmail({}, { message: 'Niepoprawny format adresu e-mail' })
-  @IsNotEmpty({ message: 'To pole jest wymagane' })
+  @IsEmail({}, { message: '"email" must be properly formatted' })
+  @IsNotEmpty({ message: '"email" is required' })
   email: string;
 
   @Expose()
-  @IsString()
-  @IsNotEmpty({ message: 'To pole jest wymagane' })
+  @IsString({ message: '"password" must be a string' })
+  @IsNotEmpty({ message: '"password" is required' })
   password: string;
 }
 

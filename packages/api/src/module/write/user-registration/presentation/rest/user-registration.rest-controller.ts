@@ -4,7 +4,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { REGISTER_ENDPOINT, RegisterBody, RegisterResponse } from '@coderscamp/shared/models/auth/register';
 
 import { RegisterUserApplicationCommand } from '@/commands/register-user';
-import { isDomainRuleViolation } from '@/shared/domain-rule-violation.error';
+import { isDomainRuleViolation } from '@/shared/errors/domain-rule-violation.exception';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
 
 @Controller()
@@ -30,10 +30,10 @@ export class UserRegistrationRestController {
       return { userId: command.data.userId };
     } catch (ex) {
       if (isDomainRuleViolation(ex)) {
-        throw new BadRequestException(ex);
+        throw new BadRequestException(ex.message);
       }
 
-      throw new InternalServerErrorException(ex);
+      throw new InternalServerErrorException();
     }
   }
 }

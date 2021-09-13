@@ -38,8 +38,14 @@ paths:
             schema:
               $ref: '#/components/schemas/UserRegistrationPostRequestBody'
       responses:
-        '204':
+        201:
           description: 'User successfully registered'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegistrationPostResponseBody'
+        400:
+          $ref: '#/components/responses/BadRequest'
       tags:
         - User Registration
   /auth/login:
@@ -53,7 +59,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AuthLoginPostRequestBody'
       responses:
-        '204':
+        204:
           description: Authorization token successfully received as cookie
       tags:
         - Authentication
@@ -62,7 +68,7 @@ paths:
       summary: Remove JWT Token from cookies.
       operationId: Auth_logout
       responses:
-        '201':
+        201:
           description: ''
       tags:
         - Authentication
@@ -77,7 +83,7 @@ paths:
             schema:
               $ref: '#/components/schemas/EmailConfirmationPostRequestBody'
       responses:
-        '204':
+        204:
           description: 'Email confirmation was successfully requested. Email was sent.'
       tags:
         - Email Confirmation
@@ -86,7 +92,7 @@ paths:
       summary: All users registered in the platform
       operationId: UserProfile_getAll
       responses:
-        '200':
+        200:
           description: 'All users registered in the platform'
           content:
             application/json:
@@ -99,7 +105,7 @@ paths:
       summary: Currently logged uer
       operationId: UserProfile_getMe
       responses:
-        '200':
+        200:
           description: 'Current user logged into the platform'
           content:
             application/json:
@@ -112,7 +118,7 @@ paths:
       summary: Generate user personal url for current course learning materials.
       operationId: LearningMaterialsUrl_generateUserLearningResourcesUrl
       responses:
-        '204':
+        204:
           description: Learning materials url for current course was generated.
       tags:
         - Learning Materials
@@ -120,7 +126,7 @@ paths:
       summary: Personal url for current course learning materials.
       operationId: LearningMaterials_getLearningMaterial
       responses:
-        '200':
+        200:
           description: 'Learning materials url was generated'
           content:
             application/json:
@@ -134,7 +140,7 @@ paths:
       operationId: CourseProgress_getCourseProgress
       parameters: [ ]
       responses:
-        '200':
+        200:
           description: ''
           content:
             application/json:
@@ -147,7 +153,7 @@ paths:
       summary: All courses in the platform
       operationId: Courses_getAll
       responses:
-        '200':
+        200:
           description: 'All courses available in the platform'
           content:
             application/json:
@@ -165,7 +171,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CoursePostRequestBody'
       responses:
-        '201':
+        201:
           description: 'Created course'
           content:
             application/json:
@@ -183,7 +189,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ProcessStTaskCheckedUncheckedWebHookRequestBody'
       responses:
-        '200':
+        200:
           description: 'Process.st event was processed'
       tags:
         - Process.st
@@ -215,6 +221,15 @@ components:
         - fullName
         - email
         - password
+    UserRegistrationPostResponseBody:
+      type: object
+      properties:
+        userId:
+          description: Identifier of registered user
+          type: string
+          example: 2a7d8676-4db6-4e04-a5d1-dd48797a3917
+      required:
+        - userId
     AuthLoginPostRequestBody:
       description: Credentials of user to be logged
       type: object
@@ -377,7 +392,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CoursePostResponseBody'
-    ErrorResponseBody:
+    DefaultErrorResponseBody:
       type: object
       properties:
         message:
@@ -386,25 +401,41 @@ components:
           example: "Learning materials url was already generated"
       required:
         - message
+    NestErrorResponseBody:
+      type: object
+      properties:
+        statusCode:
+          type: number
+        message:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+          example: Bad Request
+      required:
+        - message
   responses:
     BadRequest:
       description: Incorrect request body
       content:
         'application/json':
           schema:
-            $ref: '#/components/schemas/ErrorResponseBody'
+            oneOf:
+              - $ref: '#/components/schemas/NestErrorResponseBody'
+              - $ref: '#/components/schemas/DefaultErrorResponseBody'
     Forbidden:
       description: Not allowed to execute request
       content:
         'application/json':
           schema:
-            $ref: '#/components/schemas/ErrorResponseBody'
+            $ref: '#/components/schemas/DefaultErrorResponseBody'
     Unauthorized:
       description: Invalid or missing authorization token
       content:
         'application/json':
           schema:
-            $ref: '#/components/schemas/ErrorResponseBody'
+            $ref: '#/components/schemas/DefaultErrorResponseBody'
   securitySchemes:
     jwtInternalCookieAuth:
       type: apiKey
