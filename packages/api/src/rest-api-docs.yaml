@@ -158,12 +158,29 @@ paths:
         - Course Progress
 components:
   schemas:
-    CourseBody:
+    UserRegistrationPostRequestBody:
+      description: User to be registered
       type: object
-      properties: {}
-    RegisterBody:
-      type: object
-      properties: {}
-    EmailConfirmationBody:
-      type: object
-      properties: {}
+      properties:
+        fullName:
+          description: Full name of the user
+          type: string
+          maxLength: 100
+          example: Jan Kowalski
+        email:
+          description: Email address of the user
+          type: string
+          format: email
+          maxLength: 320
+          example: jan.kowalski@email.com
+        password:
+          description: Password for the user account
+          type: string
+          format: password
+          minLength: 3
+          maxLength: 60
+          example: rZBv4G_xSvY#Mbsq4U
+      required:
+        - fullName
+        - email
+        - password
