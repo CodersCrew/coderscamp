@@ -2725,7 +2725,6 @@ __metadata:
     "@types/passport-jwt": 3.0.6
     "@types/passport-local": 1.0.34
     "@types/supertest": 2.0.11
-    "@types/swagger-ui-express": 4.1.3
     "@types/uuid": 8.3.1
     "@types/yamljs": 0.2.31
     app-root-path: 3.0.0
@@ -2736,7 +2735,6 @@ __metadata:
     dayjs: 1.10.6
     dotenv: 10.0.0
     express: 4.17.1
-    express-openapi-validate: 0.6.1
     jest-openapi: 0.14.0
     leaked-handles: 5.2.0
     node-mocks-http: 1.10.1
@@ -2749,7 +2747,6 @@ __metadata:
     reflect-metadata: 0.1.13
     rxjs: 7.3.0
     supertest: 6.1.6
-    swagger-ui-express: 4.1.6
     ts-loader: 9.2.5
     ts-node: 10.2.1
     ts-retry-promise: 0.6.0
@@ -7059,16 +7056,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/swagger-ui-express@npm:4.1.3":
-  version: 4.1.3
-  resolution: "@types/swagger-ui-express@npm:4.1.3"
-  dependencies:
-    "@types/express": "*"
-    "@types/serve-static": "*"
-  checksum: 1c990fa8c158f699c5443245383daef2c4b47efce715c105e67f9b88447cf23663774393fdeea7d5a6e97a83d6959b09129f19c4abca64abdb7db74517162295
-  languageName: node
-  linkType: hard
-
 "@types/tapable@npm:^1, @types/tapable@npm:^1.0.5":
   version: 1.0.8
   resolution: "@types/tapable@npm:1.0.8"
@@ -7962,7 +7949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.1.0, ajv@npm:^8.2.0, ajv@npm:^8.4.0":
+"ajv@npm:^8.1.0, ajv@npm:^8.4.0":
   version: 8.6.3
   resolution: "ajv@npm:8.6.3"
   dependencies:
@@ -12894,20 +12881,6 @@ __metadata:
     jest-message-util: ^27.1.0
     jest-regex-util: ^27.0.6
   checksum: 2b5516e0ac0f03d1e44532b61212ed1010d23bd09872d9d7c00b2c8bfa0b2fdaff15a1190a20109bd98e2569cb543d8ab33992ef3b08dfc96509f369e67ead43
-  languageName: node
-  linkType: hard
-
-"express-openapi-validate@npm:0.6.1":
-  version: 0.6.1
-  resolution: "express-openapi-validate@npm:0.6.1"
-  dependencies:
-    ajv: ^8.2.0
-    ajv-formats: ^2.0.2
-    debug: ^4.3.1
-    lodash: ^4.17.21
-    path-to-regexp: ^6.2.0
-    semver: ^7.3.4
-  checksum: 651e5f581a60e4face515b7f348b4a59efb74437f739a3b01dcffcc0282299eada4a1c21aaaaec8a7397442c3e0fa0cb4d66aeeea4b509fe5b1c7453c3b84a42
   languageName: node
   linkType: hard
 
@@ -19458,13 +19431,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "path-to-regexp@npm:6.2.0"
-  checksum: a6aca74d2d6e2e7594d812f653cf85e9cb5054d3a8d80f099722a44ef6ad22639b02078e5ea83d11db16321c3e4359e3f1ab0274fa78dad0754a6e53f630b0fc
-  languageName: node
-  linkType: hard
-
 "path-type@npm:^3.0.0":
   version: 3.0.0
   resolution: "path-type@npm:3.0.0"
@@ -23675,24 +23641,6 @@ resolve@^2.0.0-next.3:
   bin:
     svgo: bin/svgo
   checksum: 9a07a0e7fceef3a2ca9e3977f0b847749493701368397002ede973699d08afc19780a91fffcf161eacaadeeb082f4c67eb2d6bd1351def81165369e376f6834d
-  languageName: node
-  linkType: hard
-
-"swagger-ui-dist@npm:^3.18.1":
-  version: 3.52.1
-  resolution: "swagger-ui-dist@npm:3.52.1"
-  checksum: 6d15c3f133a7a66688b16c412839fb0f7378eb60cc4e53b4bcb35eb6c019c09fc23b1394700cb97bbac9996a33a52426e6496b5674386c73c03e186b92abc456
-  languageName: node
-  linkType: hard
-
-"swagger-ui-express@npm:4.1.6":
-  version: 4.1.6
-  resolution: "swagger-ui-express@npm:4.1.6"
-  dependencies:
-    swagger-ui-dist: ^3.18.1
-  peerDependencies:
-    express: ">=4.0.0"
-  checksum: aff79812940fa1e693eb9a9f2abd7f6e38d62a9d60b9a70fc90749e572d997d70f4cc110b791774f09c5197f8da32941bec25da780ab4c6d58593df23628d735
   languageName: node
   linkType: hard
 

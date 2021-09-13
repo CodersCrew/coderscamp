@@ -25,7 +25,7 @@ import { SharedModule } from '@/write/shared/shared.module';
 
 import { AppModule } from '../app.module';
 import { eventEmitterRootModule } from '../event-emitter.root-module';
-import {setupMiddlewares} from "../main";
+import { setupMiddlewares } from '../main';
 
 export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
