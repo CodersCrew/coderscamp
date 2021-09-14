@@ -32,9 +32,9 @@ export async function cleanupDatabase(prismaService: PrismaService) {
   await prismaService.$executeRaw`ALTER SEQUENCE "Event_globalOrder_seq" RESTART WITH 1`;
 }
 
-export async function initReadTestModule() {
+export async function initReadTestModule(config?: { modules?: ModuleMetadata['imports'] }) {
   const app = await Test.createTestingModule({
-    imports: [AppModule],
+    imports: config?.modules ? [eventEmitterRootModule, SharedModule, ...config.modules] : [AppModule],
   }).compile();
 
   await app.init();
@@ -151,7 +151,9 @@ export async function initWriteTestModule(config?: {
   function getLastPublishedEvents() {
     const lastEventIndex = eventBusSpy.mock.calls.length - 1;
 
-    return eventBusSpy.mock.calls[lastEventIndex][0];
+    const sortEventsByGlobalOrderAsc = (e1: ApplicationEvent, e2: ApplicationEvent) => e1.globalOrder - e2.globalOrder;
+
+    return eventBusSpy.mock.calls[lastEventIndex][0].sort(sortEventsByGlobalOrderAsc);
   }
 
   function expectEvent<EventType extends DomainEvent>(
