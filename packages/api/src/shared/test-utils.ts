@@ -151,7 +151,9 @@ export async function initWriteTestModule(config?: {
   function getLastPublishedEvents() {
     const lastEventIndex = eventBusSpy.mock.calls.length - 1;
 
-    return eventBusSpy.mock.calls[lastEventIndex][0];
+    const sortEventsByGlobalOrderAsc = (e1: ApplicationEvent, e2: ApplicationEvent) => e1.globalOrder - e2.globalOrder;
+
+    return eventBusSpy.mock.calls[lastEventIndex][0].sort(sortEventsByGlobalOrderAsc);
   }
 
   function expectEvent<EventType extends DomainEvent>(
