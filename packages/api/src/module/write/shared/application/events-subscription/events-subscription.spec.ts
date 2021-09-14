@@ -80,9 +80,7 @@ describe('Events subscription', () => {
     });
   });
 
-  // fixme: disabled, try to change delay value only for tests later
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('when event processing fail (after 3 retries), then subscription position should not be moved', async () => {
+  it('when event processing fail (after 3 retries), then subscription position should not be moved', async () => {
     // Given
     const eventStream = sut.randomEventStreamName();
     const event = sampleDomainEvent();

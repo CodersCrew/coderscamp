@@ -44,8 +44,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 4,
       date: MAIN_TEST_FULL_DATE,
-      description:
-        `Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród ${PLACES_COUNT} osób z najlepszymi wynikami.`,
+      description: `Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród ${PLACES_COUNT} osób z najlepszymi wynikami.`,
     },
     {
       index: 5,

@@ -19,6 +19,17 @@ export function setupMiddlewares(app: INestApplication) {
   app.useGlobalFilters(new DomainRuleViolationExceptionFilter());
 }
 
+function setupSwagger(app: INestApplication) {
+  const swaggerUiOptions: SwaggerCustomOptions = {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customSiteTitle: 'CodersCamp App REST API docs',
+  };
+
+  SwaggerModule.setup('swagger', app, YAML.load('./rest-api-docs.yaml'), swaggerUiOptions);
+}
+
 async function bootstrap() {
   try {
     await validateEnv();
@@ -26,15 +37,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     setupMiddlewares(app);
-
-    const swaggerUiOptions: SwaggerCustomOptions = {
-      swaggerOptions: {
-        persistAuthorization: true,
-      },
-      customSiteTitle: 'CodersCamp App REST API docs',
-    };
-
-    SwaggerModule.setup('swagger', app, YAML.load('./rest-api-docs.yaml'), swaggerUiOptions);
+    setupSwagger(app);
 
     await app.listen(env.PORT);
   } catch (ex) {
