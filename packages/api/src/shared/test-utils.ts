@@ -32,9 +32,9 @@ export async function cleanupDatabase(prismaService: PrismaService) {
   await prismaService.$executeRaw`ALTER SEQUENCE "Event_globalOrder_seq" RESTART WITH 1`;
 }
 
-export async function initReadTestModule() {
+export async function initReadTestModule(config?: { modules?: ModuleMetadata['imports'] }) {
   const app = await Test.createTestingModule({
-    imports: [AppModule],
+    imports: config?.modules ? [eventEmitterRootModule, SharedModule, ...config.modules] : [AppModule],
   }).compile();
 
   await app.init();
