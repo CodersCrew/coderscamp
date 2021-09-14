@@ -5,7 +5,7 @@ import { registerError } from '@coderscamp/shared/models/auth/register';
 
 import { RegisterUserApplicationCommand } from '@/commands/register-user';
 import { isUniqueConstraintError } from '@/prisma/prisma.errors';
-import { DomainRuleViolationError } from '@/shared/domain-rule-violation.error';
+import { DomainRuleViolationException } from '@/shared/domain-rule-violation.exception';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { PASSWORD_ENCODER, PasswordEncoder } from '@/write/shared/application/password-encoder';
@@ -40,7 +40,7 @@ export class RegisterUserCommandHandler implements ICommandHandler<RegisterUserA
       await this.emails.unlockEmailAddress({ emailAddress: command.data.emailAddress });
 
       if (isUniqueConstraintError(ex)) {
-        throw new DomainRuleViolationError(registerError.REGISTRATION_FORM_ALREADY_EXISTS, { cause: ex, command });
+        throw new DomainRuleViolationException(registerError.USER_WAS_ALREADY_REGISTERED, { cause: ex, command });
       }
     }
   }

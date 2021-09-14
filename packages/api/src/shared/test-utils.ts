@@ -1,3 +1,4 @@
+import { INestApplication } from '@nestjs/common';
 import { Abstract } from '@nestjs/common/interfaces';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
@@ -18,9 +19,12 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
 import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
+import { UuidGenerator } from '@/write/shared/infrastructure/id-generator/uuid-generator';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
+import { SystemTimeProvider } from '@/write/shared/infrastructure/time-provider/system-time-provider';
 import { SharedModule } from '@/write/shared/shared.module';
 
+import { setupMiddlewares } from '../app.middlewares';
 import { AppModule } from '../app.module';
 import { eventEmitterRootModule } from '../event-emitter.root-module';
 
@@ -349,3 +353,38 @@ export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
   register: jest.fn(),
   execute: jest.fn(),
 };
+
+export async function initTestModuleRestApi(
+  controller: Type,
+  config?: (module: TestingModuleBuilder) => TestingModuleBuilder,
+) {
+  const commandBusExecute = jest.fn();
+  const moduleBuilder = await Test.createTestingModule({
+    providers: [
+      {
+        provide: CommandBus,
+        useValue: { execute: commandBusExecute, register: jest.fn() },
+      },
+      {
+        provide: ApplicationCommandFactory,
+        useValue: new ApplicationCommandFactory(new UuidGenerator(), new SystemTimeProvider()),
+      },
+    ],
+    controllers: [controller],
+  });
+  const moduleRef = await (config ? config(moduleBuilder) : moduleBuilder).compile();
+
+  const app: INestApplication = moduleRef.createNestApplication();
+
+  setupMiddlewares(app);
+
+  await app.init();
+
+  const http = supertest(app.getHttpServer());
+
+  async function close() {
+    await app.close();
+  }
+
+  return { http, close, commandBusExecute };
+}
