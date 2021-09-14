@@ -30,6 +30,9 @@
     "@nestjs/serve-static": "2.2.2",
     "@nestjs/swagger": "5.0.9",
     "@prisma/client": "3.0.2",
+    "@types/app-root-path": "1.2.4",
+    "@types/yamljs": "0.2.31",
+    "app-root-path": "3.0.0",
     "async-mutex": "0.3.2",
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
@@ -48,7 +51,8 @@
     "swagger-ui-express": "4.1.6",
     "ts-retry-promise": "0.6.0",
     "type-fest": "2.3.2",
-    "uuid": "8.3.2"
+    "uuid": "8.3.2",
+    "yamljs": "0.3.0"
   },
   "devDependencies": {
     "@nestjs/cli": "8.1.1",
