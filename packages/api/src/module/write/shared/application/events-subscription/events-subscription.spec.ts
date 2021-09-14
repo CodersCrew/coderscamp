@@ -240,4 +240,27 @@ describe('Events subscription', () => {
     await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(20));
     await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(2));
   });
+
+  it('Should support recurrent events', async () => {
+    // Given
+    const eventStream = sut.randomEventStreamName();
+    const sampleEvent = sampleDomainEvent();
+    const anotherSampleEvent = anotherSampleDomainEvent();
+
+    onSampleDomainEvent.mockImplementationOnce(() => sut.eventsOccurred(eventStream, [anotherSampleEvent]));
+    onAnotherSampleDomainEvent.mockImplementationOnce(() => {});
+
+    await using(subscription, async () => {
+      // When
+      await sut.eventsOccurred(eventStream, [sampleEvent]);
+
+      // Then
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(1));
+      await waitForExpect(() => expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(1));
+      await sut.expectSubscriptionPosition({
+        subscriptionId: subscription.subscriptionId,
+        position: 2,
+      });
+    });
+  });
 });
