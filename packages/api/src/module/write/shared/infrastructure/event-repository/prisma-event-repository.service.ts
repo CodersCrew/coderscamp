@@ -31,9 +31,10 @@ export class PrismaEventRepository implements EventRepository {
   ) {}
 
   async read(streamName: EventStreamName): Promise<EventStream> {
-    const dbEvents = await this.prismaService.event
-      .findMany({ where: { streamId: streamName.streamId }, orderBy: { globalOrder: 'asc' } })
-      .then((found) => found.filter((it) => it.occurredAt <= this.timeProvider.currentTime()));
+    const dbEvents = await this.prismaService.event.findMany({
+      where: { streamId: streamName.streamId, occurredAt: { lte: this.timeProvider.currentTime() } },
+      orderBy: { globalOrder: 'asc' },
+    });
 
     return dbEvents.map((e) => ({
       type: e.type,
