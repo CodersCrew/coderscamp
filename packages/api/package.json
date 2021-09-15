@@ -67,6 +67,7 @@
     "@types/supertest": "2.0.11",
     "@types/uuid": "8.3.1",
     "@types/yamljs": "0.2.31",
+    "jest-openapi": "0.14.0",
     "node-mocks-http": "1.10.1",
     "prisma": "3.0.2",
     "supertest": "6.1.6",

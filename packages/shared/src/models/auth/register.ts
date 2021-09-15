@@ -2,27 +2,27 @@ import { Expose } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export const registerError = {
-  REGISTRATION_FORM_ALREADY_EXISTS: 'REGISTRATION_FORM_ALREADY_EXISTS',
+  USER_WAS_ALREADY_REGISTERED: 'USER_WAS_ALREADY_REGISTERED',
 };
 
 export const REGISTER_ENDPOINT = '/user-registration';
 
 export class RegisterBody {
   @Expose()
-  @IsString()
-  @IsNotEmpty({ message: 'To pole jest wymagane' })
+  @IsString({ message: '"fullName" must be a string' })
+  @IsNotEmpty({ message: '"fullName" is required' })
   fullName: string;
 
   @Expose()
   @IsString()
-  @IsEmail({}, { message: 'Niepoprawny format adresu e-mail' })
-  @IsNotEmpty({ message: 'To pole jest wymagane' })
+  @IsEmail({}, { message: '"email" must be properly formatted' })
+  @IsNotEmpty({ message: '"email" is required' })
   email: string;
 
   @Expose()
-  @IsString()
-  @IsNotEmpty({ message: 'To pole jest wymagane' })
+  @IsString({ message: '"password" must be a string' })
+  @IsNotEmpty({ message: '"password" is required' })
   password: string;
 }
 
-export type RegisterResponse = void;
+export type RegisterResponse = { userId: string };
