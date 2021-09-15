@@ -1,12 +1,11 @@
-import { Test } from '@nestjs/testing';
+import { wait } from 'ts-retry-promise';
 import { AsyncReturnType } from 'type-fest';
 import waitForExpect from 'wait-for-expect';
 
-import { PrismaModule } from '@/prisma/prisma.module';
+import { ApplicationEvent } from '@/module/application-command-events';
 import {
   AnotherSampleDomainEvent,
   anotherSampleDomainEvent,
-  initWriteTestModule,
   SampleDomainEvent,
   sampleDomainEvent,
   sampleDomainEventType2,
@@ -15,23 +14,11 @@ import {
 import { using } from '@/shared/using';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
-import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
-import { SharedModule } from '@/write/shared/shared.module';
 
-import { eventEmitterRootModule } from '../../../../../event-emitter.root-module';
-
-async function initTestEventsSubscription() {
-  const app = await initWriteTestModule({
-    modules: [],
-    configureModule: Test.createTestingModule({
-      imports: [eventEmitterRootModule, PrismaModule, SharedModule],
-    }),
-  });
-  const eventsSubscriptions: EventsSubscriptionsRegistry =
-    app.get<EventsSubscriptionsRegistry>(EventsSubscriptionsRegistry);
-
-  return { eventsSubscriptions, ...app };
-}
+import {
+  initEventsSubscriptionConcurrencyTestFixture,
+  initTestEventsSubscription,
+} from './events-subscription.fixture.spec';
 
 describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
@@ -261,6 +248,68 @@ describe('Events subscription', () => {
         subscriptionId: subscription.subscriptionId,
         position: 2,
       });
+    });
+  });
+});
+
+describe('Events subscription concurrency tests', () => {
+  let fixture: AsyncReturnType<typeof initEventsSubscriptionConcurrencyTestFixture>;
+  const options = {
+    maxRetryCount: 5,
+    waitingTimeOnRetry: 100,
+  };
+
+  beforeEach(async () => {
+    fixture = await initEventsSubscriptionConcurrencyTestFixture(options);
+  });
+
+  afterEach(async () => {
+    await fixture.close();
+  });
+
+  it('Should eventualy process all events in order', async () => {
+    // Given
+    const {
+      sut,
+      mocks: { onSampleDomainEvent, onAnotherSampleDomainEvent },
+      helpers: { randomEventStreamName, concurrencyTestFixture, expectSubscriptionPosition },
+    } = fixture;
+    const eventStream = randomEventStreamName();
+    const eventBatch0 = sequence(8).map(() => sampleDomainEvent());
+    const eventBatch1 = sequence(4).map(() => sampleDomainEvent());
+    const eventBatch2 = sequence(3).map(() => anotherSampleDomainEvent());
+    const numberOfSampleEvents = eventBatch0.length + eventBatch1.length;
+    const numberOfAnotherSamplEvents = eventBatch2.length;
+    const numberOfEvents = numberOfSampleEvents + numberOfAnotherSamplEvents;
+
+    const processedEvents: ApplicationEvent[] = [];
+
+    onSampleDomainEvent.mockImplementation((event) => {
+      processedEvents.push(event);
+    });
+    onAnotherSampleDomainEvent.mockImplementation((event) => {
+      processedEvents.push(event);
+    });
+
+    await using(sut, async () => {
+      // When
+      const [applicationEventBatch0, applicationEventBatch1, applicationEventBatch2] =
+        await concurrencyTestFixture.eventsOccurred(eventStream, [eventBatch0, eventBatch1, eventBatch2]);
+
+      await concurrencyTestFixture.publishEvents(applicationEventBatch2);
+      await wait(200);
+      await concurrencyTestFixture.publishEvents(applicationEventBatch1);
+      await wait(200);
+      await concurrencyTestFixture.publishEvents(applicationEventBatch0);
+
+      // Then
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(numberOfSampleEvents));
+      await waitForExpect(() => expect(onAnotherSampleDomainEvent).toHaveBeenCalledTimes(numberOfAnotherSamplEvents));
+      await expectSubscriptionPosition({
+        subscriptionId: sut.subscriptionId,
+        position: numberOfEvents,
+      });
+      expect(processedEvents.map((x) => x.globalOrder)).toStrictEqual(sequence(numberOfEvents).map((x) => x + 1));
     });
   });
 });
