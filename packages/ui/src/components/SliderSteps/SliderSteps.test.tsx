@@ -6,11 +6,11 @@ import { withExpectedError } from '../../testHelpers';
 import { SliderSteps, SliderStepsProps } from './SliderSteps';
 
 const clickForwardArrow = () => {
-  userEvent.click(screen.getByLabelText('go forward button'));
+  userEvent.click(screen.getByLabelText('Następny'));
 };
 
 const clickBackArrow = () => {
-  userEvent.click(screen.getByLabelText('go back button'));
+  userEvent.click(screen.getByLabelText('Poprzedni'));
 };
 
 const getAllDots = () => screen.getAllByRole('tab');
