@@ -7,6 +7,10 @@ import { DomainRuleViolationException } from '@/shared/errors/domain-rule-violat
 import { initTestModuleRestApi } from '@/shared/test-utils';
 import { UserRegistrationRestController } from '@/write/user-registration/presentation/rest/user-registration.rest-controller';
 
+import { initOpenApiExpect } from '../../../../../../jest-setup';
+
+initOpenApiExpect();
+
 describe('User Registration | REST API', () => {
   let restUnderTest: AsyncReturnType<typeof initTestModuleRestApi>;
 
