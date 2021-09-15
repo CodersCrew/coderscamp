@@ -1,4 +1,4 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -7,12 +7,12 @@ import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-s
 
 // fixme: example for automation, implement later
 @Injectable()
-export class LearningMaterialsUrlWasGeneratedEventHandler implements OnModuleInit, OnModuleDestroy {
+export class LearningMaterialsUrlWasGeneratedEventHandler implements OnApplicationBootstrap, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
 
   constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
-  async onModuleInit() {
+  async onApplicationBootstrap() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
       .subscription('SendEmailWhenLearningMaterialsUrlWasGenerated_Automation_v1')
       .onEvent<LearningMaterialsUrlWasGenerated>(

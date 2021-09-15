@@ -447,12 +447,12 @@ This database is denormalized and prepared for fast reads. No complex queries wi
    imports: [SharedModule],
    controllers: [LearningMaterialsRestController],
 })
-export class LearningMaterialsReadModule implements OnModuleInit, OnModuleDestroy {
+export class LearningMaterialsReadModule implements OnApplicationBootstrap, OnModuleDestroy {
    private eventsSubscription: EventsSubscription;
 
    constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
-   async onModuleInit() {
+   async onApplicationBootstrap() {
       this.eventsSubscription = this.eventsSubscriptionsFactory
               .subscription('LearningMaterials_ReadModel_v1')
               .onInitialPosition(this.onInitialPosition)
@@ -534,12 +534,12 @@ Then we will be increasing and decreasing counter for learningMaterialsCompleted
 TaskWasCompleted and TaskWasUncompleted.
 
 ```ts
-export class CourseProgressReadModule implements OnModuleInit, OnModuleDestroy {
+export class CourseProgressReadModule implements OnApplicationBootstrap, OnModuleDestroy {
    private eventsSubscription: EventsSubscription;
 
    constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
-   async onModuleInit() {
+   async onApplicationBootstrap() {
       this.eventsSubscription = this.eventsSubscriptionsFactory
               .subscription('CourseProgress_ReadModel_v1')
               .onInitialPosition(this.onInitialPosition)
