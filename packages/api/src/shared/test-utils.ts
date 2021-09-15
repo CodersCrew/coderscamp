@@ -4,6 +4,7 @@ import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadat
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
+import supertest from 'supertest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
