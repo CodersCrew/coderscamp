@@ -6,7 +6,14 @@ import { SolidGlobalIcon } from '@coderscamp/ui/icons/SolidGlobal';
 import { SolidInstagramIcon } from '@coderscamp/ui/icons/SolidInstagram';
 import { SolidLinkedinIcon } from '@coderscamp/ui/icons/SolidLinkedin';
 
-import { COURSE_PLAN_URL, MENTORS_GUIDE_URL, PRIVACY_POLICY_URL, SCHEDULE_URL, TERMS_URL } from '@/constants';
+import {
+  COURSE_PLAN_URL,
+  MENTORS_GUIDE_URL,
+  pageNavigation,
+  PRIVACY_POLICY_URL,
+  SCHEDULE_URL,
+  TERMS_URL,
+} from '@/constants';
 
 interface Social {
   label: string;
@@ -36,12 +43,7 @@ interface NavColumn {
 export const footerNav: NavColumn[] = [
   {
     title: 'Nawigacja',
-    items: [
-      { href: '/', children: 'Strona główna' },
-      { href: '/mentor', children: 'Dla mentorów' },
-      { href: '/faq', children: 'FAQ' },
-      { href: '/kontakt', children: 'Kontakt' },
-    ],
+    items: pageNavigation,
   },
   {
     title: 'Do pobrania',
