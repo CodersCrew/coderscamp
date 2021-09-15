@@ -13,6 +13,7 @@ jobs:
     env:
       NODE_ENV: test
       APP_ENV: review
+      DATABASE_URL: postgresql://root:root@localhost:5432/main-db
     steps:
       - uses: actions/checkout@v2
       - name: Install node v14
