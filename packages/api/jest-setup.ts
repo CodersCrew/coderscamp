@@ -1,6 +1,6 @@
 import appRoot from 'app-root-path';
-import jestOpenAPI from 'jest-openapi';
 import dotenv from 'dotenv';
+import jestOpenAPI from 'jest-openapi';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { set } from 'leaked-handles';

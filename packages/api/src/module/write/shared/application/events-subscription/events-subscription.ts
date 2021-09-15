@@ -2,17 +2,20 @@ import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
 import { Mutex } from 'async-mutex';
-import { retry } from 'ts-retry-promise';
+import { retry, RetryConfig } from 'ts-retry-promise';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
+export type SubscriptionRetriesConfig = Pick<RetryConfig<unknown>, 'retries' | 'delay' | 'backoff'>;
+
 export type EventsSubscriptionConfig = {
   readonly start: SubscriptionStart;
   readonly positionHandlers: PositionHandler[];
   readonly eventHandlers: ApplicationEventHandler[];
+  readonly retry?: SubscriptionRetriesConfig;
 };
 export type SubscriptionStart = { from: { globalPosition: number } };
 
@@ -76,23 +79,20 @@ export class EventsSubscription {
    * See handleEvent for more details how handling event working.
    */
   async start(): Promise<void> {
-    const maxRetries = 3;
+    const retryConfig = this.configuration?.retry ?? { retries: 'INFINITELY', backoff: 'EXPONENTIAL', delay: 3000 };
 
-    await retry(
-      async () => {
-        await this.catchUp().catch((e) => {
-          this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
-          throw e;
-        });
-        await this.listen().catch((e) => {
-          this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in listen phase.`, e);
-          throw e;
-        });
-      },
-      { retries: maxRetries },
-    ).catch((e) =>
+    await retry(async () => {
+      await this.catchUp().catch((e) => {
+        this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
+        throw e;
+      });
+      await this.listen().catch((e) => {
+        this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in listen phase.`, e);
+        throw e;
+      });
+    }, retryConfig).catch((e) =>
       this.logger.error(
-        `EventsSubscription ${this.subscriptionId} stopped processing of events after ${maxRetries} retries.`,
+        `EventsSubscription ${this.subscriptionId} stopped processing of events after ${retryConfig.retries} retries.`,
         e,
       ),
     );

@@ -3,14 +3,21 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { EVENT_REPOSITORY, EventRepository } from '@/write/shared/application/event-repository';
-import { SubscriptionId, SubscriptionStart } from '@/write/shared/application/events-subscription/events-subscription';
+import {
+  SubscriptionId,
+  SubscriptionRetriesConfig,
+  SubscriptionStart,
+} from '@/write/shared/application/events-subscription/events-subscription';
 import {
   NeedsEventOrPositionHandlers,
   SubscriptionBuilder,
 } from '@/write/shared/application/events-subscription/events-subscription-builder';
 
 export interface CanCreateSubscription {
-  subscription(id: SubscriptionId): NeedsEventOrPositionHandlers;
+  subscription(
+    id: SubscriptionId,
+    config?: { start?: Partial<SubscriptionStart>; retry?: SubscriptionRetriesConfig },
+  ): NeedsEventOrPositionHandlers;
 }
 
 @Injectable()
@@ -21,13 +28,25 @@ export class EventsSubscriptionsRegistry implements CanCreateSubscription {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  subscription(id: SubscriptionId, start?: Partial<SubscriptionStart>): NeedsEventOrPositionHandlers {
+  subscription(
+    id: SubscriptionId,
+    config?: { start?: Partial<SubscriptionStart>; retry?: SubscriptionRetriesConfig },
+  ): NeedsEventOrPositionHandlers {
     const defaultSubscriptionConfig: SubscriptionStart = { from: { globalPosition: 1 } };
     const startConfig: SubscriptionStart = {
       ...defaultSubscriptionConfig,
-      ...start,
+      ...config?.start,
     };
 
-    return new SubscriptionBuilder(this.prismaService, this.eventRepository, this.eventEmitter, id, startConfig);
+    return new SubscriptionBuilder(
+      this.prismaService,
+      this.eventRepository,
+      this.eventEmitter,
+      id,
+      startConfig,
+      [],
+      [],
+      config?.retry,
+    );
   }
 }
