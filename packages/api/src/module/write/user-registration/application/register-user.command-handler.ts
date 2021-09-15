@@ -5,7 +5,7 @@ import { registerError } from '@coderscamp/shared/models/auth/register';
 
 import { RegisterUserApplicationCommand } from '@/commands/register-user';
 import { isUniqueConstraintError } from '@/prisma/prisma.errors';
-import { DomainRuleViolationException } from '@/shared/domain-rule-violation.exception';
+import { DomainRuleViolationException } from '@/shared/errors/domain-rule-violation.exception';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { PASSWORD_ENCODER, PasswordEncoder } from '@/write/shared/application/password-encoder';
