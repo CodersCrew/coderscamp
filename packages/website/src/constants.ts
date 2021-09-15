@@ -16,3 +16,10 @@ export const TERMS_URL = 'https://drive.google.com/file/d/1my5UofcZ1MnzVF7CjJlsK
 export const PRIVACY_POLICY_URL = 'https://drive.google.com/file/d/1my5UofcZ1MnzVF7CjJlsKBTzkz3SdN0L/view?usp=sharing';
 export const MENTOR_RECRUITMENT_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSebGGyxGNq5qmYBrMk0Lvctg6GqVeE3N9a1XJoH8Dl96dZghA/viewform';
+
+export const pageNavigation = [
+  { href: '/', children: 'Strona główna' },
+  { href: '/mentor', children: 'Dla mentorów' },
+  { href: '/faq', children: 'FAQ' },
+  { href: '/kontakt', children: 'Kontakt' },
+];

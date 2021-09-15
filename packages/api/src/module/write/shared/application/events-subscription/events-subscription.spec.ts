@@ -49,7 +49,10 @@ describe('Events subscription', () => {
     sut = await initTestEventsSubscription();
 
     subscription = sut.eventsSubscriptions
-      .subscription(sut.randomUuid())
+      .subscription(sut.randomUuid(), {
+        start: { from: { globalPosition: 1 } },
+        retry: { retries: 3, backoff: 'LINEAR', delay: 50 },
+      })
       .onInitialPosition(onInitialPosition)
       .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
       .onEvent<AnotherSampleDomainEvent>('AnotherSampleDomainEvent', onAnotherSampleDomainEvent)
@@ -80,7 +83,7 @@ describe('Events subscription', () => {
     });
   });
 
-  it('when event processing fail (after 3 retries), then subscription position should not be moved', async () => {
+  it('when event processing fail after retries, then subscription position should not be moved', async () => {
     // Given
     const eventStream = sut.randomEventStreamName();
     const event = sampleDomainEvent();
