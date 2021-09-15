@@ -10,6 +10,7 @@ import {
   OnPositionFn,
   PositionHandler,
   SubscriptionId,
+  SubscriptionRetriesConfig,
   SubscriptionStart,
 } from '@/write/shared/application/events-subscription/events-subscription';
 
@@ -35,6 +36,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     private readonly start: SubscriptionStart,
     private readonly positionHandlers: PositionHandler[] = [],
     private readonly eventHandlers: ApplicationEventHandler[] = [],
+    private readonly retry?: SubscriptionRetriesConfig,
   ) {}
 
   onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild {
@@ -51,6 +53,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.start,
       [...this.positionHandlers, handlerToRegister],
       this.eventHandlers,
+      this.retry,
     );
   }
 
@@ -71,6 +74,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.start,
       this.positionHandlers,
       [...this.eventHandlers, handlerToRegister],
+      this.retry,
     );
   }
 
@@ -81,6 +85,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
         start: this.start,
         eventHandlers: this.eventHandlers,
         positionHandlers: this.positionHandlers,
+        retry: this.retry,
       },
       this.prismaService,
       this.eventRepository,
