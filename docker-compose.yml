@@ -11,23 +11,13 @@ services:
       POSTGRES_PASSWORD: 'root'
       POSTGRES_DB: 'main-db'
     volumes:
-      - './data/postgres:/var/lib/postgresql/data/'
+      - 'db-data:/var/lib/postgresql/data/'
     networks:
-      - coderscamp-net
+      - db-net
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: unless-stopped
-    ports:
-      - '${PGADMIN_PORT:-5050}:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: 'root@coderscamp.com'
-      PGADMIN_DEFAULT_PASSWORD: 'root'
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin/storage/
-    networks:
-      - coderscamp-net
+volumes:
+  db-data:
 
 networks:
-  coderscamp-net:
+  db-net:
     driver: bridge
