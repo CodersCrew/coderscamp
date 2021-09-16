@@ -168,12 +168,11 @@ export class EventsSubscription {
     const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
       where: { id: this.subscriptionId },
     });
-    const eventsToCatchup = await this.eventRepository
-      .readAll({
-        fromGlobalPosition: subscriptionState?.currentPosition
-          ? subscriptionState.currentPosition + 1
-          : this.configuration.options.start.from.globalPosition,
-      });
+    const eventsToCatchup = await this.eventRepository.readAll({
+      fromGlobalPosition: subscriptionState?.currentPosition
+        ? subscriptionState.currentPosition + 1
+        : this.configuration.options.start.from.globalPosition,
+    });
 
     // eslint-disable-next-line no-restricted-syntax
     for (const event of eventsToCatchup) {

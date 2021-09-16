@@ -1,5 +1,4 @@
 import { Test } from '@nestjs/testing';
-import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
 import { ApplicationEvent } from '@/module/application-command-events';
