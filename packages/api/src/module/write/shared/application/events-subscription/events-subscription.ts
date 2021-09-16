@@ -173,8 +173,7 @@ export class EventsSubscription {
         fromGlobalPosition: subscriptionState?.currentPosition
           ? subscriptionState.currentPosition + 1
           : this.configuration.options.start.from.globalPosition,
-      })
-      .then((events) => events.sort((event) => event.globalOrder));
+      });
 
     // eslint-disable-next-line no-restricted-syntax
     for (const event of eventsToCatchup) {

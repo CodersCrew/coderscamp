@@ -39,14 +39,14 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           flags: api
-          directory: ./packages/api
+          directory: packages/api
           fail_ci_if_error: true
           verbose: true
       - name: Upload ui coverage
         uses: codecov/codecov-action@v2
         with:
           flags: ui
-          directory: ./packages/ui
+          directory: packages/ui
           fail_ci_if_error: true
           verbose: true
 

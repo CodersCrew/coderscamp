@@ -6,7 +6,7 @@ export type OrderedEventQueueStopTokenType = typeof OrderedEventQueue.STOP_TOKEN
 export class OrderedEventQueue<TApplicationEvent extends ApplicationEvent = ApplicationEvent> {
   static STOP_TOKEN = Symbol('STOP_TOKEN');
 
-  static isStopToken(value: any): value is OrderedEventQueueStopTokenType {
+  static isStopToken(value: unknown): value is OrderedEventQueueStopTokenType {
     return value === OrderedEventQueue.STOP_TOKEN;
   }
 
@@ -71,12 +71,11 @@ export class OrderedEventQueue<TApplicationEvent extends ApplicationEvent = Appl
     this.continue();
   }
 
-  private pushOrdered(val: TApplicationEvent): void {
-    const idx = _.sortedIndex(
-      this.queue.map((x) => x.globalOrder),
-      val.globalOrder,
-    );
+  private pushOrdered(eventToPush: TApplicationEvent): void {
+    // binary search index by globalOrder
+    const idx = _.sortedIndexBy(this.queue, eventToPush, (event) => event.globalOrder);
 
-    this.queue.splice(idx, 0, val);
+    // insert into queue at idx
+    this.queue.splice(idx, 0, eventToPush);
   }
 }
