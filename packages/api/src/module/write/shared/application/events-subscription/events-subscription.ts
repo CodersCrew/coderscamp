@@ -129,9 +129,7 @@ export class EventsSubscription {
   async reset(): Promise<void> {
     await this.stop();
     this.queue.clear();
-    await this.prismaService.$transaction(async (transaction) => {
-      await this.moveCurrentPosition(this.configuration.options.start.from.globalPosition - 1, transaction);
-    });
+    await this.moveCurrentPosition(this.configuration.start.from.globalPosition - 1, this.prismaService);
     await this.start();
   }
 
