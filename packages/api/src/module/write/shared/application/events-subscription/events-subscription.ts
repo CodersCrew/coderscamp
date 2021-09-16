@@ -114,9 +114,7 @@ export class EventsSubscription {
    */
   async reset(): Promise<void> {
     await this.stop();
-    await this.prismaService.$transaction(async (transaction) => {
-      await this.moveCurrentPosition(this.configuration.start.from.globalPosition - 1, transaction);
-    });
+    await this.moveCurrentPosition(this.configuration.start.from.globalPosition - 1, this.prismaService);
     await this.start();
   }
 
@@ -149,23 +147,22 @@ export class EventsSubscription {
   private async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
   ): Promise<void> {
+    // TODO replace mutex with queue
     await this.mutex
       .runExclusive(async () => {
-        await this.prismaService.$transaction(async (transaction) => {
-          const subscriptionState = await transaction.eventsSubscription.findUnique({
-            where: { id: this.subscriptionId },
-          });
-          const currentPosition =
-            subscriptionState?.currentPosition ?? this.configuration.start.from.globalPosition - 1;
-
-          const expectedEventPosition = currentPosition + 1;
-
-          this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
-
-          await this.processSubscriptionPositionChange(event, transaction);
-          await this.processEvent(event, transaction);
-          await this.moveCurrentPosition(event.globalOrder, transaction);
+        // TODO add transaction
+        const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
+          where: { id: this.subscriptionId },
         });
+        const currentPosition = subscriptionState?.currentPosition ?? this.configuration.start.from.globalPosition - 1;
+
+        const expectedEventPosition = currentPosition + 1;
+
+        this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
+
+        await this.processSubscriptionPositionChange(event, this.prismaService);
+        await this.processEvent(event, this.prismaService);
+        await this.moveCurrentPosition(event.globalOrder, this.prismaService);
       })
       .catch(async (e) => {
         await this.stop();
