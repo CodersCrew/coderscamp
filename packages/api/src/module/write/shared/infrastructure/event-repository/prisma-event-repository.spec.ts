@@ -1,54 +1,16 @@
-import { Test } from '@nestjs/testing';
 import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 
-import { PrismaModule } from '@/prisma/prisma.module';
-import { PrismaService } from '@/prisma/prisma.service';
-import { cleanupDatabase, sequence, storableEvent } from '@/shared/test-utils';
+import { AnotherSampleDomainEvent, SampleDomainEvent, sequence, storableEvent } from '@/shared/test-utils';
 import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-import { PrismaEventRepository } from '@/write/shared/infrastructure/event-repository/prisma-event-repository.service';
 
-async function initTestPrismaEventRepository() {
-  const app = await Test.createTestingModule({
-    imports: [PrismaModule],
-  }).compile();
-
-  await app.init();
-
-  const prismaService = app.get<PrismaService>(PrismaService);
-  const eventRepository = new PrismaEventRepository(prismaService, { currentTime: () => new Date() });
-
-  await cleanupDatabase(prismaService);
-
-  async function close() {
-    await app.close();
-    await cleanupDatabase(prismaService);
-    await prismaService.$disconnect();
-  }
-
-  function randomEventStreamId() {
-    return uuid();
-  }
-
-  return { eventRepository, randomEventStreamId, close };
-}
-
-type SampleDomainEvent = {
-  type: 'SampleDomainEvent';
-  data: {
-    value1: string;
-    value2: number;
-  };
-};
-
-type AnotherSampleDomainEvent = {
-  type: 'AnotherSampleDomainEvent';
-  data: {
-    value1: string;
-    value2: number;
-  };
-};
+import {
+  anotherSampleDomainEventFactory,
+  initConcurrentTestPrismaEventRepository,
+  initTestPrismaEventRepository,
+  sampleDomainEventFactory,
+} from './prisma-event-repository.fixture.spec';
 
 describe('Prisma Event Repository', () => {
   let sut: AsyncReturnType<typeof initTestPrismaEventRepository>;
@@ -181,4 +143,113 @@ describe('Prisma Event Repository', () => {
 
     expect(result4.length).toBe(0);
   });
+});
+
+describe('Prisma Event Repository Concurrency Tests', () => {
+  let sut: AsyncReturnType<typeof initConcurrentTestPrismaEventRepository>;
+
+  beforeEach(async () => {
+    sut = await initConcurrentTestPrismaEventRepository();
+  });
+
+  afterEach(async () => {
+    await sut.close();
+  });
+
+  it(
+    'Given multiple users running concurrently on the same stream only one should succeed',
+    async () => {
+      // Given
+      const { concurrencyTestFixture } = sut;
+      const streamName = EventStreamName.props({ streamCategory: 'SampleEventStreamCategory', streamId: uuid() });
+      const numberOfConcurrentUsers = 3;
+      const expectedNumberOfFailedUsers = numberOfConcurrentUsers - 1;
+      const sampleStorableEvents0 = [
+        storableEvent<SampleDomainEvent>(sampleDomainEventFactory()),
+        storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEventFactory()),
+      ];
+      const sampleStorableEvents1 = [
+        storableEvent<SampleDomainEvent>(sampleDomainEventFactory()),
+        storableEvent<SampleDomainEvent>(sampleDomainEventFactory()),
+        storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEventFactory()),
+      ];
+      const sampleStorableEvents2 = [storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEventFactory())];
+
+      // When
+      const { writeResults, errors } = await concurrencyTestFixture.runConcurrently(
+        streamName,
+        [sampleStorableEvents0, sampleStorableEvents1, sampleStorableEvents2],
+        0,
+      );
+
+      // Then
+      expect(writeResults.length).toBe(1);
+      expect(errors.length).toBe(expectedNumberOfFailedUsers);
+
+      // Then
+      const persistetEventsIds = sequence(writeResults[0].length).map((x) => x + 1);
+      const streamEvents = await concurrencyTestFixture.eventRepository.read(streamName);
+
+      expect(streamEvents.map((x) => x.streamVersion).sort()).toStrictEqual(persistetEventsIds);
+
+      // Then
+      const allEvents = await concurrencyTestFixture.eventRepository.readAll({});
+
+      expect(allEvents.map((x) => x.globalOrder).sort()).toStrictEqual(persistetEventsIds);
+    },
+    30 * 1000,
+  );
+
+  it(
+    'Given multiple users running concurrently on diffrent streams all should succeed',
+    async () => {
+      // Given
+      const { concurrencyTestFixture } = sut;
+      const streamName0 = EventStreamName.props({ streamCategory: 'SampleEventStreamCategory', streamId: uuid() });
+      const streamName1 = EventStreamName.props({ streamCategory: 'SampleEventStreamCategory', streamId: uuid() });
+      const streamName2 = EventStreamName.props({ streamCategory: 'SampleEventStreamCategory', streamId: uuid() });
+      const sampleStorableEvents0 = [
+        storableEvent<SampleDomainEvent>(sampleDomainEventFactory()),
+        storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEventFactory()),
+      ];
+      const sampleStorableEvents1 = [
+        storableEvent<SampleDomainEvent>(sampleDomainEventFactory()),
+        storableEvent<SampleDomainEvent>(sampleDomainEventFactory()),
+        storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEventFactory()),
+      ];
+      const sampleStorableEvents2 = [storableEvent<AnotherSampleDomainEvent>(anotherSampleDomainEventFactory())];
+
+      // When
+      const [result0, result1, result2] = await Promise.all([
+        concurrencyTestFixture.runConcurrently(streamName0, [sampleStorableEvents0], 0),
+        concurrencyTestFixture.runConcurrently(streamName1, [sampleStorableEvents1], 0),
+        concurrencyTestFixture.runConcurrently(streamName2, [sampleStorableEvents2], 0),
+      ]);
+
+      // Then
+      expect(result0.writeResults.length).toBe(1);
+      expect(result0.errors.length).toBe(0);
+      expect(result1.writeResults.length).toBe(1);
+      expect(result1.errors.length).toBe(0);
+      expect(result2.writeResults.length).toBe(1);
+      expect(result2.errors.length).toBe(0);
+
+      // Then
+      const [streamEvents0, streamEvents1, streamEvents2] = await Promise.all([
+        concurrencyTestFixture.eventRepository.read(streamName0),
+        concurrencyTestFixture.eventRepository.read(streamName1),
+        concurrencyTestFixture.eventRepository.read(streamName2),
+      ]);
+
+      expect(streamEvents0.map((x) => x.streamVersion).sort()).toStrictEqual([1, 2]);
+      expect(streamEvents1.map((x) => x.streamVersion).sort()).toStrictEqual([1, 2, 3]);
+      expect(streamEvents2.map((x) => x.streamVersion).sort()).toStrictEqual([1]);
+
+      // Then
+      const allEvents = await concurrencyTestFixture.eventRepository.readAll({});
+
+      expect(allEvents.map((x) => x.globalOrder).sort()).toStrictEqual([1, 2, 3, 4, 5, 6]);
+    },
+    30 * 1000,
+  );
 });

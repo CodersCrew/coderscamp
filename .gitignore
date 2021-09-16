@@ -58,4 +58,4 @@ packages/ui/src/icons
 .cache-loader
 
 # Database
-data/ 
+data/

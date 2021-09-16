@@ -10,5 +10,6 @@ export default createJestConfig({
     testTimeout: 6000,
     collectCoverageFrom: ['**/*.ts'],
     setupFilesAfterEnv: ['./jest-setup.ts'],
+    modulePathIgnorePatterns: ['src/.*\\.fixture\\.spec\\.ts'],
   },
 });

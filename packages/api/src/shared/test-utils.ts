@@ -4,6 +4,7 @@ import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadat
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
+import _ from 'lodash';
 import supertest from 'supertest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
@@ -112,6 +113,7 @@ export function getEventBusSpy(app: TestingModule): EventBusSpy {
 
   return jest.spyOn(eventBus, 'publishAll');
 }
+
 export function getCommandBusSpy(app: TestingModule): CommandBusSpy {
   const commandBus = app.get<CommandBus>(CommandBus);
 
@@ -347,6 +349,23 @@ export function sampleDomainEventType2(
   return {
     type: 'SampleDomainEventType2',
     data,
+  };
+}
+
+export function sampleApplicationEvent(event: Partial<ApplicationEvent>): ApplicationEvent {
+  return {
+    type: 'SampleDomainEvent',
+    id: uuid(),
+    occurredAt: new Date(),
+    data: {},
+    streamName: EventStreamName.props({ streamCategory: uuid(), streamId: uuid() }),
+    streamVersion: _.random(0, 1000),
+    globalOrder: _.random(0, 1000),
+    metadata: {
+      correlationId: uuid(),
+      causationId: uuid(),
+    },
+    ...event,
   };
 }
 
