@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { Event, Stream } from '@prisma/client';
 
 import { ApplicationEvent, DefaultCommandMetadata } from '@/module/application-command-events';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -7,7 +8,6 @@ import { EventStream } from '../../application/application-service';
 import { EventRepository, ReadAllFilter, StorableEvent } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
 import { EventStreamVersion } from '../../application/event-stream-version';
-import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
 
 const parseData = (value: unknown): Record<string, unknown> => JSON.parse(typeof value === 'string' ? value : '{}');
 const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, unknown> => {
@@ -25,26 +25,34 @@ const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, 
 
 @Injectable()
 export class PrismaEventRepository implements EventRepository {
-  constructor(
-    private readonly prismaService: PrismaService,
-    @Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async read(streamName: EventStreamName): Promise<EventStream> {
-    const dbEvents = await this.prismaService.event.findMany({
-      where: { streamId: streamName.streamId, occurredAt: { lte: this.timeProvider.currentTime() } },
-      orderBy: { globalOrder: 'asc' },
-    });
+    const dbEvents = await this.prismaService.stream
+      .findMany({
+        where: { streamId: streamName.streamId },
+        orderBy: { event: { globalOrder: 'asc' } },
+        include: { event: true },
+      })
+      .then((events) =>
+        events.map((streamEntry) => {
+          if (streamEntry.event === null) {
+            throw new Error(`Invalid database state. Event is empty for stream(${JSON.stringify(streamEntry)}})`);
+          }
 
-    return dbEvents.map((e) => ({
-      type: e.type,
-      id: e.id,
-      occurredAt: e.occurredAt,
-      data: parseData(e.data),
-      metadata: parseMetadata(e.metadata),
-      streamVersion: e.streamVersion,
-      streamName: EventStreamName.from(e.streamCategory, e.streamId),
-      globalOrder: e.globalOrder,
+          return streamEntry as unknown as Stream & { event: Event };
+        }),
+      );
+
+    return dbEvents.map((s) => ({
+      type: s.event.type,
+      id: s.event.id,
+      occurredAt: s.event.occurredAt,
+      data: parseData(s.event.data),
+      metadata: parseMetadata(s.event.metadata),
+      streamVersion: s.streamVersion,
+      streamName: EventStreamName.from(s.streamCategory, s.streamId),
+      globalOrder: s.event.globalOrder,
     }));
   }
 
@@ -53,12 +61,16 @@ export class PrismaEventRepository implements EventRepository {
     events: StorableEvent[],
     expectedStreamVersion: EventStreamVersion,
   ): Promise<ApplicationEvent[]> {
-    const databaseEvents = events.map((e, index) => ({
-      id: e.id,
-      type: e.type,
+    const databaseStreams = events.map((e, index) => ({
       streamId: streamName.streamId,
       streamCategory: streamName.streamCategory,
       streamVersion: expectedStreamVersion + 1 + index,
+      eventId: e.id,
+    }));
+
+    const databaseEvents = events.map((e) => ({
+      id: e.id,
+      type: e.type,
       occurredAt: e.occurredAt,
       data: JSON.stringify(e.data),
       metadata: JSON.stringify(e.metadata),
@@ -66,21 +78,32 @@ export class PrismaEventRepository implements EventRepository {
 
     // HACK: This is workaround, because of bug in prisma implementation: https://github.com/prisma/prisma/issues/8707
     await this.prismaService.$transaction([
-      this.prismaService.eventLock.createMany({
-        data: databaseEvents.map((x) => ({
-          streamId: x.streamId,
-          streamVersion: x.streamVersion,
-        })),
-      }),
+      this.prismaService.stream.createMany({ data: databaseStreams.map((x) => ({ ...x, eventId: null })) }),
       this.prismaService.event.createMany({ data: databaseEvents }),
+      ...databaseStreams.map((x) =>
+        this.prismaService.stream.update({
+          // streamId_streamVersion is prisma auto generated field
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          where: { streamId_streamVersion: { streamId: x.streamId, streamVersion: x.streamVersion } },
+          data: { eventId: x.eventId },
+        }),
+      ),
     ]);
 
     const storedEvents = await this.prismaService.event.findMany({
       where: {
+        Stream: {
+          every: {
+            streamId: streamName.streamId,
+          },
+        },
         id: { in: databaseEvents.map((e) => e.id) },
       },
       orderBy: {
         globalOrder: 'asc',
+      },
+      include: {
+        Stream: true,
       },
     });
 
@@ -90,8 +113,8 @@ export class PrismaEventRepository implements EventRepository {
       occurredAt: e.occurredAt,
       data: parseData(e.data),
       metadata: parseMetadata(e.metadata),
-      streamVersion: e.streamVersion,
-      streamName: EventStreamName.from(e.streamCategory, e.streamId),
+      streamVersion: e.Stream[0].streamVersion,
+      streamName: EventStreamName.from(streamName.streamCategory, streamName.streamId),
       globalOrder: e.globalOrder,
     }));
   }
@@ -103,12 +126,17 @@ export class PrismaEventRepository implements EventRepository {
             gte: filter.fromGlobalPosition ?? 0,
           }
         : undefined,
-      streamCategory: filter.streamCategory,
+      Stream: {
+        every: {
+          streamCategory: filter.streamCategory,
+        },
+      },
       type: filter.eventTypes ? { in: filter.eventTypes } : undefined,
     };
     const storedEvents = await this.prismaService.event.findMany({
       where,
       orderBy: { globalOrder: 'asc' },
+      include: { Stream: true },
     });
 
     return storedEvents.map((e) => ({
@@ -117,8 +145,8 @@ export class PrismaEventRepository implements EventRepository {
       occurredAt: e.occurredAt,
       data: parseData(e.data),
       metadata: parseMetadata(e.metadata),
-      streamVersion: e.streamVersion,
-      streamName: EventStreamName.from(e.streamCategory, e.streamId),
+      streamVersion: e.Stream[0].streamVersion,
+      streamName: EventStreamName.from(e.Stream[0].streamCategory, e.Stream[0].streamId),
       globalOrder: e.globalOrder,
     }));
   }

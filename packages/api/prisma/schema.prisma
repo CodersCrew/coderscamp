@@ -33,15 +33,28 @@ model LearningMaterials {
 }
 
 model Event {
-  id             String   @id
-  type           String
+  id          String   @id
+  type        String
+  occurredAt  DateTime
+  data        Json
+  metadata    Json
+  globalOrder Int      @default(autoincrement())
+  Stream      Stream[]
+}
+
+model Stream {
   streamId       String
   streamCategory String
   streamVersion  Int
-  occurredAt     DateTime
-  data           Json
-  metadata       Json
-  globalOrder    Int      @default(autoincrement())
+  // HACK: allow insert empty eventId (1. guarantee) then events then update eventId (2. guarantee)
+  // within one transaction to ensure all guarantees
+  event          Event?  @relation(fields: [eventId], references: [id])
+  eventId        String?
+
+  // 1. guarantee stream consistency
+  // 2. guarantee no event duplicates in stream
+  @@unique([streamId, streamVersion])
+  @@unique([streamId, eventId])
 }
 
 model Course {
@@ -67,11 +80,4 @@ model EventsSubscription {
   currentPosition Int
   fromPosition    Int
   eventTypes      String[]
-}
-
-model EventLock {
-  streamId      String
-  streamVersion Int
-
-  @@unique([streamId, streamVersion])
 }
