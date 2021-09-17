@@ -9,7 +9,7 @@ export const CONTACT_EMAIL = 'kontakt@coderscrew.pl';
 export const CANDIDATE_SCHEDULE_ID = 'candidate-schedule';
 export const CANDIDATE_SCHEDULE_PATH = '/#candidate-schedule';
 
-export const SCHEDULE_URL = 'https://drive.google.com/file/d/1Yki5B8HKAQdhkpGHY3aMjw25OsBywVG1/view?usp=sharing';
+export const SCHEDULE_URL = 'https://drive.google.com/file/d/1ypqYVnDYUsSbpRib481py9A6KzQJmOKj/view?usp=sharing';
 export const COURSE_PLAN_URL = 'https://drive.google.com/file/d/1_iirkwuM-TgtZI-CSCb-KLxgPW7bQwVD/view?usp=sharing';
 export const MENTORS_GUIDE_URL = 'https://coderscrew.gitbook.io/przewodnik-mentora/';
 export const TERMS_URL = 'https://drive.google.com/file/d/1my5UofcZ1MnzVF7CjJlsKBTzkz3SdN0L/view?usp=sharing';
