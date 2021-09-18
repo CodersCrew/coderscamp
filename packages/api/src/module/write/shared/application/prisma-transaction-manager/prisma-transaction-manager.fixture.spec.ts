@@ -21,6 +21,7 @@ export async function initPrismaTransactionManagerTestModule() {
   const factory = app.get<PrismaTransactionManagerFactory>(PrismaTransactionManagerFactory);
   const execute = getCommandBusSpy(app);
   const sut = factory.create();
+  const sut1 = factory.create();
 
   async function close() {
     await app.close();
@@ -30,6 +31,7 @@ export async function initPrismaTransactionManagerTestModule() {
 
   return {
     sut,
+    sut1,
     close,
     prismaService,
     mocks: { commandBus: { execute } },
