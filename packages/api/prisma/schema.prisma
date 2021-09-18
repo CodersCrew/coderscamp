@@ -4,8 +4,7 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
+  provider = "prisma-client-js"
 }
 
 model UserProfile {
@@ -64,8 +63,15 @@ model CourseProgress {
 }
 
 model EventsSubscription {
-    id                  String @id
-    currentPosition     Int
-    fromPosition        Int
-    eventTypes          String[]
+  id              String   @id
+  currentPosition Int
+  fromPosition    Int
+  eventTypes      String[]
+}
+
+model EventLock {
+  streamId      String
+  streamVersion Int
+
+  @@unique([streamId, streamVersion])
 }

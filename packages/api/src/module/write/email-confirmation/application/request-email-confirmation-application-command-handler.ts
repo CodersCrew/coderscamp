@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { CommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { RequestEmailConfirmationApplicationCommand } from '@/module/commands/request-email-conformation';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
@@ -9,7 +9,9 @@ import { EmailConfirmationDomainEvent } from '../domain/events';
 import { requestEmailConfirmation } from '../domain/requestEmailConfirmation';
 
 @CommandHandler(RequestEmailConfirmationApplicationCommand)
-export class RequestEmailConfirmationApplicationCommandHandler {
+export class RequestEmailConfirmationApplicationCommandHandler
+  implements ICommandHandler<RequestEmailConfirmationApplicationCommand>
+{
   constructor(
     @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,

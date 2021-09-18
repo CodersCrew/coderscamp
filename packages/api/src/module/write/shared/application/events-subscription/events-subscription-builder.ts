@@ -10,7 +10,7 @@ import {
   OnPositionFn,
   PositionHandler,
   SubscriptionId,
-  SubscriptionStart,
+  SubscriptionOptions,
 } from '@/write/shared/application/events-subscription/events-subscription';
 
 export interface NeedsEventOrPositionHandlers {
@@ -32,14 +32,14 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
     private readonly id: SubscriptionId,
-    private readonly start: SubscriptionStart,
+    private readonly options: SubscriptionOptions,
     private readonly positionHandlers: PositionHandler[] = [],
     private readonly eventHandlers: ApplicationEventHandler[] = [],
   ) {}
 
   onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild {
     const handlerToRegister: PositionHandler = {
-      position: this.start.from.globalPosition,
+      position: this.options.start.from.globalPosition,
       onPosition: handle,
     };
 
@@ -48,7 +48,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.eventRepository,
       this.eventEmitter,
       this.id,
-      this.start,
+      this.options,
       [...this.positionHandlers, handlerToRegister],
       this.eventHandlers,
     );
@@ -68,7 +68,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.eventRepository,
       this.eventEmitter,
       this.id,
-      this.start,
+      this.options,
       this.positionHandlers,
       [...this.eventHandlers, handlerToRegister],
     );
@@ -78,7 +78,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     return new EventsSubscription(
       this.id,
       {
-        start: this.start,
+        options: this.options,
         eventHandlers: this.eventHandlers,
         positionHandlers: this.positionHandlers,
       },

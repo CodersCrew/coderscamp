@@ -103,7 +103,7 @@ describe('User Registration', () => {
         },
       }));
 
-    await expect(command).rejects.toEqual(new Error(registerError.REGISTRATION_FORM_ALREADY_EXISTS));
+    await expect(command).rejects.toEqual(new Error(registerError.USER_WAS_ALREADY_REGISTERED));
   });
 
   it('should create userRegistrationWasCompleted event when completeUserRegistration command will be invoked after user registration was started', async () => {

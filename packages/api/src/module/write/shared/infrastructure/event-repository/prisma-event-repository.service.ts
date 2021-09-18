@@ -31,9 +31,10 @@ export class PrismaEventRepository implements EventRepository {
   ) {}
 
   async read(streamName: EventStreamName): Promise<EventStream> {
-    const dbEvents = await this.prismaService.event
-      .findMany({ where: { streamId: streamName.streamId } })
-      .then((found) => found.filter((it) => it.occurredAt <= this.timeProvider.currentTime()));
+    const dbEvents = await this.prismaService.event.findMany({
+      where: { streamId: streamName.streamId, occurredAt: { lte: this.timeProvider.currentTime() } },
+      orderBy: { globalOrder: 'asc' },
+    });
 
     return dbEvents.map((e) => ({
       type: e.type,
@@ -52,45 +53,47 @@ export class PrismaEventRepository implements EventRepository {
     events: StorableEvent[],
     expectedStreamVersion: EventStreamVersion,
   ): Promise<ApplicationEvent[]> {
-    return this.prismaService.$transaction(async (prisma) => {
-      const currentStreamVersion = await prisma.event.count({ where: { streamId: streamName.streamId } });
+    const databaseEvents = events.map((e, index) => ({
+      id: e.id,
+      type: e.type,
+      streamId: streamName.streamId,
+      streamCategory: streamName.streamCategory,
+      streamVersion: expectedStreamVersion + 1 + index,
+      occurredAt: e.occurredAt,
+      data: JSON.stringify(e.data),
+      metadata: JSON.stringify(e.metadata),
+    }));
 
-      if (currentStreamVersion !== expectedStreamVersion) {
-        throw new Error(
-          `Event stream ${streamName.raw} expected version is: ${expectedStreamVersion}, but current version is: ${currentStreamVersion}`,
-        );
-      }
+    // HACK: This is workaround, because of bug in prisma implementation: https://github.com/prisma/prisma/issues/8707
+    await this.prismaService.$transaction([
+      this.prismaService.eventLock.createMany({
+        data: databaseEvents.map((x) => ({
+          streamId: x.streamId,
+          streamVersion: x.streamVersion,
+        })),
+      }),
+      this.prismaService.event.createMany({ data: databaseEvents }),
+    ]);
 
-      const databaseEvents = events.map((e, index) => ({
-        id: e.id,
-        type: e.type,
-        streamId: streamName.streamId,
-        streamCategory: streamName.streamCategory,
-        streamVersion: currentStreamVersion + 1 + index,
-        occurredAt: e.occurredAt,
-        data: JSON.stringify(e.data),
-        metadata: JSON.stringify(e.metadata),
-      }));
-
-      await prisma.event.createMany({ data: databaseEvents });
-
-      const storedEvents = await prisma.event.findMany({
-        where: {
-          id: { in: databaseEvents.map((e) => e.id) },
-        },
-      });
-
-      return storedEvents.map((e) => ({
-        type: e.type,
-        id: e.id,
-        occurredAt: e.occurredAt,
-        data: parseData(e.data),
-        metadata: parseMetadata(e.metadata),
-        streamVersion: e.streamVersion,
-        streamName: EventStreamName.from(e.streamCategory, e.streamId),
-        globalOrder: e.globalOrder,
-      }));
+    const storedEvents = await this.prismaService.event.findMany({
+      where: {
+        id: { in: databaseEvents.map((e) => e.id) },
+      },
+      orderBy: {
+        globalOrder: 'asc',
+      },
     });
+
+    return storedEvents.map((e) => ({
+      type: e.type,
+      id: e.id,
+      occurredAt: e.occurredAt,
+      data: parseData(e.data),
+      metadata: parseMetadata(e.metadata),
+      streamVersion: e.streamVersion,
+      streamName: EventStreamName.from(e.streamCategory, e.streamId),
+      globalOrder: e.globalOrder,
+    }));
   }
 
   async readAll(filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]> {

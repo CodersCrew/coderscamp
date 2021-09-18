@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    ports:
+      - '${PGADMIN_PORT:-5050}:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'root@coderscamp.com'
+      PGADMIN_DEFAULT_PASSWORD: 'root'
+    volumes:
+      - ./data/pgadmin:/var/lib/pgadmin/storage/
+    networks:
+      - db-net
