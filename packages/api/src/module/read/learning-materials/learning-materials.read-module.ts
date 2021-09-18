@@ -1,12 +1,10 @@
-import {Module, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
+import { Module, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
-import {
-  EventsSubscription,
-  PrismaTransactionManager,
-} from '@/write/shared/application/events-subscription/events-subscription';
+import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
+import { PrismaTransactionContext } from '@/write/shared/application/prisma-transaction-manager/prisma-transaction-manager';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { LearningMaterialsRestController } from './learning-materials.rest-controller';
@@ -23,10 +21,10 @@ export class LearningMaterialsReadModule implements OnApplicationBootstrap, OnMo
   async onApplicationBootstrap() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
       .subscription('LearningMaterials_ReadModel_v1')
-      .onInitialPosition(this.onInitialPosition)
+      .onInitialPosition(LearningMaterialsReadModule.onInitialPosition)
       .onEvent<LearningMaterialsUrlWasGenerated>(
         'LearningMaterialsUrlWasGenerated',
-        this.onLearningMaterialsUrlWasGenerated,
+        LearningMaterialsReadModule.onLearningMaterialsUrlWasGenerated,
       )
       .build();
     await this.eventsSubscription.start();
@@ -36,20 +34,22 @@ export class LearningMaterialsReadModule implements OnApplicationBootstrap, OnMo
     await this.eventsSubscription.stop();
   }
 
-  async onInitialPosition(_position: number, context: { transaction: PrismaTransactionManager }) {
-    await context.transaction.learningMaterials.deleteMany({});
+  private static onInitialPosition(context: PrismaTransactionContext, _position: number) {
+    return context.executeWithTransaction((prisma) => prisma.learningMaterials.deleteMany({}));
   }
 
-  async onLearningMaterialsUrlWasGenerated(
+  private static onLearningMaterialsUrlWasGenerated(
+    context: PrismaTransactionContext,
     event: ApplicationEvent<LearningMaterialsUrlWasGenerated>,
-    context: { transaction: PrismaTransactionManager },
   ) {
-    await context.transaction.learningMaterials.create({
-      data: {
-        id: event.data.learningMaterialsId,
-        courseUserId: event.data.courseUserId,
-        url: event.data.materialsUrl,
-      },
-    });
+    return context.executeWithTransaction((prisma) =>
+      prisma.learningMaterials.create({
+        data: {
+          id: event.data.learningMaterialsId,
+          courseUserId: event.data.courseUserId,
+          url: event.data.materialsUrl,
+        },
+      }),
+    );
   }
 }

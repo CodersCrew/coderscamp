@@ -1,13 +1,17 @@
 /* eslint-disable no-await-in-loop */
 import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { PrismaClient } from '@prisma/client';
 import { retry, RetryConfig, wait } from 'ts-retry-promise';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
+import {
+  PrismaTransactionClient,
+  PrismaTransactionContext,
+} from '@/write/shared/application/prisma-transaction-manager/prisma-transaction-manager';
+import { PrismaTransactionManagerFactory } from '@/write/shared/application/prisma-transaction-manager/prisma-transaction-manager-factory';
 
 import { OrderedEventQueue } from './ordered-event-queue';
 
@@ -27,11 +31,9 @@ export type SubscriptionOptions = {
   retry?: SubscriptionRetriesConfig;
 };
 
-export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
-
 export type OnEventFn<DomainEventType extends DomainEvent = DomainEvent> = (
+  context: PrismaTransactionContext,
   event: ApplicationEvent<DomainEventType>,
-  context: { transaction: PrismaTransactionManager },
 ) => Promise<void> | void;
 
 export type ApplicationEventHandler = {
@@ -39,10 +41,7 @@ export type ApplicationEventHandler = {
   readonly onEvent: OnEventFn;
 };
 
-export type OnPositionFn = (
-  position: number,
-  context: { transaction: PrismaTransactionManager },
-) => Promise<void> | void;
+export type OnPositionFn = (context: PrismaTransactionContext, position: number) => Promise<void> | void;
 
 export type PositionHandler = {
   readonly position: number;
@@ -78,6 +77,7 @@ export class EventsSubscription {
     private readonly prismaService: PrismaService,
     private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
+    private readonly transactionManagerFactory: PrismaTransactionManagerFactory,
   ) {}
 
   /**
@@ -193,10 +193,14 @@ export class EventsSubscription {
     this.eventsRetryCount.delete(event.id);
 
     try {
-      // TODO add transaction
-      await this.processSubscriptionPositionChange(event, this.prismaService);
-      await this.processEvent(event, this.prismaService);
-      await this.moveCurrentPosition(event.globalOrder, this.prismaService);
+      const transactionManager = this.transactionManagerFactory.create();
+
+      await this.processSubscriptionPositionChange(event, transactionManager);
+      await this.processEvent(event, transactionManager);
+      transactionManager.executeWithTransaction((prismaClient) =>
+        this.moveCurrentPosition(event.globalOrder, prismaClient),
+      );
+      await transactionManager.executeTransaction();
     } catch (e) {
       await this.stop();
       this.logger.warn(
@@ -222,24 +226,24 @@ export class EventsSubscription {
     await wait(this.configuration.options.queue.waitingTimeOnRetry);
   }
 
-  private async processEvent(event: ApplicationEvent, transaction: PrismaTransactionManager) {
+  private async processEvent(event: ApplicationEvent, context: PrismaTransactionContext) {
     await Promise.all(
       this.configuration.eventHandlers
         .filter((handler) => handler.eventType === event.type)
-        .map((handler) => handler.onEvent(event, { transaction })),
+        .map((handler) => handler.onEvent(context, event)),
     );
   }
 
-  private async processSubscriptionPositionChange(event: ApplicationEvent, transaction: PrismaTransactionManager) {
+  private async processSubscriptionPositionChange(event: ApplicationEvent, context: PrismaTransactionContext) {
     await Promise.all(
       this.configuration.positionHandlers
         .filter((handler) => handler.position === event.globalOrder)
-        .map((handler) => handler.onPosition(event.globalOrder, { transaction })),
+        .map((handler) => handler.onPosition(context, event.globalOrder)),
     );
   }
 
-  private async moveCurrentPosition(position: number, transaction: PrismaTransactionManager) {
-    await transaction.eventsSubscription.upsert({
+  private moveCurrentPosition(position: number, prismaClient: PrismaTransactionClient) {
+    return prismaClient.eventsSubscription.upsert({
       where: {
         id: this.subscriptionId,
       },

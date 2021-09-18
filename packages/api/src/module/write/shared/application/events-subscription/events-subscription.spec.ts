@@ -13,7 +13,11 @@ import {
 } from '@/shared/test-utils';
 import { using } from '@/shared/using';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
-import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
+import {
+  EventsSubscription,
+  OnEventFn,
+  OnPositionFn,
+} from '@/write/shared/application/events-subscription/events-subscription';
 
 import {
   initEventsSubscriptionConcurrencyTestFixture,
@@ -24,9 +28,9 @@ describe('Events subscription', () => {
   let sut: AsyncReturnType<typeof initTestEventsSubscription>;
   let subscription: EventsSubscription;
 
-  const onInitialPosition = jest.fn();
-  const onSampleDomainEvent = jest.fn();
-  const onAnotherSampleDomainEvent = jest.fn();
+  const onInitialPosition: jest.MockedFunction<OnPositionFn> = jest.fn();
+  const onSampleDomainEvent: jest.MockedFunction<OnEventFn<SampleDomainEvent>> = jest.fn();
+  const onAnotherSampleDomainEvent: jest.MockedFunction<OnEventFn<AnotherSampleDomainEvent>> = jest.fn();
 
   beforeEach(async () => {
     onInitialPosition.mockReset();
@@ -170,7 +174,7 @@ describe('Events subscription', () => {
 
     let lastEventValue: string | undefined;
 
-    onAnotherSampleDomainEvent.mockImplementation((e) => {
+    onAnotherSampleDomainEvent.mockImplementation((_context, e) => {
       lastEventValue = e.data.value1;
     });
 
@@ -284,10 +288,10 @@ describe('Events subscription concurrency tests', () => {
 
     const processedEvents: ApplicationEvent[] = [];
 
-    onSampleDomainEvent.mockImplementation((event) => {
+    onSampleDomainEvent.mockImplementation((_context, event) => {
       processedEvents.push(event);
     });
-    onAnotherSampleDomainEvent.mockImplementation((event) => {
+    onAnotherSampleDomainEvent.mockImplementation((_context, event) => {
       processedEvents.push(event);
     });
 

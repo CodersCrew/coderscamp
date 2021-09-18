@@ -12,6 +12,7 @@ import {
   NeedsEventOrPositionHandlers,
   SubscriptionBuilder,
 } from '@/write/shared/application/events-subscription/events-subscription-builder';
+import { PrismaTransactionManagerFactory } from '@/write/shared/application/prisma-transaction-manager/prisma-transaction-manager-factory';
 
 export interface CanCreateSubscription {
   subscription(id: SubscriptionId, config?: Partial<SubscriptionOptions>): NeedsEventOrPositionHandlers;
@@ -23,6 +24,7 @@ export class EventsSubscriptionsRegistry implements CanCreateSubscription {
     private readonly prismaService: PrismaService,
     @Inject(EVENT_REPOSITORY) private readonly eventRepository: EventRepository,
     private readonly eventEmitter: EventEmitter2,
+    private readonly transactionManagerFactory: PrismaTransactionManagerFactory,
   ) {}
 
   subscription(id: SubscriptionId, options?: Partial<SubscriptionOptions>): NeedsEventOrPositionHandlers {
@@ -46,6 +48,7 @@ export class EventsSubscriptionsRegistry implements CanCreateSubscription {
       startConfig,
       [],
       [],
+      this.transactionManagerFactory,
     );
   }
 }

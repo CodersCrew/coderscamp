@@ -1,14 +1,12 @@
-import {Module, OnApplicationBootstrap, OnModuleDestroy} from '@nestjs/common';
+import { Module, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
 import { TaskWasUncompleted } from '@/module/events/task-was-uncompleted-event.domain-event';
-import {
-  EventsSubscription,
-  PrismaTransactionManager,
-} from '@/write/shared/application/events-subscription/events-subscription';
+import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
+import { PrismaTransactionContext } from '@/write/shared/application/prisma-transaction-manager/prisma-transaction-manager';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { CourseProgressRestController } from './course-progress.rest-controller';
@@ -40,46 +38,46 @@ export class CourseProgressReadModule implements OnApplicationBootstrap, OnModul
     await this.eventsSubscription.stop();
   }
 
-  private static async onInitialPosition(_position: number, context: { transaction: PrismaTransactionManager }) {
-    await context.transaction.courseProgress.deleteMany({});
+  private static onInitialPosition(context: PrismaTransactionContext, _position: number) {
+    return context.executeWithTransaction((prisma) => prisma.courseProgress.deleteMany({}));
   }
 
-  private static async onLearningMaterialsUrlWasGenerated(
+  private static onLearningMaterialsUrlWasGenerated(
+    context: PrismaTransactionContext,
     event: ApplicationEvent<LearningMaterialsUrlWasGenerated>,
-    context: { transaction: PrismaTransactionManager },
   ) {
-    await context.transaction.courseProgress.upsert({
-      where: { learningMaterialsId: event.data.learningMaterialsId },
-      create: {
-        learningMaterialsId: event.data.learningMaterialsId,
-        learningMaterialsCompletedTasks: 0,
-        courseUserId: event.data.courseUserId,
-      },
-      update: { courseUserId: event.data.courseUserId },
-    });
-  }
-
-  private static async onTaskWasCompleted(
-    event: ApplicationEvent<TaskWasCompleted>,
-    context: { transaction: PrismaTransactionManager },
-  ) {
-    await context.transaction.courseProgress.upsert(
-      CourseProgressReadModule.courseProgressStateUpdate({
-        learningMaterialsId: event.data.learningMaterialsId,
-        completedTasks: 'increment',
+    return context.executeWithTransaction((prisma) =>
+      prisma.courseProgress.upsert({
+        where: { learningMaterialsId: event.data.learningMaterialsId },
+        create: {
+          learningMaterialsId: event.data.learningMaterialsId,
+          learningMaterialsCompletedTasks: 0,
+          courseUserId: event.data.courseUserId,
+        },
+        update: { courseUserId: event.data.courseUserId },
       }),
     );
   }
 
-  private static async onTaskWasUncompleted(
-    event: ApplicationEvent<TaskWasUncompleted>,
-    context: { transaction: PrismaTransactionManager },
-  ) {
-    await context.transaction.courseProgress.upsert(
-      CourseProgressReadModule.courseProgressStateUpdate({
-        learningMaterialsId: event.data.learningMaterialsId,
-        completedTasks: 'decrement',
-      }),
+  private static onTaskWasCompleted(context: PrismaTransactionContext, event: ApplicationEvent<TaskWasCompleted>) {
+    return context.executeWithTransaction((prisma) =>
+      prisma.courseProgress.upsert(
+        CourseProgressReadModule.courseProgressStateUpdate({
+          learningMaterialsId: event.data.learningMaterialsId,
+          completedTasks: 'increment',
+        }),
+      ),
+    );
+  }
+
+  private static onTaskWasUncompleted(context: PrismaTransactionContext, event: ApplicationEvent<TaskWasUncompleted>) {
+    return context.executeWithTransaction((prisma) =>
+      prisma.courseProgress.upsert(
+        CourseProgressReadModule.courseProgressStateUpdate({
+          learningMaterialsId: event.data.learningMaterialsId,
+          completedTasks: 'decrement',
+        }),
+      ),
     );
   }
 

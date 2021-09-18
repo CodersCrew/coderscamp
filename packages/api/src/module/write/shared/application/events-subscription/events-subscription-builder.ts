@@ -12,6 +12,7 @@ import {
   SubscriptionId,
   SubscriptionOptions,
 } from '@/write/shared/application/events-subscription/events-subscription';
+import { PrismaTransactionManagerFactory } from '@/write/shared/application/prisma-transaction-manager/prisma-transaction-manager-factory';
 
 export interface NeedsEventOrPositionHandlers {
   onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild;
@@ -35,6 +36,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
     private readonly options: SubscriptionOptions,
     private readonly positionHandlers: PositionHandler[] = [],
     private readonly eventHandlers: ApplicationEventHandler[] = [],
+    private readonly transactionManagerFactory: PrismaTransactionManagerFactory,
   ) {}
 
   onInitialPosition(handle: OnPositionFn): MoreEventHandlersOrBuild {
@@ -51,6 +53,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.options,
       [...this.positionHandlers, handlerToRegister],
       this.eventHandlers,
+      this.transactionManagerFactory,
     );
   }
 
@@ -71,6 +74,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.options,
       this.positionHandlers,
       [...this.eventHandlers, handlerToRegister],
+      this.transactionManagerFactory,
     );
   }
 
@@ -85,6 +89,7 @@ export class SubscriptionBuilder implements NeedsEventOrPositionHandlers, MoreEv
       this.prismaService,
       this.eventRepository,
       this.eventEmitter,
+      this.transactionManagerFactory,
     );
   }
 }

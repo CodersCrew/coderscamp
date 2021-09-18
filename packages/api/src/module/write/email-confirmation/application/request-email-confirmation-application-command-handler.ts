@@ -23,7 +23,7 @@ export class RequestEmailConfirmationApplicationCommandHandler
 
     await this.applicationService.execute<EmailConfirmationDomainEvent>(
       eventStream,
-      { causationId: command.id, correlationId: command.metadata.correlationId },
+      command,
       requestEmailConfirmation(command),
     );
   }

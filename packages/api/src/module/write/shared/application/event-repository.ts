@@ -13,7 +13,6 @@ export type StorableEvent<
 > = Omit<ApplicationEvent<DomainEventType, EventMetadata>, 'globalOrder' | 'streamVersion' | 'streamName'>;
 
 export type ReadAllFilter = { streamCategory?: string; eventTypes?: string[]; fromGlobalPosition?: number };
-
 export interface EventRepository {
   read(streamName: EventStreamName): Promise<EventStream>;
 

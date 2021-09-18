@@ -28,10 +28,8 @@ export class GenerateLearningMaterialsUrlCommandHandler
 
     const eventStream = EventStreamName.from('LearningMaterialsUrl', command.data.courseUserId);
 
-    await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(
-      eventStream,
-      { causationId: command.id, correlationId: command.metadata.correlationId },
-      (pastEvents) => generateLearningMaterialsUrl(pastEvents, command, learningMaterials.url, learningMaterials.id),
+    await this.applicationService.execute<LearningMaterialsUrlDomainEvent>(eventStream, command, (pastEvents) =>
+      generateLearningMaterialsUrl(pastEvents, command, learningMaterials.url, learningMaterials.id),
     );
   }
 }

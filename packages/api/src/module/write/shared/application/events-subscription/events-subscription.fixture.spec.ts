@@ -11,7 +11,7 @@ import { SharedModule } from '@/write/shared/shared.module';
 
 import { eventEmitterRootModule } from '../../../../../event-emitter.root-module';
 import { ApplicationEventBus } from '../application.event-bus';
-import { SubscriptionOptions } from './events-subscription';
+import { OnEventFn, OnPositionFn, SubscriptionOptions } from './events-subscription';
 
 export async function initTestEventsSubscription() {
   const app = await initWriteTestModule({
@@ -101,9 +101,9 @@ class EventsSubscriptionConcurrencyTestFixtureImpl implements EventsSubscription
 export async function initEventsSubscriptionConcurrencyTestFixture(options: SubscriptionOptions['queue']) {
   const fixtureBase = await initTestEventsSubscription();
 
-  const onInitialPosition = jest.fn();
-  const onSampleDomainEvent = jest.fn();
-  const onAnotherSampleDomainEvent = jest.fn();
+  const onInitialPosition: jest.MockedFunction<OnPositionFn> = jest.fn();
+  const onSampleDomainEvent: jest.MockedFunction<OnEventFn<SampleDomainEvent>> = jest.fn();
+  const onAnotherSampleDomainEvent: jest.MockedFunction<OnEventFn<AnotherSampleDomainEvent>> = jest.fn();
 
   const sut = fixtureBase.eventsSubscriptions
     .subscription(fixtureBase.randomUuid(), { queue: options })

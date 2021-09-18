@@ -9,8 +9,9 @@ import { EventStreamName } from '../../application/event-stream-name.value-objec
 import { EventStreamVersion } from '../../application/event-stream-version';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
 
-const parseData = (value: unknown): Record<string, unknown> => JSON.parse(typeof value === 'string' ? value : '{}');
-const parseMetadata = (value: unknown): DefaultCommandMetadata & Record<string, unknown> => {
+export const parseStoredEventData = (value: unknown): Record<string, unknown> =>
+  JSON.parse(typeof value === 'string' ? value : '{}');
+export const parseStoredEventMetadata = (value: unknown): DefaultCommandMetadata & Record<string, unknown> => {
   const metadata = JSON.parse(typeof value === 'string' ? value : '{}');
 
   const hasCorrectCorrelationId = 'correlationId' in metadata && typeof metadata.correlationId === 'string';
@@ -40,8 +41,8 @@ export class PrismaEventRepository implements EventRepository {
       type: e.type,
       id: e.id,
       occurredAt: e.occurredAt,
-      data: parseData(e.data),
-      metadata: parseMetadata(e.metadata),
+      data: parseStoredEventData(e.data),
+      metadata: parseStoredEventMetadata(e.metadata),
       streamVersion: e.streamVersion,
       streamName: EventStreamName.from(e.streamCategory, e.streamId),
       globalOrder: e.globalOrder,
@@ -88,8 +89,8 @@ export class PrismaEventRepository implements EventRepository {
       type: e.type,
       id: e.id,
       occurredAt: e.occurredAt,
-      data: parseData(e.data),
-      metadata: parseMetadata(e.metadata),
+      data: parseStoredEventData(e.data),
+      metadata: parseStoredEventMetadata(e.metadata),
       streamVersion: e.streamVersion,
       streamName: EventStreamName.from(e.streamCategory, e.streamId),
       globalOrder: e.globalOrder,
@@ -115,8 +116,8 @@ export class PrismaEventRepository implements EventRepository {
       type: e.type,
       id: e.id,
       occurredAt: e.occurredAt,
-      data: parseData(e.data),
-      metadata: parseMetadata(e.metadata),
+      data: parseStoredEventData(e.data),
+      metadata: parseStoredEventMetadata(e.metadata),
       streamVersion: e.streamVersion,
       streamName: EventStreamName.from(e.streamCategory, e.streamId),
       globalOrder: e.globalOrder,

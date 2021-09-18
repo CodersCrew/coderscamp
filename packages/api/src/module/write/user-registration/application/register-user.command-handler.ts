@@ -33,7 +33,7 @@ export class RegisterUserCommandHandler implements ICommandHandler<RegisterUserA
 
       await this.applicationService.execute<UserRegistrationDomainEvent>(
         EventStreamName.from('UserRegistration', data.userId),
-        { correlationId: command.metadata.correlationId, causationId: command.metadata.causationId },
+        command,
         (pastEvents) => registerUser(pastEvents, command, hashedPassword),
       );
     } catch (ex) {

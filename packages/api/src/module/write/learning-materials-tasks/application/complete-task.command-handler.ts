@@ -18,13 +18,8 @@ export class CompleteTaskCommandHandler implements ICommandHandler<CompleteTaskA
   async execute(command: CompleteTaskApplicationCommand): Promise<void> {
     const eventStream = EventStreamName.from('LearningMaterialsTasks', command.data.learningMaterialsId);
 
-    await this.applicationService.execute<TaskWasCompleted>(
-      eventStream,
-      {
-        causationId: command.id,
-        correlationId: command.metadata.correlationId,
-      },
-      (pastEvents) => completeTask(pastEvents, command),
+    await this.applicationService.execute<TaskWasCompleted>(eventStream, command, (pastEvents) =>
+      completeTask(pastEvents, command),
     );
   }
 }

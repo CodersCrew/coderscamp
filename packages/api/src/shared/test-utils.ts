@@ -30,6 +30,20 @@ import { setupMiddlewares } from '../app.middlewares';
 import { AppModule } from '../app.module';
 import { eventEmitterRootModule } from '../event-emitter.root-module';
 
+function sampleCommandFactory(command: Partial<ApplicationCommand> = {}): ApplicationCommand {
+  return {
+    id: uuid(),
+    data: {},
+    type: 'SampleCommand',
+    issuedAt: new Date(),
+    metadata: {
+      correlationId: uuid(),
+      causationId: uuid(),
+    },
+    ...command,
+  };
+}
+
 export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
     Object.values(prismaService).map((table) => (table?.deleteMany ? table.deleteMany() : Promise.resolve())),
@@ -58,13 +72,9 @@ export async function initReadTestModule(config?: { modules?: ModuleMetadata['im
   }
 
   async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
-    const sourceCommandId = uuid();
+    const sampleCommand = sampleCommandFactory();
 
-    await applicationService.execute(
-      eventStreamName,
-      { correlationId: sourceCommandId, causationId: sourceCommandId },
-      () => events,
-    );
+    await applicationService.execute(eventStreamName, sampleCommand, () => events);
   }
 
   async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent): Promise<void> {
@@ -205,23 +215,15 @@ export async function initWriteTestModule(config?: {
   }
 
   async function eventOccurred(eventStreamName: EventStreamName, event: DomainEvent) {
-    const sourceCommandId = uuid();
+    const sampleCommand = sampleCommandFactory();
 
-    await applicationService.execute(
-      eventStreamName,
-      { correlationId: sourceCommandId, causationId: sourceCommandId },
-      () => [event],
-    );
+    await applicationService.execute(eventStreamName, sampleCommand, () => [event]);
   }
 
   async function eventsOccurred(eventStreamName: EventStreamName, events: DomainEvent[]) {
-    const sourceCommandId = uuid();
+    const sampleCommand = sampleCommandFactory();
 
-    await applicationService.execute(
-      eventStreamName,
-      { correlationId: sourceCommandId, causationId: sourceCommandId },
-      () => events,
-    );
+    await applicationService.execute(eventStreamName, sampleCommand, () => events);
   }
 
   async function expectSubscriptionPosition(expectation: { subscriptionId: SubscriptionId; position: number }) {
@@ -366,6 +368,28 @@ export function sampleApplicationEvent(event: Partial<ApplicationEvent>): Applic
       causationId: uuid(),
     },
     ...event,
+  };
+}
+
+type StorableStream = {
+  streamId: string;
+  streamCategory: string;
+  streamVersion: number;
+};
+
+export function sampleDatabaseEvent(
+  stream: Partial<StorableStream> & { streamVersion: number } = { streamVersion: 0 },
+  event: Partial<StorableEvent> = {},
+) {
+  return {
+    id: event?.id ?? uuid(),
+    type: event?.type ?? uuid(),
+    streamId: stream?.streamId ?? uuid(),
+    streamCategory: stream?.streamCategory ?? uuid(),
+    streamVersion: stream.streamVersion,
+    occurredAt: event?.occurredAt ?? new Date(),
+    data: JSON.stringify(event?.data ?? {}),
+    metadata: JSON.stringify(event.metadata ?? {}),
   };
 }
 
