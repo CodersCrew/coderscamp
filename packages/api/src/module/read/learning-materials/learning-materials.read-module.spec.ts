@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
+import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
 import { UserId } from '@/shared/domain.types';
 import { initReadTestModule } from '@/shared/test-utils';
 import { StorableEvent } from '@/write/shared/application/event-repository';
@@ -12,7 +13,7 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 
 async function learningMaterialsTestModule() {
-  const module = await initReadTestModule();
+  const module = await initReadTestModule({ modules: [LearningMaterialsReadModule] });
 
   async function expectReadModel(expectation: { courseUserId: UserId; readModel: LearningMaterials | null }) {
     await waitForExpect(async () => {
