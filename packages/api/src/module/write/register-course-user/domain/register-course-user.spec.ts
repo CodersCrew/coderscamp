@@ -13,7 +13,7 @@ describe('register course user', () => {
     },
   };
 
-  test('should return CourseUserWasRegistered if user is not registered', () => {
+  it('should return CourseUserWasRegistered if user is not registered', () => {
     // Given
     const pastEvents: CourseUserWasRegistered[] = [];
 
@@ -24,7 +24,7 @@ describe('register course user', () => {
     expect(events).toStrictEqual([{ type: 'CourseUserWasRegistered', data: command.data }]);
   });
 
-  test('should throw error if user have been already registered', () => {
+  it('should throw error if user have been already registered', () => {
     // Given
     const pastEvents: CourseUserWasRegistered[] = [{ type: 'CourseUserWasRegistered', data: command.data }];
 
