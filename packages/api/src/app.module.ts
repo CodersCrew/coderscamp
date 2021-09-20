@@ -14,6 +14,7 @@ import { env } from '@/shared/env';
 import { EmailConfirmationWriteModule } from '@/write/email-confirmation/email-confirmation.write-module';
 import { LearningMaterialsTasksModule } from '@/write/learning-materials-tasks/learning-materials-tasks.write-module';
 import { LearningMaterialsUrlWriteModule } from '@/write/learning-materials-url/learning-materials-url.write-module';
+import { RegisterCourseUserWriteModule } from '@/write/register-course-user/register-course-user.write-module';
 import { UserRegistrationWriteModule } from '@/write/user-registration/user-registration.write-module';
 
 import { AuthModule } from './crud/auth/auth.module';
@@ -27,6 +28,7 @@ const writeModules = [
   UserRegistrationWriteModule,
   LearningMaterialsTasksModule,
   EmailConfirmationWriteModule,
+  RegisterCourseUserWriteModule,
 ];
 const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
 const automationModules = [
