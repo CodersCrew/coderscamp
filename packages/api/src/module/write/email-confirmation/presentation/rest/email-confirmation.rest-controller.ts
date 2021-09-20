@@ -1,9 +1,17 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { APPROVE_ENDPOINT, RequestEmailConfirmationBody } from '@coderscamp/shared/models/email-confirmation';
+import {
+  APPROVE_ENDPOINT,
+  ApproveEmailConfirmationBody,
+} from '@coderscamp/shared/models/email-confirmation/approve-email-confirmation';
+import { RequestEmailConfirmationBody } from '@coderscamp/shared/models/email-confirmation/request-email-confirmation';
 
 import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
+import {
+  ApproveEmailConfirmationApplicationCommand,
+  approveEmailConfirmationCommand,
+} from '@/module/commands/approve-email-confirmation';
 import {
   RequestEmailConfirmationApplicationCommand,
   requestEmailConfirmationCommand,
@@ -11,9 +19,8 @@ import {
 import { UserId } from '@/shared/domain.types';
 import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
-import { ApproveEmailConfirmationApplicationCommand, approveEmailConfirmationCommand } from '@/module/commands/approve-email-confirmation'
-import { ApproveEmailConfirmationBody } from '@coderscamp/shared/models/email-confirmation/approve-email-confirmation'
 
+@UseGuards(JwtAuthGuard)
 @Controller('email-confirmation')
 export class EmailConfirmationRestController {
   constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
@@ -27,7 +34,11 @@ export class EmailConfirmationRestController {
   ): Promise<void> {
     const command = this.commandFactory.applicationCommand((idGenerator) => ({
       class: RequestEmailConfirmationApplicationCommand,
-      ...requestEmailConfirmationCommand({ userId, confirmationToken: idGenerator.generate(), confirmationFor }),
+      ...requestEmailConfirmationCommand({
+        userId,
+        confirmationToken: idGenerator.generate(),
+        confirmationFor,
+      }),
     }));
 
     await this.commandBus.execute(command);
@@ -41,7 +52,11 @@ export class EmailConfirmationRestController {
   ): Promise<void> {
     const command = this.commandFactory.applicationCommand(() => ({
       class: ApproveEmailConfirmationApplicationCommand,
-      ...approveEmailConfirmationCommand({ userId, confirmationToken, confirmationFor: 'user-registration' }),
+      ...approveEmailConfirmationCommand({
+        userId,
+        confirmationToken,
+        confirmationFor: 'user-registration',
+      }),
     }));
 
     await this.commandBus.execute(command);
