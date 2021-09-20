@@ -12,7 +12,7 @@ import { EventsSubscription } from '@/write/shared/application/events-subscripti
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 
 @Injectable()
-export class EmailConfirmationWasApprovedEventHandlerService implements OnModuleInit, OnModuleDestroy {
+export class EmailConfirmationWasApprovedEventHandler implements OnModuleInit, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
 
   constructor(
