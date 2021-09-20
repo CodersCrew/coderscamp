@@ -70,7 +70,27 @@ class EnvVariables {
   @Expose()
   @IsString()
   @IsNotEmpty()
-  APP_EMAIL_ADDRESS: string;
+  APP_EMAIL_ADDRESS_TEST: string;
+
+  @Expose()
+  @IsInt()
+  @IsPositive()
+  NODEMAILER_PORT: number;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  NODEMAILER_HOST: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  NODEMAILER_USER: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  NODEMAILER_PASSWORD: string;
 }
 
 export const env = plainToClass(EnvVariables, process.env, {

@@ -5,6 +5,9 @@ import {SendEmailMessageApplicationCommand} from "@/commands/send-email-message.
 import {APPLICATION_SERVICE, ApplicationService} from "@/write/shared/application/application-service";
 import {EventStreamName} from "@/write/shared/application/event-stream-name.value-object";
 import {EMAIL_SENDER, EmailSender} from "@/write/email-sender/application/email-sender";
+import {EmailMessageWasSentDomainEvent} from "@/write/email-sender/domain/events";
+import {sendEmailMessage} from "@/write/email-sender/domain/sendEmailMessage";
+import { env } from '@/shared/env';
 
 @CommandHandler(SendEmailMessageApplicationCommand)
 export class SendEmailMessageCommandHandler {
@@ -20,9 +23,18 @@ export class SendEmailMessageCommandHandler {
     const { emailMessageId, to, subject, text, html } = command.data;
     const eventStream = EventStreamName.from('EmailMessage', `EmailMessage_${emailMessageId}`);
 
-    //TODO
-    // 1. send email
-    // 2. save event
+    await this.emailSender.sendAnEmail({
+      to: to,
+      subject: subject,
+      text: text,
+      html: html
+    })
+
+    await this.applicationService.execute<EmailMessageWasSentDomainEvent>(
+      eventStream,
+      { causationId: command.id, correlationId: command.metadata.correlationId },
+      (pastEvents) => sendEmailMessage(pastEvents, command, env.APP_EMAIL_ADDRESS_TEST)
+    )
   }
 
 
