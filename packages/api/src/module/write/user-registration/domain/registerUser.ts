@@ -1,5 +1,4 @@
 import { RegisterUser } from '@/commands/register-user';
-import { UserRegistrationWasCompleted } from '@/events/user-registration-was-completed.domain-event';
 import { UserRegistrationWasStarted } from '@/events/user-registration-was-started.domain-event';
 import { UserRegistrationDomainEvent } from '@/write/user-registration/domain/events';
 
@@ -18,15 +17,6 @@ export function registerUser(
       hashedPassword,
     },
   };
-  const userRegistrationWasCompleted: UserRegistrationWasCompleted = {
-    type: 'UserRegistrationWasCompleted',
-    data: {
-      userId: data.userId,
-      fullName: data.fullName,
-      emailAddress: data.emailAddress,
-      hashedPassword,
-    },
-  };
 
-  return [userRegistrationWasStarted, userRegistrationWasCompleted];
+  return [userRegistrationWasStarted];
 }

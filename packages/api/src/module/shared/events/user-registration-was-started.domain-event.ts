@@ -7,3 +7,10 @@ export type UserRegistrationWasStarted = {
     hashedPassword: string;
   };
 };
+
+export const userRegistrationWasStartedEvent = (
+  data: UserRegistrationWasStarted['data'],
+): UserRegistrationWasStarted => ({
+  type: 'UserRegistrationWasStarted',
+  data,
+});
