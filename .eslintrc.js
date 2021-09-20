@@ -177,6 +177,7 @@ module.exports = {
         'test-utils.ts',
         '*Handlers.ts',
         '**/mocks/*',
+        'jest-setup.ts',
       ],
       extends: [
         'plugin:testing-library/react',

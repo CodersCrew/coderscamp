@@ -11,7 +11,7 @@ export class LearningMaterialsTaskRestController {
   constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
 
   @Post('task-checked-unchecked')
-  @HttpCode(200)
+  @HttpCode(204)
   async taskCheckedUnchecked(
     @Body() { id: learningMaterialsId, data: { id: taskId, status } }: TaskCompletedRequestBody,
   ): Promise<void> {

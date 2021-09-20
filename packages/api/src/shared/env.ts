@@ -1,5 +1,5 @@
 import { Expose, plainToClass } from 'class-transformer';
-import { IsIn, IsInt, IsNotEmpty, IsPositive, IsString, IsUrl, validateOrReject } from 'class-validator';
+import { IsIn, IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, IsUrl, validateOrReject } from 'class-validator';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -66,6 +66,14 @@ class EnvVariables {
   @IsNotEmpty()
   @IsIn(EVENT_REPOSITORY_VALUES)
   EVENT_REPOSITORY: typeof EVENT_REPOSITORY_VALUES[number];
+
+  @Expose()
+  @IsNumber()
+  SUBSCRIPTION_QUEUE_MAX_RETRY_COUNT: number;
+
+  @Expose()
+  @IsNumber()
+  SUBSCRIPTION_QUEUE_WAITING_TIME_ON_RETRY_MS: number;
 
   @Expose()
   @IsString()
