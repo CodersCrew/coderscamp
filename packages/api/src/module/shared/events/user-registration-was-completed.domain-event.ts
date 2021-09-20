@@ -7,3 +7,10 @@ export type UserRegistrationWasCompleted = {
     hashedPassword: string;
   };
 };
+
+export const userRegistrationWasCompletedEvent = (
+  data: UserRegistrationWasCompleted['data'],
+): UserRegistrationWasCompleted => ({
+  type: 'UserRegistrationWasCompleted',
+  data,
+});
