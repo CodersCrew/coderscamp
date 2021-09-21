@@ -1,4 +1,4 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -12,7 +12,7 @@ import { EventsSubscription } from '@/write/shared/application/events-subscripti
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 
 @Injectable()
-export class EmailConfirmationWasApprovedEventHandler implements OnModuleInit, OnModuleDestroy {
+export class EmailConfirmationWasApprovedEventHandler implements OnApplicationBootstrap, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
 
   constructor(
@@ -21,7 +21,7 @@ export class EmailConfirmationWasApprovedEventHandler implements OnModuleInit, O
     private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry,
   ) {}
 
-  async onModuleInit() {
+  async onApplicationBootstrap() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
       .subscription('WhenEmailConfirmationWasApprovedThenCompleteUserRegistrationAutomationModule_Automation_v1')
       .onEvent<EmailConfirmationWasApproved>('EmailConfirmationWasApproved', (event) =>

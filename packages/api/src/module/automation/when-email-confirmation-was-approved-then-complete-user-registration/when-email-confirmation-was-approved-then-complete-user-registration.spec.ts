@@ -29,6 +29,6 @@ describe('CompleteUser registration when emailConfirmationWasApproved', () => {
       event,
     );
 
-    moduleUnderTest.expectCommandExecutedLastly(completeUserRegistrationCommand({ userId }));
+    await moduleUnderTest.expectCommandExecutedLastly(completeUserRegistrationCommand({ userId }));
   });
 });
