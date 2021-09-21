@@ -193,7 +193,6 @@ export class EventsSubscription {
     this.eventsRetryCount.delete(event.id);
 
     try {
-      // TODO add transaction
       await this.processSubscriptionPositionChange(event, this.prismaService);
       await this.processEvent(event, this.prismaService);
       await this.moveCurrentPosition(event.globalOrder, this.prismaService);
@@ -239,21 +238,26 @@ export class EventsSubscription {
   }
 
   private async moveCurrentPosition(position: number, transaction: PrismaTransactionManager) {
-    await transaction.eventsSubscription.upsert({
-      where: {
-        id: this.subscriptionId,
+    await retry(
+      async () => {
+        await transaction.eventsSubscription.upsert({
+          where: {
+            id: this.subscriptionId,
+          },
+          create: {
+            id: this.subscriptionId,
+            eventTypes: this.handlingEventTypes(),
+            fromPosition: this.configuration.options.start.from.globalPosition,
+            currentPosition: position,
+          },
+          update: {
+            currentPosition: position,
+            eventTypes: this.handlingEventTypes(),
+          },
+        });
       },
-      create: {
-        id: this.subscriptionId,
-        eventTypes: this.handlingEventTypes(),
-        fromPosition: this.configuration.options.start.from.globalPosition,
-        currentPosition: position,
-      },
-      update: {
-        currentPosition: position,
-        eventTypes: this.handlingEventTypes(),
-      },
-    });
+      { retries: 3 },
+    );
   }
 
   private handlingEventTypes() {
