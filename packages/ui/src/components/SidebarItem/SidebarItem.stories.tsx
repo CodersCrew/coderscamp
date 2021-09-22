@@ -94,13 +94,19 @@ export const Other = () => (
       </SidebarItem>
     </HStack>
     <HStack w="788px" spacing="10px">
-      <SidebarItem icon={<OutlinedDashboardIcon />} count={314} path="/u">
+      <SidebarItem icon={<OutlinedDashboardIcon />} iconSelected={<SolidDashboardIcon />} count={314} path="/u">
         Dashboard
       </SidebarItem>
-      <SidebarItem icon={<OutlinedDashboardIcon />} count={314} path="">
+      <SidebarItem icon={<OutlinedDashboardIcon />} iconSelected={<SolidDashboardIcon />} count={314} path="">
         Active
       </SidebarItem>
-      <SidebarItem icon={<OutlinedDashboardIcon />} count={314} path="/byl" disabled>
+      <SidebarItem
+        icon={<OutlinedDashboardIcon />}
+        iconSelected={<SolidDashboardIcon />}
+        count={314}
+        path="/byl"
+        disabled
+      >
         Disabled
       </SidebarItem>
     </HStack>

@@ -72,7 +72,7 @@ export const SidebarItem = ({ children, path, count, icon, iconSelected, disable
         _hover={{ textDecor: 'none', bg: 'gray.50' }}
         _activeLink={{ bg: 'gray.100' }}
       >
-        <HStack h="100%" pr="12px" justify="space-between">
+        <HStack h="100%" justify="space-between">
           <HStack spacing="0">
             {icon && iconSelected && (
               <IconButton
@@ -80,11 +80,12 @@ export const SidebarItem = ({ children, path, count, icon, iconSelected, disable
                 size="md"
                 variant="link"
                 aria-label={`${children}`}
+                pl="8px"
                 _focus={{ boxShadow: 'none' }}
                 {...iconButtonStyles}
               />
             )}
-            <Typography size="sm" weight="medium" pl={icon && iconSelected ? '4px' : '12px'} {...typographyStyles}>
+            <Typography size="sm" weight="medium" pl="12px" {...typographyStyles}>
               {children}
             </Typography>
           </HStack>
