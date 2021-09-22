@@ -32,7 +32,7 @@ describe('SidebarItem', () => {
     );
 
     const sidebarItem = screen.getByRole(/group/i);
-
-    expect(sidebarItem).toHaveStyle({ pointerEvents: 'none', opacity: '0.6' });
+    // eslint-disable-next-line
+    expect(sidebarItem).toHaveAttribute('disabled');
   });
 });
