@@ -1,4 +1,4 @@
-import {Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ApplicationEvent } from '@/module/application-command-events';

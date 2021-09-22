@@ -14,6 +14,14 @@ describe('registerCourseUserModule', () => {
     data: { userId, courseUserId, courseId },
   });
 
+  beforeEach(async () => {
+    module = await registerCourseUserTestModule();
+  });
+
+  afterEach(async () => {
+    await module.close();
+  });
+
   it('should register new course user', async () => {
     // Given
     const command = commandBuilder();
@@ -38,9 +46,5 @@ describe('registerCourseUserModule', () => {
 
     // Then
     await expect(() => module.executeCommand(() => command)).rejects.toThrow();
-  });
-
-  beforeEach(async () => {
-    module = await registerCourseUserTestModule();
   });
 });
