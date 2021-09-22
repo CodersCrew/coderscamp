@@ -10,7 +10,9 @@
     "paths": {
       "@coderscamp/ui/*": ["../ui/src/*"],
       "@/assets/*": ["src/assets/*"],
-      "@/components/*": ["src/components/*"]
+      "@/components/*": ["src/components/*"],
+      "@/constants": ["src/constants"],
+      "@/types": ["src/types"]
     },
     "target": "es5"
   },

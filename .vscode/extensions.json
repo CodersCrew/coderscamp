@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "coenraads.bracket-pair-colorizer-2",
-    "msjsdiag.debugger-for-chrome",
     "ms-azuretools.vscode-docker",
     "mikestead.dotenv",
     "dbaeumer.vscode-eslint",
@@ -9,6 +8,7 @@
     "silvenon.mdx",
     "esbenp.prettier-vscode",
     "prisma.prisma",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "humao.rest-client"
   ]
 }

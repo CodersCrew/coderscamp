@@ -1,0 +1,14 @@
+# learning-materials.rest-controller.ts
+
+# Create learning materials for the current user (request takes up to 10s)
+POST {{serverUrl}}/learning-materials
+
+###
+
+# Get learning materials for the current user
+GET {{serverUrl}}/learning-materials
+
+###
+
+# Get course progress of the current user
+GET {{serverUrl}}/course-progress

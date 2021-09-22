@@ -1,44 +1,31 @@
 import type { ComponentStyleConfig } from '@chakra-ui/react';
+import { SystemStyleFunction } from '@chakra-ui/theme-tools';
+
+const iconSize: Record<string, string> = {
+  xs: '16px',
+  sm: '20px',
+  md: '24px',
+  lg: '28px',
+};
+
+const linkVariant: SystemStyleFunction = ({ size }) => ({
+  minWidth: iconSize[size ?? 'md'],
+  _hover: {
+    textDecoration: 'none',
+  },
+});
 
 export const Button: ComponentStyleConfig = {
   baseStyle: {
     fontWeight: 'medium',
   },
   sizes: {
-    xs: {
-      py: '4px',
-      svg: {
-        height: '16px',
-        width: '16px',
-      },
-    },
-    sm: {
-      py: '6px',
-      svg: {
-        height: '20px',
-        width: '20px',
-      },
-    },
-    md: {
-      py: '8px',
-      svg: {
-        height: '24px',
-        width: '24px',
-      },
-    },
-    lg: {
-      py: '10px',
-      svg: {
-        height: '28px',
-        width: '28px',
-      },
-    },
+    xs: { svg: { height: iconSize.xs, width: iconSize.xs } },
+    sm: { svg: { height: iconSize.sm, width: iconSize.sm } },
+    md: { svg: { height: iconSize.md, width: iconSize.md } },
+    lg: { svg: { height: iconSize.lg, width: iconSize.lg } },
   },
   variants: {
-    link: {
-      _hover: {
-        textDecoration: 'none',
-      },
-    },
+    link: linkVariant,
   },
 };

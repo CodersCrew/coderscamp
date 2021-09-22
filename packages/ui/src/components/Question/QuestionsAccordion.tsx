@@ -13,7 +13,7 @@ export const QuestionsAccordion = ({
   allowMultiple = true,
 }: QuestionsAccordionProps) => {
   return (
-    <Accordion allowToggle={allowToggle} allowMultiple={allowMultiple}>
+    <Accordion allowToggle={allowToggle} allowMultiple={allowMultiple} w="100%">
       {questions.map(({ title, content }) => {
         return <Question title={title} content={content} key={title} />;
       })}

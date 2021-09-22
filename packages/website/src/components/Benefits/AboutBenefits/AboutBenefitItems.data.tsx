@@ -17,20 +17,20 @@ import {
   ToolboxIcon,
   UserGroupCrownIcon,
   UsersIcon,
-} from '@coderscamp/ui/icons';
+} from '@coderscamp/ui/icons/benefits';
+
+import { PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 export const aboutBenefitItems: BenefitCardProps[] = [
   {
     icon: <SparklesIcon />,
     title: 'Atrakcyjne portfolio',
-    subtitle:
-      'Podczas kursu stworzysz i opublikujesz w sieci aż 6 projektów! Nauczysz się także, jak opisywać i zaprezentować każdy z nich, aby Twoje portfolio było atrakcyjne dla rekruterów.',
+    subtitle: `Podczas kursu stworzysz i opublikujesz w sieci aż ${PROJECTS_COUNT} projektów! Nauczysz się także, jak opisywać i zaprezentować każdy z nich, aby Twoje portfolio było atrakcyjne dla rekruterów.`,
   },
   {
     icon: <UsersIcon />,
     title: 'Praca zespołowa',
-    subtitle:
-      'W branży IT nigdy nie działasz sam – u nas też nie będziesz. Każdy z projektów zrealizujesz wspólnie z 6-osobowym zespołem, doskonaląc swoje umiejętności pracy w grupie.',
+    subtitle: `W branży IT nigdy nie działasz sam – u nas też nie będziesz. Każdy z projektów zrealizujesz wspólnie z ${TEAM_SIZE}-osobowym zespołem, doskonaląc swoje umiejętności pracy w grupie.`,
   },
   {
     icon: <UserGroupCrownIcon />,

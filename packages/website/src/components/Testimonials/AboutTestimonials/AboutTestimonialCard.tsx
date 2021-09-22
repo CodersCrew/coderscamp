@@ -1,8 +1,8 @@
-import { Avatar } from '@coderscamp/ui/components/Avatar';
 import { Center } from '@coderscamp/ui/components/Center';
 import { VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
+import { MentorAvatar } from '../MentorAvatar';
 import { CodersCampRole, Testimonial } from '../Testimonials.data';
 
 const roles: Record<CodersCampRole, string> = {
@@ -20,7 +20,7 @@ export const AboutTestimonialCard = ({ name, role, company, companyPosition, con
         {content}
       </Typography>
       <VStack spacing="8px">
-        <Avatar src={image} size="lg" borderWidth="1px" borderColor="gray.300" />
+        <MentorAvatar src={image} alt={name} />
         <Center flexDirection="column">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}

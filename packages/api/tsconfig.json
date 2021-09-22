@@ -9,7 +9,15 @@
     "outDir": "./dist",
     "paths": {
       "@coderscamp/shared/*": ["../shared/src/*"],
-      "@/common/*": ["src/common/*"]
+      "@/automation/*": ["src/module/automation/*"],
+      "@/read/*": ["src/module/read/*"],
+      "@/write/*": ["src/module/write/*"],
+      "@/module/*": ["src/module/shared/*"],
+      "@/events/*": ["src/module/shared/events/*"],
+      "@/commands/*": ["src/module/shared/commands/*"],
+      "@/crud/*": ["src/crud/*"],
+      "@/shared/*": ["src/shared/*"],
+      "@/prisma/*": ["src/shared/prisma/*"]
     },
     "sourceMap": true,
     "target": "es2017"

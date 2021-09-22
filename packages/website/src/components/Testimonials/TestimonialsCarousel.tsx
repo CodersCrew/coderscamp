@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Box } from '@coderscamp/ui/components/Box';
 import { SliderSteps, SliderStepsProps } from '@coderscamp/ui/components/SliderSteps';
 import { VStack } from '@coderscamp/ui/components/Stack';
+import { useCurrentBreakpoint } from '@coderscamp/ui/hooks/useCurrentBreakpoint';
 
 import { useRerender } from '../../hooks/useRerender';
 import { Testimonial } from './Testimonials.data';
@@ -22,6 +23,7 @@ export const TestimonialsCarousel = ({
 }: TestimonialsCarouselProps) => {
   const ref = useRef<Parameters<NonNullable<SwiperProps['onInit']>>[0]>();
   const rerender = useRerender();
+  const breakpoint = useCurrentBreakpoint();
 
   const handleSwiperInit: SwiperProps['onInit'] = (swiper) => {
     ref.current = swiper;
@@ -31,12 +33,15 @@ export const TestimonialsCarousel = ({
     ref.current?.slideTo(index);
   };
 
+  const showDots = breakpoint !== 'base' && !(breakpoint === 'sm' && testimonials.length > 11);
+
   return (
     <VStack spacing={{ base: '20px', sm: '40px' }} width="100%">
       <SliderSteps
         count={testimonials.length}
         selectedIndex={ref.current?.activeIndex ?? 0}
         onChange={handleSliderStepChange}
+        showDots={showDots}
       />
       <Box width="100%">
         <Swiper

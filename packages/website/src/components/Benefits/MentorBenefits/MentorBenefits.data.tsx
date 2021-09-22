@@ -12,79 +12,79 @@ import {
   SitemapIcon,
   UsersIcon,
   UserTieIcon,
-} from '@coderscamp/ui/icons';
+} from '@coderscamp/ui/icons/benefits';
 
 export const mentorBenefitItems: BenefitCardProps[] = [
   {
     icon: <UserTieIcon height="32px" />,
     title: 'Staniesz się lepszym liderem',
     subtitle:
-      'Podczas kursu stworzysz i opublikujesz w sieci aż 6 projektów! Nauczysz się także, jak opisywać i zaprezentować każdy z nich, aby Twoje portfolio było atrakcyjne dla rekruterów.',
+      'Planowanie rozwoju, motywowanie do działania, wsparcie w przezwyciężaniu przeciwności. To tylko niektóre z kompetencji lidera, które będziesz miał okazję wypracować działając ze swoim zespołem.',
   },
   {
     icon: <FireIcon />,
     title: 'Podzielisz się swoją pasją',
     subtitle:
-      'W branży IT nigdy nie działasz sam – u nas też nie będziesz. Każdy z projektów zrealizujesz wspólnie z 6-osobowym zespołem, doskonaląc swoje umiejętności pracy w grupie.',
+      'Każdy kto trafił na osobę, która była w stanie rozbudzić w nim szczere zainteresowanie jakąś dziedziną na pewno wie, jak warto tego doświadczyć. Na CodersCamp masz szansę stać się taką osobą dla innych.',
   },
   {
     icon: <BrainIcon />,
     title: 'Umocnisz posiadaną wiedzę',
     subtitle:
-      'Już od pierwszego projektu w Twoim zespole pojawi się mentor – dedykowana danemu zespołowi, doświadczona osoba, która wesprze Cię na każdym etapie rozwoju oraz realizacji projektów.',
+      'Podobno najlepszym sprawdzianem własnej wiedzy jest próba przekazania jej innym. Na CodersCamp spotkasz wiele okazji do spojrzenia z nowej perspektywy na tematy, które znasz “od zawsze”.',
   },
   {
     icon: <EyeIcon />,
     title: 'Zyskasz nową perspektywę',
     subtitle:
-      'Od początku kursu otrzymujesz dostęp do wewnętrznego komunikatora, na którym możesz zadawać pytania i wymieniać się wiedzą z innymi uczestnikami i mentorami.',
+      'Im większe mamy doświadczenie, tym bardziej odległa staje się dla nas perspektywa osoby początkującej. Camp pozwoli Ci na nowo zobaczyć wiele aspektów oczami osoby, która dopiero poznaje dane zagadnienie.',
   },
   {
     icon: <BookOpenReaderIcon />,
     title: 'Powrócisz do podstaw',
     subtitle:
-      'Wszystkie materiały do nauki zebraliśmy dla Ciebie w postaci interaktywnej checklisty, pozwalającej na odhaczanie przerobionych treści oraz bieżące śledzenie postępów.',
+      'CodersCamp może być dla Ciebie okazją, aby odświeżyć sobie tematy, które poznałeś na początku kariery. W szybko ewoluującym świecie web devu możliwe, że odkryjesz tam coś, o czym już zdążyłeś zapomnieć.',
   },
   {
     icon: <SitemapIcon />,
     title: 'Poznasz zarządzanie w IT',
     subtitle:
-      'Artykuły, prezentacje, podcasty, filmiki, kursy, gry, interaktywne zadania, sandbox’y – to tylko niektóre spośród kilkudziesięciu form materiałów, z jakimi spotkasz się na kursie.',
+      'Otrzymasz od nas materiały i szkolenia, dzięki którym dowiesz się, jak zarządzać zespołami projektowymi, a zdobytą wiedzę będziesz mógł praktycznie natychmiast zastosować w praktyce.',
   },
   {
     icon: <GraduationCapIcon />,
     title: 'Weźmiesz udział w szkoleniach',
     subtitle:
-      'Naszą siłą napędową jest kilkadziesiąt osób, które po godzinach postanowiły wspierać innych we wchodzeniu w świat IT. Dzięki nim CodersCamp jest w pełni darmowy.',
+      'Jako mentor możesz liczyć na dodatkowe szkolenia z zarządzania w IT, rozwijania talentów oraz mentoringu, zorganizowane przez partnerów kursu.',
   },
   {
     icon: <HandshakeSimpleIcon />,
     title: 'Rozwiniesz umiejętności miękkie',
     subtitle:
-      'Na kursie spotkasz się z dziesiątkami narzędzi używanych na co dzień w branży IT. Będziesz miał także okazję lepiej je poznać dzięki specjalnym materiałom dodatkowym.',
+      'Przewodząc zespołowi oraz poszczególnym osobom zyskasz wiele okazji do praktykowania umiejętności udzielania informacji zwrotnej, dbania o jakość komunikacji, czy rozwiązywania konfliktów.',
   },
   {
     icon: <FileSparklesIcon />,
     title: 'Urozmaicisz swoje CV',
     subtitle:
-      'Bliżej końca kursu pośród materiałów odnajdziesz wiele dodatkowych źródeł i porad, dzięki którym będziesz mógł zaplanować swój dalszy rozwój po zakończeniu CodersCamp.',
+      'Angażowanie się w dodatkowe inicjatywy, prowadzenie zespołów projektowych i aktywna pomoc w stawianiu pierwszych kroków w IT to elementy, które z pewnością wyróżnią Twoje CV na tle innych.',
   },
   {
     icon: <UsersIcon />,
     title: 'Dołączysz do społeczności',
     subtitle:
-      'Jeśli chcesz, możesz ukończyć CodersCamp bez wychodzenia z domu. Niemniej dzięki dobieraniu zespołów wedle miejscowości zyskasz także szansę zintegrowania się z zespołem w formie offline.',
+      'Na CodersCamp poznasz wiele osób, które podobnie jak Ty szukają nowych wyzwań i chcą dać coś od siebie innym. Będą to zarówno mentorzy, jak i eksperci z innych dziedzin związanych z IT.',
   },
   {
     icon: <ChampagneGlassesIcon />,
     title: 'Nawiążesz nowe relacje',
     subtitle:
-      'U nas możesz swobodnie planować swoją naukę i dowolnie ustalać z zespołem czas spotkań. Jedyne wiążące terminy, to daty zakończenia poszczególnych modułów kursu.',
+      '6 miesięcy wspólnego stawiania czoła różnym wyzwaniom sprawia, że wielu mentorów pozostaje w stałym kontakcie z członkami swoich zespołów jeszcze na długo po zakończeniu samego kursu.',
   },
   {
     icon: <SeedlingIcon />,
     title: 'Zmienisz czyjś świat',
     subtitle:
-      'Większość materiałów podzielona jest na 3 części, z których jedynie pierwsza jest obowiązkowa. Pozostałe umożliwią Ci zgłębienie tematów, które najbardziej Cię interesują.',
+      'Dla wielu najważniejszy benefit. Nic nie daje większej satysfakcji niż świadomość, że to Ty rozbudziłeś w innych pasję do programowania i pomogłeś im postawić pierwsze kroki w swojej nowej karierze.',
   },
 ];

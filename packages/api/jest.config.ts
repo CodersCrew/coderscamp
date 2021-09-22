@@ -1,11 +1,15 @@
 import { resolve } from 'path';
 
 import { createJestConfig } from '../../jest.config';
+import { compilerOptions } from './tsconfig.json';
 
 export default createJestConfig({
   tsconfig: resolve(__dirname, 'tsconfig.json'),
-  moduleNameMapper: { '^@/(.+)': '<rootDir>/src/$1' },
+  paths: compilerOptions.paths,
   overrides: {
-    collectCoverageFrom: ['**/*.(controller|service).ts'],
+    testTimeout: 6000,
+    collectCoverageFrom: ['**/*.ts'],
+    setupFilesAfterEnv: ['./jest-setup.ts'],
+    modulePathIgnorePatterns: ['src/.*\\.fixture\\.spec\\.ts'],
   },
 });
