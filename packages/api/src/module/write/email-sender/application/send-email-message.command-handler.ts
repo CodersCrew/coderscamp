@@ -1,13 +1,13 @@
-import {Inject} from "@nestjs/common";
-import {CommandHandler} from "@nestjs/cqrs";
+import { Inject } from '@nestjs/common';
+import { CommandHandler } from '@nestjs/cqrs';
 
-import {SendEmailMessageApplicationCommand} from "@/commands/send-email-message.application-command";
-import {APPLICATION_SERVICE, ApplicationService} from "@/write/shared/application/application-service";
-import {EventStreamName} from "@/write/shared/application/event-stream-name.value-object";
-import {EMAIL_SENDER, EmailSender} from "@/write/email-sender/application/email-sender";
-import {EmailMessageWasSentDomainEvent} from "@/write/email-sender/domain/events";
-import {sendEmailMessage} from "@/write/email-sender/domain/sendEmailMessage";
+import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message.application-command';
 import { env } from '@/shared/env';
+import { EMAIL_SENDER, EmailSender } from '@/write/email-sender/application/email-sender';
+import { EmailMessageWasSentDomainEvent } from '@/write/email-sender/domain/events';
+import { sendEmailMessage } from '@/write/email-sender/domain/sendEmailMessage';
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 @CommandHandler(SendEmailMessageApplicationCommand)
 export class SendEmailMessageCommandHandler {
@@ -16,7 +16,7 @@ export class SendEmailMessageCommandHandler {
     private readonly applicationService: ApplicationService,
 
     @Inject(EMAIL_SENDER)
-    private readonly emailSender: EmailSender
+    private readonly emailSender: EmailSender,
   ) {}
 
   async execute(command: SendEmailMessageApplicationCommand): Promise<void> {
@@ -24,19 +24,16 @@ export class SendEmailMessageCommandHandler {
     const eventStream = EventStreamName.from('EmailMessage', `EmailMessage_${emailMessageId}`);
 
     await this.emailSender.sendAnEmail({
-      to: to,
-      subject: subject,
-      text: text,
-      html: html
-    })
+      to,
+      subject,
+      text,
+      html,
+    });
 
     await this.applicationService.execute<EmailMessageWasSentDomainEvent>(
       eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId },
-      (pastEvents) => sendEmailMessage(pastEvents, command, env.APP_EMAIL_ADDRESS_TEST)
-    )
+      (pastEvents) => sendEmailMessage(pastEvents, command, env.APP_EMAIL_ADDRESS_TEST),
+    );
   }
-
-
-
 }

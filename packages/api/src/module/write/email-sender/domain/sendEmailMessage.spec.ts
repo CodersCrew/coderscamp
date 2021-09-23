@@ -1,6 +1,6 @@
-import {EmailMessageWasSentDomainEvent} from "@/write/email-sender/domain/events";
-import {SendEmailMessage} from "@/commands/send-email-message.domain-command";
-import {sendEmailMessage} from "@/write/email-sender/domain/sendEmailMessage";
+import { SendEmailMessage } from '@/commands/send-email-message.domain-command';
+import { EmailMessageWasSentDomainEvent } from '@/write/email-sender/domain/events';
+import { sendEmailMessage } from '@/write/email-sender/domain/sendEmailMessage';
 
 describe('sending email message', () => {
   it('create event EmailMessageWasSent when SendEmailMessage is invoked after EmailConfirmationWasRequested', () => {
@@ -12,23 +12,23 @@ describe('sending email message', () => {
       to: 'test@test.com',
       subject: 'Test email',
       text: 'Welcome on board!',
-      html: 'Welcome on board! HTML'
-    }
+      html: 'Welcome on board! HTML',
+    };
     const appEmail = 'coderscamp@gmail.com';
 
     // When
     const command: SendEmailMessage = {
       type: 'SendEmailMessage',
-      data: emailData
-    }
+      data: emailData,
+    };
     const events = sendEmailMessage(pastEvents, command, appEmail);
 
     // Then
     expect(events).toStrictEqual([
       {
         type: 'EmailMessageWasSent',
-        data: { ...emailData, from: appEmail }
-      }
-    ])
-  })
+        data: { ...emailData, from: appEmail },
+      },
+    ]);
+  });
 });

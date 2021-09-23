@@ -1,4 +1,4 @@
-import {EmailId} from "@/shared/domain.types";
+import { EmailId } from '@/shared/domain.types';
 
 export type EmailMessageWasSent = {
   type: 'EmailMessageWasSent';
@@ -8,6 +8,6 @@ export type EmailMessageWasSent = {
     to: string;
     subject: string;
     text: string;
-    html: string
-  }
-}
+    html: string;
+  };
+};

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import {SharedModule} from "@/write/shared/shared.module";
-import {SendEmailMessageCommandHandler} from "@/write/email-sender/application/send-email-message.command-handler";
+
+import { SendEmailMessageCommandHandler } from '@/write/email-sender/application/send-email-message.command-handler';
+import { SharedModule } from '@/write/shared/shared.module';
 
 @Module({
   imports: [SharedModule],
   controllers: [],
-  providers: [SendEmailMessageCommandHandler]
+  providers: [SendEmailMessageCommandHandler],
 })
 export class EmailSendingWriteModule {}

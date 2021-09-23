@@ -1,4 +1,4 @@
-import {EmailId} from "@/shared/domain.types";
+import { EmailId } from '@/shared/domain.types';
 
 export type SendEmailMessage = {
   type: 'SendEmailMessage';
@@ -7,6 +7,6 @@ export type SendEmailMessage = {
     to: string;
     subject: string;
     text: string;
-    html: string
+    html: string;
   };
-}
+};
