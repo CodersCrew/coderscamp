@@ -89,19 +89,26 @@ export class EventsSubscription {
    * See handleEvent for more details how handling event working.
    */
   async start(): Promise<void> {
-    const retryConfig = this.configuration.options?.retry ?? {
-      retries: 'INFINITELY',
-      backoff: 'EXPONENTIAL',
-      delay: 3000,
+    const retryConfig: Partial<RetryConfig<void>> = {
+      ...(this.configuration.options?.retry ?? {
+        retries: 'INFINITELY',
+        backoff: 'EXPONENTIAL',
+        delay: 3000,
+      }),
+      logger: (msg) => this.logger.error(msg),
+      // FIXME: after timeout EventsSubscription will stop processing
+      timeout: 2147483647, // max timeout => max 32-bit signed integer
     };
 
-    // TODO: extract failure recovery to separeate module which will run in bootstrap phase (SRP)
-    await retry(async () => {
+    this.eventEmitter.onAny(this.eventEmitterListener);
+
+    // FIXME: it will work for 2147483647/(1000*60*60*24) = 24.85 days :D
+    retry(async () => {
       await this.catchUp().catch((e) => {
         this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
         throw e;
       });
-      this.listen().catch((e) => {
+      await this.listen().catch(async (e) => {
         this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in listen phase.`, e);
         throw e;
       });
@@ -118,7 +125,7 @@ export class EventsSubscription {
    */
   async stop(): Promise<void> {
     this.eventEmitter.offAny(this.eventEmitterListener);
-    this.queue.stop();
+    this.queue.clear();
   }
 
   /**
@@ -128,14 +135,11 @@ export class EventsSubscription {
    */
   async reset(): Promise<void> {
     await this.stop();
-    this.queue.clear();
     await this.moveCurrentPosition(this.configuration.options.start.from.globalPosition - 1, this.prismaService);
     await this.start();
   }
 
   private async listen(): Promise<void> {
-    this.eventEmitter.onAny(this.eventEmitterListener);
-
     let event = await this.queue.pop();
 
     while (!OrderedEventQueue.isStopToken(event)) {
@@ -172,10 +176,9 @@ export class EventsSubscription {
         : this.configuration.options.start.from.globalPosition,
     });
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const event of eventsToCatchup) {
-      await this.handleEvent(event);
-    }
+    this.eventsRetryCount.clear();
+    this.queue.clear();
+    eventsToCatchup.forEach((event) => this.queue.push(event));
   }
 
   /**
@@ -193,12 +196,10 @@ export class EventsSubscription {
     this.eventsRetryCount.delete(event.id);
 
     try {
-      // TODO add transaction
       await this.processSubscriptionPositionChange(event, this.prismaService);
       await this.processEvent(event, this.prismaService);
       await this.moveCurrentPosition(event.globalOrder, this.prismaService);
     } catch (e) {
-      await this.stop();
       this.logger.warn(
         `EventsSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
         e,
