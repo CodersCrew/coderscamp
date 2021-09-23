@@ -14,18 +14,19 @@ import { SharedModule } from '@/write/shared/shared.module';
     SendEmailMessageCommandHandler,
     {
       provide: EMAIL_SENDER,
-      useValue:
-        env.EMAIL_SENDER_TYPE === 'just-log'
-          ? new JustLogEmailSender()
-          : new NodeMailerEmailSender({
+      useValue: new JustLogEmailSender(
+        env.EMAIL_SENDER_TYPE === 'nodemailer'
+          ? new NodeMailerEmailSender({
               host: env.NODEMAILER_HOST,
               port: env.NODEMAILER_PORT,
               auth: {
                 user: env.NODEMAILER_USER,
                 pass: env.NODEMAILER_PASSWORD,
               },
-              secure: true,
-            }),
+              secure: false,
+            })
+          : undefined,
+      ),
     },
   ],
 })

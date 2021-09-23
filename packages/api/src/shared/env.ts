@@ -79,6 +79,12 @@ class EnvVariables {
   @Expose()
   @IsString()
   @IsNotEmpty()
+  @IsIn(EMAIL_SENDER_TYPE_VALUES)
+  EMAIL_SENDER_TYPE: typeof EMAIL_SENDER_TYPE_VALUES[number];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
   APP_EMAIL_ADDRESS_FROM: string;
 
   @Expose()
@@ -93,19 +99,11 @@ class EnvVariables {
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
   NODEMAILER_USER: string;
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
   NODEMAILER_PASSWORD: string;
-
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  @IsIn(EMAIL_SENDER_TYPE_VALUES)
-  EMAIL_SENDER_TYPE: typeof EMAIL_SENDER_TYPE_VALUES[number];
 }
 
 export const env = plainToClass(EnvVariables, process.env, {

@@ -1,9 +1,9 @@
-import { EmailId } from '@/shared/domain.types';
+import { EmailMessageId } from '@/shared/domain.types';
 
 export type EmailMessageWasSent = {
   type: 'EmailMessageWasSent';
   data: {
-    emailMessageId: EmailId;
+    emailMessageId: EmailMessageId;
     from: string;
     to: string;
     subject: string;

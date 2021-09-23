@@ -5,7 +5,10 @@ import { EmailMessage, EmailSender } from '@/write/email-sender/application/emai
 const logger = new Logger('JustLogEmailSender');
 
 export class JustLogEmailSender implements EmailSender {
+  constructor(private readonly next?: EmailSender) {}
+
   async sendAnEmail(message: EmailMessage): Promise<void> {
-    logger.log('Just log email message', message);
+    logger.log('Email message was sent: ', message);
+    this.next?.sendAnEmail(message);
   }
 }

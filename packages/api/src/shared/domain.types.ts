@@ -1,2 +1,2 @@
 export type UserId = string;
-export type EmailId = string;
+export type EmailMessageId = string;
