@@ -3,7 +3,7 @@ import { EmailMessageDomainEvent } from '@/write/email-sender/domain/events';
 import { sendEmailMessage } from '@/write/email-sender/domain/sendEmailMessage';
 
 describe('sending email message', () => {
-  it('create event EmailMessageWasSent when SendEmailMessage is invoked after EmailConfirmationWasRequested', () => {
+  it('create event EmailMessageWasSent when sendEmailMessage is invoked', () => {
     // Given
     const pastEvents: EmailMessageDomainEvent[] = [];
 
