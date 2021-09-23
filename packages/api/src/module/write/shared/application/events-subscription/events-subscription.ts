@@ -2,11 +2,13 @@
 import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
-import { retry, RetryConfig, wait } from 'ts-retry-promise';
+import { wait } from 'ts-retry-promise';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
+import { NotificationToken } from '@/shared/utils/notification-token';
+import { retryUntil } from '@/shared/utils/retry-until';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
 import { OrderedEventQueue } from './ordered-event-queue';
@@ -17,14 +19,19 @@ export type EventsSubscriptionConfig = {
   readonly eventHandlers: ApplicationEventHandler[];
 };
 
-type SubscriptionRetriesConfig = Pick<RetryConfig<unknown>, 'retries' | 'delay' | 'backoff'>;
-type SubscriptionStartOptions = { from: { globalPosition: number } };
-type SubscriptionQueueOptions = { maxRetryCount: number; waitingTimeOnRetry: number };
+type SubscriptionRetriesConfig = {
+  delay: number;
+  backoff: 'FIXED' | 'EXPONENTIAL' | 'LINEAR';
+  maxBackoff: number;
+  resetBackoffAfter: number;
+};
+type SubscriptionStartConfig = { from: { globalPosition: number } };
+type SubscriptionQueueConfig = { maxRetryCount: number; waitingTimeOnRetry: number };
 
 export type SubscriptionOptions = {
-  start: SubscriptionStartOptions;
-  queue: SubscriptionQueueOptions;
-  retry?: SubscriptionRetriesConfig;
+  readonly start: SubscriptionStartConfig;
+  readonly queue: SubscriptionQueueConfig;
+  readonly retry: SubscriptionRetriesConfig;
 };
 
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
@@ -65,6 +72,10 @@ export class EventsSubscription {
 
   private readonly queue = new OrderedEventQueue();
 
+  private shutdownToken = new NotificationToken();
+
+  private running = false;
+
   private readonly eventEmitterListener: (_: unknown, event: ApplicationEvent) => void = (
     _: unknown,
     event: ApplicationEvent,
@@ -89,43 +100,36 @@ export class EventsSubscription {
    * See handleEvent for more details how handling event working.
    */
   async start(): Promise<void> {
-    const retryConfig: Partial<RetryConfig<void>> = {
-      ...(this.configuration.options?.retry ?? {
-        retries: 'INFINITELY',
-        backoff: 'EXPONENTIAL',
-        delay: 3000,
-      }),
-      logger: (msg) => this.logger.error(msg),
-      // FIXME: after timeout EventsSubscription will stop processing
-      timeout: 2147483647, // max timeout => max 32-bit signed integer
-    };
+    if (this.running) {
+      this.logger.warn(`${this.subscriptionId} is running`);
 
+      return;
+    }
+
+    this.logger.debug(`${this.subscriptionId} started`);
+    this.queue.clear();
     this.eventEmitter.onAny(this.eventEmitterListener);
-
-    // FIXME: it will work for 2147483647/(1000*60*60*24) = 24.85 days :D
-    retry(async () => {
-      await this.catchUp().catch((e) => {
-        this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
-        throw e;
-      });
-      await this.listen().catch(async (e) => {
-        this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in listen phase.`, e);
-        throw e;
-      });
-    }, retryConfig).catch((e) =>
-      this.logger.error(
-        `EventsSubscription ${this.subscriptionId} stopped processing of events after ${retryConfig.retries} retries.`,
-        e,
-      ),
-    );
+    this.shutdownToken.reset();
+    this.running = true;
+    this.run();
   }
 
   /**
    * Stops listening for new events.
    */
   async stop(): Promise<void> {
+    if (!this.running) {
+      this.logger.warn(`${this.subscriptionId} finished`);
+
+      return;
+    }
+
+    this.logger.debug(`${this.subscriptionId} shutdown has been requested`);
     this.eventEmitter.offAny(this.eventEmitterListener);
-    this.queue.clear();
+    this.queue.stop();
+    this.running = false;
+    await this.shutdownToken.wait(60 * 1000);
+    this.logger.debug(`${this.subscriptionId} finished`);
   }
 
   /**
@@ -143,6 +147,8 @@ export class EventsSubscription {
     let event = await this.queue.pop();
 
     while (!OrderedEventQueue.isStopToken(event)) {
+      this.logger.debug(`${this.subscriptionId} recived event(${event.id},${event.globalOrder})`);
+
       if (await this.globalOrderIsPreserved(event)) {
         await this.handleEvent(event);
       } else {
@@ -170,14 +176,16 @@ export class EventsSubscription {
     const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
       where: { id: this.subscriptionId },
     });
+
+    this.eventsRetryCount.clear();
+    this.queue.clear();
+
     const eventsToCatchup = await this.eventRepository.readAll({
       fromGlobalPosition: subscriptionState?.currentPosition
         ? subscriptionState.currentPosition + 1
         : this.configuration.options.start.from.globalPosition,
     });
 
-    this.eventsRetryCount.clear();
-    this.queue.clear();
     eventsToCatchup.forEach((event) => this.queue.push(event));
   }
 
@@ -209,7 +217,6 @@ export class EventsSubscription {
   }
 
   async retryWithWaitingForCorrectOrder(event: ApplicationEvent): Promise<void> {
-    // TODO cancel wait when subscriber recive stop signal
     const count = this.eventsRetryCount.get(event.id) ?? 0;
 
     if (count >= this.configuration.options.queue.maxRetryCount) {
@@ -220,6 +227,7 @@ export class EventsSubscription {
 
     this.queue.push(event);
     this.eventsRetryCount.set(event.id, count + 1);
+    // TODO cancel wait when subscriber recive stop signal
     await wait(this.configuration.options.queue.waitingTimeOnRetry);
   }
 
@@ -259,5 +267,40 @@ export class EventsSubscription {
 
   private handlingEventTypes() {
     return this.configuration.eventHandlers.map((h) => h.eventType);
+  }
+
+  private async run() {
+    try {
+      await retryUntil(
+        async () => {
+          this.logger.debug(`${this.subscriptionId} is starting CatchUp phase.`);
+          await this.catchUp().catch((e) => {
+            this.logger.warn(`${this.subscriptionId} processing error in CatchUp phase.`);
+            throw e;
+          });
+          this.logger.debug(`${this.subscriptionId} finished CatchUp phase.`);
+
+          this.logger.debug(`${this.subscriptionId} is listening.`);
+          await this.listen().catch(async (e) => {
+            this.logger.warn(`${this.subscriptionId} processing error in listen phase.`);
+            throw e;
+          });
+          this.logger.debug(`${this.subscriptionId} finished listen phase.`);
+        },
+        {
+          ...this.configuration.options.retry,
+          until: () => this.running,
+          logger: (msg) => this.logger.warn(`${this.subscriptionId} ${msg}`),
+        },
+      );
+    } catch (e) {
+      this.logger.error(
+        `${this.subscriptionId} stopped processing events with unexpected error`,
+        (e as Error)?.stack,
+        e,
+      );
+    } finally {
+      this.shutdownToken.notify();
+    }
   }
 }
