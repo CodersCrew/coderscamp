@@ -4,7 +4,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message.application-command';
 import { env } from '@/shared/env';
 import { EMAIL_SENDER, EmailSender } from '@/write/email-sender/application/email-sender';
-import { EmailMessageWasSentDomainEvent } from '@/write/email-sender/domain/events';
+import { EmailMessageDomainEvent } from '@/write/email-sender/domain/events';
 import { sendEmailMessage } from '@/write/email-sender/domain/sendEmailMessage';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
@@ -32,7 +32,7 @@ export class SendEmailMessageCommandHandler implements ICommandHandler<SendEmail
       html,
     });
 
-    await this.applicationService.execute<EmailMessageWasSentDomainEvent>(
+    await this.applicationService.execute<EmailMessageDomainEvent>(
       eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId },
       (pastEvents) => sendEmailMessage(pastEvents, command, appEmailAddress),

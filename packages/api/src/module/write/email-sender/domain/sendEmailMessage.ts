@@ -1,11 +1,11 @@
 import { SendEmailMessage } from '@/commands/send-email-message.domain-command';
-import { EmailMessageWasSentDomainEvent } from '@/write/email-sender/domain/events';
+import { EmailMessageDomainEvent } from '@/write/email-sender/domain/events';
 
 export function sendEmailMessage(
-  _pastEvents: EmailMessageWasSentDomainEvent[],
+  _pastEvents: EmailMessageDomainEvent[],
   command: SendEmailMessage,
   appEmailAddress: string,
-): EmailMessageWasSentDomainEvent[] {
+): EmailMessageDomainEvent[] {
   const { emailMessageId, to, subject, text, html } = command.data;
 
   return [
