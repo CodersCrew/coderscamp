@@ -1,7 +1,7 @@
 export const EMAIL_SENDER = Symbol('EMAIL_SENDER');
 
-export interface EmailSender {
-  readonly mailFrom: string;
+export type EmailMessage = { from: string; to: string; subject: string; text: string; html: string };
 
-  sendAnEmail(mailOptions: { to: string; subject: string; text: string; html: string }): Promise<void>;
+export interface EmailSender {
+  sendAnEmail(message: EmailMessage): Promise<void>;
 }

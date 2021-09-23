@@ -20,10 +20,12 @@ export class SendEmailMessageCommandHandler {
   ) {}
 
   async execute(command: SendEmailMessageApplicationCommand): Promise<void> {
+    const appEmailAddress = env.APP_EMAIL_ADDRESS_FROM;
     const { emailMessageId, to, subject, text, html } = command.data;
     const eventStream = EventStreamName.from('EmailMessage', `EmailMessage_${emailMessageId}`);
 
     await this.emailSender.sendAnEmail({
+      from: appEmailAddress,
       to,
       subject,
       text,
@@ -33,7 +35,7 @@ export class SendEmailMessageCommandHandler {
     await this.applicationService.execute<EmailMessageWasSentDomainEvent>(
       eventStream,
       { causationId: command.id, correlationId: command.metadata.correlationId },
-      (pastEvents) => sendEmailMessage(pastEvents, command, env.APP_EMAIL_ADDRESS_TEST),
+      (pastEvents) => sendEmailMessage(pastEvents, command, appEmailAddress),
     );
   }
 }
