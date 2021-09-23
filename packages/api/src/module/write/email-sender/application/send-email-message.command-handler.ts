@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { CommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message.application-command';
 import { env } from '@/shared/env';
@@ -10,7 +10,7 @@ import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/applicat
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 @CommandHandler(SendEmailMessageApplicationCommand)
-export class SendEmailMessageCommandHandler {
+export class SendEmailMessageCommandHandler implements ICommandHandler<SendEmailMessageApplicationCommand> {
   constructor(
     @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,
