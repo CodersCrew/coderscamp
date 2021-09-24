@@ -7,6 +7,7 @@ dotenv.config();
 const NODE_ENV_VALUES = ['development', 'test', 'production'] as const;
 const APP_ENV_VALUES = ['local', 'review', 'staging', 'production'] as const;
 const EVENT_REPOSITORY_VALUES = ['in-memory', 'prisma'] as const;
+const EMAIL_SENDER_TYPE_VALUES = ['just-log', 'nodemailer'] as const;
 
 class EnvVariables {
   @Expose()
@@ -74,6 +75,35 @@ class EnvVariables {
   @Expose()
   @IsNumber()
   SUBSCRIPTION_QUEUE_WAITING_TIME_ON_RETRY_MS: number;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(EMAIL_SENDER_TYPE_VALUES)
+  EMAIL_SENDER_TYPE: typeof EMAIL_SENDER_TYPE_VALUES[number];
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  APP_EMAIL_ADDRESS_FROM: string;
+
+  @Expose()
+  @IsInt()
+  @IsPositive()
+  NODEMAILER_PORT: number;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  NODEMAILER_HOST: string;
+
+  @Expose()
+  @IsString()
+  NODEMAILER_USER: string;
+
+  @Expose()
+  @IsString()
+  NODEMAILER_PASSWORD: string;
 }
 
 export const env = plainToClass(EnvVariables, process.env, {
