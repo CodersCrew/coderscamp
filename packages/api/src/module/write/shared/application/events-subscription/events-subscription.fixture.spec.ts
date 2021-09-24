@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaModule } from '@/prisma/prisma.module';
+import { PrismaService } from '@/shared/prisma/prisma.service';
 import { AnotherSampleDomainEvent, initWriteTestModule, SampleDomainEvent } from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
@@ -23,7 +24,28 @@ export async function initTestEventsSubscription() {
   const eventsSubscriptions: EventsSubscriptionsRegistry =
     app.get<EventsSubscriptionsRegistry>(EventsSubscriptionsRegistry);
 
-  return { eventsSubscriptions, ...app };
+  const prismaClient = app.get<PrismaService>(PrismaService);
+
+  async function createGapBetweenEvents(gap: { start: number; end: number }) {
+    await prismaClient.event.deleteMany({
+      where: {
+        AND: [
+          {
+            globalOrder: {
+              gt: gap.start,
+            },
+          },
+          {
+            globalOrder: {
+              lte: gap.end,
+            },
+          },
+        ],
+      },
+    });
+  }
+
+  return { eventsSubscriptions, ...app, createGapBetweenEvents };
 }
 
 export interface EventsSubscriptionConcurrencyTestFixture {

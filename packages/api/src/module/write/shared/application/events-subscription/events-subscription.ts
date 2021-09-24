@@ -9,6 +9,7 @@ import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
+import { EventsSubscriptionPositionPointer } from './events-subscription-position-pointer';
 import { OrderedEventQueue } from './ordered-event-queue';
 
 export type EventsSubscriptionConfig = {
@@ -128,42 +129,22 @@ export class EventsSubscription {
     this.queue.clear();
   }
 
-  /**
-   * Stops processing.
-   * Reset currentPosition to initialPosition.
-   * Start processing from initialPosition.
-   */
-  async reset(): Promise<void> {
-    await this.stop();
-    await this.moveCurrentPosition(this.configuration.options.start.from.globalPosition - 1, this.prismaService);
-    await this.start();
-  }
-
   private async listen(): Promise<void> {
+    const position = await this.getPositionPointer();
     let event = await this.queue.pop();
 
     while (!OrderedEventQueue.isStopToken(event)) {
-      if (await this.globalOrderIsPreserved(event)) {
+      if (position.eventWasProcessed(event)) {
+        this.logger.warn(`${this.subscriptionId} recived old event(${event.id}, ${event.globalOrder})`);
+      } else if (position.globalOrderIsPreserved(event)) {
         await this.handleEvent(event);
+        await position.increment();
       } else {
         await this.retryWithWaitingForCorrectOrder(event);
       }
 
       event = await this.queue.pop();
     }
-  }
-
-  private async globalOrderIsPreserved(event: ApplicationEvent): Promise<boolean> {
-    // TODO this query can be optimized by tracking currentPosition inside listen() while loop
-    const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
-      where: { id: this.subscriptionId },
-    });
-    const currentPosition =
-      subscriptionState?.currentPosition ?? this.configuration.options.start.from.globalPosition - 1;
-
-    const expectedEventPosition = currentPosition + 1;
-
-    return event.globalOrder === expectedEventPosition;
   }
 
   private async catchUp(): Promise<void> {
@@ -186,7 +167,6 @@ export class EventsSubscription {
    * Handling an event is an atomic operation. While handling:
    *  - Run position handlers for handling event.globalOrder. Initial position handler is usable for preparing initial state of read model while resetting subscription associated with the read model.
    *  - Run event handlers for handling event.type.
-   *  - Move subscription current position to event.globalOrder.
    *
    *  @throws Error if projection missed some event (for example: currentPosition is 5, but received event with globalOrder 7 instead of 6).
    */
@@ -198,7 +178,6 @@ export class EventsSubscription {
     try {
       await this.processSubscriptionPositionChange(event, this.prismaService);
       await this.processEvent(event, this.prismaService);
-      await this.moveCurrentPosition(event.globalOrder, this.prismaService);
     } catch (e) {
       this.logger.warn(
         `EventsSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
@@ -239,25 +218,15 @@ export class EventsSubscription {
     );
   }
 
-  private async moveCurrentPosition(position: number, transaction: PrismaTransactionManager) {
-    await transaction.eventsSubscription.upsert({
-      where: {
-        id: this.subscriptionId,
-      },
-      create: {
-        id: this.subscriptionId,
-        eventTypes: this.handlingEventTypes(),
-        fromPosition: this.configuration.options.start.from.globalPosition,
-        currentPosition: position,
-      },
-      update: {
-        currentPosition: position,
-        eventTypes: this.handlingEventTypes(),
-      },
-    });
-  }
-
   private handlingEventTypes() {
     return this.configuration.eventHandlers.map((h) => h.eventType);
+  }
+
+  private getPositionPointer(): Promise<EventsSubscriptionPositionPointer> {
+    return EventsSubscriptionPositionPointer.initialize(this.prismaService, {
+      subscriptionId: this.subscriptionId,
+      handlingEventTypes: this.handlingEventTypes(),
+      startFromGlobalPosition: this.configuration.options.start.from.globalPosition,
+    });
   }
 }
