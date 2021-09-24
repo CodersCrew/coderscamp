@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
+import { Layout } from './components/Layout';
 import { AuthorizedRoute, Redirect404, UnauthorizedRoute } from './components/RoutingAuth';
 import { WaitForUser } from './components/WaitForUser';
 import { CalendarPage } from './screens/CalendarPage';
@@ -21,8 +22,10 @@ export const App = () => {
           </UnauthorizedRoute>
           <UnauthorizedRoute exact path="/register" component={Register} />
           <UnauthorizedRoute exact path="/login" component={Login} />
-          <AuthorizedRoute exact path="/calendar" component={CalendarPage} />
-          <AuthorizedRoute exact path="/dashboard" component={Dashboard} />
+          <Layout>
+            <AuthorizedRoute exact path="/calendar" component={CalendarPage} />
+            <AuthorizedRoute exact path="/dashboard" component={Dashboard} />
+          </Layout>
           <Redirect404 />
         </Switch>
       </BrowserRouter>
