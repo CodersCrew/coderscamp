@@ -11,6 +11,7 @@ import {
   sampleDomainEventType2,
   sequence,
 } from '@/shared/test-utils';
+import { retryTimesPolicy } from '@/shared/utils/retry-until';
 import { using } from '@/shared/utils/using';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
@@ -39,8 +40,14 @@ describe('Events subscription', () => {
     subscription = sut.eventsSubscriptions
       .subscription(sut.randomUuid(), {
         start: { from: { globalPosition: 1 } },
-        retry: { backoff: 'FIXED', delay: 50, maxBackoff: 1000, resetBackoffAfter: 6 * 1000 },
-        queue: { maxRetryCount: 3, waitingTimeOnRetry: 50 },
+        retry: {
+          backoff: 'FIXED',
+          delay: 50,
+          maxBackoff: 1000,
+          resetBackoffAfter: 6 * 1000,
+          until: retryTimesPolicy(3),
+        },
+        queue: { maxRetryCount: 5, waitingTimeOnRetry: 50 },
       })
       .onInitialPosition(onInitialPosition)
       .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
@@ -97,7 +104,6 @@ describe('Events subscription', () => {
       })
       .mockImplementationOnce(() => {}) // 7. event #4 - success (retry: 3)
       .mockImplementationOnce(() => {
-        subscription.stop(); // force stop processing - simulate no retries
         throw new Error('Event processing failure'); // 8. event #5 - failure - no retries!
       })
       .mockImplementationOnce(() => {}) // 9. event #5 - success (after next start)

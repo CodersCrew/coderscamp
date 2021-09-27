@@ -18,16 +18,30 @@ export type LoopWithRetryConfig<TResult = never> = Readonly<{
   backoff: 'FIXED' | 'EXPONENTIAL' | 'LINEAR';
   maxBackoff: number;
   resetBackoffAfter: number;
-  until: (result: TResult | Error | undefined) => boolean;
+  until: (result: TResult | Error) => boolean;
   logger: (msg: string | Error) => void;
 }>;
+
+export function retryTimesPolicy<TResult = never>(times: number) {
+  let count = 0;
+
+  return (e: TResult | Error) => {
+    if (e instanceof Error) {
+      count += 1;
+
+      return count <= times;
+    }
+
+    return false;
+  };
+}
 
 export async function retryUntil<TResult>(fn: () => Promise<TResult>, config: LoopWithRetryConfig<TResult>) {
   const backoffStrategy = backoffStrategyOf(config);
   const { logger, until, maxBackoff } = config;
   let { delay } = config;
 
-  let result: TResult | Error | undefined;
+  let result: TResult | Error;
 
   for (;;) {
     const time = Date.now();

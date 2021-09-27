@@ -24,6 +24,7 @@ type SubscriptionRetriesConfig = {
   backoff: 'FIXED' | 'EXPONENTIAL' | 'LINEAR';
   maxBackoff: number;
   resetBackoffAfter: number;
+  until?: (e: Error | void) => boolean;
 };
 type SubscriptionStartConfig = { from: { globalPosition: number } };
 type SubscriptionQueueConfig = { maxRetryCount: number; waitingTimeOnRetry: number };
@@ -128,7 +129,7 @@ export class EventsSubscription {
     this.eventEmitter.offAny(this.eventEmitterListener);
     this.queue.stop();
     this.running = false;
-    await this.shutdownToken.wait(60 * 1000);
+    await this.shutdownToken.wait(60 * 1000).catch((e: Error) => this.logger.warn(e, e?.stack));
     this.logger.debug(`${this.subscriptionId} finished`);
   }
 
@@ -289,7 +290,7 @@ export class EventsSubscription {
         },
         {
           ...this.configuration.options.retry,
-          until: () => this.running,
+          until: this.configuration.options.retry.until ?? (() => this.running),
           logger: (msg) => this.logger.warn(`${this.subscriptionId} ${msg}`),
         },
       );
