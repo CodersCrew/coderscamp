@@ -12,7 +12,7 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
       </Typography>
       <HStack spacing="16px">
         <MentorAvatar src={image} alt={name} />
-        <VStack alignItems="flex-start" spacing="0px">
+        <VStack alignItems="flex-start" spacing="0px" textAlign="left">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}
           </Typography>
