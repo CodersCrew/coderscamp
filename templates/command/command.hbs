@@ -1,0 +1,13 @@
+import { AbstractApplicationCommand } from '@/module/application-command-events';
+
+export type {{properCase name}} = {
+  type: '{{properCase name}}';
+  data: {};
+};
+
+export const {{camelCase name}} = (data: {{properCase name}}['data']): {{properCase name}} => ({
+  type: '{{properCase name}}',
+  data,
+});
+
+export class {{properCase name}}ApplicationCommand extends AbstractApplicationCommand<{{properCase name}}> {}
