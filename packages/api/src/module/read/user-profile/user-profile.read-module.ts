@@ -17,6 +17,7 @@ import { UserProfileService } from './user-profile.service';
   imports: [SharedModule],
   controllers: [UserProfileController],
   providers: [UserProfileService, UserProfileRepository],
+  exports: [UserProfileService],
 })
 export class UserProfileReadModule implements OnApplicationBootstrap, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
