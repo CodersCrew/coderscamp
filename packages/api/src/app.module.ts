@@ -6,10 +6,10 @@ import { join } from 'path';
 import { SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule } from '@/automation/send-email-when-learning-materials-url-was-generated/send-email-when-learning-materials-url-was-generated-automation.module';
 import { WhenEmailConfirmationWasApprovedThenCompleteUserRegistrationAutomationModule } from '@/automation/when-email-confirmation-was-approved-then-complete-user-registration/when-email-confirmation-was-approved-then-complete-user-registration-automation.module';
 import { WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule } from '@/automation/when-user-registration-was-started-then-request-email-confirmation/when-user-registration-was-started-then-request-email-confirmation-automation.module';
-import { UserProfileModule } from '@/crud/user-profile/user-profile.module';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { CourseProgressReadModule } from '@/read/course-progress/course-progress.read-module';
 import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
+import { UserProfileReadModule } from '@/read/user-profile/user-profile.read-module';
 import { env } from '@/shared/env';
 import { EmailConfirmationWriteModule } from '@/write/email-confirmation/email-confirmation.write-module';
 import { LearningMaterialsTasksModule } from '@/write/learning-materials-tasks/learning-materials-tasks.write-module';
@@ -30,14 +30,14 @@ const writeModules = [
   EmailConfirmationWriteModule,
   RegisterCourseUserWriteModule,
 ];
-const readModules = [LearningMaterialsReadModule, CourseProgressReadModule];
+const readModules = [LearningMaterialsReadModule, CourseProgressReadModule, UserProfileReadModule];
 const automationModules = [
   SendEmailWhenLearningMaterialsUrlWasGeneratedAutomationModule,
   WhenUserRegistrationWasStartedThenRequestEmailConfirmationAutomationModule,
   WhenEmailConfirmationWasApprovedThenCompleteUserRegistrationAutomationModule,
 ];
 const eventModelingModules = [...writeModules, ...readModules, ...automationModules];
-const crudModules = [UserProfileModule, CoursesModule, AuthModule];
+const crudModules = [CoursesModule, AuthModule];
 
 const imports: ModuleMetadata['imports'] = [
   eventEmitterRootModule,
