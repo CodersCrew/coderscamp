@@ -352,7 +352,7 @@ export function sampleDomainEventType2(
   };
 }
 
-export function sampleApplicationEvent(event: Partial<ApplicationEvent>): ApplicationEvent {
+export function sampleApplicationEvent(event: Partial<ApplicationEvent> = {}): ApplicationEvent {
   return {
     type: 'SampleDomainEvent',
     id: uuid(),

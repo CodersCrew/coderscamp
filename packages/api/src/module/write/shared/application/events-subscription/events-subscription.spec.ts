@@ -208,35 +208,6 @@ describe('Events subscription', () => {
     });
   });
 
-  it('when reset, should process events from initial position', async () => {
-    // Given
-    const eventStream = EventStreamName.from('StreamCategory', sut.randomEventId());
-
-    await sut.eventsOccurred(
-      eventStream,
-      sequence(10).map(() => sampleDomainEvent()),
-    );
-
-    await subscription.start();
-
-    await sut.expectSubscriptionPosition({
-      subscriptionId: subscription.subscriptionId,
-      position: 10,
-    });
-    await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(10));
-    await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(1));
-
-    // When
-    await subscription.reset();
-
-    await sut.expectSubscriptionPosition({
-      subscriptionId: subscription.subscriptionId,
-      position: 10,
-    });
-    await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(20));
-    await waitForExpect(() => expect(onInitialPosition).toHaveBeenCalledTimes(2));
-  });
-
   it('Should support recurrent events', async () => {
     // Given
     const eventStream = sut.randomEventStreamName();
@@ -256,6 +227,34 @@ describe('Events subscription', () => {
       await sut.expectSubscriptionPosition({
         subscriptionId: subscription.subscriptionId,
         position: 2,
+      });
+    });
+  });
+
+  it('Should eventually process all events even if there are gaps in globalOrder', async () => {
+    // Given
+    const eventStream = sut.randomEventStreamName();
+    const expectedPosition = 30;
+    const events = sequence(expectedPosition).map(() => sampleDomainEvent());
+    const gap0 = { start: 1, end: 5 };
+    const gap1 = { start: 12, end: 15 };
+    const gap2 = { start: 21, end: 29 };
+    const numberOfEvents =
+      expectedPosition - (gap0.end - gap0.start + (gap1.end - gap1.start) + (gap2.end - gap2.start));
+
+    await sut.eventsOccurred(eventStream, events);
+
+    await sut.createGapBetweenEvents(gap0);
+    await sut.createGapBetweenEvents(gap1);
+    await sut.createGapBetweenEvents(gap2);
+
+    // When
+    await using(subscription, async () => {
+      // Then
+      await waitForExpect(() => expect(onSampleDomainEvent).toHaveBeenCalledTimes(numberOfEvents));
+      await sut.expectSubscriptionPosition({
+        subscriptionId: subscription.subscriptionId,
+        position: expectedPosition,
       });
     });
   });
