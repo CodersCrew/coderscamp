@@ -32,6 +32,12 @@ export class EventsSubscriptionsRegistry implements CanCreateSubscription {
         maxRetryCount: env.SUBSCRIPTION_QUEUE_MAX_RETRY_COUNT,
         waitingTimeOnRetry: env.SUBSCRIPTION_QUEUE_WAITING_TIME_ON_RETRY_MS,
       },
+      retry: {
+        backoff: 'EXPONENTIAL',
+        maxBackoff: 60 * 1000,
+        resetBackoffAfter: 5 * 60 * 1000,
+        delay: 10,
+      },
     };
     const startConfig: SubscriptionOptions = {
       ...defaultSubscriptionConfig,

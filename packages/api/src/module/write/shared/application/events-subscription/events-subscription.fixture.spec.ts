@@ -5,7 +5,7 @@ import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { PrismaService } from '@/shared/prisma/prisma.service';
-import { AnotherSampleDomainEvent, initWriteTestModule, SampleDomainEvent } from '@/shared/test-utils';
+import { AnotherSampleDomainEvent, initWriteTestModule, SampleDomainEvent, sequence } from '@/shared/test-utils';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 import { SharedModule } from '@/write/shared/shared.module';
@@ -160,4 +160,8 @@ export async function initEventsSubscriptionConcurrencyTestFixture(options: Subs
       ...fixtureBase,
     },
   };
+}
+
+export function expectEventsOrder(events: ApplicationEvent[], expectedNumberOfEvents: number) {
+  expect(events.map((x) => x.globalOrder)).toStrictEqual(sequence(expectedNumberOfEvents).map((x) => x + 1));
 }

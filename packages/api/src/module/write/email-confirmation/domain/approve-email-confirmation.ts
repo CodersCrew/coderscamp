@@ -14,7 +14,7 @@ export const approveEmailConfirmation =
       throw new Error('Email confirmation has been already approved');
 
     if (lastPublishedEmailConfirmation.data.confirmationToken !== command.data.confirmationToken)
-      throw new Error('An attempt was made on obsolete token');
+      throw new Error('An attempt was made on obsolete confirmation token');
 
     return [emailConfirmationWasApprovedEvent(command.data)];
   };
