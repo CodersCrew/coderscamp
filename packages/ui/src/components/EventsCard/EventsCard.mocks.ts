@@ -1,6 +1,4 @@
-export const MAIN_TITLE = 'Najbliższe terminy';
-
-export const BUTTON_TEXT = 'Przejdź do wydarzenia';
+import { EventDateType } from './EventsCard';
 
 const eventDescription =
   'Sed dui elementum, elit est id malesuada leo varius. Arcu tempus, non justo leo egestas.' +
@@ -12,7 +10,6 @@ export const events = [
     id: 1,
     title: 'Test kwalifikacyjny na CodersCamp',
     date: { from: new Date(2021, 4, 4, 13, 40), to: new Date(2021, 5, 4, 15, 40) },
-    // we have to remember that month is number 0-11 not 1-12.
     description: eventDescription,
     url: '#',
   },
@@ -28,6 +25,16 @@ export const events = [
     title: 'Termin oddania projektu z modułu 1',
     date: new Date(2012, 9, 20, 1, 5),
     description: eventDescription,
+    url: '#',
+  },
+];
+
+export const createEventMock = (date: EventDateType) => [
+  {
+    id: 0,
+    title: '',
+    date,
+    description: '',
     url: '#',
   },
 ];
