@@ -1,10 +1,20 @@
 # email-confirmation.rest-controller.ts
 
 @confirmationFor = 'user-registration'
+@confirmationToken = 'SomeConfirmationToken'
 
 # Request email-confirmation for user
 POST {{serverUrl}}/email-confirmation
 
 {
   "confirmationFor": "{{confirmationFor}}"
+}
+
+###
+
+# Approve email-confirmation for user
+POST {{serverUrl}}/email-confirmation/Approval
+
+{
+  "confirmationToken": "{{confirmationToken}}"
 }

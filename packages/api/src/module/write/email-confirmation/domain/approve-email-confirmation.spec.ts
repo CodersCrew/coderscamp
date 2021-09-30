@@ -87,7 +87,7 @@ describe('Approve email confirmation', () => {
 
     // when - them
     expect(() => approveEmailConfirmation(emailConfirmationWithOldToken)(pastEvents)).toThrow(
-      'An attempt was made on obsolete token',
+      'An attempt was made on obsolete confirmation token',
     );
   });
 
