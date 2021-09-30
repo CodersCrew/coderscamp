@@ -94,7 +94,10 @@ describe('EventsSubscriptionPositionPointer', () => {
     },
   );
 
-  it.each([[4, 7, 7]])(
+  it.each([
+    [4, 7, 7],
+    [1, 4, 4],
+  ])(
     'Given gap between events(start:%d, end:%d) When initialize EventsSubscriptionPositionPointer Then position should point before next valid event(%d)',
     async (start: number, end: number, expected: number) => {
       // Given
