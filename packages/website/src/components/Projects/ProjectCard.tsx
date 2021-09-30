@@ -17,7 +17,7 @@ interface ProjectCardProps {
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   const buttonHasIcon = useBreakpointValue({ base: true, md: true, lg: true });
   const buttonsDirection = useBreakpointValue({ base: 'column', sm: 'row', md: 'column', lg: 'row' } as const);
-  const buttonSize = useBreakpointValue({ base: 'md', sm: 'md', md: 'sm' } as const);
+  const buttonSize = useBreakpointValue({ base: 'md', md: 'sm' } as const);
 
   const buttonProps = {
     ...externalLinkBaseProps,
@@ -25,7 +25,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
     variant: 'solid',
     color: 'default',
     size: buttonSize,
-    width: 'max(164px)',
+    width: { base: '100%', sm: 'max(164px)' },
   } as const;
 
   return (
