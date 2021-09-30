@@ -51,7 +51,7 @@ export class EventsSubscriptionPositionPointer {
       },
     });
 
-    if (events.length <= 1) {
+    if (events.length === 0) {
       return expectedPosition;
     }
 

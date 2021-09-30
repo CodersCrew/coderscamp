@@ -37,10 +37,10 @@ export class RegisterUserCommandHandler implements ICommandHandler<RegisterUserA
         (pastEvents) => registerUser(pastEvents, command, hashedPassword),
       );
     } catch (ex) {
-      await this.emails.unlockEmailAddress({ emailAddress: command.data.emailAddress });
-
       if (isUniqueConstraintError(ex)) {
         throw new DomainRuleViolationException(registerError.USER_WAS_ALREADY_REGISTERED, { cause: ex, command });
+      } else {
+        await this.emails.unlockEmailAddress({ emailAddress: command.data.emailAddress });
       }
     }
   }

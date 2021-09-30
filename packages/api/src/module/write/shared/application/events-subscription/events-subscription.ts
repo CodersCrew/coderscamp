@@ -139,10 +139,10 @@ export class EventsSubscription {
     let event = await this.queue.pop();
 
     while (!OrderedEventQueue.isStopToken(event)) {
-      this.logger.debug(`${this.subscriptionId} recived event(${event.id},${event.globalOrder})`);
+      this.logger.debug(`${this.subscriptionId} received event(${event.id},${event.globalOrder})`);
 
       if (position.eventWasProcessed(event)) {
-        this.logger.warn(`${this.subscriptionId} recived old event(${event.id}, ${event.globalOrder})`);
+        this.logger.warn(`${this.subscriptionId} received old event(${event.id}, ${event.globalOrder})`);
       } else if (position.globalOrderIsPreserved(event)) {
         await this.handleEvent(event);
         await position.increment();
