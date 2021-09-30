@@ -23,7 +23,7 @@ export const InternalLink = ({
 
   return (
     <NextLink passHref href={href} as={as} replace={replace} scroll={scroll} shallow={shallow} prefetch={prefetch}>
-      <Link {...chakraProps} {...underlineProps}>
+      <Link color="blue.700" {...chakraProps} {...underlineProps}>
         {children}
       </Link>
     </NextLink>
