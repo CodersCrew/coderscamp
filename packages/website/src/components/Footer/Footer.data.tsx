@@ -15,18 +15,50 @@ import {
   TERMS_URL,
 } from '@/constants';
 
-interface Social {
+export interface Social {
   label: string;
   icon: ReactElement;
   href: string;
 }
 
-export const socialMediaIcons: Social[] = [
-  { label: 'Link do konta Facebook', icon: <SolidFacebookIcon />, href: 'https://facebook.com/ccrew18' },
-  { label: 'Link do konta Instagram', icon: <SolidInstagramIcon />, href: 'https://instagram.com/coderscrew.pl' },
-  { label: 'Link do konta LinkedIn', icon: <SolidLinkedinIcon />, href: 'https://linkedin.com/company/coderscrew' },
-  { label: 'Link do konta GitHub', icon: <SolidGitHubIcon />, href: 'https://github.com/CodersCrew' },
-  { label: 'Link do strony internetowej', icon: <SolidGlobalIcon />, href: 'https://coderscrew.pl' },
+export const codersCrewSocials: Social[] = [
+  {
+    label: 'Konto Facebook Stowarzyszenia CodersCrew',
+    icon: <SolidFacebookIcon />,
+    href: 'https://facebook.com/ccrew18',
+  },
+  {
+    label: 'Konto Instagram Stowarzyszenia CodersCrew',
+    icon: <SolidInstagramIcon />,
+    href: 'https://instagram.com/coderscrew.pl',
+  },
+  {
+    label: 'Konto LinkedIn Stowarzyszenia CodersCrew',
+    icon: <SolidLinkedinIcon />,
+    href: 'https://linkedin.com/company/coderscrew',
+  },
+  { label: 'Konto GitHub Stowarzyszenia CodersCrew', icon: <SolidGitHubIcon />, href: 'https://github.com/CodersCrew' },
+  { label: 'Strona internetowa CodersCrew', icon: <SolidGlobalIcon />, href: 'https://coderscrew.pl' },
+];
+
+export const liveChatSocials: Social[] = [
+  {
+    label: 'Konto Facebook firmy LiveChat',
+    icon: <SolidFacebookIcon />,
+    href: 'https://www.facebook.com/livechatpany',
+  },
+  {
+    label: 'Konto Instagram firmy LiveChat',
+    icon: <SolidInstagramIcon />,
+    href: 'https://www.instagram.com/livechat',
+  },
+  {
+    label: 'Konto LinkedIn firmy LiveChat',
+    icon: <SolidLinkedinIcon />,
+    href: 'https://www.linkedin.com/company/livechat',
+  },
+  { label: 'Konto GitHub firmy LiveChat', icon: <SolidGitHubIcon />, href: 'https://github.com/livechat' },
+  { label: 'Strona internetowa LiveChat', icon: <SolidGlobalIcon />, href: 'https://www.livechat.com' },
 ];
 
 interface NavItem {
