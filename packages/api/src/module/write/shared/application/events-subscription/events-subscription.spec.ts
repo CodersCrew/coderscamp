@@ -11,11 +11,13 @@ import {
   sampleDomainEventType2,
   sequence,
 } from '@/shared/test-utils';
-import { using } from '@/shared/using';
+import { retryTimesPolicy } from '@/shared/utils/retry-until';
+import { using } from '@/shared/utils/using';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
 
 import {
+  expectEventsOrder,
   initEventsSubscriptionConcurrencyTestFixture,
   initTestEventsSubscription,
 } from './events-subscription.fixture.spec';
@@ -38,7 +40,14 @@ describe('Events subscription', () => {
     subscription = sut.eventsSubscriptions
       .subscription(sut.randomUuid(), {
         start: { from: { globalPosition: 1 } },
-        retry: { retries: 3, backoff: 'LINEAR', delay: 50 },
+        retry: {
+          backoff: 'FIXED',
+          delay: 50,
+          maxBackoff: 1000,
+          resetBackoffAfter: 6 * 1000,
+          until: retryTimesPolicy(3),
+        },
+        queue: { maxRetryCount: 5, waitingTimeOnRetry: 50 },
       })
       .onInitialPosition(onInitialPosition)
       .onEvent<SampleDomainEvent>('SampleDomainEvent', onSampleDomainEvent)
@@ -309,7 +318,7 @@ describe('Events subscription concurrency tests', () => {
         subscriptionId: sut.subscriptionId,
         position: numberOfEvents,
       });
-      expect(processedEvents.map((x) => x.globalOrder)).toStrictEqual(sequence(numberOfEvents).map((x) => x + 1));
+      expectEventsOrder(processedEvents, numberOfEvents);
     });
   });
 });
