@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { UserProfileService } from '@/crud/user-profile/user-profile.service';
+import { UserProfileService } from '@/crud/../../../read/user-profile/user-profile.service';
 import type { UserId } from '@/shared/domain.types';
 
 import { UsersPort } from '../application/users.port';

@@ -3,10 +3,10 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GET_ALL_USERS_ENDPOINT, GetAllUsersResponse } from '@coderscamp/shared/models/user/getAllUsers';
 import { GET_ME_ENDPOINT, GetMeResponse } from '@coderscamp/shared/models/user/getMe';
 
+import { JwtUserId } from '@/crud/auth/jwt/jwt-user-id.decorator';
 import type { UserId } from '@/shared/domain.types';
 import { JwtAuthGuard } from '@/shared/guards/jwt-auth.guard';
 
-import { JwtUserId } from '../auth/jwt/jwt-user-id.decorator';
 import { UserProfileService } from './user-profile.service';
 
 @Controller()

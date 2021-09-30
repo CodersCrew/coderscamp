@@ -89,12 +89,10 @@ class EnvVariables {
 
   @Expose()
   @IsInt()
-  @IsPositive()
   NODEMAILER_PORT: number;
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
   NODEMAILER_HOST: string;
 
   @Expose()

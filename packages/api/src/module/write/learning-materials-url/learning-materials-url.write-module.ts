@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { UserProfileModule } from '@/crud/user-profile/user-profile.module';
-import { UserProfileService } from '@/crud/user-profile/user-profile.service';
+import { UserProfileReadModule } from '@/crud/../../read/user-profile/user-profile.read-module';
+import { UserProfileService } from '@/crud/../../read/user-profile/user-profile.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';
@@ -12,7 +12,7 @@ import { UsersAdapter } from './infrastructure/users.adapter';
 import { LearningMaterialsUrlRestController } from './presentation/rest/learning-materials-url.rest-controller';
 
 @Module({
-  imports: [SharedModule, UserProfileModule],
+  imports: [SharedModule, UserProfileReadModule],
   controllers: [LearningMaterialsUrlRestController],
   providers: [
     GenerateLearningMaterialsUrlCommandHandler,
