@@ -12,7 +12,7 @@ export interface NavbarItemProps {
 
 const commonStyle = {
   size: 'md',
-  mx: '24px',
+  mx: { base: '24px', xl: '20px', '2xl': '24px' },
   cursor: 'pointer',
 } as const;
 

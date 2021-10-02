@@ -3,6 +3,7 @@ import ReactHeadroom from 'react-headroom';
 
 import { Box } from '@coderscamp/ui/components/Box';
 import { Center } from '@coderscamp/ui/components/Center';
+import { Flex } from '@coderscamp/ui/components/Flex';
 import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useTheme } from '@coderscamp/ui/hooks/useTheme';
@@ -44,18 +45,18 @@ export const Navbar = () => {
       onUnfix={() => setHasShadow(false)}
     >
       <Center
-        px={{ base: '24px', md: '32px', lg: '40px' }}
+        px={{ base: '24px', md: '32px', lg: '40px', xl: '32px', '2xl': '40px' }}
         bgColor="white"
         width="100%"
         height="80px"
         shadow={hasShadow ? 'large' : undefined}
       >
-        <HStack width="min(1920px, 100%)" justifyContent="space-between">
+        <Flex width="min(1920px, 100%)" justifyContent="space-between" alignItems="center">
           <InternalLink href="/">
             <Logo />
           </InternalLink>
           {baseNavbar}
-        </HStack>
+        </Flex>
       </Center>
     </ReactHeadroom>
   );
