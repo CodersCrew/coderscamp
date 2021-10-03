@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
 import ReactHeadroom from 'react-headroom';
-import Link from 'next/link';
 
+import { Box } from '@coderscamp/ui/components/Box';
 import { Center } from '@coderscamp/ui/components/Center';
-import { HStack } from '@coderscamp/ui/components/Stack';
+import { Flex } from '@coderscamp/ui/components/Flex';
+import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { useTheme } from '@coderscamp/ui/hooks/useTheme';
-import { LogoBlackHorizontal, LogoBlackSquare } from '@coderscamp/ui/svg/logos';
+import {
+  LogoBlackHorizontal,
+  LogoBlackSquare,
+  PoweredByLiveChatHorizontal,
+  PoweredByLiveChatVertical,
+} from '@coderscamp/ui/svg/logos';
 
+import { InternalLink } from '../InternalLink';
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
-const logoProps = {
-  cursor: 'pointer',
-  maxWidth: '280px',
-  height: '40px',
-};
+const WideLogo = () => (
+  <VStack spacing="6px" align="flex-end">
+    <LogoBlackHorizontal maxWidth="280px" height="32px" />
+    <PoweredByLiveChatHorizontal height="16px" />
+  </VStack>
+);
+
+const NarrowLogo = () => (
+  <HStack spacing="8px">
+    <LogoBlackSquare height="40px" />
+    <Box width="1px" height="40px" bg="gray.400" />
+    <PoweredByLiveChatVertical height="40px" />
+  </HStack>
+);
 
 export const Navbar = () => {
-  const Logo = useBreakpointValue({ base: LogoBlackSquare, xl: LogoBlackHorizontal } as const, 'base');
+  const Logo = useBreakpointValue({ base: NarrowLogo, xl: WideLogo } as const, 'base') ?? NarrowLogo;
   const { zIndices } = useTheme();
   const [hasShadow, setHasShadow] = useState(false);
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
@@ -29,17 +45,18 @@ export const Navbar = () => {
       onUnfix={() => setHasShadow(false)}
     >
       <Center
-        pt="18px"
-        pb="18px"
-        px={{ base: '32px', lg: '40px' }}
+        px={{ base: '24px', md: '32px', lg: '40px', xl: '32px', '2xl': '40px' }}
         bgColor="white"
         width="100%"
+        height="80px"
         shadow={hasShadow ? 'large' : undefined}
       >
-        <HStack width="min(1920px, 100%)" justifyContent="space-between">
-          <Link href="/">{Logo && <Logo {...logoProps} />}</Link>
+        <Flex width="min(1920px, 100%)" justifyContent="space-between" alignItems="center">
+          <InternalLink href="/">
+            <Logo />
+          </InternalLink>
           {baseNavbar}
-        </HStack>
+        </Flex>
       </Center>
     </ReactHeadroom>
   );
