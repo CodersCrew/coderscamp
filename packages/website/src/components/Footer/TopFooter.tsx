@@ -39,7 +39,7 @@ const OrganizerWrapper = ({ children, socials }: OrganizerWrapperProps) => {
 
 const CodersCrewDescription = () => (
   <OrganizerWrapper socials={codersCrewSocials}>
-    <ExternalLink href="https://coderscrew.pl">
+    <ExternalLink href="https://coderscrew.pl" rel="dofollow">
       <CodersCrewLogo maxW="100%" h="32px" />
     </ExternalLink>
     <Typography pt="20px" size={{ base: 'md', xl: 'sm', '2xl': 'md' }} textAlign={{ base: 'center', lg: 'left' }}>
@@ -51,7 +51,7 @@ const CodersCrewDescription = () => (
 
 const LiveChatDescription = () => (
   <OrganizerWrapper socials={liveChatSocials}>
-    <ExternalLink href="https://www.livechat.com">
+    <ExternalLink href="https://www.livechat.com/careers" rel="dofollow">
       <LiveChatLogoHorizontal maxW="100%" h="40px" />
     </ExternalLink>
     <Typography pt="12px" size={{ base: 'md', xl: 'sm', '2xl': 'md' }} textAlign={{ base: 'center', lg: 'left' }}>
