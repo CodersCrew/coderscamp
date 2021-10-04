@@ -5,7 +5,7 @@
 import inquirerSelectDirectory from 'inquirer-select-directory';
 import { NodePlopAPI } from 'plop';
 
-import { commandGenerator, commandHandlerGenerator, moduleGenerator } from './templates';
+import { commandGenerator, commandHandlerGenerator, eventGenerator, moduleGenerator } from './templates';
 
 export default function (plop: NodePlopAPI) {
   // Plugins
@@ -14,4 +14,5 @@ export default function (plop: NodePlopAPI) {
   plop.setGenerator('command', commandGenerator);
   plop.setGenerator('commandHandler', commandHandlerGenerator);
   plop.setGenerator('moduleGenerator', moduleGenerator);
+  plop.setGenerator('event', eventGenerator);
 }
