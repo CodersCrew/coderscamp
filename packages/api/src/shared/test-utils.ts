@@ -1,8 +1,11 @@
+import { INestApplication } from '@nestjs/common';
 import { Abstract } from '@nestjs/common/interfaces';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
+import _ from 'lodash';
+import supertest from 'supertest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
@@ -18,9 +21,12 @@ import { EventStreamName } from '@/write/shared/application/event-stream-name.va
 import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
 import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
+import { UuidGenerator } from '@/write/shared/infrastructure/id-generator/uuid-generator';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
+import { SystemTimeProvider } from '@/write/shared/infrastructure/time-provider/system-time-provider';
 import { SharedModule } from '@/write/shared/shared.module';
 
+import { setupMiddlewares } from '../app.middlewares';
 import { AppModule } from '../app.module';
 import { eventEmitterRootModule } from '../event-emitter.root-module';
 
@@ -32,9 +38,9 @@ export async function cleanupDatabase(prismaService: PrismaService) {
   await prismaService.$executeRaw`ALTER SEQUENCE "Event_globalOrder_seq" RESTART WITH 1`;
 }
 
-export async function initReadTestModule() {
+export async function initReadTestModule(config?: { modules?: ModuleMetadata['imports'] }) {
   const app = await Test.createTestingModule({
-    imports: [AppModule],
+    imports: config?.modules ? [eventEmitterRootModule, SharedModule, ...config.modules] : [AppModule],
   }).compile();
 
   await app.init();
@@ -107,6 +113,7 @@ export function getEventBusSpy(app: TestingModule): EventBusSpy {
 
   return jest.spyOn(eventBus, 'publishAll');
 }
+
 export function getCommandBusSpy(app: TestingModule): CommandBusSpy {
   const commandBus = app.get<CommandBus>(CommandBus);
 
@@ -151,7 +158,9 @@ export async function initWriteTestModule(config?: {
   function getLastPublishedEvents() {
     const lastEventIndex = eventBusSpy.mock.calls.length - 1;
 
-    return eventBusSpy.mock.calls[lastEventIndex][0];
+    const sortEventsByGlobalOrderAsc = (e1: ApplicationEvent, e2: ApplicationEvent) => e1.globalOrder - e2.globalOrder;
+
+    return eventBusSpy.mock.calls[lastEventIndex][0].sort(sortEventsByGlobalOrderAsc);
   }
 
   function expectEvent<EventType extends DomainEvent>(
@@ -343,7 +352,59 @@ export function sampleDomainEventType2(
   };
 }
 
+export function sampleApplicationEvent(event: Partial<ApplicationEvent> = {}): ApplicationEvent {
+  return {
+    type: 'SampleDomainEvent',
+    id: uuid(),
+    occurredAt: new Date(),
+    data: {},
+    streamName: EventStreamName.props({ streamCategory: uuid(), streamId: uuid() }),
+    streamVersion: _.random(0, 1000),
+    globalOrder: _.random(0, 1000),
+    metadata: {
+      correlationId: uuid(),
+      causationId: uuid(),
+    },
+    ...event,
+  };
+}
+
 export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
   register: jest.fn(),
   execute: jest.fn(),
 };
+
+export async function initTestModuleRestApi(
+  controller: Type,
+  config?: (module: TestingModuleBuilder) => TestingModuleBuilder,
+) {
+  const commandBusExecute = jest.fn();
+  const moduleBuilder = await Test.createTestingModule({
+    providers: [
+      {
+        provide: CommandBus,
+        useValue: { execute: commandBusExecute, register: jest.fn() },
+      },
+      {
+        provide: ApplicationCommandFactory,
+        useValue: new ApplicationCommandFactory(new UuidGenerator(), new SystemTimeProvider()),
+      },
+    ],
+    controllers: [controller],
+  });
+  const moduleRef = await (config ? config(moduleBuilder) : moduleBuilder).compile();
+
+  const app: INestApplication = moduleRef.createNestApplication();
+
+  setupMiddlewares(app);
+
+  await app.init();
+
+  const http = supertest(app.getHttpServer());
+
+  async function close() {
+    await app.close();
+  }
+
+  return { http, close, commandBusExecute };
+}

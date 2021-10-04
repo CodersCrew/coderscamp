@@ -1,4 +1,5 @@
 import { initWriteTestModule } from '@/shared/test-utils';
+import { LearningMaterialsUrlWriteModule } from '@/write/learning-materials-url/learning-materials-url.write-module';
 
 import {
   LEARNING_MATERIALS_URL_GENERATOR,
@@ -24,6 +25,7 @@ export async function generateLearningMaterialsUrlTestModule() {
   };
 
   return initWriteTestModule({
+    modules: [LearningMaterialsUrlWriteModule],
     configureModule: (app) =>
       app
         .overrideProvider(LEARNING_MATERIALS_URL_GENERATOR)

@@ -44,8 +44,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 4,
       date: MAIN_TEST_FULL_DATE,
-      description:
-        `Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród ${PLACES_COUNT} osób z najlepszymi wynikami.`,
+      description: `Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród ${PLACES_COUNT} osób z najlepszymi wynikami.`,
     },
     {
       index: 5,
@@ -60,7 +59,7 @@ export const useMentorSchedule = (): ScheduleListItem[] => {
   return [
     {
       index: 1,
-      date: '03.09 - 17.09.2021',
+      date: '03.09 - 24.09.2021',
       description: (
         <>
           Wypełnij <ExternalLink href={MENTOR_RECRUITMENT_FORM_URL}>formularz zgłoszeniowy</ExternalLink>, aby zapisać
@@ -70,7 +69,7 @@ export const useMentorSchedule = (): ScheduleListItem[] => {
     },
     {
       index: 2,
-      date: '18.09.2021',
+      date: '18.09 - 25.09.2021',
       description: 'Otrzymasz od nas mail z propozycjami terminu rozmowy kwalifikacyjnej.',
     },
     {

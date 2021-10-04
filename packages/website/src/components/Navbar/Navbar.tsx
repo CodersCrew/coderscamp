@@ -1,35 +1,42 @@
 import React, { useState } from 'react';
 import ReactHeadroom from 'react-headroom';
-import Link from 'next/link';
 
-import { Button } from '@coderscamp/ui/components/Button';
+import { Box } from '@coderscamp/ui/components/Box';
 import { Center } from '@coderscamp/ui/components/Center';
-import { HStack } from '@coderscamp/ui/components/Stack';
+import { Flex } from '@coderscamp/ui/components/Flex';
+import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 import { useTheme } from '@coderscamp/ui/hooks/useTheme';
-import { LogoBlackHorizontal, LogoBlackSquare } from '@coderscamp/ui/svg/logos';
+import {
+  LogoBlackHorizontal,
+  LogoBlackSquare,
+  PoweredByLiveChatHorizontal,
+  PoweredByLiveChatVertical,
+} from '@coderscamp/ui/svg/logos';
 
-import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { MENTOR_RECRUITMENT_FORM_URL } from '@/constants';
-
-import { externalLinkBaseProps } from '../ExternalLink';
+import { InternalLink } from '../InternalLink';
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
+const WideLogo = () => (
+  <VStack spacing="6px" align="flex-end">
+    <LogoBlackHorizontal maxWidth="280px" height="32px" />
+    <PoweredByLiveChatHorizontal height="16px" />
+  </VStack>
+);
+
+const NarrowLogo = () => (
+  <HStack spacing="8px">
+    <LogoBlackSquare height="40px" />
+    <Box width="1px" height="40px" bg="gray.400" />
+    <PoweredByLiveChatVertical height="40px" />
+  </HStack>
+);
+
 export const Navbar = () => {
-  const logoLayout = useBreakpointValue({ base: 'square', xl: 'horizontal' } as const);
-  const buttonContainerWidth = useBreakpointValue({ base: '100%', lg: 'fit-content' } as const);
-  const { openModal } = useRecruitmentModal();
-  const [isGreaterThan560px] = useMediaQuery('(min-width: 560px)');
+  const Logo = useBreakpointValue({ base: NarrowLogo, xl: WideLogo } as const, 'base') ?? NarrowLogo;
   const { zIndices } = useTheme();
   const [hasShadow, setHasShadow] = useState(false);
   const baseNavbar = useBreakpointValue({ base: <MobileBaseNavbar />, lg: <DesktopBaseNavbar /> } as const);
-  const baseLogoProps = {
-    cursor: 'pointer',
-    maxWidth: '280px',
-    height: '100%',
-    maxHeight: '40px',
-  };
 
   return (
     <ReactHeadroom
@@ -37,36 +44,19 @@ export const Navbar = () => {
       onPin={() => setHasShadow(true)}
       onUnfix={() => setHasShadow(false)}
     >
-      <Center bgColor="white" shadow={hasShadow ? 'large' : undefined}>
-        <HStack
-          pt={{ base: '32px', lg: '18px' }}
-          pb="18px"
-          px={{ base: '32px', lg: '40px' }}
-          width="min(1920px, 100%)"
-          justifyContent="space-between"
-          alignItems="center"
-          position="relative"
-        >
-          <Link href="/">
-            {logoLayout === 'horizontal' ? (
-              <LogoBlackHorizontal {...baseLogoProps} />
-            ) : (
-              <LogoBlackSquare {...baseLogoProps} />
-            )}
-          </Link>
-
+      <Center
+        px={{ base: '24px', md: '32px', lg: '40px', xl: '32px', '2xl': '40px' }}
+        bgColor="white"
+        width="100%"
+        height="80px"
+        shadow={hasShadow ? 'large' : undefined}
+      >
+        <Flex width="min(1920px, 100%)" justifyContent="space-between" alignItems="center">
+          <InternalLink href="/">
+            <Logo />
+          </InternalLink>
           {baseNavbar}
-          {isGreaterThan560px && (
-            <HStack spacing="12px" pr="24px" width={buttonContainerWidth} justifyContent="flex-end">
-              <Button size="md" color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
-                Zostań mentorem
-              </Button>
-              <Button size="md" onClick={() => openModal('participant')}>
-                Zapisz się na kurs
-              </Button>
-            </HStack>
-          )}
-        </HStack>
+        </Flex>
       </Center>
     </ReactHeadroom>
   );

@@ -1,4 +1,4 @@
-import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Module, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -15,12 +15,12 @@ import { LearningMaterialsRestController } from './learning-materials.rest-contr
   imports: [SharedModule],
   controllers: [LearningMaterialsRestController],
 })
-export class LearningMaterialsReadModule implements OnModuleInit, OnModuleDestroy {
+export class LearningMaterialsReadModule implements OnApplicationBootstrap, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
 
   constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
-  async onModuleInit() {
+  async onApplicationBootstrap() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
       .subscription('LearningMaterials_ReadModel_v1')
       .onInitialPosition(this.onInitialPosition)

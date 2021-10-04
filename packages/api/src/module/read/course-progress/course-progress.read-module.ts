@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
 import { ApplicationEvent } from '@/module/application-command-events';
@@ -17,12 +17,12 @@ import { CourseProgressRestController } from './course-progress.rest-controller'
   imports: [SharedModule],
   controllers: [CourseProgressRestController],
 })
-export class CourseProgressReadModule {
+export class CourseProgressReadModule implements OnApplicationBootstrap, OnModuleDestroy {
   private eventsSubscription: EventsSubscription;
 
   constructor(private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry) {}
 
-  async onModuleInit() {
+  async onApplicationBootstrap() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
       .subscription('CourseProgress_ReadModel_v1')
       .onInitialPosition(CourseProgressReadModule.onInitialPosition)

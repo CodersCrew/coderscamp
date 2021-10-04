@@ -1,20 +1,40 @@
+/* eslint-disable no-await-in-loop */
 import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { PrismaClient } from '@prisma/client';
-import { Mutex } from 'async-mutex';
-import { retry } from 'ts-retry-promise';
+import { wait } from 'ts-retry-promise';
 
 import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
+import { NotificationToken } from '@/shared/utils/notification-token';
+import { retryUntil } from '@/shared/utils/retry-until';
 import { EventRepository } from '@/write/shared/application/event-repository';
 
+import { EventsSubscriptionPositionPointer } from './events-subscription-position-pointer';
+import { OrderedEventQueue } from './ordered-event-queue';
+
 export type EventsSubscriptionConfig = {
-  readonly start: SubscriptionStart;
+  readonly options: SubscriptionOptions;
   readonly positionHandlers: PositionHandler[];
   readonly eventHandlers: ApplicationEventHandler[];
 };
-export type SubscriptionStart = { from: { globalPosition: number } };
+
+type SubscriptionRetriesConfig = {
+  delay: number;
+  backoff: 'FIXED' | 'EXPONENTIAL' | 'LINEAR';
+  maxBackoff: number;
+  resetBackoffAfter: number;
+  until?: (e: Error | void) => boolean;
+};
+type SubscriptionStartConfig = { from: { globalPosition: number } };
+type SubscriptionQueueConfig = { maxRetryCount: number; waitingTimeOnRetry: number };
+
+export type SubscriptionOptions = {
+  readonly start: SubscriptionStartConfig;
+  readonly queue: SubscriptionQueueConfig;
+  readonly retry: SubscriptionRetriesConfig;
+};
 
 export type PrismaTransactionManager = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use'>;
 
@@ -50,13 +70,19 @@ export type SubscriptionId = string;
 export class EventsSubscription {
   private readonly logger = new Logger(EventsSubscription.name);
 
-  private readonly mutex = new Mutex();
+  private readonly eventsRetryCount = new Map<string, number>();
 
-  private readonly eventEmitterListener: (_: unknown, event: ApplicationEvent) => Promise<void> = async (
+  private readonly queue = new OrderedEventQueue();
+
+  private shutdownToken = new NotificationToken();
+
+  private running = false;
+
+  private readonly eventEmitterListener: (_: unknown, event: ApplicationEvent) => void = (
     _: unknown,
     event: ApplicationEvent,
   ) => {
-    await this.handleEvent(event);
+    return this.queue.push(event);
   };
 
   constructor(
@@ -76,113 +102,113 @@ export class EventsSubscription {
    * See handleEvent for more details how handling event working.
    */
   async start(): Promise<void> {
-    const maxRetries = 3;
+    if (this.running) {
+      this.logger.warn(`${this.subscriptionId} is running`);
 
-    await retry(
-      async () => {
-        await this.catchUp().catch((e) => {
-          this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in CatchUp phase.`, e);
-          throw e;
-        });
-        await this.listen().catch((e) => {
-          this.logger.warn(`EventsSubscription ${this.subscriptionId} processing error in listen phase.`, e);
-          throw e;
-        });
-      },
-      { retries: maxRetries },
-    ).catch((e) =>
-      this.logger.error(
-        `EventsSubscription ${this.subscriptionId} stopped processing of events after ${maxRetries} retries.`,
-        e,
-      ),
-    );
+      return;
+    }
+
+    this.logger.debug(`${this.subscriptionId} started`);
+    this.queue.clear();
+    this.eventEmitter.onAny(this.eventEmitterListener);
+    this.shutdownToken.reset();
+    this.running = true;
+    this.run();
   }
 
   /**
    * Stops listening for new events.
-   * Cancel processing of currently handling event.
    */
   async stop(): Promise<void> {
-    this.eventEmitter.offAny(this.eventEmitterListener);
-    this.mutex.cancel();
-  }
+    if (!this.running) {
+      this.logger.warn(`${this.subscriptionId} finished`);
 
-  /**
-   * Stops processing.
-   * Reset currentPosition to initialPosition.
-   * Start processing from initialPosition.
-   */
-  async reset(): Promise<void> {
-    await this.stop();
-    await this.prismaService.$transaction(async (transaction) => {
-      await this.moveCurrentPosition(this.configuration.start.from.globalPosition - 1, transaction);
-    });
-    await this.start();
+      return;
+    }
+
+    this.logger.debug(`${this.subscriptionId} shutdown has been requested`);
+    this.eventEmitter.offAny(this.eventEmitterListener);
+    this.queue.stop();
+    this.running = false;
+    await this.shutdownToken.wait(60 * 1000).catch((e: Error) => this.logger.warn(e, e?.stack));
+    this.logger.debug(`${this.subscriptionId} finished`);
   }
 
   private async listen(): Promise<void> {
-    this.eventEmitter.onAny(this.eventEmitterListener);
+    const position = await this.getPositionPointer();
+    let event = await this.queue.pop();
+
+    while (!OrderedEventQueue.isStopToken(event)) {
+      this.logger.debug(`${this.subscriptionId} received event(${event.id},${event.globalOrder})`);
+
+      if (position.eventWasProcessed(event)) {
+        this.logger.warn(`${this.subscriptionId} received old event(${event.id}, ${event.globalOrder})`);
+      } else if (position.globalOrderIsPreserved(event)) {
+        await this.handleEvent(event);
+        await position.increment();
+      } else {
+        await this.retryWithWaitingForCorrectOrder(event);
+      }
+
+      event = await this.queue.pop();
+    }
   }
 
   private async catchUp(): Promise<void> {
     const subscriptionState = await this.prismaService.eventsSubscription.findUnique({
       where: { id: this.subscriptionId },
     });
+
+    this.eventsRetryCount.clear();
+    this.queue.clear();
+
     const eventsToCatchup = await this.eventRepository.readAll({
       fromGlobalPosition: subscriptionState?.currentPosition
         ? subscriptionState.currentPosition + 1
-        : this.configuration.start.from.globalPosition,
+        : this.configuration.options.start.from.globalPosition,
     });
 
-    await Promise.all(eventsToCatchup.map((e) => this.handleEvent(e)));
+    eventsToCatchup.forEach((event) => this.queue.push(event));
   }
 
   /**
-   * Handle event sequentially one after another by mean of mutex pattern.
+   * Handle event sequentially one after another by mean of queue pattern.
    * Handling an event is an atomic operation. While handling:
    *  - Run position handlers for handling event.globalOrder. Initial position handler is usable for preparing initial state of read model while resetting subscription associated with the read model.
    *  - Run event handlers for handling event.type.
-   *  - Move subscription current position to event.globalOrder.
    *
    *  @throws Error if projection missed some event (for example: currentPosition is 5, but received event with globalOrder 7 instead of 6).
    */
   private async handleEvent<DomainEventType extends DomainEvent>(
     event: ApplicationEvent<DomainEventType>,
   ): Promise<void> {
-    await this.mutex
-      .runExclusive(async () => {
-        await this.prismaService.$transaction(async (transaction) => {
-          const subscriptionState = await transaction.eventsSubscription.findUnique({
-            where: { id: this.subscriptionId },
-          });
-          const currentPosition =
-            subscriptionState?.currentPosition ?? this.configuration.start.from.globalPosition - 1;
+    this.eventsRetryCount.delete(event.id);
 
-          const expectedEventPosition = currentPosition + 1;
-
-          this.throwIfSomeEventsWasMissed(event, expectedEventPosition);
-
-          await this.processSubscriptionPositionChange(event, transaction);
-          await this.processEvent(event, transaction);
-          await this.moveCurrentPosition(event.globalOrder, transaction);
-        });
-      })
-      .catch(async (e) => {
-        await this.stop();
-        this.logger.warn(
-          `EventsSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
-          e,
-        );
-        throw e;
-      });
+    try {
+      await this.processSubscriptionPositionChange(event, this.prismaService);
+      await this.processEvent(event, this.prismaService);
+    } catch (e) {
+      this.logger.warn(
+        `EventsSubscription ${this.subscriptionId} processing stopped on position ${event.globalOrder}`,
+        e,
+      );
+      throw e;
+    }
   }
 
-  private throwIfSomeEventsWasMissed(event: ApplicationEvent, expectedEventPosition: number) {
-    if (event.globalOrder !== expectedEventPosition) {
+  async retryWithWaitingForCorrectOrder(event: ApplicationEvent): Promise<void> {
+    const count = this.eventsRetryCount.get(event.id) ?? 0;
+
+    if (count >= this.configuration.options.queue.maxRetryCount) {
       throw new Error(
-        `EventsSubscription ${this.subscriptionId} missed some events! Expected position: ${expectedEventPosition}, but current event position is: ${event.globalOrder}`,
+        `EventsSubscription ${this.subscriptionId} missed some events! MaxRetryCount reached on event(${event.id}) with globalOrder(${event.globalOrder})`,
       );
     }
+
+    this.queue.push(event);
+    this.eventsRetryCount.set(event.id, count + 1);
+    // TODO cancel wait when subscriber recive stop signal
+    await wait(this.configuration.options.queue.waitingTimeOnRetry);
   }
 
   private async processEvent(event: ApplicationEvent, transaction: PrismaTransactionManager) {
@@ -201,25 +227,50 @@ export class EventsSubscription {
     );
   }
 
-  private async moveCurrentPosition(position: number, transaction: PrismaTransactionManager) {
-    await transaction.eventsSubscription.upsert({
-      where: {
-        id: this.subscriptionId,
-      },
-      create: {
-        id: this.subscriptionId,
-        eventTypes: this.handlingEventTypes(),
-        fromPosition: this.configuration.start.from.globalPosition,
-        currentPosition: position,
-      },
-      update: {
-        currentPosition: position,
-        eventTypes: this.handlingEventTypes(),
-      },
+  private handlingEventTypes() {
+    return this.configuration.eventHandlers.map((h) => h.eventType);
+  }
+
+  private getPositionPointer(): Promise<EventsSubscriptionPositionPointer> {
+    return EventsSubscriptionPositionPointer.initialize(this.prismaService, {
+      subscriptionId: this.subscriptionId,
+      handlingEventTypes: this.handlingEventTypes(),
+      startFromGlobalPosition: this.configuration.options.start.from.globalPosition,
     });
   }
 
-  private handlingEventTypes() {
-    return this.configuration.eventHandlers.map((h) => h.eventType);
+  private async run() {
+    try {
+      await retryUntil(
+        async () => {
+          this.logger.debug(`${this.subscriptionId} is starting CatchUp phase.`);
+          await this.catchUp().catch((e) => {
+            this.logger.warn(`${this.subscriptionId} processing error in CatchUp phase.`);
+            throw e;
+          });
+          this.logger.debug(`${this.subscriptionId} finished CatchUp phase.`);
+
+          this.logger.debug(`${this.subscriptionId} is listening.`);
+          await this.listen().catch(async (e) => {
+            this.logger.warn(`${this.subscriptionId} processing error in listen phase.`);
+            throw e;
+          });
+          this.logger.debug(`${this.subscriptionId} finished listen phase.`);
+        },
+        {
+          ...this.configuration.options.retry,
+          until: this.configuration.options.retry.until ?? (() => this.running),
+          logger: (msg) => this.logger.warn(`${this.subscriptionId} ${msg}`),
+        },
+      );
+    } catch (e) {
+      this.logger.error(
+        `${this.subscriptionId} stopped processing events with unexpected error`,
+        (e as Error)?.stack,
+        e,
+      );
+    } finally {
+      this.shutdownToken.notify();
+    }
   }
 }
