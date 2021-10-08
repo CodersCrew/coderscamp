@@ -1,0 +1,43 @@
+import { {{properCase command}} } from '@/module/commands/{{dashCase command}}.domain-command';
+import { {{properCase event}} } from '@/module/events/{{dashCase event}}.domain-event';
+
+import { {{camelCase domain-function}} } from './{{dashCase domain-function}}';
+
+describe('{{camelCase domain-function}}', () => {
+  const command: {{properCase command}} = {
+    type: '{{properCase command}}',
+    data: {},
+  };
+
+  it('should ', () => {
+    // Given
+    const pastEvents: {{properCase event}}[] = [];
+
+    // When
+    const events = {{camelCase domain-function}}(pastEvents, command);
+
+    // Then
+    expect(events).toStrictEqual([
+      {
+        type: '{{properCase event}}',
+        data: {},
+      },
+    ]);
+  });
+
+  it('should throw exception if ', () => {
+    // Given
+    const pastEvents: {{properCase event}}[] = [
+      {
+        type: {{properCase event}},
+        data: {},
+      },
+    ];
+
+    // When
+    const events = {{camelCase domain-function}}(pastEvents, command);
+
+    // Then
+    expect(events).toThrowError('');
+  });
+});
