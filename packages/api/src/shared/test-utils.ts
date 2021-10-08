@@ -2,13 +2,21 @@ import { INestApplication } from '@nestjs/common';
 import { Abstract } from '@nestjs/common/interfaces';
 import { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
-import { CommandBus, ICommand } from '@nestjs/cqrs';
+import { CommandBus, CqrsModule, ICommand } from '@nestjs/cqrs';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import _ from 'lodash';
+import { env } from 'process';
 import supertest from 'supertest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
+import { AuthController } from '@/crud/auth/auth.controller';
+import { AuthModule } from '@/crud/auth/auth.module';
+import { AuthUserRepository } from '@/crud/auth/auth-user.repository';
+import { JwtStrategy } from '@/crud/auth/jwt/jwt.strategy';
+import { LocalStrategy } from '@/crud/auth/local/local.strategy';
 import { ApplicationCommand, ApplicationEvent } from '@/module/application-command-events';
 import { DomainCommand } from '@/module/domain.command';
 import { DomainEvent } from '@/module/domain.event';
@@ -20,8 +28,13 @@ import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { SubscriptionId } from '@/write/shared/application/events-subscription/events-subscription';
 import { ID_GENERATOR, IdGenerator } from '@/write/shared/application/id-generator';
+import { PASSWORD_ENCODER } from '@/write/shared/application/password-encoder';
 import { TIME_PROVIDER } from '@/write/shared/application/time-provider.port';
 import { UuidGenerator } from '@/write/shared/infrastructure/id-generator/uuid-generator';
+import {
+  CryptoPasswordEncoder,
+  hashPassword,
+} from '@/write/shared/infrastructure/password-encoder/crypto-password-encoder';
 import { FixedTimeProvider } from '@/write/shared/infrastructure/time-provider/fixed-time-provider';
 import { SystemTimeProvider } from '@/write/shared/infrastructure/time-provider/system-time-provider';
 import { SharedModule } from '@/write/shared/shared.module';
@@ -29,6 +42,7 @@ import { SharedModule } from '@/write/shared/shared.module';
 import { setupMiddlewares } from '../app.middlewares';
 import { AppModule } from '../app.module';
 import { eventEmitterRootModule } from '../event-emitter.root-module';
+import { PrismaModule } from './prisma/prisma.module';
 
 export async function cleanupDatabase(prismaService: PrismaService) {
   await Promise.all(
@@ -374,6 +388,10 @@ export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
   execute: jest.fn(),
 };
 
+const strategies = [JwtStrategy, LocalStrategy];
+const modules = [PrismaModule, JwtModule, AuthModule];
+const services = [PrismaService, AuthUserRepository];
+
 export async function initTestModuleRestApi(
   controller: Type,
   config?: (module: TestingModuleBuilder) => TestingModuleBuilder,
@@ -389,12 +407,29 @@ export async function initTestModuleRestApi(
         provide: ApplicationCommandFactory,
         useValue: new ApplicationCommandFactory(new UuidGenerator(), new SystemTimeProvider()),
       },
+      {
+        provide: PASSWORD_ENCODER,
+        useClass: CryptoPasswordEncoder,
+      },
+      ...strategies,
+      ...services,
+      ...modules,
     ],
-    controllers: [controller],
+    controllers: [controller, AuthController],
+    imports: [
+      JwtModule.register({
+        secret: env.JWT_SECRET,
+        signOptions: { expiresIn: env.TOKEN_EXPIRATION_TIME },
+      }),
+      PassportModule,
+      CqrsModule,
+    ],
   });
   const moduleRef = await (config ? config(moduleBuilder) : moduleBuilder).compile();
 
   const app: INestApplication = moduleRef.createNestApplication();
+
+  const prismaService = app.get<PrismaService>(PrismaService);
 
   setupMiddlewares(app);
 
@@ -402,9 +437,69 @@ export async function initTestModuleRestApi(
 
   const http = supertest(app.getHttpServer());
 
+  let exampleUserCreated = false;
+  let isUserLogged = false;
+
+  const exampleAuthUser = {
+    id: uuid(),
+    email: 'example1@email.com',
+    password: 'stronk',
+    role: 'User',
+  } as const;
+
+  const addExampleUser = async () => {
+    const hashedPassword = await hashPassword(exampleAuthUser.password);
+
+    await prismaService.authUser.create({
+      data: {
+        ...exampleAuthUser,
+        password: hashedPassword,
+      },
+    });
+
+    exampleUserCreated = true;
+  };
+
+  const removeExampleUser = async () => {
+    console.log(`removing user -> ${exampleAuthUser.email}`);
+
+    await prismaService.authUser.delete({
+      where: {
+        email: exampleAuthUser.email,
+      },
+    });
+    exampleUserCreated = false;
+  };
+
+  const loginUser = async () => {
+    if (!exampleUserCreated) {
+      await addExampleUser();
+    }
+
+    const response = await http.post('/api/auth/login').send(exampleAuthUser);
+
+    if (response.status !== 204) {
+      throw new Error('Example user login failed');
+    }
+
+    isUserLogged = true;
+  };
+
+  const logoutUser = async () => {
+    const response = await http.post('/api/auth/logout').send();
+
+    if (response.status !== 201) throw new Error('Logout user failed');
+
+    isUserLogged = false;
+  };
+
   async function close() {
     await app.close();
+
+    if (isUserLogged && 5 < 4) await logoutUser();
+
+    if (exampleUserCreated) await removeExampleUser();
   }
 
-  return { http, close, commandBusExecute };
+  return { http, close, commandBusExecute, loginUser, logoutUser, isUserLogged };
 }
