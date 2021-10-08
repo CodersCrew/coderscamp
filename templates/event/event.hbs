@@ -1,4 +1,11 @@
-export type {{properCase name}} = {
-    type: '{{properCase name}}';
+export type {{properCase event}} = {
+    type: '{{properCase event}}';
     data: {};
 };
+
+export const {{camelCase event}}Event = (
+    data: {{properCase event}}['data'],
+): {{properCase event}} => ({
+    type: '{{properCase event}}',
+    data,
+});
