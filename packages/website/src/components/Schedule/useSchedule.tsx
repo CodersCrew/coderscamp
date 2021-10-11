@@ -28,7 +28,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 1,
       date: '14.10 - 24.10.2021',
-      description: 'Załóż konto w aplikacji webowej CodersCamp i wypełnij formularz zgłoszeniowy.',
+      description: 'Wypełnij formularz rekrutacyjny, który pojawi się na stronie głównej CodersCamp.',
     },
     {
       index: 2,
