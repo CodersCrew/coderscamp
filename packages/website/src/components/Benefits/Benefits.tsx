@@ -29,7 +29,7 @@ const rolledUpProfitButton = {
 
 export const Benefits = ({ title, benefitItems, shrinkSize }: BenefitsProps) => {
   const columnsCount = useBreakpointValue({ base: 1, md: 2, xl: 3 } as const);
-  const profitButtonSize = useBreakpointValue({ base: 'sm', md: 'lg' } as const);
+  const profitButtonSize = useBreakpointValue({ base: 'md', sm: 'md', md: 'lg' } as const);
 
   const [isExpanded, setIsExpanded] = useState(false);
   const benefitTitleRef = useRef<HTMLDivElement>(null);

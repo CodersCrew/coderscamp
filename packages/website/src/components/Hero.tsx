@@ -12,12 +12,13 @@ import { externalLinkBaseProps } from './ExternalLink';
 export const Hero = () => {
   const { openModal } = useRecruitmentModal();
 
-  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
-  const buttonsStackDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
+  const buttonSize = useBreakpointValue({ base: 'md', sm: 'md', md: 'lg' } as const);
+  const buttonsStackDirection = useBreakpointValue({ base: 'column', sm: 'row' } as const);
+  const buttonWidth = useBreakpointValue({ md: 'min(280px, 75vw)' } as const);
 
   const mainHeaderSize = { base: '4xl', sm: '6xl', md: '7xl', xl: '8xl' } as const;
   const subheaderSize = { base: 'md', sm: 'xl', md: '2xl' } as const;
-  const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
+  const buttonProps = { size: buttonSize, width: buttonWidth } as const;
 
   return (
     <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', lg: '120px 64px 160px' }}>

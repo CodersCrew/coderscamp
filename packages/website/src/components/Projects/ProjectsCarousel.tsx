@@ -44,7 +44,7 @@ export const ProjectsCarousel = () => {
         >
           {projects.map((project) => (
             <SwiperSlide key={project.name}>
-              <ProjectCard project={project} isSmallMobile={isSmallMobile} />
+              <ProjectCard project={project} />
             </SwiperSlide>
           ))}
         </Swiper>
