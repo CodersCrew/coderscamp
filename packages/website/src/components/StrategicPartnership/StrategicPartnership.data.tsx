@@ -18,38 +18,38 @@ export interface StrategicPartnershipBenefit {
 export const strategicPartnershipBenefits: StrategicPartnershipBenefit[] = [
   {
     icon: <FileInvoiceDollarIcon />,
-    title: 'Płatny staż',
+    title: 'Stypendia',
     content:
-      'Jeżeli znajdziesz się pośród najlepszych uczestników kursu, zostaniesz zaproszony na 3-miesięczny, płatny staż w firmie LiveChat, z możliwością pełnego zatrudnienia po tym okresie.',
+      'Dla trzech najbardziej zaangażowanych uczestników kursu przygotowaliśmy stypendium w wysokości 10 000 zł na dalszy rozwój po ukończeniu kursu.',
   },
   {
     icon: <HandsHelpingIcon />,
-    title: 'Rozwój mentorów',
+    title: 'Profesjonalni mentorzy',
     content:
-      'Twój mentor weźmie udział w szkoleniach prowadzonych przez ekspertów z firmy LiveChat. Będzie mógł też w każdej chwili skorzystać z ich wsparcia podczas prowadzenia Twojego zespołu.',
+      'Twój mentor weźmie udział w szkoleniach prowadzonych przez ekspertów z LiveChat. Będzie mógł też w każdej chwili skorzystać z ich wsparcia podczas prowadzenia Twojego zespołu.',
   },
   {
     icon: <UserTieIcon />,
     title: 'Stworzenie własnego produktu',
     content:
-      'Bliżej końca kursu możesz wziąć udział w projekcie przygotowania aplikacji, którą następnie udostępnisz w LiveChat Marketplace. W całym procesie możesz liczyć na pomoc developerów z LiveChat.',
+      'Pod koniec kursu będzie możliwość opracowania własnej aplikacji, którą będzie można udostępnić i zmonetyzować w LiveChat Marketplace. Pomoże Ci w tym zespół z LiveChat.',
   },
   {
     icon: <TrophyIcon />,
     title: 'Hackathon',
     content:
-      'Zwieńczenie kursu oraz coś, czego każdy dev powinien doświadczyć. Dzięki LiveChat będziesz mógł spotkać się ze swoim zespołem na żywo i w 24 godziny stworzyć rozwiązanie konkretnego problemu.',
+      'Zwieńczenie kursu to coś, czego każdy programista powinien doświadczyć. Spotkasz się z zespołem na żywo i w 24 godziny spróbujecie stworzyć rozwiązanie konkretnego problemu.',
   },
   {
     icon: <GiftIcon />,
     title: 'Welcome pack',
     content:
-      'Zaraz po dostaniu się na CodersCamp otrzymasz od nas paczkę zawierającą kilka gadżetów, które z dużą pewnością przydadzą Ci się podczas przechodzenia przez kolejne etapy kursu.',
+      'Każdy uczestnik CodersCamp otrzyma od nas paczkę powitalną z kilkoma drobiazgami, które pomogą Ci się podczas przechodzenia przez kolejne etapy kursu.',
   },
   {
     icon: <AwardIcon />,
-    title: 'Nagrody w trakcie kursu',
+    title: 'Nagrody w trakcie',
     content:
-      'Książki, konsultacje CV, czy próbne rozmowy rekrutacyjne to tylko niektóre z nagród, które będziesz mógł zdobyć podejmując się dodatkowych wyzwań podczas każdego z modułów.',
+      'Książki, konsultacje CV, czy próbne rozmowy rekrutacyjne to tylko niektóre z nagród, które będą do zdobycia podczas specjalnych dodatkowych wyzwań w każdym z modułów.',
   },
 ];

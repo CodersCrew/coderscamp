@@ -35,14 +35,12 @@ export const StrategicPartnership = () => {
       <VStack spacing="64px">
         <VStack spacing="24px">
           <Typography size="xl" weight="medium">
-            Partnerem strategicznym CodersCamp 2021 jest firma
+            Partnerem strategicznym CodersCamp 2021 jest
           </Typography>
           <LiveChatLogoHorizontalWhite height="80px" />
           <Typography size={{ base: 'md', md: 'lg' }} weight="normal">
-            Dzięki zaangażowaniu LiveChat podczas tej edycji kursu możesz liczyć na jeszcze więcej niespodzianek, wyzwań
-            oraz możliwości poszerzania swojej wiedzy i wykorzystywania jej w praktyce. Poniżej znajdziesz listę kilku
-            spośród takich benefitów. Jako że wspólnie cały czas szukamy nowych sposobów, aby CodersCamp dostarczył Ci
-            jak największą wartość, możesz być pewien, że podczas kursu zostanie znacznie rozbudowana.
+            Podczas tej edycji kursu możesz liczyć wiele niespodzianek, wyzwań oraz możliwości poszerzania swojej wiedzy
+            i wykorzystywania jej w praktyce. Kilka przykładów:
           </Typography>
         </VStack>
         <Grid templateColumns={`repeat(${columnsCount}, 1fr)`} gap="64px 40px">
