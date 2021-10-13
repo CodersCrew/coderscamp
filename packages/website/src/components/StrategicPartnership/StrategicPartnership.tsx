@@ -39,8 +39,8 @@ export const StrategicPartnership = () => {
           </Typography>
           <LiveChatLogoHorizontalWhite height="80px" />
           <Typography size={{ base: 'md', md: 'lg' }} weight="normal">
-            Podczas tej edycji kursu możesz liczyć wiele niespodzianek, wyzwań oraz możliwości poszerzania swojej wiedzy
-            i wykorzystywania jej w praktyce. Kilka przykładów:
+            Podczas tej edycji kursu możesz liczyć na wiele niespodzianek, wyzwań oraz możliwości poszerzania swojej
+            wiedzy i wykorzystywania jej w praktyce. Poniżej znajdziesz kilka przykładów:
           </Typography>
         </VStack>
         <Grid templateColumns={`repeat(${columnsCount}, 1fr)`} gap="64px 40px">

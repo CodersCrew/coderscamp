@@ -4,14 +4,11 @@ import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 
-import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { MENTOR_RECRUITMENT_FORM_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
+import { MENTOR_RECRUITMENT_FORM_URL, PARTICIPANT_RECRUITMENT_FORM_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
 
 import { externalLinkBaseProps } from './ExternalLink';
 
 export const Hero = () => {
-  const { openModal } = useRecruitmentModal();
-
   const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' } as const);
   const buttonsStackDirection = useBreakpointValue({ base: 'column', md: 'row' } as const);
 
@@ -33,7 +30,13 @@ export const Hero = () => {
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
+          <Button
+            {...buttonProps}
+            color="brand"
+            as="a"
+            href={PARTICIPANT_RECRUITMENT_FORM_URL}
+            {...externalLinkBaseProps}
+          >
             Zapisz się na kurs
           </Button>
           <Button {...buttonProps} as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>

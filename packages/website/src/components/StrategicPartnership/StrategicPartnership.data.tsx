@@ -20,19 +20,19 @@ export const strategicPartnershipBenefits: StrategicPartnershipBenefit[] = [
     icon: <FileInvoiceDollarIcon />,
     title: 'Stypendia',
     content:
-      'Dla trzech najbardziej zaangażowanych uczestników kursu przygotowaliśmy stypendium w wysokości 10 000 zł na dalszy rozwój po ukończeniu kursu.',
+      'Dla trzech najbardziej zaangażowanych uczestników LiveChat przygotował stypendia w wysokości 10 000 zł. Pozwolą Ci one na dalszy rozwój zawodowy po ukończeniu kursu.',
   },
   {
     icon: <HandsHelpingIcon />,
     title: 'Profesjonalni mentorzy',
     content:
-      'Twój mentor weźmie udział w szkoleniach prowadzonych przez ekspertów z LiveChat. Będzie mógł też w każdej chwili skorzystać z ich wsparcia podczas prowadzenia Twojego zespołu.',
+      'Twój mentor weźmie udział w szkoleniach prowadzonych przez ekspertów z LiveChat. Będzie mógł również zawsze skorzystać z ich wsparcia przy prowadzeniu Twojego zespołu.',
   },
   {
     icon: <UserTieIcon />,
     title: 'Stworzenie własnego produktu',
     content:
-      'Pod koniec kursu będzie możliwość opracowania własnej aplikacji, którą będzie można udostępnić i zmonetyzować w LiveChat Marketplace. Pomoże Ci w tym zespół z LiveChat.',
+      'Pod koniec kursu otrzymasz możliwość opracowania i zmonetyzowania własnej aplikacji w LiveChat Marketplace. Jeśli podejmiesz wyzwanie, pomoże Ci w nim zespół z LiveChat.',
   },
   {
     icon: <TrophyIcon />,
@@ -44,12 +44,12 @@ export const strategicPartnershipBenefits: StrategicPartnershipBenefit[] = [
     icon: <GiftIcon />,
     title: 'Welcome pack',
     content:
-      'Każdy uczestnik CodersCamp otrzyma od nas paczkę powitalną z kilkoma drobiazgami, które pomogą Ci się podczas przechodzenia przez kolejne etapy kursu.',
+      'Jako uczestnik zespołowej części CodersCamp otrzymasz od nas paczkę powitalną z kilkoma drobiazgami, które przydadzą Ci się podczas przechodzenia przez kolejne etapy kursu.',
   },
   {
     icon: <AwardIcon />,
     title: 'Nagrody w trakcie',
     content:
-      'Książki, konsultacje CV, czy próbne rozmowy rekrutacyjne to tylko niektóre z nagród, które będą do zdobycia podczas specjalnych dodatkowych wyzwań w każdym z modułów.',
+      'Książki, szkolenia, konsultacje CV, czy próbne rozmowy rekrutacyjne to tylko niektóre z nagród, które masz szansą zdobyć podczas dodatkowych wyzwań w ramach każdego z modułów.',
   },
 ];
