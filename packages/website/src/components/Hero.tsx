@@ -33,11 +33,11 @@ export const Hero = () => {
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
-            Zostań mentorem
-          </Button>
-          <Button {...buttonProps} onClick={() => openModal('participant')}>
+          <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
             Zapisz się na kurs
+          </Button>
+          <Button {...buttonProps} as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+            Zostań mentorem
           </Button>
         </Stack>
       </VStack>

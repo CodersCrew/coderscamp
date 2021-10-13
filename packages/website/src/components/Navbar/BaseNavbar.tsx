@@ -23,11 +23,11 @@ const NavbarButtons = () => {
 
   return (
     <>
-      <Button size="md" color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
-        Zostań mentorem
-      </Button>
-      <Button size="md" onClick={() => openModal('participant')}>
+      <Button size="md" color="brand" onClick={() => openModal('participant')}>
         Zapisz się na kurs
+      </Button>
+      <Button size="md" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+        Zostań mentorem
       </Button>
     </>
   );

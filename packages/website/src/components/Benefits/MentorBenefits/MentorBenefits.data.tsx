@@ -10,13 +10,13 @@ import {
   HandshakeSimpleIcon,
   SeedlingIcon,
   SitemapIcon,
+  UsersCrownIcon,
   UsersIcon,
-  UserTieIcon,
 } from '@coderscamp/ui/icons/benefits';
 
 export const mentorBenefitItems: BenefitCardProps[] = [
   {
-    icon: <UserTieIcon height="32px" />,
+    icon: <UsersCrownIcon />,
     title: 'Staniesz się lepszym liderem',
     subtitle:
       'Planowanie rozwoju, motywowanie do działania, wsparcie w przezwyciężaniu przeciwności. To tylko niektóre z kompetencji lidera, które będziesz miał okazję wypracować działając ze swoim zespołem.',
