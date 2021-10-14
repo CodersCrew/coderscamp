@@ -1,6 +1,6 @@
 import { AsyncReturnType } from 'type-fest';
 
-import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message.application-command';
+import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message';
 import { EmailMessageWasSent } from '@/events/email-message-was-sent.domain-event';
 import { emailSendingTestModule } from '@/write/email-sender/email-sending.test-module';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
