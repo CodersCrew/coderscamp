@@ -17,6 +17,7 @@ export const PRIVACY_POLICY_URL = 'https://drive.google.com/file/d/142zC0E7MP-6h
 export const MENTOR_RECRUITMENT_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSebGGyxGNq5qmYBrMk0Lvctg6GqVeE3N9a1XJoH8Dl96dZghA/viewform';
 export const PARTICIPANT_RECRUITMENT_FORM_URL = 'https://forms.gle/2spSMxigbBoWKKvd6';
+export const STRATEGIC_PARTNER_SECTION_ID = 'strategic-partner';
 
 export const pageNavigation = [
   { href: '/', children: 'Strona główna' },

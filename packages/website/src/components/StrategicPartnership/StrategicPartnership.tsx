@@ -5,6 +5,9 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
 import { LiveChatLogoHorizontalWhite } from '@coderscamp/ui/svg/logos';
 
+import { STRATEGIC_PARTNER_SECTION_ID } from '@/constants';
+
+import { ExternalLink } from '../ExternalLink';
 import { Section } from '../Section';
 import { StrategicPartnershipBenefit, strategicPartnershipBenefits } from './StrategicPartnership.data';
 
@@ -28,7 +31,7 @@ export const StrategicPartnership = () => {
   const columnsCount = useBreakpointValue({ base: 1, md: 2, xl: 3 } as const);
 
   return (
-    <Section spacing="32px" color="white" bg="#1B1B20" textAlign="center">
+    <Section spacing="32px" color="white" bg="#1B1B20" textAlign="center" id={STRATEGIC_PARTNER_SECTION_ID}>
       <Typography size="4xl" weight="extrabold">
         Jeszcze lepszy CodersCamp
       </Typography>
@@ -37,7 +40,9 @@ export const StrategicPartnership = () => {
           <Typography size="xl" weight="medium">
             Partnerem strategicznym CodersCamp 2021 jest
           </Typography>
-          <LiveChatLogoHorizontalWhite height="80px" />
+          <ExternalLink href="https://www.livechat.com/careers" rel="dofollow">
+            <LiveChatLogoHorizontalWhite height="80px" />
+          </ExternalLink>
           <Typography size={{ base: 'md', md: 'lg' }} weight="normal">
             Podczas tej edycji kursu możesz liczyć na wiele niespodzianek, wyzwań oraz możliwości poszerzania swojej
             wiedzy i wykorzystywania jej w praktyce. Poniżej znajdziesz kilka przykładów:

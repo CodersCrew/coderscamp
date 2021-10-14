@@ -14,21 +14,31 @@ import {
   PoweredByLiveChatVertical,
 } from '@coderscamp/ui/svg/logos';
 
+import { STRATEGIC_PARTNER_SECTION_ID } from '@/constants';
+
 import { InternalLink } from '../InternalLink';
 import { DesktopBaseNavbar, MobileBaseNavbar } from './BaseNavbar';
 
 const WideLogo = () => (
   <VStack spacing="6px" align="flex-end">
-    <LogoBlackHorizontal maxWidth="280px" height="32px" />
-    <PoweredByLiveChatHorizontal height="16px" />
+    <InternalLink href="/">
+      <LogoBlackHorizontal maxWidth="280px" height="32px" />
+    </InternalLink>
+    <InternalLink href={`#${STRATEGIC_PARTNER_SECTION_ID}`}>
+      <PoweredByLiveChatHorizontal height="16px" />
+    </InternalLink>
   </VStack>
 );
 
 const NarrowLogo = () => (
   <HStack spacing="8px">
-    <LogoBlackSquare height="40px" />
+    <InternalLink href="/">
+      <LogoBlackSquare height="40px" />
+    </InternalLink>
     <Box width="1px" height="40px" bg="gray.400" />
-    <PoweredByLiveChatVertical height="40px" />
+    <InternalLink href={`#${STRATEGIC_PARTNER_SECTION_ID}`}>
+      <PoweredByLiveChatVertical height="40px" />
+    </InternalLink>
   </HStack>
 );
 
@@ -52,9 +62,8 @@ export const Navbar = () => {
         shadow={hasShadow ? 'large' : undefined}
       >
         <Flex width="min(1920px, 100%)" justifyContent="space-between" alignItems="center">
-          <InternalLink href="/">
-            <Logo />
-          </InternalLink>
+          <Logo />
+
           {baseNavbar}
         </Flex>
       </Center>
