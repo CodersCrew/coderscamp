@@ -3,7 +3,7 @@ import { Typography } from '@coderscamp/ui/components/Typography';
 
 import type { ScheduleListItem } from './useSchedule';
 
-export const ScheduleItem = ({ index, date, description }: ScheduleListItem) => {
+export const ScheduleItem = ({ index, date, description, disabled }: ScheduleListItem) => {
   return (
     <Center
       flexDirection="column"
@@ -15,6 +15,9 @@ export const ScheduleItem = ({ index, date, description }: ScheduleListItem) => 
       border="1px solid"
       borderColor="gray.300"
       borderRadius="8px"
+      filter={`grayscale(${disabled ? 1 : 0})`}
+      opacity={disabled ? 0.6 : 1}
+      pointerEvents={disabled ? 'none' : undefined}
     >
       <Center bg="brand.500" color="white" borderRadius="8px" w="48px" h="48px" fontSize="32px">
         <Typography size="4xl" weight="extrabold" color="white">

@@ -41,6 +41,16 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             userPrefersDark ? 'white' : 'black'
           }.png`}
         />
+        <meta property="og:title" content="CodersCamp - największy otwarty kurs programowania webowego w Polsce" />
+        <meta
+          property="og:description"
+          content="CodersCamp to 6-miesięczny, darmowy kurs programowania webowego. Naszym celem jest przeprowadzić każdego od pierwszych linii kodu do rozpoczęcia kariery w branży IT."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://res.cloudinary.com/coderscamp/image/upload/v1634125737/opengraph.png"
+        />
       </Head>
       <ThemeProvider globalStyles={globalStyles}>
         <RecruitmentModalProvider>

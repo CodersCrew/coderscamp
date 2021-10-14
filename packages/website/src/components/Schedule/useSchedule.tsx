@@ -1,13 +1,20 @@
+/* eslint-disable no-irregular-whitespace */
 import type { ReactNode } from 'react';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { MAIN_TEST_FULL_DATE, MENTOR_RECRUITMENT_FORM_URL, PLACES_COUNT } from '@/constants';
+import {
+  MAIN_TEST_FULL_DATE,
+  MENTOR_RECRUITMENT_FORM_URL,
+  PARTICIPANT_RECRUITMENT_FORM_URL,
+  PLACES_COUNT,
+} from '@/constants';
 
 import { ExternalLink } from '../ExternalLink';
 
 export interface ScheduleListItem {
   index: number;
   date: string;
+  disabled?: boolean;
   description: ReactNode;
 }
 
@@ -18,6 +25,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 0,
       date: 'W każdej chwili',
+      disabled: true,
       description: (
         <>
           <ExternalLink onClick={() => openModal('participant')}>Zostaw nam swoje imię i adres e-mail</ExternalLink>.
@@ -28,8 +36,18 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 1,
       date: '14.10 - 24.10.2021',
-      description: 'Wypełnij formularz rekrutacyjny, który pojawi się na stronie głównej CodersCamp.',
+      description: (
+        <>
+          Wypełnij formularz rekrutacyjny na Google Forms. Znajdziesz go{' '}
+          <ExternalLink href={PARTICIPANT_RECRUITMENT_FORM_URL}>pod tym linkiem</ExternalLink>.
+        </>
+      ),
     },
+    // {
+    //   index: 1,
+    //   date: '14.10 - 24.10.2021',
+    //   description: 'Wypełnij formularz rekrutacyjny, który pojawi się na stronie głównej CodersCamp.',
+    // },
     {
       index: 2,
       date: '25.10.2021',

@@ -70,8 +70,9 @@ export const About = () => {
         >
           <Image
             layout="fill"
-            src="https://res.cloudinary.com/coderscamp/image/upload/v1630772316/images/code.jpg"
-            alt="Lines of code"
+            src="https://res.cloudinary.com/coderscamp/image/upload/v1634232841/images/live-chat-hackathon.jpg"
+            alt="LiveChat hackathon finale"
+            objectFit="cover"
           />
         </Box>
       </HStack>
