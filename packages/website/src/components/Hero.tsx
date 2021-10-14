@@ -20,9 +20,14 @@ export const Hero = () => {
   const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
 
   return (
-    <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', lg: '120px 64px 160px' }}>
-      <VStack spacing={{ base: '24px', md: '56px' }} maxW="min(1400px, 100%)">
-        <VStack spacing={{ base: '16px', md: '32px' }} textAlign="center">
+    <Flex
+      justify="center"
+      width="100%"
+      p={{ base: '32px 16px 64px', xl: '60px 64px 160px' }}
+      pt={{ base: '32px', xl: '60px', '1xl': '80px', '2xl': '120px' }}
+    >
+      <VStack spacing={{ base: '32px', '1xl': '40px', '2xl': '56px' }} maxW="min(1400px, 100%)">
+        <VStack spacing={{ base: '16px', '1xl': '24px', '2xl': '32px' }} textAlign="center">
           <Typography size={mainHeaderSize} color="gray.900" weight="extrabold">
             Największy otwarty kurs programowania webowego w Polsce
           </Typography>
