@@ -11,6 +11,7 @@ import {
   domainFunctionGenerator,
   eventGenerator,
   moduleGenerator,
+  restControllerGenerator,
 } from './templates';
 
 export default function (plop: NodePlopAPI) {
@@ -22,4 +23,5 @@ export default function (plop: NodePlopAPI) {
   plop.setGenerator('moduleGenerator', moduleGenerator);
   plop.setGenerator('event', eventGenerator);
   plop.setGenerator('domain-function', domainFunctionGenerator);
+  plop.setGenerator('restController', restControllerGenerator);
 }

@@ -1,1 +1,3 @@
-export type Answers = Record<string, string | number | boolean>;
+export type Answer = any;
+
+export type Answers = Record<string, Answer>;

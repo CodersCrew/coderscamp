@@ -1,5 +1,6 @@
-export { commandGenerator } from './command/command.generator';
-export { commandHandlerGenerator } from './commandHandler/commandHandler.generator';
-export { moduleGenerator } from './module/module.generator';
-export { eventGenerator } from './event/event.generator';
-export { domainFunctionGenerator } from './domain-function/domain-function.generator';
+export { commandGenerator } from './command/generator';
+export { commandHandlerGenerator } from './commandHandler/generator';
+export { moduleGenerator } from './module/generator';
+export { eventGenerator } from './event/generator';
+export { domainFunctionGenerator } from './domain-function/generator';
+export { restControllerGenerator } from './rest-controller/generator';
