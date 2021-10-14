@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { UsersModule } from '@/users/users.module';
-import { UsersService } from '@/users/users.service';
+import { UserProfileReadModule } from '@/read/user-profile/user-profile.read-module';
+import { UserProfileService } from '@/read/user-profile/user-profile.service';
 import { SharedModule } from '@/write/shared/shared.module';
 
 import { GenerateLearningMaterialsUrlCommandHandler } from './application/generate-learning-materials-url.command-handler';
@@ -12,15 +12,15 @@ import { UsersAdapter } from './infrastructure/users.adapter';
 import { LearningMaterialsUrlRestController } from './presentation/rest/learning-materials-url.rest-controller';
 
 @Module({
-  imports: [SharedModule, UsersModule],
+  imports: [SharedModule, UserProfileReadModule],
   controllers: [LearningMaterialsUrlRestController],
   providers: [
     GenerateLearningMaterialsUrlCommandHandler,
     { provide: LEARNING_MATERIALS_URL_GENERATOR, useClass: PuppeteerLearningMaterialsGenerator },
     {
       provide: USERS_PORT,
-      useFactory: (usersService: UsersService) => new UsersAdapter(usersService),
-      inject: [UsersService],
+      useFactory: (usersService: UserProfileService) => new UsersAdapter(usersService),
+      inject: [UserProfileService],
     },
   ],
 })

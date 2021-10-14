@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { MAIN_TEST_FULL_DATE } from '@/constants';
+import { MAIN_TEST_FULL_DATE, MENTOR_RECRUITMENT_FORM_URL, PLACES_COUNT } from '@/constants';
 
 import { ExternalLink } from '../ExternalLink';
 
@@ -28,7 +28,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 1,
       date: '14.10 - 24.10.2021',
-      description: 'Załóż konto w aplikacji webowej CodersCamp i wypełnij formularz zgłoszeniowy.',
+      description: 'Wypełnij formularz rekrutacyjny, który pojawi się na stronie głównej CodersCamp.',
     },
     {
       index: 2,
@@ -44,8 +44,7 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
     {
       index: 4,
       date: MAIN_TEST_FULL_DATE,
-      description:
-        'Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród 200 osób z najlepszymi wynikami.',
+      description: `Rozwiąż test i zadania praktyczne z pierwszego modułu. Aby dostać się na kurs musisz znaleźć się wśród ${PLACES_COUNT} osób z najlepszymi wynikami.`,
     },
     {
       index: 5,
@@ -57,22 +56,20 @@ export const useCandidateSchedule = (): ScheduleListItem[] => {
 };
 
 export const useMentorSchedule = (): ScheduleListItem[] => {
-  const { openModal } = useRecruitmentModal();
-
   return [
     {
       index: 1,
-      date: '03.09 - 17.09.2021',
+      date: '03.09 - 24.09.2021',
       description: (
         <>
-          Wypełnij <ExternalLink onClick={() => openModal('mentor')}>formularz zgłoszeniowy</ExternalLink>, aby zapisać
+          Wypełnij <ExternalLink href={MENTOR_RECRUITMENT_FORM_URL}>formularz zgłoszeniowy</ExternalLink>, aby zapisać
           się na rekrutację.
         </>
       ),
     },
     {
       index: 2,
-      date: '18.09.2021',
+      date: '18.09 - 25.09.2021',
       description: 'Otrzymasz od nas mail z propozycjami terminu rozmowy kwalifikacyjnej.',
     },
     {

@@ -1,17 +1,11 @@
 const TSCONFIG_PROJECTS = ['tsconfig.eslint.json', 'packages/**/tsconfig.json'];
 
 const FILES_WITH_DEV_DEPENDENCIES = [
-  '**/*.test.*',
-  '**/*.spec.*',
   '**/vite.config.ts',
   '**/next.config.js',
-  'jest.config.ts',
   '**/*.stories.tsx',
-  '**/setupTests.ts',
   'scripts/*.js',
-  '**/testHelpers.tsx',
-  '**/*.test-module.ts',
-  '**/test-utils.ts',
+  'scripts/**',
 ];
 
 module.exports = {
@@ -36,6 +30,7 @@ module.exports = {
     'simple-import-sort',
     'testing-library',
     'jest-formatting',
+    '@coderscamp',
   ],
   extends: [
     'eslint:recommended',
@@ -47,6 +42,9 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   rules: {
+    // Tracks progress of linting.
+    '@coderscamp/progress': 1,
+
     // Prevents from writing functions that are too complex (in terms of cyclomatic complexity).
     complexity: [2, 10],
 
@@ -170,7 +168,17 @@ module.exports = {
     },
     {
       // Enable plugins rules only for test files.
-      files: ['**/?(*.)+(spec|test).ts?(x)'],
+      files: [
+        '**/?(*.)+(spec|test).ts?(x)',
+        'jest.config.ts',
+        'setupTests.ts',
+        'testHelpers.tsx',
+        '*.test-module.ts',
+        'test-utils.ts',
+        '*Handlers.ts',
+        '**/mocks/*',
+        'jest-setup.ts',
+      ],
       extends: [
         'plugin:testing-library/react',
         'plugin:jest-dom/recommended',
@@ -178,7 +186,20 @@ module.exports = {
         'plugin:jest-formatting/recommended',
       ],
       rules: {
-        'jest/expect-expect': [2, { assertFunctionNames: ['expect', '*.expectReadModel'] }],
+        'import/no-extraneous-dependencies': [2, { devDependencies: true }],
+        'jest/expect-expect': [
+          2,
+          {
+            assertFunctionNames: [
+              'expect',
+              '*.expectReadModel',
+              '*.expectEventPublishedLastly',
+              '*.expectEventsPublishedLastly',
+              '*.expectSubscriptionPosition',
+              '*.expectCommandExecutedLastly',
+            ],
+          },
+        ],
       },
     },
   ],

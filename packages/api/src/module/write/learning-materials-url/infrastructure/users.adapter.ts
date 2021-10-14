@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { UsersService } from '@/users/users.service';
-import type { UserId } from '@/users/users.types';
+import { UserProfileService } from '@/read/user-profile/user-profile.service';
+import type { UserId } from '@/shared/domain.types';
 
 import { UsersPort } from '../application/users.port';
 
 @Injectable()
 export class UsersAdapter implements UsersPort {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UserProfileService) {}
 
   async getUserFullNameById(userId: UserId): Promise<string> {
     const user = await this.usersService.getById(userId);

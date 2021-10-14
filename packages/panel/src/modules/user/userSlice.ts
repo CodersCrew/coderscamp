@@ -5,7 +5,10 @@ import type { User } from '@coderscamp/shared/models/user';
 import { extractResponseData } from '@/services/api';
 import type { AsyncStateStatus } from '@/services/store';
 
-import { getMeRequest, loginRequest, logoutRequest, registerRequest } from './userApi';
+import { getMeRequest } from './api/getMe/getMeRequest';
+import { loginRequest } from './api/login/loginRequest';
+import { logoutRequest } from './api/logout/logoutRequest';
+import { registerRequest } from './api/register/registerRequest';
 
 const SLICE_NAME = 'user';
 

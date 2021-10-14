@@ -9,5 +9,3 @@ export interface UserRegistration {
   fullName: string;
   email: string;
 }
-
-export type LogoutResponse = void;

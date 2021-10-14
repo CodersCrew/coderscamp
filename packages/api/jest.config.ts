@@ -7,6 +7,9 @@ export default createJestConfig({
   tsconfig: resolve(__dirname, 'tsconfig.json'),
   paths: compilerOptions.paths,
   overrides: {
+    testTimeout: 6000,
     collectCoverageFrom: ['**/*.ts'],
+    setupFilesAfterEnv: ['./jest-setup.ts'],
+    modulePathIgnorePatterns: ['src/.*\\.fixture\\.spec\\.ts'],
   },
 });

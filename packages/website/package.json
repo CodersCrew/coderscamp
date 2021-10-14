@@ -5,23 +5,27 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@coderscamp/ui": "0.0.1",
-    "@supabase/supabase-js": "1.22.3",
-    "next": "11.1.0",
-    "next-images": "1.8.1",
+    "@next/bundle-analyzer": "11.1.2",
+    "@supabase/supabase-js": "1.22.6",
+    "next": "11.1.2",
     "nodemailer": "6.6.3",
+    "preact": "10.5.14",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "7.14.0",
-    "swiper": "7.0.1"
+    "react-headroom": "3.1.1",
+    "react-hook-form": "7.15.3",
+    "swiper": "7.0.6"
   },
   "devDependencies": {
     "@types/nodemailer": "6.4.4",
-    "@types/react": "17.0.19",
+    "@types/react": "17.0.21",
+    "@types/react-headroom": "2.2.2",
     "next-compose-plugins": "2.2.1",
     "next-transpile-modules": "8.0.0"
   }

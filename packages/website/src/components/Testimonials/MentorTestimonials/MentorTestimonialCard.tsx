@@ -1,8 +1,7 @@
-import { Avatar } from '@coderscamp/ui/components/Avatar';
-import { Center } from '@coderscamp/ui/components/Center';
-import { VStack } from '@coderscamp/ui/components/Stack';
+import { HStack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 
+import { MentorAvatar } from '../MentorAvatar';
 import { Testimonial } from '../Testimonials.data';
 
 export const MentorTestimonialCard = ({ content, image, name, company, companyPosition }: Testimonial) => {
@@ -11,9 +10,9 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
       <Typography size={{ base: 'md', sm: 'lg' }} color="gray.700">
         {content}
       </Typography>
-      <Center>
-        <Avatar src={image} size="lg" mr="16px" borderWidth="1px" borderColor="gray.300" />
-        <VStack alignItems="flex-start" spacing="0px">
+      <HStack spacing="16px">
+        <MentorAvatar src={image} alt={name} />
+        <VStack alignItems="flex-start" spacing="0px" textAlign="left">
           <Typography size="lg" weight="medium" color="gray.900">
             {name}
           </Typography>
@@ -24,7 +23,7 @@ export const MentorTestimonialCard = ({ content, image, name, company, companyPo
             {company}
           </Typography>
         </VStack>
-      </Center>
+      </HStack>
     </VStack>
   );
 };

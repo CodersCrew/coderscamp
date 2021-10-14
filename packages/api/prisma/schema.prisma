@@ -5,10 +5,9 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["interactiveTransactions"]
 }
 
-model User {
+model UserProfile {
   id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullName String
   email    String @unique
@@ -22,20 +21,19 @@ model AuthUser {
   role     Role   @default(User)
 }
 
-model UserRegistration {
-  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fullName String
-  email    String @unique
+model RegisteredEmails {
+  userId String @id
+  email  String @unique
 }
 
 model LearningMaterials {
-  id             String @id
-  url            String
-  courseUserId   String @unique
+  id           String @id
+  url          String
+  courseUserId String @unique
 }
 
 model Event {
-  id             String @id
+  id             String   @id
   type           String
   streamId       String
   streamCategory String
@@ -43,9 +41,7 @@ model Event {
   occurredAt     DateTime
   data           Json
   metadata       Json
-  globalOrder    Int @default(autoincrement())
-
-  @@unique(fields: [streamId, streamCategory], name: "streamName")
+  globalOrder    Int      @default(autoincrement())
 }
 
 model Course {
@@ -60,8 +56,22 @@ enum Role {
 }
 
 model CourseProgress {
-  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  courseUserId   String @unique
-  learningMaterialsId   String @unique
+  id                              String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  courseUserId                    String? @unique
+  learningMaterialsId             String  @unique
   learningMaterialsCompletedTasks Int
+}
+
+model EventsSubscription {
+  id              String   @id
+  currentPosition Int
+  fromPosition    Int
+  eventTypes      String[]
+}
+
+model EventLock {
+  streamId      String
+  streamVersion Int
+
+  @@unique([streamId, streamVersion])
 }

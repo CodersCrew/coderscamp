@@ -18,6 +18,7 @@ jobs:
             website
             ui
             core
+            shared
             deps
           requireScope: false
           validateSingleCommit: true

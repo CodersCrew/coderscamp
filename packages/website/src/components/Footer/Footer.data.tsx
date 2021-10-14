@@ -1,27 +1,64 @@
 import React, { ReactElement } from 'react';
 
+import { SolidFacebookIcon } from '@coderscamp/ui/icons/SolidFacebook';
+import { SolidGitHubIcon } from '@coderscamp/ui/icons/SolidGitHub';
+import { SolidGlobalIcon } from '@coderscamp/ui/icons/SolidGlobal';
+import { SolidInstagramIcon } from '@coderscamp/ui/icons/SolidInstagram';
+import { SolidLinkedinIcon } from '@coderscamp/ui/icons/SolidLinkedin';
+
 import {
-  SolidFacebookIcon,
-  SolidGitHubIcon,
-  SolidGlobalIcon,
-  SolidInstagramIcon,
-  SolidLinkedinIcon,
-} from '@coderscamp/ui/icons';
+  COURSE_PLAN_URL,
+  MENTORS_GUIDE_URL,
+  pageNavigation,
+  PRIVACY_POLICY_URL,
+  SCHEDULE_URL,
+  TERMS_URL,
+} from '@/constants';
 
-import { COURSE_PLAN_URL, MENTORS_GUIDE_URL, PRIVACY_POLICY_URL, SCHEDULE_URL, TERMS_URL } from '@/constants';
-
-interface Social {
+export interface Social {
   label: string;
   icon: ReactElement;
   href: string;
 }
 
-export const socialMediaIcons: Social[] = [
-  { label: 'Link do konta Facebook', icon: <SolidFacebookIcon />, href: 'https://facebook.com/ccrew18' },
-  { label: 'Link do konta Instagram', icon: <SolidInstagramIcon />, href: 'https://instagram.com/coderscrew.pl' },
-  { label: 'Link do konta LinkedIn', icon: <SolidLinkedinIcon />, href: 'https://linkedin.com/company/coderscrew' },
-  { label: 'Link do konta GitHub', icon: <SolidGitHubIcon />, href: 'https://github.com/CodersCrew' },
-  { label: 'Link do strony internetowej', icon: <SolidGlobalIcon />, href: 'https://coderscrew.pl' },
+export const codersCrewSocials: Social[] = [
+  {
+    label: 'Konto Facebook Stowarzyszenia CodersCrew',
+    icon: <SolidFacebookIcon />,
+    href: 'https://facebook.com/ccrew18',
+  },
+  {
+    label: 'Konto Instagram Stowarzyszenia CodersCrew',
+    icon: <SolidInstagramIcon />,
+    href: 'https://instagram.com/coderscrew.pl',
+  },
+  {
+    label: 'Konto LinkedIn Stowarzyszenia CodersCrew',
+    icon: <SolidLinkedinIcon />,
+    href: 'https://linkedin.com/company/coderscrew',
+  },
+  { label: 'Konto GitHub Stowarzyszenia CodersCrew', icon: <SolidGitHubIcon />, href: 'https://github.com/CodersCrew' },
+  { label: 'Strona internetowa CodersCrew', icon: <SolidGlobalIcon />, href: 'https://coderscrew.pl' },
+];
+
+export const liveChatSocials: Social[] = [
+  {
+    label: 'Konto Facebook firmy LiveChat',
+    icon: <SolidFacebookIcon />,
+    href: 'https://www.facebook.com/livechatpany',
+  },
+  {
+    label: 'Konto Instagram firmy LiveChat',
+    icon: <SolidInstagramIcon />,
+    href: 'https://www.instagram.com/livechat',
+  },
+  {
+    label: 'Konto LinkedIn firmy LiveChat',
+    icon: <SolidLinkedinIcon />,
+    href: 'https://www.linkedin.com/company/livechat',
+  },
+  { label: 'Konto GitHub firmy LiveChat', icon: <SolidGitHubIcon />, href: 'https://github.com/livechat' },
+  { label: 'Strona internetowa LiveChat', icon: <SolidGlobalIcon />, href: 'https://www.livechat.com' },
 ];
 
 interface NavItem {
@@ -38,12 +75,7 @@ interface NavColumn {
 export const footerNav: NavColumn[] = [
   {
     title: 'Nawigacja',
-    items: [
-      { href: '/', children: 'Strona główna' },
-      { href: '/mentor', children: 'Dla mentorów' },
-      { href: '/faq', children: 'FAQ' },
-      { href: '/kontakt', children: 'Kontakt' },
-    ],
+    items: pageNavigation,
   },
   {
     title: 'Do pobrania',

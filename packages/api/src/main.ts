@@ -1,10 +1,10 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import cookieParser from 'cookie-parser';
 
-import { env, validateEnv } from '@/common/env';
-
+import { setupMiddlewares } from './app.middlewares';
 import { AppModule } from './app.module';
+import { setupSwagger } from './app.swagger';
+import { env, validateEnv } from './shared/env';
 
 const logger = new Logger('bootstrap');
 
@@ -14,9 +14,8 @@ async function bootstrap() {
 
     const app = await NestFactory.create(AppModule);
 
-    app.setGlobalPrefix('api');
-    app.use(cookieParser(env.COOKIE_SECRET));
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    setupMiddlewares(app);
+    setupSwagger(app);
 
     await app.listen(env.PORT);
   } catch (ex) {

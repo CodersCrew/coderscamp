@@ -3,10 +3,11 @@ import { Flex } from '@coderscamp/ui/components/Flex';
 import { Stack, VStack } from '@coderscamp/ui/components/Stack';
 import { Typography } from '@coderscamp/ui/components/Typography';
 import { useBreakpointValue } from '@coderscamp/ui/hooks/useBreakpointValue';
-import { SolidDownloadIcon } from '@coderscamp/ui/icons';
 
 import { useRecruitmentModal } from '@/components/RecruitmentModal';
-import { COURSE_PLAN_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
+import { MENTOR_RECRUITMENT_FORM_URL, PROJECTS_COUNT, TEAM_SIZE } from '@/constants';
+
+import { externalLinkBaseProps } from './ExternalLink';
 
 export const Hero = () => {
   const { openModal } = useRecruitmentModal();
@@ -19,14 +20,9 @@ export const Hero = () => {
   const buttonProps = { size: buttonSize, width: 'min(280px, 75vw)' } as const;
 
   return (
-    <Flex
-      justify="center"
-      width="100%"
-      p={{ base: '32px 16px 64px', sm: '120px 64px 160px' }}
-      pt={{ xl: '60px', '1xl': '80px', '2xl': '120px' }}
-    >
-      <VStack spacing={{ base: '24px', xl: '32px', '1xl': '40px', '2xl': '56px' }}>
-        <VStack spacing={{ base: '16px', '1xl': '24px', '2xl': '32px' }} textAlign="center">
+    <Flex justify="center" width="100%" p={{ base: '32px 16px 64px', lg: '120px 64px 160px' }}>
+      <VStack spacing={{ base: '24px', md: '56px' }} maxW="min(1400px, 100%)">
+        <VStack spacing={{ base: '16px', md: '32px' }} textAlign="center">
           <Typography size={mainHeaderSize} color="gray.900" weight="extrabold">
             Największy otwarty kurs programowania webowego w Polsce
           </Typography>
@@ -37,11 +33,11 @@ export const Hero = () => {
           </Typography>
         </VStack>
         <Stack spacing={{ base: '12px', sm: '24px' }} direction={buttonsStackDirection}>
-          <Button {...buttonProps} color="brand" onClick={() => openModal('participant')}>
-            Zapisz się na kurs
+          <Button {...buttonProps} color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+            Zostań mentorem
           </Button>
-          <Button {...buttonProps} as="a" href={COURSE_PLAN_URL} icon={<SolidDownloadIcon />}>
-            Pobierz plan kursu
+          <Button {...buttonProps} onClick={() => openModal('participant')}>
+            Zapisz się na kurs
           </Button>
         </Stack>
       </VStack>

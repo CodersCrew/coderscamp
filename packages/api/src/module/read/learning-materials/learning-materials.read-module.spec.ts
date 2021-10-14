@@ -3,31 +3,34 @@ import { AsyncReturnType } from 'type-fest';
 import { v4 as uuid } from 'uuid';
 import waitForExpect from 'wait-for-expect';
 
-import { initTestModule } from '@/common/test-utils';
 import { LearningMaterialsUrlWasGenerated } from '@/events/learning-materials-url-was-generated.domain-event';
-import { ApplicationEvent } from '@/module/application-command-events';
-import { UserId } from '@/users/users.types';
+import { LearningMaterialsReadModule } from '@/read/learning-materials/learning-materials.read-module';
+import { UserId } from '@/shared/domain.types';
+import { initReadTestModule } from '@/shared/test-utils';
+import { StorableEvent } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 const SAMPLE_MATERIALS_URL = 'https://app.process.st/runs/jNMTGn96H8Xe3H8DbcpJOg';
 
 async function learningMaterialsTestModule() {
-  const { prismaService, close, eventOccurred } = await initTestModule();
+  const module = await initReadTestModule({ modules: [LearningMaterialsReadModule] });
 
   async function expectReadModel(expectation: { courseUserId: UserId; readModel: LearningMaterials | null }) {
-    await waitForExpect(() =>
-      expect(
-        prismaService.learningMaterials.findUnique({ where: { courseUserId: expectation.courseUserId } }),
-      ).resolves.toStrictEqual(expectation.readModel),
-    );
+    await waitForExpect(async () => {
+      const result = await module.prismaService.learningMaterials.findUnique({
+        where: { courseUserId: expectation.courseUserId },
+      });
+
+      expect(result).toStrictEqual(expectation.readModel);
+    });
   }
 
-  return { eventOccurred, expectReadModel, close };
+  return { ...module, expectReadModel };
 }
 
 function learningMaterialsUrlWasGeneratedForUser(
   courseUserId: UserId,
-): ApplicationEvent<LearningMaterialsUrlWasGenerated> {
+): StorableEvent<LearningMaterialsUrlWasGenerated> {
   return {
     type: 'LearningMaterialsUrlWasGenerated',
     id: uuid(),
@@ -38,32 +41,33 @@ function learningMaterialsUrlWasGeneratedForUser(
       materialsUrl: SAMPLE_MATERIALS_URL,
     },
     metadata: { correlationId: 'generatedId1', causationId: 'generatedId1' },
-    streamVersion: 1,
-    streamName: EventStreamName.from('LearningMaterialsUrl', courseUserId),
   };
 }
 
 describe('Read Slice | Learning Materials', () => {
-  let moduleUnderTest: AsyncReturnType<typeof learningMaterialsTestModule>;
+  let sut: AsyncReturnType<typeof learningMaterialsTestModule>;
 
   beforeEach(async () => {
-    moduleUnderTest = await learningMaterialsTestModule();
+    sut = await learningMaterialsTestModule();
   });
 
   afterEach(async () => {
-    await moduleUnderTest.close();
+    await sut.close();
   });
 
   it('when LearningMaterialsUrlWasGenerated occurred, then read model should be updated', async () => {
     // Given
-    const userId1 = uuid();
-    const userId2 = uuid();
+    const userId1 = sut.randomUuid();
+    const userId2 = sut.randomUuid();
 
     // When
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId1));
+    await sut.eventOccurred(
+      EventStreamName.from('LearningMaterialsUrl', userId1),
+      learningMaterialsUrlWasGeneratedForUser(userId1),
+    );
 
     // Then
-    await moduleUnderTest.expectReadModel({
+    await sut.expectReadModel({
       courseUserId: userId1,
       readModel: {
         id: `learningMaterialsId-${userId1}`,
@@ -71,16 +75,19 @@ describe('Read Slice | Learning Materials', () => {
         courseUserId: userId1,
       },
     });
-    await moduleUnderTest.expectReadModel({
+    await sut.expectReadModel({
       courseUserId: userId2,
       readModel: null,
     });
 
     // When
-    moduleUnderTest.eventOccurred(learningMaterialsUrlWasGeneratedForUser(userId2));
+    await sut.eventOccurred(
+      EventStreamName.from('LearningMaterialsUrl', userId2),
+      learningMaterialsUrlWasGeneratedForUser(userId2),
+    );
 
     // Then
-    await moduleUnderTest.expectReadModel({
+    await sut.expectReadModel({
       courseUserId: userId2,
       readModel: {
         id: `learningMaterialsId-${userId2}`,

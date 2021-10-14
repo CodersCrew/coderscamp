@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsDate } from 'class-validator';
 
-import { isAfter } from '../utils/validators';
+import { IsAfter } from '../utils/validators';
 
 export class CourseBody {
   @Type(() => Date)
@@ -10,7 +10,7 @@ export class CourseBody {
 
   @Type(() => Date)
   @IsDate()
-  @isAfter('dateStart')
+  @IsAfter('dateStart')
   dateEnd: Date;
 }
 

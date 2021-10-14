@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-types */
 import { registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator';
 
-export function isAfter(property: string, validationOptions?: ValidationOptions) {
-  return (object: Object, propertyName: string) => {
+import type { AnyObject, UnknownObject } from '../types';
+
+export function IsAfter(property: string, validationOptions?: ValidationOptions) {
+  return (object: AnyObject, propertyName: string) => {
     registerDecorator({
-      name: 'isAfter',
+      name: 'IsAfter',
       target: object.constructor,
       propertyName,
       constraints: [property],
@@ -16,7 +16,7 @@ export function isAfter(property: string, validationOptions?: ValidationOptions)
       validator: {
         validate(value: unknown, args: ValidationArguments) {
           const [relatedPropertyName] = args.constraints;
-          const relatedValue = (args.object as any)[relatedPropertyName];
+          const relatedValue = (args.object as UnknownObject)[relatedPropertyName];
 
           return value instanceof Date && relatedValue instanceof Date && value > relatedValue;
         },
