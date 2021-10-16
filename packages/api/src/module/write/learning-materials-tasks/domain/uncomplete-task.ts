@@ -1,11 +1,11 @@
-import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
-import { CompleteTask } from '@/module/commands/complete-task.domain-command';
-import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
+import { TaskWasCompleted } from "@/events/task-was-completed.domain-event";
+import { TaskWasUncompleted } from "@/events/task-was-uncompleted-event.domain-event";
+import { UncompleteTask } from "@/commands/uncomplete-task.domain-command";
 
-export function completeTask(
+export function uncompleteTask(
   pastEvents: (TaskWasCompleted | TaskWasUncompleted)[],
-  { data: { learningMaterialsId, taskId } }: CompleteTask,
-): TaskWasCompleted[] {
+  { data: { learningMaterialsId, taskId } }: UncompleteTask,
+): TaskWasUncompleted[] {
   const state = pastEvents
     .filter(({ data }) => data.taskId === taskId)
     .reduce<{ completed: boolean }>(
@@ -25,12 +25,12 @@ export function completeTask(
       { completed: false },
     );
 
-  if (state.completed) {
-    throw new Error('Task was already completed');
+  if (!state.completed) {
+    throw new Error('Can not uncomplete task that was not completed yet.');
   }
 
-  const newEvent: TaskWasCompleted = {
-    type: 'TaskWasCompleted',
+  const newEvent: TaskWasUncompleted = {
+    type: 'TaskWasUncompleted',
     data: {
       taskId,
       learningMaterialsId,
@@ -39,3 +39,4 @@ export function completeTask(
 
   return [newEvent];
 }
+

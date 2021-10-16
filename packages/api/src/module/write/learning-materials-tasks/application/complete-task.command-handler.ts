@@ -7,6 +7,7 @@ import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/applicat
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 import { completeTask } from '../domain/complete-task';
+import { TaskWasUncompleted } from "@/events/task-was-uncompleted-event.domain-event";
 
 @CommandHandler(CompleteTaskApplicationCommand)
 export class CompleteTaskCommandHandler implements ICommandHandler<CompleteTaskApplicationCommand> {
@@ -18,7 +19,7 @@ export class CompleteTaskCommandHandler implements ICommandHandler<CompleteTaskA
   async execute(command: CompleteTaskApplicationCommand): Promise<void> {
     const eventStream = EventStreamName.from('LearningMaterialsTasks', command.data.learningMaterialsId);
 
-    await this.applicationService.execute<TaskWasCompleted>(
+    await this.applicationService.execute<TaskWasCompleted | TaskWasUncompleted>(
       eventStream,
       {
         causationId: command.id,

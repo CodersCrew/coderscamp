@@ -5,6 +5,7 @@ import { CompleteTaskApplicationCommand } from '@/module/commands/complete-task.
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
 
 import { TaskCompletedRequestBody } from '../../types/taskCompletedRequestBody';
+import { UncompleteTaskApplicationCommand } from "@/commands/uncomplete-task.application-command";
 
 @Controller('process-st/events')
 export class LearningMaterialsTaskRestController {
@@ -24,5 +25,13 @@ export class LearningMaterialsTaskRestController {
 
       await this.commandBus.execute(command);
     }
+
+    const command = this.commandFactory.applicationCommand(() => ({
+      class: UncompleteTaskApplicationCommand,
+        type: 'UncompleteTask',
+      data: { learningMaterialsId, taskId },
+    }));
+
+    await this.commandBus.execute(command);
   }
 }
