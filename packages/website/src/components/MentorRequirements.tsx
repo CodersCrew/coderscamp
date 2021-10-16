@@ -22,7 +22,7 @@ export const MentorRequirements = () => {
           jeszcze przed rozpoczęciem kursu.
         </Requirement>
         <Stack
-          height="-webkit-fit-content"
+          height="min-content"
           direction={{ base: 'column', lg: 'row' }}
           spacing={flexItemVerticalMargin}
           wrap="wrap"
