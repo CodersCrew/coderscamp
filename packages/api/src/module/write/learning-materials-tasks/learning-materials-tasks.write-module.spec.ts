@@ -7,7 +7,6 @@ import { EventStreamName } from "../shared/application/event-stream-name.value-o
 import { learningMaterialsTasksTestModule } from "./learning-materials-tasks.test-module";
 import { UncompleteTaskApplicationCommand } from "@/commands/uncomplete-task.application-command";
 import { TaskWasUncompleted } from "@/events/task-was-uncompleted-event.domain-event";
-import { uncompleteTask } from "@/write/learning-materials-tasks/domain/uncomplete-task";
 
 enum CommandType {
   COMPLETE_TASK = "Complete Task",

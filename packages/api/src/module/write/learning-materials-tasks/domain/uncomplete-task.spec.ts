@@ -43,7 +43,7 @@ describe("uncomplete task", () => {
     const events = () => uncompleteTask(pastEvents, command);
 
     // then
-    expect(events).toThrowError('Can not uncomplete uncompleted task');
+    expect(events).toThrowError('Can not uncomplete task that was not completed yet.');
   });
 
   it('should throw an error if try to uncomplete task that was neither completed nor uncompleted yet', () => {
@@ -54,6 +54,6 @@ describe("uncomplete task", () => {
     const events = () => uncompleteTask(pastEvents, command);
 
     // then
-    expect(events).toThrowError('Can not uncomplete uncompleted task');
+    expect(events).toThrowError('Can not uncomplete task that was not completed yet.');
   });
 });
