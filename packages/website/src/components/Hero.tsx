@@ -23,7 +23,7 @@ export const Hero = () => {
     <Flex
       justify="center"
       width="100%"
-      p={{ base: '32px 16px 64px', xl: '60px 64px 160px' }}
+      p={{ base: '32px 0px 64px', xl: '60px 64px 160px' }}
       pt={{ base: '32px', xl: '60px', '1xl': '80px', '2xl': '120px' }}
     >
       <VStack spacing={{ base: '32px', '1xl': '40px', '2xl': '56px' }} maxW="min(1400px, 100%)">
