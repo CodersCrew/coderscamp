@@ -18,7 +18,6 @@ export const Hero = () => {
     xl: '1080px',
     '2xl': '1280px',
   } as const;
-  const paddingXValue = { base: '16px', sm: '32px', md: '64px', lg: '0' } as const;
 
   const mainHeaderSize = { base: '4xl', md: '6xl', '1xl': '7xl', '2xl': '8xl' } as const;
   const subheaderSize = { base: 'md', sm: 'xl', '1xl': '2xl' } as const;
@@ -27,9 +26,15 @@ export const Hero = () => {
   return (
     <Section
       minW={widthValue}
-      px={paddingXValue}
-      p={{ base: '32px 0px 64px', xl: '60px 64px 160px' }}
-      pt={{ base: '32px', xl: '60px', '1xl': '80px', '2xl': '120px' }}
+      p={{
+        base: '32px 0px 64px',
+        sm: '32px 32px 64px',
+        md: '64px 64px 64px',
+        lg: '32px 0 64px',
+        xl: '60px 64px 160px',
+        '1xl': '80px 64px 160px',
+        '2xl': '120px 64px 160px',
+      }}
       spacing="32px"
     >
       <VStack spacing={{ base: '32px', '1xl': '40px', '2xl': '56px' }} maxW="min(1400px, 100%)">
