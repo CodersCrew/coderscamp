@@ -3,6 +3,7 @@ import 'swiper/css';
 import type { CSSProperties } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import Script from 'next/script';
 
 import { ThemeProvider } from '@coderscamp/ui/theme';
 
@@ -16,6 +17,25 @@ const globalStyles: Record<string, CSSProperties> = {
   '.swiper-slide': { height: 'unset' },
 };
 
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
+
+const GoogleAnalytics = ({ id }: { id: string }) => (
+  <>
+    <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${id}`} />
+
+    <Script strategy="lazyOnload">
+      {`
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${id}', {
+  page_path: window.location.pathname,
+});
+`}
+    </Script>
+  </>
+);
+
 const userPrefersDark =
   typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -23,6 +43,7 @@ const userPrefersDark =
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
+      {googleAnalyticsId && <GoogleAnalytics id={googleAnalyticsId} />}
       <Head>
         <title>CodersCamp - największy otwarty kurs programowania webowego w Polsce</title>
         <meta
@@ -40,6 +61,16 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           href={`https://res.cloudinary.com/coderscamp/image/upload/v1630711899/favicon/favicon-${
             userPrefersDark ? 'white' : 'black'
           }.png`}
+        />
+        <meta property="og:title" content="CodersCamp - największy otwarty kurs programowania webowego w Polsce" />
+        <meta
+          property="og:description"
+          content="CodersCamp to 6-miesięczny, darmowy kurs programowania webowego. Naszym celem jest przeprowadzić każdego od pierwszych linii kodu do rozpoczęcia kariery w branży IT."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://res.cloudinary.com/coderscamp/image/upload/v1634125737/opengraph.png"
         />
       </Head>
       <ThemeProvider globalStyles={globalStyles}>
