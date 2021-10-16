@@ -21,7 +21,12 @@ export const MentorRequirements = () => {
           React’a, nie przejmuj się tym. Jeśli tylko masz chęć rozwoju w tych dziedzinach, pomożemy Ci nadrobić braki
           jeszcze przed rozpoczęciem kursu.
         </Requirement>
-        <Stack direction={{ base: 'column', lg: 'row' }} spacing={flexItemVerticalMargin} wrap="wrap">
+        <Stack
+          height="-webkit-fit-content"
+          direction={{ base: 'column', lg: 'row' }}
+          spacing={flexItemVerticalMargin}
+          wrap="wrap"
+        >
           <Requirement flex="1 1 0px">
             Posiadasz doświadczenie projektowe w branży IT. Jesteś w stanie poprzeć je ciekawym CV i/lub rozbudowanym
             portfolio na GitHubie.
