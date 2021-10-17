@@ -1,6 +1,6 @@
 import { commandNamePrompt } from '../command/prompts';
 import { eventNamePrompt } from '../event/prompts';
-import { domainFunctionActionConfig, domainFunctionTestActionConfig } from './actions';
+import { createDomainFunctionAction, createDomainFunctionTestAction } from './actions';
 import { domainFunctionDirectoryPrompt, domainFunctionNamePrompt } from './prompts';
 
 export const domainFunctionGenerator = {
@@ -11,5 +11,5 @@ export const domainFunctionGenerator = {
     commandNamePrompt,
     { ...eventNamePrompt, message: 'past event name' },
   ],
-  actions: [domainFunctionActionConfig, domainFunctionTestActionConfig],
+  actions: [createDomainFunctionAction, createDomainFunctionTestAction],
 };

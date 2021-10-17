@@ -1,0 +1,24 @@
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
+
+import { {{properCase command}}RequestBody } from '@coderscamp/shared/models/{{moduleName directory}}/{{camelCase command}}RequestBody';
+
+import { {{camelCase command}}, {{properCase command}}ApplicationCommand } from '@/module/commands/{{dashCase command}}';
+import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
+
+
+@Controller('')
+export class {{properCase restController}}RestController {
+  constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}
+
+  @Post('')
+  @HttpCode(200)
+  async {{camelCase methodName}}(@Body() body: {{properCase command}}RequestBody): Promise<void> {
+    const command = this.commandFactory.applicationCommand(() => ({
+      class: {{properCase command}}ApplicationCommand,
+      ...{{camelCase command}}({}),
+    }));
+
+    await this.commandBus.execute(command);
+  }
+}

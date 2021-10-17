@@ -13,10 +13,13 @@ import {
   moduleGenerator,
   restControllerGenerator,
 } from './templates';
+import { moduleNameFromPath } from './templates/helpers/moduleNameFromPath';
 
 export default function (plop: NodePlopAPI) {
   // Plugins
   plop.setPrompt('directory', inquirerSelectDirectory);
+  // Helpers
+  plop.setHelper('moduleName', moduleNameFromPath);
   // Generators
   plop.setGenerator('command', commandGenerator);
   plop.setGenerator('commandHandler', commandHandlerGenerator);

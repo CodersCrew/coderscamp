@@ -1,9 +1,9 @@
 import { {{properCase command}} } from '@/module/commands/{{dashCase command}}.domain-command';
 import { {{properCase event}} } from '@/module/events/{{dashCase event}}.domain-event';
 
-import { {{camelCase domain-function}} } from './{{dashCase domain-function}}';
+import { {{camelCase domainFunction}} } from './{{dashCase domainFunction}}';
 
-describe('{{camelCase domain-function}}', () => {
+describe('{{camelCase domainFunction}}', () => {
   const command: {{properCase command}} = {
     type: '{{properCase command}}',
     data: {},
@@ -14,7 +14,7 @@ describe('{{camelCase domain-function}}', () => {
     const pastEvents: {{properCase event}}[] = [];
 
     // When
-    const events = {{camelCase domain-function}}(pastEvents, command);
+    const events = {{camelCase domainFunction}}(pastEvents, command);
 
     // Then
     expect(events).toStrictEqual([
@@ -35,7 +35,7 @@ describe('{{camelCase domain-function}}', () => {
     ];
 
     // When
-    const events = {{camelCase domain-function}}(pastEvents, command);
+    const events = {{camelCase domainFunction}}(pastEvents, command);
 
     // Then
     expect(events).toThrowError('');

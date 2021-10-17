@@ -5,4 +5,4 @@ export const domainFunctionDirectoryPrompt = {
   message: 'choose directory in which you want to create domain function',
 };
 
-export const domainFunctionNamePrompt = { type: 'input', name: 'domain-function', message: 'domain function name' };
+export const domainFunctionNamePrompt = { type: 'input', name: 'domainFunction', message: 'domain function name' };

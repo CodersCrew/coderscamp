@@ -10,7 +10,7 @@ export const commandHandlerGenerator = {
   prompts: [
     { ...apiDirectoryPrompt, message: 'Path to module' },
     commandNamePrompt,
-    { ...eventNamePrompt, message: 'past event name' },
+    { ...eventNamePrompt, message: 'Past event name' },
     domainFunctionNamePrompt,
     streamCategoryPrompt,
     streamIdPrompt,
