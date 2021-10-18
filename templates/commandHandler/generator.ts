@@ -3,7 +3,7 @@ import { domainFunctionNamePrompt } from '../domain-function/prompts';
 import { eventNamePrompt } from '../event/prompts';
 import { apiDirectoryPrompt } from '../utils/directory.prompt';
 import { createCommandHandlerAction } from './actions';
-import { streamCategoryPrompt, streamIdPrompt } from './prompts';
+import { streamCategoryPrompt } from './prompts';
 
 export const commandHandlerGenerator = {
   description: 'Create a new command handler',
@@ -13,7 +13,6 @@ export const commandHandlerGenerator = {
     { ...eventNamePrompt, message: 'Past event name' },
     domainFunctionNamePrompt,
     streamCategoryPrompt,
-    streamIdPrompt,
   ],
   actions: [createCommandHandlerAction],
 };

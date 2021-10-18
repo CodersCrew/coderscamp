@@ -1,7 +1,7 @@
 import { createCommandAction } from '../command/actions';
 import { commandNamePrompt } from '../command/prompts';
 import { createCommandHandlerAction } from '../commandHandler/actions';
-import { streamCategoryPrompt, streamIdPrompt } from '../commandHandler/prompts';
+import { streamCategoryPrompt } from '../commandHandler/prompts';
 import { createDomainFunctionAction, createDomainFunctionTestAction } from '../domain-function/actions';
 import { domainFunctionNamePrompt } from '../domain-function/prompts';
 import { createEventAction } from '../event/actions';
@@ -22,7 +22,6 @@ export const moduleGenerator = {
     eventNamePrompt,
     { ...domainFunctionNamePrompt, when: (answers: Answers) => answers[eventNamePrompt.name] !== '' },
     { ...streamCategoryPrompt, when: (answers: Answers) => answers[domainFunctionNamePrompt.name] !== '' },
-    { ...streamIdPrompt, when: (answers: Answers) => answers[domainFunctionNamePrompt.name] !== '' },
     { ...restControllerNamePrompt },
     methodNamePrompt,
   ],
@@ -32,11 +31,11 @@ export const moduleGenerator = {
     createModuleAction,
     createTestModuleAction,
     runActionIfAnswersWereGiven([commandNamePrompt.name, eventNamePrompt.name], createTestFileAction),
-    runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name, streamIdPrompt.name], {
+    runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name], {
       ...createDomainFunctionAction,
       path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.ts`,
     }),
-    runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name, streamIdPrompt.name], {
+    runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name], {
       ...createDomainFunctionTestAction,
       path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.spec.ts`,
     }),
