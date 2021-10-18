@@ -1,12 +1,11 @@
 import { {{properCase event}} } from '@/events/{{dashCase event}}.domain-event';
-import { {{properCase command}} } from '@/module/commands/{{dashCase command}}.domain-command';
+import { {{properCase command}} } from '@/module/commands/{{dashCase command}}';
 
 export function {{camelCase domainFunction}}(
   pastEvents: {{properCase event}}[],
   { data }: {{properCase command}},
 ): {{properCase event}}[] {
   const state = pastEvents
-    .filter(({ data }) => === )
     .reduce<{ completed: boolean }>(
       (acc, event) => {
         switch (event.type) {
