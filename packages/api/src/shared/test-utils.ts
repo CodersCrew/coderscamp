@@ -316,13 +316,11 @@ export async function initWriteTestModule(config?: {
   };
 }
 
-export async function initAutomationTestModule(config?: {
-  modules?: ModuleMetadata['imports'];
-  configureModule?: (app: TestingModuleBuilder) => TestingModuleBuilder;
-}) {
-  if (!config) return initWriteTestModule(config);
-
-  const { modules, configureModule } = config;
+export async function initAutomationTestModule(
+  modules?: ModuleMetadata['imports'],
+  configureModule?: (app: TestingModuleBuilder) => TestingModuleBuilder,
+) {
+  if (!modules && !configureModule) return initWriteTestModule();
 
   return initWriteTestModule({
     modules,
@@ -334,9 +332,6 @@ export async function initAutomationTestModule(config?: {
       return app;
     },
   });
-}
-export async function initAutomationTestBaseModule(modules: ModuleMetadata['imports']) {
-  return initAutomationTestModule({ modules });
 }
 export type SampleDomainEvent = {
   type: 'SampleDomainEvent';

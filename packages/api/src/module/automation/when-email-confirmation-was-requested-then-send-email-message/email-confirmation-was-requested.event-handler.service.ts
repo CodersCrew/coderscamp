@@ -1,4 +1,4 @@
-import { Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
+import { Inject, Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { UserRegistrationWasStarted } from '@/events/user-registration-was-started.domain-event';
@@ -7,15 +7,15 @@ import { SendEmailMessageApplicationCommand, sendEmailMessageCommand } from '@/m
 import { EmailConfirmationWasRequested } from '@/module/events/email-confirmation-was-requested.domain-event';
 import { UserId } from '@/shared/domain.types';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
-import { ApplicationService } from '@/write/shared/application/application-service';
-import { EventRepository } from '@/write/shared/application/event-repository';
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { EVENT_REPOSITORY, EventRepository } from '@/write/shared/application/event-repository';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 import { EventsSubscription } from '@/write/shared/application/events-subscription/events-subscription';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 
 type AutomationEvent = EmailConfirmationWasRequested | UserRegistrationWasStarted;
 
-const SUBSCRIPTION_ID = 'WhenEmailConfirmationWasRequestedThenSendEmailMessage_Automation_v1';
+const SUBSCRIPTION_NAME = 'WhenEmailConfirmationWasRequestedThenSendEmailMessage';
 
 @Injectable()
 export class EmailConfirmationWasRequestedEventHandler implements OnApplicationBootstrap, OnModuleDestroy {
@@ -25,13 +25,15 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
     private readonly commandBus: CommandBus,
     private readonly commandFactory: ApplicationCommandFactory,
     private readonly eventsSubscriptionsFactory: EventsSubscriptionsRegistry,
+    @Inject(APPLICATION_SERVICE)
     private readonly applicationService: ApplicationService,
+    @Inject(EVENT_REPOSITORY)
     private readonly eventRepository: EventRepository,
   ) {}
 
   async onApplicationBootstrap() {
     this.eventsSubscription = this.eventsSubscriptionsFactory
-      .subscription(SUBSCRIPTION_ID)
+      .subscription(`${SUBSCRIPTION_NAME}_Automation_v1`)
       .onEvent<EmailConfirmationWasRequested>('EmailConfirmationWasRequested', (event) =>
         this.onEmailConfirmationWasRequested(event),
       )
@@ -46,6 +48,15 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
     await this.eventsSubscription.stop();
   }
 
+  async onUserRegistrationWasStarted(event: ApplicationEvent<UserRegistrationWasStarted>) {
+    const { userId } = event.data;
+    const eventStream = EmailConfirmationWasRequestedEventHandler.eventStreamFor(userId);
+
+    await this.applicationService.execute(eventStream, { ...event.metadata }, () => [event]);
+
+    await this.sendEmailIfPossible(event.data.userId, event);
+  }
+
   async onEmailConfirmationWasRequested(event: ApplicationEvent<EmailConfirmationWasRequested>) {
     if (event.data.confirmationFor !== 'user-registration') return;
 
@@ -58,7 +69,7 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
   }
 
   private static eventStreamFor(userId: string) {
-    return EventStreamName.from(SUBSCRIPTION_ID, userId);
+    return EventStreamName.from(SUBSCRIPTION_NAME, userId);
   }
 
   private async sendEmailIfPossible(userId: UserId, event: ApplicationEvent) {
@@ -69,15 +80,15 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
       (e) => ({ data: e.data, type: e.type } as AutomationEvent),
     );
 
-    const { emailToSend, userEmail } = stream.reduce<
+    const { emailToSend: requestInformation, userEmail } = stream.reduce<
       Partial<{ readonly emailToSend: EmailConfirmationWasRequested['data']; readonly userEmail: string }>
     >(
-      (state, event) => {
-        switch (event.type) {
+      (state, e) => {
+        switch (e.type) {
           case 'EmailConfirmationWasRequested':
-            return { ...state, emailToSend: event.data };
+            return { ...state, emailToSend: e.data };
           case 'UserRegistrationWasStarted':
-            return { ...state, userEmail: event.data.emailAddress };
+            return { ...state, userEmail: e.data.emailAddress };
           default:
             return state;
         }
@@ -88,7 +99,7 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
       },
     );
 
-    if (!userEmail || !emailToSend) {
+    if (!userEmail || !requestInformation) {
       return;
     }
 
@@ -100,7 +111,7 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
         subject: 'Confirm your account',
         text: `
         Click on link below to confirm your account registration:
-          https://coderscamp.edu.pl/app/confirmation/${emailToSend.confirmationToken}
+          https://coderscamp.edu.pl/app/confirmation/${requestInformation.confirmationToken}
         `,
         html: `
           <div>
@@ -112,14 +123,5 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
     }));
 
     await this.commandBus.execute(command);
-  }
-
-  async onUserRegistrationWasStarted(event: ApplicationEvent<UserRegistrationWasStarted>) {
-    const { userId } = event.data;
-    const eventStream = EmailConfirmationWasRequestedEventHandler.eventStreamFor(userId);
-
-    await this.applicationService.execute(eventStream, { ...event.metadata }, () => [event]);
-
-    await this.sendEmailIfPossible(event.data.userId, event);
   }
 }
