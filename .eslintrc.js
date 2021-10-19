@@ -167,6 +167,11 @@ module.exports = {
       rules: { 'no-param-reassign': 0 },
     },
     {
+      // CLI scripts.
+      files: ['packages/cli/**'],
+      rules: { 'no-restricted-syntax': 0, 'no-await-in-loop': 0 },
+    },
+    {
       // Enable plugins rules only for test files.
       files: [
         '**/?(*.)+(spec|test).ts?(x)',

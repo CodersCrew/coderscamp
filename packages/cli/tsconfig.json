@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "CommonJS",
+    "rootDirs": ["src", "../shared/src"],
+    "noEmitOnError": true,
+    "outDir": "dist",
+    "paths": {
+      "@coderscamp/shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": ["src", "../shared/src"]
+}

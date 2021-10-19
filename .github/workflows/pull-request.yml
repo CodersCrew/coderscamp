@@ -20,6 +20,7 @@ jobs:
             core
             shared
             deps
+            cli
           requireScope: false
           validateSingleCommit: true
           subjectPattern: ^(?![A-Z]).+$
