@@ -24,4 +24,8 @@ export interface EventRepository {
   ): Promise<ApplicationEvent[]>;
 
   readAll(filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]>;
+
+  readDomainStream<Event extends DomainEvent>(
+    streamName: EventStreamName,
+  ): Promise<{ pastEvents: Event[]; streamVersion: EventStreamVersion }>;
 }

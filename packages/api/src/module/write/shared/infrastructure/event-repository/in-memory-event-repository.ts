@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { ApplicationEvent } from '@/module/application-command-events';
+import { DomainEvent } from '@/module/domain.event';
 
 import { EventStream } from '../../application/application-service';
 import { EventRepository, ReadAllFilter, StorableEvent } from '../../application/event-repository';
@@ -13,6 +14,19 @@ export class InMemoryEventRepository implements EventRepository {
   private eventStreams: { [key: string]: ApplicationEvent[] } = {};
 
   constructor(@Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider) {}
+
+  async readDomainStream<Event extends DomainEvent>(
+    streamName: EventStreamName,
+  ): Promise<{ pastEvents: Event[]; streamVersion: number }> {
+    const pastEvents = (await this.read(streamName)).map((e) => ({ type: e.type, data: e.data } as Event));
+
+    return {
+      pastEvents,
+      get streamVersion() {
+        return pastEvents?.length ?? 0;
+      },
+    };
+  }
 
   async read(streamName: EventStreamName): Promise<EventStream> {
     return this.getEventsBy(streamName).filter((it) => it.occurredAt <= this.timeProvider.currentTime());

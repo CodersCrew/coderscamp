@@ -75,31 +75,23 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
   private async sendEmailIfPossible(userId: UserId, event: ApplicationEvent) {
     const eventStream = EmailConfirmationWasRequestedEventHandler.eventStreamFor(userId);
 
-    // fixme: refactor - duplication with application-service
-    const stream = (await this.eventRepository.read(eventStream)).map(
-      (e) => ({ data: e.data, type: e.type } as AutomationEvent),
-    );
+    const { pastEvents } = await this.eventRepository.readDomainStream<AutomationEvent>(eventStream);
 
-    const { emailToSend: requestInformation, userEmail } = stream.reduce<
-      Partial<{ readonly emailToSend: EmailConfirmationWasRequested['data']; readonly userEmail: string }>
-    >(
-      (state, e) => {
-        switch (e.type) {
-          case 'EmailConfirmationWasRequested':
-            return { ...state, emailToSend: e.data };
-          case 'UserRegistrationWasStarted':
-            return { ...state, userEmail: e.data.emailAddress };
-          default:
-            return state;
-        }
-      },
-      {
-        emailToSend: undefined,
-        userEmail: undefined,
-      },
-    );
+    const { requestData, userEmail } = pastEvents.reduce<{
+      requestData?: EmailConfirmationWasRequested['data'];
+      userEmail?: string;
+    }>((state, e) => {
+      switch (e.type) {
+        case 'EmailConfirmationWasRequested':
+          return { ...state, requestData: e.data };
+        case 'UserRegistrationWasStarted':
+          return { ...state, userEmail: e.data.emailAddress };
+        default:
+          return state;
+      }
+    }, {});
 
-    if (!userEmail || !requestInformation) {
+    if (!userEmail || !requestData) {
       return;
     }
 
@@ -110,12 +102,13 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
         to: userEmail,
         subject: 'Confirm your account',
         text: `
-        Click on link below to confirm your account registration:
-          https://coderscamp.edu.pl/app/confirmation/${requestInformation.confirmationToken}
+          Click on link below to confirm your account registration:
+          https://coderscamp.edu.pl/app/confirmation/${requestData.confirmationToken}
         `,
         html: `
           <div>
-
+            Click on link below to confirm your account registration:
+            https://coderscamp.edu.pl/app/confirmation/${requestData.confirmationToken}
           </div>
         `,
       }),

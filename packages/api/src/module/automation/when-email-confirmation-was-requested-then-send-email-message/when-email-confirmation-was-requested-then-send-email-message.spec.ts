@@ -59,7 +59,7 @@ describe('SendEmailMessage when emailConfirmationWasRequested', () => {
     await moduleUnderTest.expectCommandWasNotAppeared();
   });
 
-  it("creates command SendEmailMessage for confirmation  'user-registration'", async () => {
+  it("creates command SendEmailMessage for confirmation 'user-registration' when registration was started and requested email Confirmation", async () => {
     // Given
     const userId = 'ca63d023-4cbd-40ca-9f53-jkdckshkcj';
     const fullName = 'Jan Kowalski';
