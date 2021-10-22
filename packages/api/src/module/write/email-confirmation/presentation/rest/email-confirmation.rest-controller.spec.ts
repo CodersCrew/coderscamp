@@ -23,7 +23,7 @@ describe('email confirmation | REST API', () => {
     await restUnderTest.close();
   });
 
-  describe(`/POST email-confirmation${APPROVE_ENDPOINT}`, () => {
+  describe(`POST /email-confirmation${APPROVE_ENDPOINT}`, () => {
     it('Failed, user is not authenticated', async () => {
       // Given
       restUnderTest.commandBusExecute.mockImplementation(() => Promise.resolve());
@@ -39,34 +39,40 @@ describe('email confirmation | REST API', () => {
       expect(response).toSatisfyApiSpec();
     });
 
-    it('Failed, trying to approve email without earlier request', async () => {
+    it('Failed, trying to approve email confirmation without earlier request', async () => {
       // Given
       restUnderTest.commandBusExecute.mockRejectedValue(
         new DomainRuleViolationException("Couldn't find request which could be approved"),
       );
-      await restUnderTest.loginUser();
+
+      const cookie = await restUnderTest.loginUser();
 
       // When
-      const response = await restUnderTest.http.post(`/api/email-confirmation${APPROVE_ENDPOINT}`).send({
-        confirmationToken: 'exampleToken',
-      });
+      const response = await restUnderTest.http
+        .post(`/api/email-confirmation${APPROVE_ENDPOINT}`)
+        .set('Cookie', cookie)
+        .send({
+          confirmationToken: 'exampleToken',
+        });
 
       // Then
       expect(response.status).toBe(HttpStatus.BAD_REQUEST);
       expect(response.body.message).toBe("Couldn't find request which could be approved");
     });
 
-    it('Success, email has been approved', async () => {
+    it('Success, email confirmation has been approved', async () => {
       // Given
-      restUnderTest.commandBusExecute.mockRejectedValue(
-        new DomainRuleViolationException("Couldn't find request which could be approved"),
-      );
-      await restUnderTest.loginUser();
+      restUnderTest.commandBusExecute.mockImplementation(() => Promise.resolve());
+
+      const cookie = await restUnderTest.loginUser();
 
       // When
-      const response = await restUnderTest.http.post(`/api/email-confirmation${APPROVE_ENDPOINT}`).send({
-        confirmationToken: 'exampleToken',
-      });
+      const response = await restUnderTest.http
+        .post(`/api/email-confirmation${APPROVE_ENDPOINT}`)
+        .set('Cookie', cookie)
+        .send({
+          confirmationToken: 'exampleToken',
+        });
 
       // Then
       expect(response.status).toBe(HttpStatus.NO_CONTENT);

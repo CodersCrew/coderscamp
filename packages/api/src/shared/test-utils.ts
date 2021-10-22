@@ -482,7 +482,11 @@ export async function initTestModuleRestApi(
       throw new Error('Example user login failed');
     }
 
+    const cookie = response.get('set-cookie');
+
     isUserLogged = true;
+
+    return cookie;
   };
 
   const logoutUser = async () => {
