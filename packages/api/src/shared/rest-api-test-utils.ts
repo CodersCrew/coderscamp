@@ -5,8 +5,11 @@ import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import supertest from 'supertest';
 import { v4 as uuid } from 'uuid';
 
+import { AuthUser } from '@coderscamp/shared/models/auth';
+
 import { AuthModule } from '@/crud/auth/auth.module';
 import { PrismaService } from '@/prisma/prisma.service';
+import { cleanupDatabase } from '@/shared/test-utils';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
 import { UuidGenerator } from '@/write/shared/infrastructure/id-generator/uuid-generator';
 import { hashPassword } from '@/write/shared/infrastructure/password-encoder/crypto-password-encoder';
@@ -14,6 +17,8 @@ import { SystemTimeProvider } from '@/write/shared/infrastructure/time-provider/
 
 import { setupMiddlewares } from '../app.middlewares';
 import { eventEmitterRootModule } from '../event-emitter.root-module';
+
+const DEFAULT_TEST_PASSWORD = 'stronk';
 
 export async function initTestModuleRestApi(
   controller: Type,
@@ -40,77 +45,71 @@ export async function initTestModuleRestApi(
 
   const prismaService = app.get<PrismaService>(PrismaService);
 
+  await cleanupDatabase(prismaService);
+
   setupMiddlewares(app);
 
   await app.init();
 
   const http = supertest(app.getHttpServer());
 
-  let exampleUserCreated = false;
-  let isUserLogged = false;
+  const randomUser = () => {
+    const id = uuid();
 
-  const exampleAuthUser = {
-    id: uuid(),
-    email: 'example1@email.com',
-    password: 'stronk',
-    role: 'User',
-  } as const;
+    return {
+      id,
+      email: `${id}@email.com`,
+      password: DEFAULT_TEST_PASSWORD,
+    };
+  };
 
-  const addExampleUser = async () => {
-    const hashedPassword = await hashPassword(exampleAuthUser.password);
+  const registerUser = async (userToCreate: Partial<AuthUser> = randomUser()) => {
+    const id = userToCreate.id ?? uuid();
+    const authUser = {
+      id,
+      email: `${id}@email.com`,
+      password: DEFAULT_TEST_PASSWORD,
+      ...userToCreate,
+    };
+    const hashedPassword = await hashPassword(authUser.password);
 
-    await prismaService.authUser.create({
+    return prismaService.authUser.create({
       data: {
-        ...exampleAuthUser,
+        ...authUser,
         password: hashedPassword,
       },
     });
-
-    exampleUserCreated = true;
   };
 
-  const removeExampleUser = async () => {
-    await prismaService.authUser.delete({
-      where: {
-        email: exampleAuthUser.email,
-      },
-    });
-    exampleUserCreated = false;
-  };
+  const loginUser = async (request: { email: string } = randomUser()) => {
+    await registerUser({ email: request.email, password: DEFAULT_TEST_PASSWORD });
 
-  const loginUser = async () => {
-    if (!exampleUserCreated) {
-      await addExampleUser();
-    }
-
-    const response = await http.post('/api/auth/login').send(exampleAuthUser);
+    const response = await http.post('/api/auth/login').send(request);
 
     if (response.status !== 204) {
       throw new Error('Example user login failed');
     }
 
-    const cookie = response.get('set-cookie');
-
-    isUserLogged = true;
-
-    return cookie;
+    return response.get('set-cookie');
   };
 
   const logoutUser = async () => {
     const response = await http.post('/api/auth/logout').send();
 
-    if (response.status !== 201) throw new Error('Logout user failed');
+    if (response.status !== 201) {
+      throw new Error('Logout user failed');
+    }
+  };
 
-    isUserLogged = false;
+  const asLoggedUser = async (request: (http: supertest.SuperTest<supertest.Test>) => supertest.Test) => {
+    const cookie = await loginUser();
+
+    return request(http).set('Cookie', cookie);
   };
 
   async function close() {
     await app.close();
-
-    if (isUserLogged && 5 < 4) await logoutUser();
-
-    if (exampleUserCreated) await removeExampleUser();
   }
 
-  return { http, close, commandBusExecute, loginUser, logoutUser, isUserLogged };
+  return { http, close, commandBusExecute, loginUser, logoutUser, asLoggedUser };
 }

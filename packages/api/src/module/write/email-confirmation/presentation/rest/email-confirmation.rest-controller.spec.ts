@@ -45,37 +45,33 @@ describe('email confirmation | REST API', () => {
         new DomainRuleViolationException("Couldn't find request which could be approved"),
       );
 
-      const cookie = await restUnderTest.loginUser();
-
       // When
-      const response = await restUnderTest.http
-        .post(`/api/email-confirmation${APPROVE_ENDPOINT}`)
-        .set('Cookie', cookie)
-        .send({
+      const response = await restUnderTest.asLoggedUser((http) =>
+        http.post(`/api/email-confirmation${APPROVE_ENDPOINT}`).send({
           confirmationToken: 'exampleToken',
-        });
+        }),
+      );
 
       // Then
       expect(response.status).toBe(HttpStatus.BAD_REQUEST);
       expect(response.body.message).toBe("Couldn't find request which could be approved");
+      expect(response).toSatisfyApiSpec();
     });
 
     it('Success, email confirmation has been approved', async () => {
       // Given
       restUnderTest.commandBusExecute.mockImplementation(() => Promise.resolve());
 
-      const cookie = await restUnderTest.loginUser();
-
       // When
-      const response = await restUnderTest.http
-        .post(`/api/email-confirmation${APPROVE_ENDPOINT}`)
-        .set('Cookie', cookie)
-        .send({
+      const response = await restUnderTest.asLoggedUser((http) =>
+        http.post(`/api/email-confirmation${APPROVE_ENDPOINT}`).send({
           confirmationToken: 'exampleToken',
-        });
+        }),
+      );
 
       // Then
       expect(response.status).toBe(HttpStatus.NO_CONTENT);
+      expect(response).toSatisfyApiSpec();
     });
   });
 });
