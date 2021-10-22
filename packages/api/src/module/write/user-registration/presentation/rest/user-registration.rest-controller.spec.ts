@@ -4,7 +4,7 @@ import { AsyncReturnType } from 'type-fest';
 import { registerError } from '@coderscamp/shared/models/auth/register';
 
 import { DomainRuleViolationException } from '@/shared/errors/domain-rule-violation.exception';
-import { initTestModuleRestApi } from '@/shared/test-utils';
+import { initTestModuleRestApi } from '@/shared/rest-api-test-utils';
 import { UserRegistrationRestController } from '@/write/user-registration/presentation/rest/user-registration.rest-controller';
 
 import { initOpenApiExpect } from '../../../../../../jest-setup';

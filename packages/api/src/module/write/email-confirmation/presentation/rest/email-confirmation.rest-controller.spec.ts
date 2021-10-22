@@ -4,7 +4,7 @@ import { AsyncReturnType } from 'type-fest';
 import { APPROVE_ENDPOINT } from '@coderscamp/shared/models/email-confirmation/approve-email-confirmation';
 
 import { DomainRuleViolationException } from '@/shared/errors/domain-rule-violation.exception';
-import { initTestModuleRestApi } from '@/shared/test-utils';
+import { initTestModuleRestApi } from '@/shared/rest-api-test-utils';
 
 import { initOpenApiExpect } from '../../../../../../jest-setup';
 import { EmailConfirmationRestController } from './email-confirmation.rest-controller';

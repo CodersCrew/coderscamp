@@ -175,6 +175,7 @@ module.exports = {
         'testHelpers.tsx',
         '*.test-module.ts',
         'test-utils.ts',
+        'rest-api-test-utils.ts',
         '*Handlers.ts',
         '**/mocks/*',
         'jest-setup.ts',
