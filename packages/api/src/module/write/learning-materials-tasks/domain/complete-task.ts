@@ -1,6 +1,6 @@
 import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
-import { CompleteTask } from '@/module/commands/complete-task.domain-command';
 import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
+import { CompleteTask } from '@/module/commands/complete-task.domain-command';
 
 export function completeTask(
   pastEvents: (TaskWasCompleted | TaskWasUncompleted)[],

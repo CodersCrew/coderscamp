@@ -1,11 +1,11 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
+import { UncompleteTaskApplicationCommand } from '@/commands/uncomplete-task.application-command';
 import { CompleteTaskApplicationCommand } from '@/module/commands/complete-task.application-command';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
 
 import { TaskCompletedRequestBody } from '../../types/taskCompletedRequestBody';
-import { UncompleteTaskApplicationCommand } from "@/commands/uncomplete-task.application-command";
 
 @Controller('process-st/events')
 export class LearningMaterialsTaskRestController {
@@ -28,7 +28,7 @@ export class LearningMaterialsTaskRestController {
 
     const command = this.commandFactory.applicationCommand(() => ({
       class: UncompleteTaskApplicationCommand,
-        type: 'UncompleteTask',
+      type: 'UncompleteTask',
       data: { learningMaterialsId, taskId },
     }));
 

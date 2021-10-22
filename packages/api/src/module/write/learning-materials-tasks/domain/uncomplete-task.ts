@@ -1,6 +1,6 @@
-import { TaskWasCompleted } from "@/events/task-was-completed.domain-event";
-import { TaskWasUncompleted } from "@/events/task-was-uncompleted-event.domain-event";
-import { UncompleteTask } from "@/commands/uncomplete-task.domain-command";
+import { UncompleteTask } from '@/commands/uncomplete-task.domain-command';
+import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
+import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
 
 export function uncompleteTask(
   pastEvents: (TaskWasCompleted | TaskWasUncompleted)[],
@@ -39,4 +39,3 @@ export function uncompleteTask(
 
   return [newEvent];
 }
-
