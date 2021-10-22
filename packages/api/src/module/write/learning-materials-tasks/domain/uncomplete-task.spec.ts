@@ -1,6 +1,7 @@
 import { UncompleteTask } from '@/commands/uncomplete-task.domain-command';
 import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
 import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
+import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 import { uncompleteTask } from '@/write/learning-materials-tasks/domain/uncomplete-task';
 
 describe('uncomplete task', () => {
@@ -48,7 +49,7 @@ describe('uncomplete task', () => {
 
   it('should throw an error if try to uncomplete task that was neither completed nor uncompleted yet', () => {
     // given
-    const pastEvents: (TaskWasCompleted | TaskWasUncompleted)[] = [];
+    const pastEvents: LearningMaterialsTasksDomainEvent[] = [];
 
     // when
     const events = () => uncompleteTask(pastEvents, command);

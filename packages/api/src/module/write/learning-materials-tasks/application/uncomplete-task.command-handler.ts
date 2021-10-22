@@ -1,9 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
-import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
 import { UncompleteTaskApplicationCommand } from '@/module/commands/uncomplete-task.application-command';
+import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 import { uncompleteTask } from '@/write/learning-materials-tasks/domain/uncomplete-task';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
@@ -18,7 +17,7 @@ export class UncompleteTaskCommandHandler implements ICommandHandler<UncompleteT
   async execute(command: UncompleteTaskApplicationCommand): Promise<void> {
     const eventStream = EventStreamName.from('LearningMaterialsTasks', command.data.learningMaterialsId);
 
-    await this.applicationService.execute<TaskWasCompleted | TaskWasUncompleted>(
+    await this.applicationService.execute<LearningMaterialsTasksDomainEvent>(
       eventStream,
       {
         causationId: command.id,

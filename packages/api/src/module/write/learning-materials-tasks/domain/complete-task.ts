@@ -1,9 +1,9 @@
 import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
-import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
 import { CompleteTask } from '@/module/commands/complete-task.domain-command';
+import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 
 export function completeTask(
-  pastEvents: (TaskWasCompleted | TaskWasUncompleted)[],
+  pastEvents: LearningMaterialsTasksDomainEvent[],
   { data: { learningMaterialsId, taskId } }: CompleteTask,
 ): TaskWasCompleted[] {
   const state = pastEvents
