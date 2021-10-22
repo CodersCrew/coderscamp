@@ -87,6 +87,25 @@ paths:
           description: 'Email confirmation was successfully requested. Email was sent.'
       tags:
         - Email Confirmation
+  /email-confirmation/approval:
+    post:
+      summary: Confirm email for given user.
+      operationId: ConfirmUserRegistrationPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveEmailConfirmationBody'
+      responses:
+        204:
+          description: 'Mail for user successfully confirmed'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Email Confirmation
   /users:
     get:
       summary: All users registered in the platform
@@ -138,7 +157,7 @@ paths:
     get:
       summary: How many course activites was completed by user.
       operationId: CourseProgress_getCourseProgress
-      parameters: [ ]
+      parameters: []
       responses:
         200:
           description: ''
@@ -257,6 +276,15 @@ components:
           description: Name of operation to be confirmed by email
           type: string
           example: user-registration
+      required:
+        - confirmationFor
+    ApproveEmailConfirmationBody:
+      type: object
+      properties:
+        confirmationToken:
+          description: Given confirmation token created meanwhile registration
+          type: string
+          example: someExample.Token
       required:
         - confirmationFor
     CourseProgressGetResponseBody:
@@ -398,7 +426,7 @@ components:
         message:
           type: string
           description: Error message
-          example: "Learning materials url was already generated"
+          example: 'Learning materials url was already generated'
       required:
         - message
     NestErrorResponseBody:
