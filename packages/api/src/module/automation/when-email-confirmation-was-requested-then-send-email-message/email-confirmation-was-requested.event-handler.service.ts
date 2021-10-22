@@ -49,27 +49,26 @@ export class EmailConfirmationWasRequestedEventHandler implements OnApplicationB
   }
 
   async onUserRegistrationWasStarted(event: ApplicationEvent<UserRegistrationWasStarted>) {
-    const { userId } = event.data;
-    const eventStream = EmailConfirmationWasRequestedEventHandler.eventStreamFor(userId);
-
-    await this.applicationService.execute(eventStream, { ...event.metadata }, () => [event]);
-
-    await this.sendEmailIfPossible(event.data.userId, event);
+    await this.publishAutomationEventAndSendEmailIfPossible(event);
   }
 
   async onEmailConfirmationWasRequested(event: ApplicationEvent<EmailConfirmationWasRequested>) {
     if (event.data.confirmationFor !== 'user-registration') return;
 
+    await this.publishAutomationEventAndSendEmailIfPossible(event);
+  }
+
+  private static eventStreamFor(userId: string) {
+    return EventStreamName.from(SUBSCRIPTION_NAME, userId);
+  }
+
+  private async publishAutomationEventAndSendEmailIfPossible(event: ApplicationEvent<AutomationEvent>) {
     const { userId } = event.data;
     const eventStream = EmailConfirmationWasRequestedEventHandler.eventStreamFor(userId);
 
     await this.applicationService.execute(eventStream, { ...event.metadata }, () => [event]);
 
     await this.sendEmailIfPossible(userId, event);
-  }
-
-  private static eventStreamFor(userId: string) {
-    return EventStreamName.from(SUBSCRIPTION_NAME, userId);
   }
 
   private async sendEmailIfPossible(userId: UserId, event: ApplicationEvent) {

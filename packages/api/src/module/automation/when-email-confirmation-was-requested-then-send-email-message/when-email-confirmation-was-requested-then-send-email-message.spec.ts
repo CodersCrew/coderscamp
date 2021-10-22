@@ -67,7 +67,6 @@ describe('SendEmailMessage when emailConfirmationWasRequested', () => {
     const hashedPassword = 'StronkPasswort';
     const confirmationFor = 'user-registration';
     const confirmationToken = '41c2c1fc8f6cdc15.d5ee8246071726582172f83d569287951a0d727c94dfc35e291fe17abec789c2';
-    const event = emailConfirmationWasRequestedEvent({ userId, confirmationFor, confirmationToken });
 
     const userRegistrationWasStarted = userRegistrationWasStartedEvent({
       userId,
@@ -82,9 +81,15 @@ describe('SendEmailMessage when emailConfirmationWasRequested', () => {
     );
 
     // When
+    const emailConfirmationWasRequested = emailConfirmationWasRequestedEvent({
+      userId,
+      confirmationFor,
+      confirmationToken,
+    });
+
     await moduleUnderTest.eventOccurred(
       EventStreamName.from('EmailConfirmation', `${userId}_${confirmationFor}`),
-      event,
+      emailConfirmationWasRequested,
     );
 
     // then
