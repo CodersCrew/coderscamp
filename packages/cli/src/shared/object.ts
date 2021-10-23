@@ -1,7 +1,7 @@
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 
-import type { AnyObject, UnknownObject } from '@coderscamp/shared/types';
+import type { AnyObject } from '@coderscamp/shared/types';
 
 import { createLogger } from './logger';
 
@@ -9,7 +9,7 @@ const logger = createLogger('Object utils');
 
 export const transformToMatchClass =
   <ClassInstance extends AnyObject>(cls: ClassConstructor<ClassInstance>) =>
-  async <Obj extends UnknownObject | ClassInstance>(obj: Obj): Promise<ClassInstance> => {
+  async <Obj extends AnyObject | ClassInstance>(obj: Obj): Promise<ClassInstance> => {
     logger.debug(`Transforming object to match the ${cls.name} class`, obj);
 
     const result = plainToClass(cls, obj, { excludeExtraneousValues: true, enableImplicitConversion: true });

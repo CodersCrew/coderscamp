@@ -55,6 +55,7 @@ out
 # Generated
 packages/ui/src/svg
 packages/ui/src/icons
+packages/cli/output
 .cache-loader
 
 # Database

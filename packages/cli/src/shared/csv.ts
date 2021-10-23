@@ -1,7 +1,9 @@
-import parse from 'csv-parse/lib/sync';
+import parseFromCsv from 'csv-parse/lib/sync';
 import { readFile } from 'fs/promises';
 
 import { createLogger } from './logger';
+
+export { parse as parseToCsv } from 'json2csv';
 
 const logger = createLogger('CSV Utils');
 
@@ -12,7 +14,7 @@ export const getCsvContent = async (csvPath: string) => {
 
   logger.debug('parsing content of the CSV file');
 
-  const parsedContent: Record<string, unknown>[] = parse(content, { columns: true });
+  const parsedContent: Record<string, unknown>[] = parseFromCsv(content, { columns: true });
 
   logger.debug('CSV file content parsed successfully');
 

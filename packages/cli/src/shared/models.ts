@@ -33,6 +33,11 @@ export class RegisterDTO {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class User {
@@ -49,7 +54,12 @@ export class User {
   @Expose()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  firstName: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @Expose()
   @IsUrl()
@@ -59,4 +69,21 @@ export class User {
   @Expose()
   @IsIn(Object.values(userRoles))
   role: Role;
+}
+
+export class WelcomeCsvRow {
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @Expose()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @Expose()
+  @IsUrl()
+  @IsNotEmpty()
+  checklist: string;
 }
