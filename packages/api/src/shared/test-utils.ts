@@ -121,6 +121,11 @@ export function getIdGeneratorSpy(app: TestingModule): IdGeneratorSpy {
   return jest.spyOn(idGenerator, 'generate');
 }
 
+export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
+  register: jest.fn(),
+  execute: jest.fn(),
+};
+
 export async function initWriteTestModule(config?: {
   modules?: ModuleMetadata['imports'];
   configureModule?: TestingModuleBuilder | ((app: TestingModuleBuilder) => TestingModuleBuilder);
@@ -263,7 +268,11 @@ export async function initWriteTestModule(config?: {
     return waitForExpect(() => {
       const lastExecuteIndex = commandBusSpy.mock.calls.length - 1;
 
-      const lastPublishedCommand = commandBusSpy.mock.calls[lastExecuteIndex][0] as ApplicationCommand;
+      const lastCall = commandBusSpy.mock.calls[lastExecuteIndex];
+
+      if (!lastCall) throw new Error('No command has been published');
+
+      const lastPublishedCommand = lastCall[0] as ApplicationCommand;
 
       expect({
         type: lastPublishedCommand.type,
@@ -272,6 +281,11 @@ export async function initWriteTestModule(config?: {
     });
   }
 
+  async function expectCommandWasNotAppeared() {
+    const lastCommand = commandBusSpy.mock.calls[0];
+
+    expect(lastCommand).toBeUndefined();
+  }
   function lastGeneratedId(): string {
     const ids = idGeneratorSpy.mock.results;
 
@@ -288,6 +302,7 @@ export async function initWriteTestModule(config?: {
     close,
     expectEventPublishedLastly,
     expectCommandExecutedLastly,
+    expectCommandWasNotAppeared,
     expectEventsPublishedLastly,
     expectSubscriptionPosition,
     randomUuid,
@@ -296,6 +311,23 @@ export async function initWriteTestModule(config?: {
   };
 }
 
+export async function initAutomationTestModule(
+  modules?: ModuleMetadata['imports'],
+  configureModule?: (app: TestingModuleBuilder) => TestingModuleBuilder,
+) {
+  if (!modules && !configureModule) return initWriteTestModule();
+
+  return initWriteTestModule({
+    modules,
+    configureModule: (app: TestingModuleBuilder) => {
+      app.overrideProvider(CommandBus).useValue(commandBusNoFailWithoutHandler);
+
+      if (configureModule && !(configureModule instanceof TestingModuleBuilder)) configureModule(app);
+
+      return app;
+    },
+  });
+}
 export type SampleDomainEvent = {
   type: 'SampleDomainEvent';
   data: {
@@ -363,8 +395,3 @@ export function sampleApplicationEvent(event: Partial<ApplicationEvent> = {}): A
     ...event,
   };
 }
-
-export const commandBusNoFailWithoutHandler: Partial<CommandBus> = {
-  register: jest.fn(),
-  execute: jest.fn(),
-};

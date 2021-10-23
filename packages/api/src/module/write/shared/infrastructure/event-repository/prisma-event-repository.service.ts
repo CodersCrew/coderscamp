@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { ApplicationEvent, DefaultCommandMetadata } from '@/module/application-command-events';
+import { DomainEvent } from '@/module/domain.event';
 import { PrismaService } from '@/prisma/prisma.service';
 
 import { EventStream } from '../../application/application-service';
@@ -29,6 +30,19 @@ export class PrismaEventRepository implements EventRepository {
     private readonly prismaService: PrismaService,
     @Inject(TIME_PROVIDER) private readonly timeProvider: TimeProvider,
   ) {}
+
+  async readDomainStream<Event extends DomainEvent>(
+    streamName: EventStreamName,
+  ): Promise<{ pastEvents: Event[]; streamVersion: number }> {
+    const pastEvents = (await this.read(streamName)).map((e) => ({ type: e.type, data: e.data } as Event));
+
+    return {
+      pastEvents,
+      get streamVersion() {
+        return pastEvents?.length ?? 0;
+      },
+    };
+  }
 
   async read(streamName: EventStreamName): Promise<EventStream> {
     const dbEvents = await this.prismaService.event.findMany({
