@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { CompleteTaskApplicationCommand } from '@/commands/complete-task.application-command';
-import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
+import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
@@ -18,7 +18,7 @@ export class CompleteTaskCommandHandler implements ICommandHandler<CompleteTaskA
   async execute(command: CompleteTaskApplicationCommand): Promise<void> {
     const eventStream = EventStreamName.from('LearningMaterialsTasks', command.data.learningMaterialsId);
 
-    await this.applicationService.execute<TaskWasCompleted>(
+    await this.applicationService.execute<LearningMaterialsTasksDomainEvent>(
       eventStream,
       {
         causationId: command.id,

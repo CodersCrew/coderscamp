@@ -5,6 +5,7 @@ import {
   COURSE_PLAN_URL,
   MAIN_TEST_HOUR,
   MODULES_COUNT,
+  PARTICIPANT_RECRUITMENT_FORM_URL,
   PLACES_COUNT,
   SCHEDULE_URL,
   TEAM_SIZE,
@@ -12,7 +13,6 @@ import {
 
 import { ExternalLink } from '../ExternalLink';
 import { InternalLink } from '../InternalLink';
-import { useRecruitmentModal } from '../RecruitmentModal';
 
 export interface Question {
   title: string;
@@ -22,8 +22,6 @@ export interface Question {
 const fullHarmonogram = <ExternalLink href={SCHEDULE_URL}>pełnym harmonogramie CodersCamp</ExternalLink>;
 
 export const useQuestions = (): Question[] => {
-  const { openModal } = useRecruitmentModal();
-
   return [
     {
       title: 'W jakich dniach i godzinach odbywają się spotkania?',
@@ -55,13 +53,23 @@ export const useQuestions = (): Question[] => {
       title: 'Jak zapisać się na kurs?',
       content: (
         <>
-          Pełny harmonogram zapisów na CodersCamp znajdziesz{' '}
-          <InternalLink href={CANDIDATE_SCHEDULE_PATH}>w tej sekcji</InternalLink>. Możesz także{' '}
-          <ExternalLink onClick={() => openModal('participant')}>kliknąć tutaj</ExternalLink> i podać nam swój adres
-          e-mail a przypomnimy Ci o rozpoczęciu rekrutacji.
+          <ExternalLink href={PARTICIPANT_RECRUITMENT_FORM_URL}>Kliknij tutaj</ExternalLink> i wypełnij formularz
+          rekrutacyjny. Po zapisaniu się sprawdź pełen harmonogram zapisów na CodersCamp dostępny{' '}
+          <InternalLink href={CANDIDATE_SCHEDULE_PATH}>w tej sekcji</InternalLink>.
         </>
       ),
     },
+    // {
+    //   title: 'Jak zapisać się na kurs?',
+    //   content: (
+    //     <>
+    //       Pełny harmonogram zapisów na CodersCamp znajdziesz{' '}
+    //       <InternalLink href={CANDIDATE_SCHEDULE_PATH}>w tej sekcji</InternalLink>. Możesz także{' '}
+    //       <ExternalLink onClick={() => openModal('participant')}>kliknąć tutaj</ExternalLink> i podać nam swój adres
+    //       e-mail a przypomnimy Ci o rozpoczęciu rekrutacji.
+    //     </>
+    //   ),
+    // },
     {
       title: 'Ile osób dostaje się na kurs?',
       content: (
@@ -98,13 +106,22 @@ export const useQuestions = (): Question[] => {
       title: 'Gdzie znajdę formularz rekrutacyjny?',
       content: (
         <>
-          Link do formularza znajdziesz na stronie głównej, kiedy tylko rozpocznie się rejestracja na kurs (
-          <InternalLink href={CANDIDATE_SCHEDULE_PATH}>szczegóły tutaj</InternalLink>
-          ). Możesz także otrzymać link do formularza na swoją skrzynkę e-mail w pierwszym dniu rekrutacji. W tym celu{' '}
-          <ExternalLink onClick={() => openModal('participant')}>kliknij tutaj</ExternalLink> i zostaw nam swój mail.
+          Formularz rekrutacyjny dostępny jest{' '}
+          <ExternalLink href={PARTICIPANT_RECRUITMENT_FORM_URL}>pod tym linkiem</ExternalLink>.
         </>
       ),
     },
+    // {
+    //   title: 'Gdzie znajdę formularz rekrutacyjny?',
+    //   content: (
+    //     <>
+    //       Link do formularza znajdziesz na stronie głównej, kiedy tylko rozpocznie się rejestracja na kurs (
+    //       <InternalLink href={CANDIDATE_SCHEDULE_PATH}>szczegóły tutaj</InternalLink>
+    //       ). Możesz także otrzymać link do formularza na swoją skrzynkę e-mail w pierwszym dniu rekrutacji. W tym celu{' '}
+    //       <ExternalLink onClick={() => openModal('participant')}>kliknij tutaj</ExternalLink> i zostaw nam swój mail.
+    //     </>
+    //   ),
+    // },
     {
       title: 'Jaki jest minimalny wiek uczestników?',
       content: (

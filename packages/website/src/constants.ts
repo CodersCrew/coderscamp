@@ -1,4 +1,4 @@
-export const MENTORS_COUNT = 15;
+export const MENTORS_COUNT = 29;
 export const TEAM_SIZE = 6;
 export const PLACES_COUNT = MENTORS_COUNT * TEAM_SIZE;
 export const MAIN_TEST_HOUR = '18:00';
@@ -16,6 +16,8 @@ export const TERMS_URL = 'https://drive.google.com/file/d/1my5UofcZ1MnzVF7CjJlsK
 export const PRIVACY_POLICY_URL = 'https://drive.google.com/file/d/142zC0E7MP-6hIHTCDYtIeg-O-TUXjQKF/view?usp=sharing';
 export const MENTOR_RECRUITMENT_FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLSebGGyxGNq5qmYBrMk0Lvctg6GqVeE3N9a1XJoH8Dl96dZghA/viewform';
+export const PARTICIPANT_RECRUITMENT_FORM_URL = 'https://forms.gle/2spSMxigbBoWKKvd6';
+export const STRATEGIC_PARTNER_SECTION_ID = 'strategic-partner';
 
 export const pageNavigation = [
   { href: '/', children: 'Strona główna' },

@@ -22,15 +22,15 @@ export const MentorRequirements = () => {
           jeszcze przed rozpoczęciem kursu.
         </Requirement>
         <Stack direction={{ base: 'column', lg: 'row' }} spacing={flexItemVerticalMargin} wrap="wrap">
-          <Requirement flex="1 1 0px">
+          <Requirement minHeight="min-content" flex="1 1 0px">
             Posiadasz doświadczenie projektowe w branży IT. Jesteś w stanie poprzeć je ciekawym CV i/lub rozbudowanym
             portfolio na GitHubie.
           </Requirement>
-          <Requirement flex="1 1 0px">
+          <Requirement minHeight="min-content" flex="1 1 0px">
             Chcesz wspierać innych w stawianiu pierwszych kroków w branży IT. Jesteś gotowy poświęcać na to kilka godzin
             każdego tygodnia przez 6 miesięcy.
           </Requirement>
-          <Requirement flex="1 1 0px">
+          <Requirement minHeight="min-content" flex="1 1 0px">
             Przewodzenie zespołowi oraz uczenie innych sprawiają Ci przyjemność. Potrafisz w prosty sposób przedstawiać
             trudne zagadnienia.
           </Requirement>

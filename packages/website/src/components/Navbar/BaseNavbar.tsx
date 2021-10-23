@@ -12,22 +12,19 @@ import { useMediaQuery } from '@coderscamp/ui/hooks/useMediaQuery';
 import { SolidMenuIcon } from '@coderscamp/ui/icons/SolidMenu';
 import { LogoBlackHorizontal } from '@coderscamp/ui/svg/logos';
 
-import { MENTOR_RECRUITMENT_FORM_URL, pageNavigation } from '@/constants';
+import { MENTOR_RECRUITMENT_FORM_URL, pageNavigation, PARTICIPANT_RECRUITMENT_FORM_URL } from '@/constants';
 
 import { externalLinkBaseProps } from '../ExternalLink';
-import { useRecruitmentModal } from '../RecruitmentModal';
 import { NavbarItem } from './NavbarItem';
 
 const NavbarButtons = () => {
-  const { openModal } = useRecruitmentModal();
-
   return (
     <>
-      <Button size="md" color="brand" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
-        Zostań mentorem
-      </Button>
-      <Button size="md" onClick={() => openModal('participant')}>
+      <Button size="md" color="brand" as="a" href={PARTICIPANT_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
         Zapisz się na kurs
+      </Button>
+      <Button size="md" as="a" href={MENTOR_RECRUITMENT_FORM_URL} {...externalLinkBaseProps}>
+        Zostań mentorem
       </Button>
     </>
   );

@@ -1,6 +1,6 @@
 import { command, log, terminate } from './_helpers';
 
-const WORKSPACES = ['api', 'docs', 'panel', 'ui', 'website', 'shared'];
+const WORKSPACES = ['api', 'docs', 'panel', 'ui', 'website', 'shared', 'cli'];
 
 const getWorkspaceName = () => {
   const workspace = process.argv[2];
