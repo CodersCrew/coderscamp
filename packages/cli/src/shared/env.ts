@@ -1,5 +1,5 @@
 import { Expose, plainToClass } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsString, validateOrReject } from 'class-validator';
+import { IsNotEmpty, IsString, validateOrReject } from 'class-validator';
 import dotenv from 'dotenv';
 
 import { createLogger } from './logger';
@@ -23,26 +23,6 @@ class EnvVariables {
   @IsString()
   @IsNotEmpty()
   PROCESS_ST_CHECKLIST_URL: string;
-
-  @Expose()
-  @IsInt()
-  // @IsNotEmpty()
-  NODEMAILER_PORT: number;
-
-  @Expose()
-  @IsString()
-  // @IsNotEmpty()
-  NODEMAILER_HOST: string;
-
-  @Expose()
-  @IsString()
-  // @IsNotEmpty()
-  NODEMAILER_USER: string;
-
-  @Expose()
-  @IsString()
-  // @IsNotEmpty()
-  NODEMAILER_PASSWORD: string;
 }
 
 export const env = plainToClass(EnvVariables, process.env, {

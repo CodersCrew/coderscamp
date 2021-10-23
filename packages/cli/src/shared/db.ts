@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import { generate } from 'generate-password';
 
 import { env } from './env';
 import { createLogger } from './logger';
@@ -14,10 +13,7 @@ const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
 export const register = async (registerDto: RegisterDTO): Promise<User['id']> => {
   logger.debug(`Registering user with email ${registerDto.email}`);
 
-  const { user, error } = await supabase.auth.signUp({
-    email: registerDto.email,
-    password: generate({ length: 16, numbers: true, symbols: true }),
-  });
+  const { user, error } = await supabase.auth.signUp(registerDto);
 
   if (!user) {
     throw error ?? new Error(`Unknown error ocurred when signing up user with email ${registerDto.email}`);
