@@ -53,9 +53,14 @@ export const generateChecklists = (program: Command) => {
         logger.debug('Iterating through fetched participants');
 
         for (const participant of participants) {
-          const checklist = await generateProcessStChecklist(participant.name);
+          if (!participant.checklist) {
+            const name = `${participant.firstName} ${participant.lastName}`;
+            const checklist = await generateProcessStChecklist(name);
 
-          await updateUserById(participant.id, { checklist });
+            await updateUserById(participant.id, { checklist });
+          } else {
+            logger.debug('Participant already has a checklist', participant);
+          }
         }
 
         logger.debug('Iteration through fetched participants finished');

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { Expose, Transform } from 'class-transformer';
-import { IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export const userRoles = {
   participant: 'participant',
@@ -24,22 +24,35 @@ export class ParticipantCsvRow {
   @Expose()
   @IsEmail()
   @IsNotEmpty()
-  @Transform(({ value }) => value.toLowerCase())
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim().toLowerCase() : value))
   email: string;
 }
 
-export class RegisterDTO {
+export class CreateUserDTO {
   @Expose()
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
+  @Expose()
+  @IsIn(Object.values(userRoles))
+  role: Role;
 }
 
 export class User {
   @Expose()
-  @IsString()
-  @IsNotEmpty()
-  id: string;
+  @IsNumber()
+  id: number;
 
   @Expose()
   @IsEmail()
@@ -49,7 +62,12 @@ export class User {
   @Expose()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  firstName: string;
+
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @Expose()
   @IsUrl()
@@ -59,4 +77,21 @@ export class User {
   @Expose()
   @IsIn(Object.values(userRoles))
   role: Role;
+}
+
+export class WelcomeCsvRow {
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @Expose()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @Expose()
+  @IsUrl()
+  @IsNotEmpty()
+  checklist: string;
 }

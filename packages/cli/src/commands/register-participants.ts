@@ -1,11 +1,12 @@
 import { Argument, Command } from 'commander';
 
+import { asyncFilter, removeDuplicatesForProperty } from '../shared/array';
 import { getCsvContent } from '../shared/csv';
-import { insertUsers, register } from '../shared/db';
+import { getUsersByRole, insertUsers } from '../shared/db';
 import { validateEnv } from '../shared/env';
 import { createLogger } from '../shared/logger';
-import { ParticipantCsvRow, RegisterDTO, User, userRoles } from '../shared/models';
-import { transformToMatchClass } from '../shared/object';
+import { CreateUserDTO, ParticipantCsvRow, userRoles } from '../shared/models';
+import { filterInvalid, transformAndValidate, transformToMatchClass } from '../shared/object';
 
 const logger = createLogger('register-participants');
 
@@ -20,27 +21,37 @@ export const registerParticipants = (program: Command) => {
 
         const rows = await getCsvContent(csvPath);
         const participantsRows = await Promise.all(rows.map(transformToMatchClass(ParticipantCsvRow)));
+        const correctParticipantsRows = await asyncFilter(participantsRows, filterInvalid(ParticipantCsvRow));
 
-        const participants: User[] = [];
+        const currentParticipants = await getUsersByRole(userRoles.participant);
+        const currentParticipantsEmails = currentParticipants.map(({ email }) => email);
 
-        logger.debug('Iterating through parsed rows');
+        logger.debug('Filtering emails that are already added to the database');
 
-        for (const { email, firstName, lastName } of participantsRows) {
-          const registerDto = await transformToMatchClass(RegisterDTO)({ email });
-          const userId = await register(registerDto);
-          const participant = await transformToMatchClass(User)({
-            ...registerDto,
-            id: userId,
-            name: `${firstName} ${lastName}`,
-            role: userRoles.participant,
-          });
+        const participantsRowsToAdd = correctParticipantsRows.filter(({ email }) => {
+          if (currentParticipantsEmails.includes(email)) {
+            logger.debug(`Participant with email ${email} already exists in the database`);
 
-          participants.push(participant);
-        }
+            return false;
+          }
 
-        logger.debug('Iteration through parsed rows finished');
+          return true;
+        });
 
-        await insertUsers(participants);
+        logger.debug('Mapping ParticipantCsvRows to CreateUserDTOs');
+
+        const createUserDTOs = await Promise.all(
+          participantsRowsToAdd.map(({ email, firstName, lastName }) =>
+            transformAndValidate(CreateUserDTO)({
+              email,
+              firstName,
+              lastName,
+              role: userRoles.participant,
+            }),
+          ),
+        );
+
+        await insertUsers(removeDuplicatesForProperty(createUserDTOs, 'email'));
       } catch (ex) {
         logger.error(ex);
       }
