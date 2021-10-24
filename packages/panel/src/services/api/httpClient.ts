@@ -1,15 +1,17 @@
 import type { SerializedError } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export const httpClient = axios.create({
   baseURL: '/api',
   withCredentials: true,
 });
 
+const isAxiosError = (value: unknown): value is AxiosError<{ message: string }, unknown> => axios.isAxiosError(value);
+
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       const serializedError: SerializedError = {
         name: error.response?.statusText,
         code: String(error.response?.status),
