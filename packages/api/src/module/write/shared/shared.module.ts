@@ -7,6 +7,7 @@ import { env } from '@/shared/env';
 import { EventsSubscriptionsRegistry } from '@/write/shared/application/events-subscription/events-subscriptions-registry';
 import { PASSWORD_ENCODER } from '@/write/shared/application/password-encoder';
 import { CryptoPasswordEncoder } from '@/write/shared/infrastructure/password-encoder/crypto-password-encoder';
+import { EventStoreRestController } from '@/write/shared/presentation/event-store.rest-controller';
 
 import { ApplicationEventBus } from './application/application.event-bus';
 import { ApplicationCommandFactory } from './application/application-command.factory';
@@ -24,6 +25,7 @@ const imports: ModuleMetadata['imports'] = [CqrsModule, PrismaModule];
 
 @Module({
   imports,
+  controllers: [EventStoreRestController],
   providers: [
     ApplicationEventBus,
     {
