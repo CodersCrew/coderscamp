@@ -13,7 +13,7 @@ const main = () => {
   const gitignore = readFileSync(resolve(__dirname, '../.gitignore'), 'utf-8');
   const rootPaths = gitignore
     .split('\n')
-    .filter((str) => str.trim() && !str.startsWith('#') && !str.startsWith('.env'));
+    .filter((str) => str.trim() && !str.startsWith('#') && !str.startsWith('.env') && !str.startsWith('.idea'));
 
   command('yarn cache clean');
   log('Yarn cache cleaned');
