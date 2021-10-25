@@ -5,7 +5,7 @@ export const MAIN_TEST_HOUR = '18:00';
 export const MAIN_TEST_FULL_DATE = `24.11.2021 o ${MAIN_TEST_HOUR}`;
 export const MODULES_COUNT = 5;
 export const PROJECTS_COUNT = 6;
-export const CONTACT_EMAIL = 'camp@coderscrew.p';
+export const CONTACT_EMAIL = 'camp@coderscrew.pl';
 export const CANDIDATE_SCHEDULE_ID = 'candidate-schedule';
 export const CANDIDATE_SCHEDULE_PATH = '/#candidate-schedule';
 
