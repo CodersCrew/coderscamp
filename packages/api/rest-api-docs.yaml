@@ -214,7 +214,7 @@ paths:
           description: 'Process.st event was processed'
       tags:
         - Process.st
-  /event-store/events/:
+  /event-store/events:
     get:
       summary: Application events
       description: Try to subscribe for new events by changing media type to `text/event-stream`
@@ -464,6 +464,7 @@ components:
         - message
     ApplicationEventDto:
       type: object
+      description: Application event (from domain event)
       properties:
         type:
           type: string
@@ -515,8 +516,23 @@ components:
         - metadata
     GetEventStoreEventsStream:
       type: array
+      description: Response format follow Server-Sent Events specification
       items:
-        $ref: '#/components/schemas/ApplicationEventDto'
+        properties:
+          id:
+            type: string
+            description: global order of event
+          data:
+            $ref: '#/components/schemas/ApplicationEventDto'
+          type:
+            type: string
+            description: Same type as application event
+          retry:
+            type: number
+      required:
+        - id
+        - data
+        - type
   responses:
     BadRequest:
       description: Incorrect request body
