@@ -15,7 +15,7 @@ function plopBuilder(plop: NodePlopAPI) {
   // Plugins
   plop.setPrompt('directory', inquirerSelectDirectory);
   // Helpers
-  plop.setHelper('moduleName', moduleNameFromPath);
+  plop.setHelper('moduleNameFromPath', moduleNameFromPath);
   // Generators
   plop.setGenerator('command', commandGenerator);
   plop.setGenerator('command_handler', commandHandlerGenerator);

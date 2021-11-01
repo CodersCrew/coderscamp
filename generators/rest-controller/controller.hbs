@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { {{properCase command}}RequestBody } from '@coderscamp/shared/models/{{moduleName directory}}/{{camelCase command}}RequestBody';
+import { {{properCase command}}RequestBody } from '@coderscamp/shared/models/{{moduleNameFromPath directory}}/{{camelCase command}}RequestBody';
 
 import { {{camelCase command}}, {{properCase command}}ApplicationCommand } from '@/module/commands/{{dashCase command}}';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
