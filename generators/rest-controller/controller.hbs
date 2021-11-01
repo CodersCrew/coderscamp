@@ -6,7 +6,6 @@ import { {{properCase command}}RequestBody } from '@coderscamp/shared/models/{{m
 import { {{camelCase command}}, {{properCase command}}ApplicationCommand } from '@/module/commands/{{dashCase command}}';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
 
-
 @Controller('')
 export class {{properCase restController}}RestController {
   constructor(private readonly commandBus: CommandBus, private readonly commandFactory: ApplicationCommandFactory) {}

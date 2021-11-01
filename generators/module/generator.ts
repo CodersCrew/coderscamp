@@ -20,21 +20,21 @@ export const moduleGenerator = {
     moduleDirectoryPrompt,
     commandNamePrompt,
     eventNamePrompt,
-    { ...domainFunctionNamePrompt, when: (answers: Answers) => answers[eventNamePrompt.name] !== '' },
+    domainFunctionNamePrompt,
     { ...streamCategoryPrompt, when: (answers: Answers) => answers[domainFunctionNamePrompt.name] !== '' },
-    { ...restControllerNamePrompt },
-    methodNamePrompt,
+    restControllerNamePrompt,
+    { ...methodNamePrompt, when: (answers: Answers) => answers[restControllerNamePrompt.name] !== '' },
   ],
   actions: [
-    { ...createCommandAction, skipIfExist: true },
-    { ...createEventAction, skipIfExist: true },
+    { ...createCommandAction, skipIfExists: true },
+    { ...createEventAction, skipIfExists: true },
     createModuleAction,
     createTestModuleAction,
-    runActionIfAnswersWereGiven([commandNamePrompt.name, eventNamePrompt.name], createTestFileAction),
-    runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name], {
+    createTestFileAction,
+    {
       ...createDomainFunctionAction,
       path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.ts`,
-    }),
+    },
     runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name], {
       ...createDomainFunctionTestAction,
       path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.spec.ts`,
@@ -43,14 +43,14 @@ export const moduleGenerator = {
       ...createCommandHandlerAction,
       path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/application/{{dashCase ${commandNamePrompt.name}}}.command-handler.ts`,
     },
-    {
+    runActionIfAnswersWereGiven([restControllerNamePrompt.name, methodNamePrompt.name], {
       ...createRestControllerAction,
       path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/presentation/rest/{{dashCase ${restControllerNamePrompt.name}}}.rest-controller.ts`,
-    },
-    {
+    }),
+    runActionIfAnswersWereGiven([restControllerNamePrompt.name, methodNamePrompt.name], {
       ...createTypesFileWithBodyTypeAction,
       path: `./packages/shared/src/models/{{dashCase ${moduleNamePrompt.name}}}/{{camelCase ${commandNamePrompt.name}}}RequestBody.ts`,
-      skipIfExist: true,
-    },
+      skipIfExists: true,
+    }),
   ],
 };

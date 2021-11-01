@@ -1,9 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/no-default-export */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import inquirerSelectDirectory from 'inquirer-select-directory';
-import { NodePlopAPI } from 'plop';
+import type { NodePlopAPI } from 'plop';
 
 import {
   commandGenerator,
@@ -12,19 +7,22 @@ import {
   eventGenerator,
   moduleGenerator,
   restControllerGenerator,
-} from './templates';
-import { moduleNameFromPath } from './templates/helpers/moduleNameFromPath';
+} from './generators';
+import { inquirerSelectDirectory } from './generators/_plugins/inquirerSelectDirectory';
+import { moduleNameFromPath } from './generators/helpers/moduleNameFromPath';
 
-export default function (plop: NodePlopAPI) {
+function plopBuilder(plop: NodePlopAPI) {
   // Plugins
   plop.setPrompt('directory', inquirerSelectDirectory);
   // Helpers
   plop.setHelper('moduleName', moduleNameFromPath);
   // Generators
   plop.setGenerator('command', commandGenerator);
-  plop.setGenerator('commandHandler', commandHandlerGenerator);
-  plop.setGenerator('moduleGenerator', moduleGenerator);
+  plop.setGenerator('command_handler', commandHandlerGenerator);
+  plop.setGenerator('module', moduleGenerator);
   plop.setGenerator('event', eventGenerator);
-  plop.setGenerator('domain-function', domainFunctionGenerator);
-  plop.setGenerator('restController', restControllerGenerator);
+  plop.setGenerator('domain_function', domainFunctionGenerator);
+  plop.setGenerator('rest_controller', restControllerGenerator);
 }
+
+export default plopBuilder;
