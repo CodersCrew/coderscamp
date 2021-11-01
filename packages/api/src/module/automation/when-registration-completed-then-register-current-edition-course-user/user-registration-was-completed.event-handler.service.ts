@@ -2,8 +2,10 @@ import { Injectable, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/com
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ApplicationEvent } from '@/module/application-command-events';
-import { RegisterCourseUserCommand } from '@/module/commands/register-course-user';
-import { RequestEmailConfirmationApplicationCommand } from '@/module/commands/request-email-conformation';
+import {
+  RegisterCourseUserApplicationCommand,
+  RegisterCourseUserCommand,
+} from '@/module/commands/register-course-user';
 import { UserRegistrationWasCompleted } from '@/module/events/user-registration-was-completed.domain-event';
 import { env } from '@/shared/env';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
@@ -36,7 +38,7 @@ export class UserRegistrationWasCompletedEventHandler implements OnApplicationBo
 
   async onUserRegistrationWasCompleted(event: ApplicationEvent<UserRegistrationWasCompleted>) {
     const command = this.commandFactory.applicationCommand((idGenerator) => ({
-      class: RequestEmailConfirmationApplicationCommand,
+      class: RegisterCourseUserApplicationCommand,
       ...RegisterCourseUserCommand({
         userId: event.data.userId,
         courseUserId: idGenerator.generate(),
