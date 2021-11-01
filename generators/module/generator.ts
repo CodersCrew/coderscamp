@@ -13,6 +13,12 @@ import { runActionIfAnswersWereGiven } from '../utils/runActionConditionally';
 import { createModuleAction, createTestFileAction, createTestModuleAction } from './actions';
 import { moduleDirectoryPrompt, moduleNamePrompt } from './prompts';
 
+const createDomainFunctionPath = `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.ts`;
+const createDomainFunctionTestPath = `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.spec.ts`;
+const createCommandHandlerPath = `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/application/{{dashCase ${commandNamePrompt.name}}}.command-handler.ts`;
+const createRestControllerPath = `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/presentation/rest/{{dashCase ${restControllerNamePrompt.name}}}.rest-controller.ts`;
+const createTypesFileWithBodyTypePath = `./packages/shared/src/models/{{dashCase ${moduleNamePrompt.name}}}/{{camelCase ${commandNamePrompt.name}}}RequestBody.ts`;
+
 export const moduleGenerator = {
   description: 'Create a new module',
   prompts: [
@@ -33,23 +39,23 @@ export const moduleGenerator = {
     createTestFileAction,
     {
       ...createDomainFunctionAction,
-      path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.ts`,
+      path: createDomainFunctionPath,
     },
     runActionIfAnswersWereGiven([domainFunctionNamePrompt.name, streamCategoryPrompt.name], {
       ...createDomainFunctionTestAction,
-      path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/domain/{{dashCase ${domainFunctionNamePrompt.name}}}.spec.ts`,
+      path: createDomainFunctionTestPath,
     }),
     {
       ...createCommandHandlerAction,
-      path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/application/{{dashCase ${commandNamePrompt.name}}}.command-handler.ts`,
+      path: createCommandHandlerPath,
     },
     runActionIfAnswersWereGiven([restControllerNamePrompt.name, methodNamePrompt.name], {
       ...createRestControllerAction,
-      path: `{{${moduleDirectoryPrompt.name}}}/{{dashCase ${moduleNamePrompt.name}}}/presentation/rest/{{dashCase ${restControllerNamePrompt.name}}}.rest-controller.ts`,
+      path: createRestControllerPath,
     }),
     runActionIfAnswersWereGiven([restControllerNamePrompt.name, methodNamePrompt.name], {
       ...createTypesFileWithBodyTypeAction,
-      path: `./packages/shared/src/models/{{dashCase ${moduleNamePrompt.name}}}/{{camelCase ${commandNamePrompt.name}}}RequestBody.ts`,
+      path: createTypesFileWithBodyTypePath,
       skipIfExists: true,
     }),
   ],
