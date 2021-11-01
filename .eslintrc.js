@@ -6,6 +6,9 @@ const FILES_WITH_DEV_DEPENDENCIES = [
   '**/*.stories.tsx',
   'scripts/*.js',
   'scripts/**',
+  'generators/*.ts',
+  'generators/**',
+  'plopfile.ts',
 ];
 
 module.exports = {
@@ -158,7 +161,7 @@ module.exports = {
     },
     {
       // Files that should contain a default export.
-      files: ['*.config.[tj]s', 'packages/website/src/pages/**/*.tsx', '*.stories.tsx'],
+      files: ['*.config.[tj]s', 'packages/website/src/pages/**/*.tsx', '*.stories.tsx', 'plopfile.ts'],
       rules: { 'import/no-default-export': 0 },
     },
     {
