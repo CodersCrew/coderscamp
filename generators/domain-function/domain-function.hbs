@@ -5,20 +5,19 @@ export function {{camelCase domainFunction}}(
   pastEvents: {{properCase event}}[],
   { data }: {{properCase command}},
 ): {{properCase event}}[] {
-  const state = pastEvents
-    .reduce<{ completed: boolean }>(
-      (acc, event) => {
-        switch (event.type) {
-          case '{{properCase event}}': {
-            return { completed: true };
-          }
-          default: {
-            return acc;
-          }
+  const state = pastEvents.reduce<{ completed: boolean }>(
+    (acc, event) => {
+      switch (event.type) {
+        case '{{properCase event}}': {
+          return { completed: true };
         }
-      },
-      { completed: false },
-    );
+        default: {
+          return acc;
+        }
+      }
+    },
+    { completed: false },
+  );
 
   if (state.completed) {
     throw new Error('X already completed');

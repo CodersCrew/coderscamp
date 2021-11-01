@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { {{properCase command}}ApplicationCommand } from '@/commands/{{dashCase command}}';
-import { {{properCase event}} } from '@/module/events/some-event';
+import { {{properCase event}} } from '@/module/events/{{dashCase event}}.domain-event';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 

@@ -1,7 +1,7 @@
 import { AsyncReturnType } from 'type-fest';
 
-import { {{properCase command}}ApplicationCommand } from '@/module/commands/complete-task.application-command';
-import { {{properCase event}} } from '@/module/events/task-was-completed.domain-event';
+import { {{properCase command}}ApplicationCommand } from '@/module/commands/{{dashCase command}}.application-command';
+import { {{properCase event}} } from '@/module/events/{{dashCase event}}.domain-event';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 import { {{camelCase module}}TestModule } from './{{dashCase module}}.test-module';

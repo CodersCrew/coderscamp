@@ -4,7 +4,7 @@ import { restControllerDirectory, restControllerNamePrompt } from './prompts';
 export const createRestControllerAction = {
   type: 'add',
   path: `{{dashCase ${restControllerDirectory.name}}}/presentation/rest/{{dashCase ${restControllerNamePrompt.name}}}.rest-controller.ts`,
-  templateFile: './templates/rest-controller/controller.hbs',
+  templateFile: './generators/rest-controller/controller.hbs',
 };
 
 export const createTypesFileWithBodyTypeAction = {
