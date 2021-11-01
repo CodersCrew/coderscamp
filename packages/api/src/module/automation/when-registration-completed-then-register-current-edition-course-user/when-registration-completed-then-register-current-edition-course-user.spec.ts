@@ -1,5 +1,4 @@
 import { AsyncReturnType } from 'type-fest';
-import { v4 as uuid } from 'uuid';
 
 import { RegisterCourseUser, RegisterCourseUserCommand } from '@/module/commands/register-course-user';
 import { userRegistrationWasCompletedEvent } from '@/module/events/user-registration-was-completed.domain-event';
@@ -22,10 +21,8 @@ describe('RegisterCourseUser when registrationWasCompleted', () => {
 
   it('test', async () => {
     // Given
-    // console.log('env', env);
 
     const courseId = process.env.CURRENT_COURSE_ID ?? '';
-    // const courseUserId = moduleUnderTest.lastGeneratedId();
 
     const userId = 'ca63d023-4cbd-40ca-9f53-f19dbb19b0ab';
     const fullName = 'test user';
