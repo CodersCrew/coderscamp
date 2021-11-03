@@ -19,7 +19,7 @@ describe('RegisterCourseUser when registrationWasCompleted', () => {
     await moduleUnderTest.close();
   });
 
-  it('test', async () => {
+  it('publishes registerCourseUser command when userRegistrationWasCompletedEvent occurred', async () => {
     // Given
 
     const courseId = process.env.CURRENT_COURSE_ID ?? '';
@@ -31,8 +31,10 @@ describe('RegisterCourseUser when registrationWasCompleted', () => {
 
     const event = userRegistrationWasCompletedEvent({ userId, fullName, emailAddress, hashedPassword });
 
+    // When
     await moduleUnderTest.eventOccurred(EventStreamName.from('UserRegistration', userId), event);
 
+    // Then
     await moduleUnderTest.expectCommandExecutedLastly<RegisterCourseUser>({
       ...RegisterCourseUserCommand({ courseId, userId, courseUserId: moduleUnderTest.lastGeneratedId() }),
     });
