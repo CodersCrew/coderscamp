@@ -28,14 +28,17 @@ export class ApplicationCommandFactory {
     const generateId = () => this.idGenerator.generate();
     const currentTime = () => this.timeProvider.currentTime();
 
+    const id = generateId();
+    const correlationId = generateId();
+
     const command = builder(this.idGenerator);
 
     return plainToClass(command.class, {
       type: command.type,
-      id: generateId(),
+      id,
       issuedAt: currentTime(),
       data: command.data,
-      metadata: { correlationId: generateId(), ...command.metadata },
+      metadata: { correlationId, ...command.metadata },
     });
   }
 }

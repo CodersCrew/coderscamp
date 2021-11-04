@@ -9,4 +9,9 @@ export type RegisterCourseUser = {
   };
 };
 
+export const RegisterCourseUserCommand = (data: RegisterCourseUser['data']): RegisterCourseUser => ({
+  type: 'RegisterCourseUser',
+  data,
+});
+
 export class RegisterCourseUserApplicationCommand extends AbstractApplicationCommand<RegisterCourseUser> {}
