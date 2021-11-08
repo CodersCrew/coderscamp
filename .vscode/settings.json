@@ -39,5 +39,8 @@
   },
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  }
+  },
+  "jest.jestCommandLine": "yarn test",
+  "jest.autoRun": "off"
+
 }
