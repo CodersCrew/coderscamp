@@ -5,6 +5,7 @@ import {
   commandHandlerGenerator,
   domainFunctionGenerator,
   eventGenerator,
+  eventHandlerGenerator,
   moduleGenerator,
   restControllerGenerator,
 } from './generators';
@@ -23,6 +24,7 @@ function plopBuilder(plop: NodePlopAPI) {
   plop.setGenerator('event', eventGenerator);
   plop.setGenerator('domain_function', domainFunctionGenerator);
   plop.setGenerator('rest_controller', restControllerGenerator);
+  plop.setGenerator('event_handler', eventHandlerGenerator);
 }
 
 export default plopBuilder;
