@@ -1,8 +1,9 @@
 import { TaskWasCompleted } from '@/events/task-was-completed.domain-event';
 import { CompleteTask } from '@/module/commands/complete-task.domain-command';
+import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 
 export function completeTask(
-  pastEvents: TaskWasCompleted[],
+  pastEvents: LearningMaterialsTasksDomainEvent[],
   { data: { learningMaterialsId, taskId } }: CompleteTask,
 ): TaskWasCompleted[] {
   const state = pastEvents
@@ -12,6 +13,9 @@ export function completeTask(
         switch (event.type) {
           case 'TaskWasCompleted': {
             return { completed: true };
+          }
+          case 'TaskWasUncompleted': {
+            return { completed: false };
           }
           default: {
             return acc;

@@ -1,13 +1,11 @@
 import { Inject } from '@nestjs/common';
 
-import { ApplicationEvent } from '@/module/application-command-events';
 import { DomainEvent } from '@/module/domain.event';
 
 import { ApplicationEventBus } from '../../application/application.event-bus';
 import { ApplicationExecutionContext, ApplicationService, DomainLogic } from '../../application/application-service';
 import { EVENT_REPOSITORY, EventRepository, StorableEvent } from '../../application/event-repository';
 import { EventStreamName } from '../../application/event-stream-name.value-object';
-import { EventStreamVersion } from '../../application/event-stream-version';
 import { ID_GENERATOR, IdGenerator } from '../../application/id-generator';
 import { TIME_PROVIDER, TimeProvider } from '../../application/time-provider.port';
 
@@ -24,14 +22,9 @@ export class EventApplicationService implements ApplicationService {
     context: ApplicationExecutionContext,
     domainLogic: DomainLogic<DomainEventType>,
   ): Promise<void> {
-    const eventStream = await this.eventRepository.read(streamName);
-    const streamVersion = EventApplicationService.streamVersion(eventStream);
+    const { pastEvents, streamVersion } = await this.eventRepository.readDomainStream<DomainEventType>(streamName);
 
-    const resultDomainEvents = await domainLogic(
-      eventStream.map((e) => {
-        return { type: e.type, data: e.data } as DomainEventType;
-      }),
-    );
+    const resultDomainEvents = await domainLogic(pastEvents);
 
     const eventsToStore: StorableEvent[] = resultDomainEvents.map((e, index) => ({
       data: e.data,
@@ -46,9 +39,5 @@ export class EventApplicationService implements ApplicationService {
     const eventsToPublish = await this.eventRepository.write(streamName, eventsToStore, streamVersion);
 
     await this.eventBus.publishAll(eventsToPublish);
-  }
-
-  private static streamVersion(eventStream?: ApplicationEvent[]): EventStreamVersion {
-    return eventStream?.length ?? 0;
   }
 }

@@ -23,6 +23,47 @@ describe('Prisma Event Repository', () => {
     await sut.close();
   });
 
+  it('reads pastEvents and version from given stream', async () => {
+    // Given
+    const { eventRepository } = sut;
+    const streamCategory = 'SampleEventStreamCategory';
+    const streamName01 = EventStreamName.props({ streamCategory, streamId: sut.randomEventStreamId() });
+    const streamName2 = EventStreamName.props({ streamCategory, streamId: sut.randomEventStreamId() });
+
+    const sampleDomainEvent: SampleDomainEvent = {
+      type: 'SampleDomainEvent',
+      data: {
+        value1: 'sampleValue1',
+        value2: 123,
+      },
+    };
+
+    const sampleStorableEvent0 = storableEvent<SampleDomainEvent>(sampleDomainEvent);
+    const sampleStorableEvent1 = storableEvent<SampleDomainEvent>(sampleDomainEvent);
+    const sampleStorableEvent2 = storableEvent<SampleDomainEvent>(sampleDomainEvent);
+
+    await eventRepository.write(streamName01, [sampleStorableEvent0], 0);
+    await eventRepository.write(streamName01, [sampleStorableEvent1], 1);
+    await eventRepository.write(streamName2, [sampleStorableEvent2], 0);
+
+    const streamName01Events = await eventRepository.readDomainStream(streamName01);
+
+    const expectedStreamName = [
+      { data: sampleStorableEvent0.data, type: sampleStorableEvent0.type },
+      { data: sampleStorableEvent1.data, type: sampleStorableEvent1.type },
+    ];
+
+    expect(streamName01Events.streamVersion).toEqual(2);
+    expect(streamName01Events.pastEvents).toEqual(expectedStreamName);
+
+    const streamName2Events = await eventRepository.readDomainStream(streamName2);
+
+    const expectedStreamName2 = [{ data: sampleStorableEvent2.data, type: sampleStorableEvent2.type }];
+
+    expect(streamName2Events.streamVersion).toEqual(1);
+    expect(streamName2Events.pastEvents).toEqual(expectedStreamName2);
+  });
+
   it('write and read single storable event and return application event with globalOrder', async () => {
     // Given
     const { eventRepository } = sut;
@@ -47,31 +88,19 @@ describe('Prisma Event Repository', () => {
 
     // Then
     const storedEvent0 = {
-      type: sampleStorableEvent0.type,
-      data: sampleStorableEvent0.data,
-      id: sampleStorableEvent0.id,
-      occurredAt: sampleStorableEvent0.occurredAt,
-      metadata: sampleStorableEvent0.metadata,
+      ...sampleStorableEvent0,
       streamVersion: 1,
       streamName: streamName01,
       globalOrder: 1,
     };
     const storedEvent1 = {
-      type: sampleStorableEvent1.type,
-      data: sampleStorableEvent1.data,
-      id: sampleStorableEvent1.id,
-      occurredAt: sampleStorableEvent1.occurredAt,
-      metadata: sampleStorableEvent1.metadata,
+      ...sampleStorableEvent1,
       streamVersion: 2,
       streamName: streamName01,
       globalOrder: 2,
     };
     const storedEvent2 = {
-      type: sampleStorableEvent2.type,
-      data: sampleStorableEvent2.data,
-      id: sampleStorableEvent2.id,
-      occurredAt: sampleStorableEvent2.occurredAt,
-      metadata: sampleStorableEvent2.metadata,
+      ...sampleStorableEvent2,
       streamVersion: 1,
       streamName: streamName2,
       globalOrder: 3,

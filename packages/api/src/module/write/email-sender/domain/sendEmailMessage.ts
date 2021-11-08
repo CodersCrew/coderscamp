@@ -1,4 +1,4 @@
-import { SendEmailMessage } from '@/commands/send-email-message.domain-command';
+import { SendEmailMessage } from '@/module/commands/send-email-message';
 import { EmailMessageDomainEvent } from '@/write/email-sender/domain/events';
 
 export function sendEmailMessage(

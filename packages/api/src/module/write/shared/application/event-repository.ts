@@ -14,6 +14,8 @@ export type StorableEvent<
 
 export type ReadAllFilter = { streamCategory?: string; eventTypes?: string[]; fromGlobalPosition?: number };
 
+export type DomainStream<Event extends DomainEvent> = { pastEvents: Event[]; streamVersion: EventStreamVersion };
+
 export interface EventRepository {
   read(streamName: EventStreamName): Promise<EventStream>;
 
@@ -24,4 +26,6 @@ export interface EventRepository {
   ): Promise<ApplicationEvent[]>;
 
   readAll(filter: Partial<ReadAllFilter>): Promise<ApplicationEvent[]>;
+
+  readDomainStream<Event extends DomainEvent>(streamName: EventStreamName): Promise<DomainStream<Event>>;
 }

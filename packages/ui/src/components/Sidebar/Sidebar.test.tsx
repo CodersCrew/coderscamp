@@ -6,7 +6,9 @@ import { Sidebar } from './Sidebar';
 
 describe('Sidebar', () => {
   it('renders correctly', () => {
-    render(<Sidebar data-testid="sidebar" width="256px" />, { wrapper: MemoryRouter });
+    render(<Sidebar data-testid="sidebar" width="256px" />, {
+      wrapper: ({ children }) => <MemoryRouter>{children}</MemoryRouter>,
+    });
 
     const getSidebar = screen.getByTestId('sidebar');
 

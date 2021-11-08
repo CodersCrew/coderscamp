@@ -1,0 +1,20 @@
+{
+  "name": "@coderscamp/cli",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "invoke": "rimraf dist && tsc && node dist/cli/src/index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "1.25.0",
+    "class-transformer": "0.4.0",
+    "class-validator": "0.13.1",
+    "commander": "8.3.0",
+    "csv-parse": "4.16.3",
+    "dotenv": "10.0.0",
+    "generate-password": "1.6.1",
+    "puppeteer": "10.4.0",
+    "reflect-metadata": "0.1.13",
+    "winston": "3.3.3"
+  }
+}

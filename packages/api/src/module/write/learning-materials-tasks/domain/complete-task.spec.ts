@@ -1,5 +1,7 @@
+import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
 import { CompleteTask } from '@/module/commands/complete-task.domain-command';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
+import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 
 import { completeTask } from './complete-task';
 
@@ -60,5 +62,51 @@ describe('complete task', () => {
 
     // Then
     expect(events).toThrowError('Task was already completed');
+  });
+
+  it('should complete uncompleted task', () => {
+    // given
+    const pastEvents: TaskWasUncompleted[] = [
+      {
+        type: 'TaskWasUncompleted',
+        data: { learningMaterialsId: command.data.learningMaterialsId, taskId: command.data.taskId },
+      },
+    ];
+
+    // when
+    const events = completeTask(pastEvents, command);
+
+    // then
+    expect(events).toStrictEqual([
+      {
+        type: 'TaskWasCompleted',
+        data: { learningMaterialsId: command.data.learningMaterialsId, taskId: command.data.taskId },
+      },
+    ]);
+  });
+
+  it('should complete task if task was completed and then uncompleted', () => {
+    // given
+    const pastEvents: LearningMaterialsTasksDomainEvent[] = [
+      {
+        type: 'TaskWasCompleted',
+        data: { learningMaterialsId: command.data.learningMaterialsId, taskId: command.data.taskId },
+      },
+      {
+        type: 'TaskWasUncompleted',
+        data: { learningMaterialsId: command.data.learningMaterialsId, taskId: command.data.taskId },
+      },
+    ];
+
+    // when
+    const events = completeTask(pastEvents, command);
+
+    // then
+    expect(events).toStrictEqual([
+      {
+        type: 'TaskWasCompleted',
+        data: { learningMaterialsId: command.data.learningMaterialsId, taskId: command.data.taskId },
+      },
+    ]);
   });
 });

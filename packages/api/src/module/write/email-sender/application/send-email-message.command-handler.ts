@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message.application-command';
+import { SendEmailMessageApplicationCommand } from '@/commands/send-email-message';
 import { env } from '@/shared/env';
 import { EMAIL_SENDER, EmailSender } from '@/write/email-sender/application/email-sender';
 import { EmailMessageDomainEvent } from '@/write/email-sender/domain/events';

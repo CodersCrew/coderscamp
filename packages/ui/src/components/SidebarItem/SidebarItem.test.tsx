@@ -11,7 +11,7 @@ describe('SidebarItem', () => {
       <SidebarItem path="/" icon={<OutlinedDashboardIcon />} iconSelected={<SolidDashboardIcon />} count={2021}>
         Dashboard
       </SidebarItem>,
-      { wrapper: MemoryRouter },
+      { wrapper: ({ children }) => <MemoryRouter>{children}</MemoryRouter> },
     );
 
     const sidebarItem = screen.getByRole('group');
@@ -28,7 +28,7 @@ describe('SidebarItem', () => {
       <SidebarItem path="/" disabled>
         Dashboard
       </SidebarItem>,
-      { wrapper: MemoryRouter },
+      { wrapper: ({ children }) => <MemoryRouter>{children}</MemoryRouter> },
     );
 
     const sidebarItem = screen.getByRole(/group/i);
