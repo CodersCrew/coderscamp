@@ -10,7 +10,7 @@ export const ExternalLink = ({ children, withUnderline = true, ...chakraProps }:
   const underlineProps = withUnderline ? { textDecoration: 'underline', textUnderlineOffset: '2px' } : {};
 
   return (
-    <Link {...externalLinkBaseProps} {...chakraProps} {...underlineProps}>
+    <Link color="blue.700" {...externalLinkBaseProps} {...chakraProps} {...underlineProps}>
       {children}
     </Link>
   );
