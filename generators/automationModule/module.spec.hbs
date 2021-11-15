@@ -1,0 +1,32 @@
+import { AsyncReturnType } from 'type-fest';
+
+import { {{camelCase command}}Command } from '@/module/commands/{{dashCase command}}';
+import { {{camelCase event}}Event } from '@/module/events/{{dashCase event}}.domain-event';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+
+import { {{properCase module}}AutomationTestModule } from './{{dashCase module}}.test-module';
+
+describe('', () => {
+  let moduleUnderTest: AsyncReturnType<
+    typeof {{properCase module}}AutomationTestModule
+  >;
+
+  beforeEach(async () => {
+    moduleUnderTest = await {{properCase module}}AutomationTestModule();
+  });
+
+  afterEach(async () => {
+    await moduleUnderTest.close();
+  });
+
+  it('', async () => {
+    const event = {{camelCase event}}Event({});
+
+    await moduleUnderTest.eventOccurred(
+      EventStreamName.from('stream category', `stream id`),
+      event,
+    );
+
+    await moduleUnderTest.expectCommandExecutedLastly({{camelCase command}}Command({}));
+  });
+});

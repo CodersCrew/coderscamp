@@ -1,10 +1,9 @@
-import { {{properCase event}} } from '@/events/{{dashCase event}}.domain-event';
+import { {{properCase event}}, {{camelCase event}} } from '@/events/{{dashCase event}}.domain-event';
 import { {{properCase command}} } from '@/module/commands/{{dashCase command}}';
 
-export function {{camelCase domainFunction}}(
-  pastEvents: {{properCase event}}[],
-  { data }: {{properCase command}},
-): {{properCase event}}[] {
+export const {{camelCase domainFunction}} =
+  (command: {{properCase event}}) =>
+  (pastEvents: {{properCase event}}[]): {{properCase event}}[] => {
   const state = pastEvents.reduce<{ completed: boolean }>(
     (acc, event) => {
       switch (event.type) {
@@ -23,10 +22,7 @@ export function {{camelCase domainFunction}}(
     throw new Error('X already completed');
   }
 
-  const newEvent: {{properCase event}} = {
-    type: '{{properCase event}}',
-    data: {},
-  };
+  const newEvent: {{properCase event}} = {{camelCase event}}({});
 
   return [newEvent];
 }

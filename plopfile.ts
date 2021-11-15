@@ -1,6 +1,7 @@
 import type { NodePlopAPI } from 'plop';
 
 import {
+  automationModuleGenerator,
   commandGenerator,
   commandHandlerGenerator,
   domainFunctionGenerator,
@@ -25,6 +26,7 @@ function plopBuilder(plop: NodePlopAPI) {
   plop.setGenerator('domain_function', domainFunctionGenerator);
   plop.setGenerator('rest_controller', restControllerGenerator);
   plop.setGenerator('event_handler', eventHandlerGenerator);
+  plop.setGenerator('automation_module', automationModuleGenerator);
 }
 
 export default plopBuilder;

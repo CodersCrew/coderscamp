@@ -24,7 +24,7 @@ export class {{properCase command}}ApplicationCommandHandler implements ICommand
         causationId: command.id,
         correlationId: command.metadata.correlationId,
       },
-      (pastEvents) => {{camelCase domainFunction}}(pastEvents, command),
+      {{camelCase domainFunction}}(command),
     );
   }
 }
