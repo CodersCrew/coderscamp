@@ -5,3 +5,10 @@ export type TaskWasCompleted = {
     taskId: string;
   };
 };
+
+export const taskWasCompletedEvent = (
+  data: TaskWasCompleted['data'],
+): TaskWasCompleted => ({
+  type: 'TaskWasCompleted',
+  data,
+});

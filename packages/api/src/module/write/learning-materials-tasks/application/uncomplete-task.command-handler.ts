@@ -1,10 +1,10 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { UncompleteTaskApplicationCommand } from '@/module/commands/uncomplete-task.application-command';
 import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
-import { uncompleteTask } from '@/write/learning-materials-tasks/domain/uncomplete-task';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { uncompleteTask } from '@/write/learning-materials-tasks/domain/uncomplete-task';
+import { UncompleteTaskApplicationCommand } from '@/module/commands/uncomplete-task';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
 @CommandHandler(UncompleteTaskApplicationCommand)
@@ -23,7 +23,7 @@ export class UncompleteTaskCommandHandler implements ICommandHandler<UncompleteT
         causationId: command.id,
         correlationId: command.metadata.correlationId,
       },
-      (pastEvents) => uncompleteTask(pastEvents, command),
+      uncompleteTask(command),
     );
   }
 }

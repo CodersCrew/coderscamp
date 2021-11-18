@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { CompleteTaskApplicationCommand } from '@/commands/complete-task.application-command';
+import { CompleteTaskApplicationCommand } from '@/commands/complete-task';
 import { LearningMaterialsTasksDomainEvent } from '@/write/learning-materials-tasks/domain/events';
 import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
@@ -24,7 +24,7 @@ export class CompleteTaskCommandHandler implements ICommandHandler<CompleteTaskA
         causationId: command.id,
         correlationId: command.metadata.correlationId,
       },
-      (pastEvents) => completeTask(pastEvents, command),
+      completeTask(command),
     );
   }
 }

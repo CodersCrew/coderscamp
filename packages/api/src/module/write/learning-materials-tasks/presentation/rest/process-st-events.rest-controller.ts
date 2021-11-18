@@ -1,8 +1,8 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { UncompleteTaskApplicationCommand } from '@/commands/uncomplete-task.application-command';
-import { CompleteTaskApplicationCommand } from '@/module/commands/complete-task.application-command';
+import { UncompleteTaskApplicationCommand } from '@/commands/uncomplete-task';
+import { CompleteTaskApplicationCommand } from '@/module/commands/complete-task';
 import { ApplicationCommandFactory } from '@/write/shared/application/application-command.factory';
 
 import { TaskCompletedRequestBody } from '../../types/taskCompletedRequestBody';
@@ -16,7 +16,7 @@ export class LearningMaterialsTaskRestController {
   async taskCheckedUnchecked(
     @Body() { id: learningMaterialsId, data: { id: taskId, status } }: TaskCompletedRequestBody,
   ): Promise<void> {
-    if (status === 'Completed') {
+    if (status === 'Uncompleted') {
       const command = this.commandFactory.applicationCommand(() => ({
         class: CompleteTaskApplicationCommand,
         type: 'CompleteTask',
@@ -24,6 +24,8 @@ export class LearningMaterialsTaskRestController {
       }));
 
       await this.commandBus.execute(command);
+
+      return;
     }
 
     const command = this.commandFactory.applicationCommand(() => ({

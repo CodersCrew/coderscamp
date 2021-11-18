@@ -1,8 +1,8 @@
 import { AsyncReturnType } from 'type-fest';
 
-import { UncompleteTaskApplicationCommand } from '@/commands/uncomplete-task.application-command';
+import { UncompleteTaskApplicationCommand } from '@/commands/uncomplete-task';
 import { TaskWasUncompleted } from '@/events/task-was-uncompleted-event.domain-event';
-import { CompleteTaskApplicationCommand } from '@/module/commands/complete-task.application-command';
+import { CompleteTaskApplicationCommand } from '@/module/commands/complete-task';
 import { TaskWasCompleted } from '@/module/events/task-was-completed.domain-event';
 
 import { EventStreamName } from '../shared/application/event-stream-name.value-object';
