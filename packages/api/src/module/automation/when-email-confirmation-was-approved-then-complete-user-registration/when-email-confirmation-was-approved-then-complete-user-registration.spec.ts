@@ -4,7 +4,7 @@ import { completeUserRegistrationCommand } from '@/module/commands/complete-user
 import { emailConfirmationWasApprovedEvent } from '@/module/events/email-confirmation-was-approved.domain.event';
 import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
 
-import { WhenEmailConfirmationWasApprovedThenCompleteUserRegistrationAutomationModuleAutomationTestModule as WhenEmailConfirmationWasApprovedThenCompleteUserRegistrationAutomationTestModule } from './when-email-confirmation-was-approved-then-complete-user-registration.test-module';
+import { WhenEmailConfirmationWasApprovedThenCompleteUserRegistrationAutomationTestModule } from './when-email-confirmation-was-approved-then-complete-user-registration.test-module';
 
 describe('CompleteUser registration when emailConfirmationWasApproved', () => {
   let moduleUnderTest: AsyncReturnType<
