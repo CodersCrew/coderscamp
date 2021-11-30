@@ -1,0 +1,41 @@
+import { AsyncReturnType } from 'type-fest';
+
+import { {{properCase command}}ApplicationCommand } from '@/module/commands/{{dashCase command}}.application-command';
+import { {{properCase event}} } from '@/module/events/{{dashCase event}}.domain-event';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+
+import { {{camelCase module}}TestModule } from './{{dashCase module}}.test-module';
+
+describe('{{lowerCase module}}', () => {
+  let module: AsyncReturnType<typeof {{camelCase module}}TestModule>;
+  const commandBuilder = (id = 'VmkxXnPG02CaUNV8Relzk') => ({
+    class: {{properCase command}}ApplicationCommand,
+    type: '{{properCase command}}',
+    data: { id },
+  });
+
+  it('should ', async () => {
+    // Given
+    const command = commandBuilder();
+
+    // When
+    await module.executeCommand(() => command);
+
+    // Then
+    await module.expectEventPublishedLastly<{{properCase event}}>({
+      type: '{{properCase event}}',
+      data: {
+        id: command.data.id,
+      },
+      streamName: EventStreamName.from('', command.data),
+    });
+  });
+
+  beforeEach(async () => {
+    module = await {{camelCase module}}TestModule();
+  });
+
+  afterEach(async () => {
+    await module.close();
+  });
+});

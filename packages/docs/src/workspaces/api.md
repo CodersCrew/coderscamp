@@ -12,6 +12,8 @@ Useful materials to grasp following concepts:
 - [DDD, Hexagonal, Onion, Clean, CQRS, … How I put it all together](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
 - [DDDEU Booklet](https://drive.google.com/file/d/164be-M0MtV-nHuOZ1VlOyTYnzAFdFb8R/view?usp=sharing)
 
+[We use plop as code generator to reduce need to write boilerplate code.](#code-generation) 
+
 # Step-by-step implementation instructions
 
 MIRO with EventModeling: https://miro.com/app/board/o9J_lQvnN28=/?moveToWidget=3074457362407512031&cot=14
@@ -626,6 +628,77 @@ export class CourseProgressReadModule implements OnApplicationBootstrap, OnModul
 - no clear event origin
 + easier to make small commits and for development parallelization
 
+# Code generation
+
+We use [Plop](https://plopjs.com/documentation/) as code generator.
+To generate code run yarn plop and choose one of 6 generators:
+- command
+- command handler
+- event
+- domain function
+- rest controller
+- module
+
+When providing parameters to generators you may use whichever case you want, but you **can't** use spaces as they are used to pass many parameters at once. In most cases if parameter will not be provided the default value will be used instead. 
+
+## Generators
+
+### Command
+
+Creates a new command file in packages/api/src/module/shared/commands with provided name. 
+
+Parameters:
+- command name
+
+### Command handler
+
+Creates a new command handler in chosen module directory.
+
+Parameters:
+- module directory
+- command name
+- event name
+- domain function name
+- stream category name
+
+### Event
+
+Creates a new event file in packages/api/src/module/shared/events with provided name.
+
+Parameters:
+- event name
+
+### Domain function
+
+Creates a new domain function file with test file in provided module directory.
+
+Parameters:
+- module directory
+- domain function name
+- command name
+- event name
+### Rest controller
+
+Creates a new rest controller file in chosen module directory.
+
+Parameters:
+- module directory
+- controller class name
+- method name
+- command name
+### Module
+
+Combines all of previous generators to create whole module at once. Creates event and command files in proper directories if these does not exists.
+
+Parameters:
+- module name
+- directory in which module should be created
+- command name
+- event name
+- domain function name 
+- stream category name (omitted if domain function name not provided)
+- rest controller name
+- rest controller method name (omitted if rest controller name not provided)
 
 # TODO in infrastructure
 
