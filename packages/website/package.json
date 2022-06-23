@@ -11,22 +11,22 @@
   },
   "dependencies": {
     "@coderscamp/ui": "0.0.1",
-    "@next/bundle-analyzer": "11.1.2",
-    "@supabase/supabase-js": "1.25.0",
+    "@next/bundle-analyzer": "12.1.6",
+    "@supabase/supabase-js": "1.35.3",
     "next": "11.1.2",
-    "nodemailer": "6.7.0",
-    "preact": "10.5.15",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "nodemailer": "6.7.5",
+    "preact": "10.8.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-headroom": "3.2.0",
-    "react-hook-form": "7.17.5",
-    "swiper": "7.0.9"
+    "react-hook-form": "7.32.2",
+    "swiper": "8.2.4"
   },
   "devDependencies": {
     "@types/nodemailer": "6.4.4",
-    "@types/react": "17.0.31",
+    "@types/react": "18.0.14",
     "@types/react-headroom": "2.2.2",
     "next-compose-plugins": "2.2.1",
-    "next-transpile-modules": "8.0.0"
+    "next-transpile-modules": "9.0.0"
   }
 }
