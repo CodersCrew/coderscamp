@@ -2,8 +2,8 @@
 
 Monorepo containing CodersCamp's internal application, its website, and all development resources created around them.
 
-[![Read the documentation](https://img.shields.io/badge/-Read%20the%20documentation-21B091?style=for-the-badge&logo=markdown&logoColor=white)](https://coderscamp-docs.vercel.app)&#8239;&#8239;&#8239;&#8239;&#8239;
-[![Explore component library](https://img.shields.io/badge/-Explore%20component%20library-FF4785?style=for-the-badge&logo=storybook&logoColor=white)](https://coderscamp-storybook.vercel.app/)&#8239;&#8239;&#8239;&#8239;&#8239;
+[![Read the documentation](https://img.shields.io/badge/-Read%20the%20documentation-21B091?style=for-the-badge&logo=markdown&logoColor=white)](https://coderscamp-docs-vert.vercel.app)&#8239;&#8239;&#8239;&#8239;&#8239;
+[![Explore component library](https://img.shields.io/badge/-Explore%20component%20library-FF4785?style=for-the-badge&logo=storybook&logoColor=white)](https://coderscamp-storybook-two.vercel.app)&#8239;&#8239;&#8239;&#8239;&#8239;
 [![See application mockups](https://img.shields.io/badge/-See%20application%20mockups-A259FF?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/file/ur0KLA9ZOtiodrAmpXrxh9/CodersCamp-app-and-website)
 
 | package | issues                                                       | tests                                       | coverage                                              |
