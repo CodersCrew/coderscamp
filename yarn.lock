@@ -3109,7 +3109,7 @@ __metadata:
     "@types/yamljs": 0.2.31
     app-root-path: 3.0.0
     class-transformer: 0.4.0
-    class-validator: 0.13.1
+    class-validator: 0.14.0
     cookie-parser: 1.4.5
     dayjs: 1.10.7
     dotenv: 10.0.0
@@ -3146,7 +3146,7 @@ __metadata:
   dependencies:
     "@supabase/supabase-js": 1.25.0
     class-transformer: 0.4.0
-    class-validator: 0.13.1
+    class-validator: 0.14.0
     commander: 8.3.0
     csv-parse: 4.16.3
     dotenv: 10.0.0
@@ -3197,7 +3197,7 @@ __metadata:
     "@vitejs/plugin-react-refresh": 1.3.6
     axios: 0.23.0
     class-transformer: 0.4.0
-    class-validator: 0.13.1
+    class-validator: 0.14.0
     dotenv: 10.0.0
     msw: 0.35.0
     react: 17.0.2
@@ -3219,7 +3219,7 @@ __metadata:
   resolution: "@coderscamp/shared@workspace:packages/shared"
   dependencies:
     class-transformer: 0.4.0
-    class-validator: 0.13.1
+    class-validator: 0.14.0
   languageName: unknown
   linkType: soft
 
@@ -8165,10 +8165,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.1.3":
-  version: 13.6.3
-  resolution: "@types/validator@npm:13.6.3"
-  checksum: b06b684d4d1ff4b59449a974cb8cdd96ccde4660958e541acf66711c8f60026912202e4d924ccd2016ec8bdd4e1f71e8122e5c568deefcdecffc04a73acff460
+"@types/validator@npm:^13.7.10":
+  version: 13.7.14
+  resolution: "@types/validator@npm:13.7.14"
+  checksum: 51bd82cd08aa7d8006f97357b5768a77bfca30e4823b5962e63bbf6446f46b5afe236bec1089148a15fd04cc0a748a10e2dd1a559f07163ec5e4e9fb5581896e
   languageName: node
   linkType: hard
 
@@ -11386,14 +11386,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-validator@npm:0.13.1":
-  version: 0.13.1
-  resolution: "class-validator@npm:0.13.1"
+"class-validator@npm:0.14.0":
+  version: 0.14.0
+  resolution: "class-validator@npm:0.14.0"
   dependencies:
-    "@types/validator": ^13.1.3
-    libphonenumber-js: ^1.9.7
-    validator: ^13.5.2
-  checksum: 1d77f869792e83baef67d18220baf1e1a413a43efbd454ed359e0da691462e6d7d869e73de3ce5bb4a67206084338e5e4323e9e54dd8bc967c6fadb4e9ac44c2
+    "@types/validator": ^13.7.10
+    libphonenumber-js: ^1.10.14
+    validator: ^13.7.0
+  checksum: f62e4a0ad24cee68f4b2bc70d32b96de90cb598f96bde362b4dbf4234151af8eb6ae225458312a38fc49fa3959844cf61c60e731a8205e9a570454cff8de2710
   languageName: node
   linkType: hard
 
@@ -19329,10 +19329,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.9.7":
-  version: 1.9.25
-  resolution: "libphonenumber-js@npm:1.9.25"
-  checksum: cc4b807dada7d9350ec5033d2d179ec25b6d34d94445f44e6a1566367570dff0c84bca7d79adaf0e9f2ff288de2aee350c084ab9ce58614c3f3c536ab605c45e
+"libphonenumber-js@npm:^1.10.14":
+  version: 1.10.24
+  resolution: "libphonenumber-js@npm:1.10.24"
+  checksum: a79d98d398d6647649c46077d4159354b25d63c9f040c2cbf7b6f5b2e61df6224be75b0f2ce654d50fd6c78a3eab4eaf9f33f9ea09fcce1d8d4740ceef0b00ca
   languageName: node
   linkType: hard
 
@@ -28385,10 +28385,10 @@ typescript@4.4.4:
   languageName: node
   linkType: hard
 
-"validator@npm:^13.5.2":
-  version: 13.6.0
-  resolution: "validator@npm:13.6.0"
-  checksum: 1f9f813228a709d993b965813ad9d8ce009717bec64f57a0ac40d5f50ef781ee47260f85741e125775823fb31aa3beb7f974e0f5fb1afe9bc4615b7fadd7f8bb
+"validator@npm:^13.7.0":
+  version: 13.9.0
+  resolution: "validator@npm:13.9.0"
+  checksum: e2c936f041f61faa42bafd17c6faddf939498666cd82e88d733621c286893730b008959f4cb12ab3e236148a4f3805c30b85e3dcf5e0efd8b0cbcd36c02bfc0c
   languageName: node
   linkType: hard
 
