@@ -15,9 +15,9 @@ jobs:
       APP_ENV: review
       DATABASE_URL: postgresql://root:root@localhost:5432/main-db
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install node v14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 14
       - name: Cache & restore dependencies
@@ -36,14 +36,14 @@ jobs:
       - name: Stop database
         run: docker-compose down
       - name: Upload server coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           flags: api
           directory: packages/api
           fail_ci_if_error: true
           verbose: true
       - name: Upload ui coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           flags: ui
           directory: packages/ui
@@ -54,9 +54,9 @@ jobs:
     name: Run ESlint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install node v14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 14
       - name: Install dependencies
@@ -72,9 +72,9 @@ jobs:
     name: Check TypeScript types
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install node v14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 14
       - name: Install dependencies
