@@ -1,0 +1,28 @@
+import { {{properCase event}}, {{camelCase event}} } from '@/events/{{dashCase event}}.domain-event';
+import { {{properCase command}} } from '@/module/commands/{{dashCase command}}';
+
+export const {{camelCase domainFunction}} =
+  (command: {{properCase event}}) =>
+  (pastEvents: {{properCase event}}[]): {{properCase event}}[] => {
+  const state = pastEvents.reduce<{ completed: boolean }>(
+    (acc, event) => {
+      switch (event.type) {
+        case '{{properCase event}}': {
+          return { completed: true };
+        }
+        default: {
+          return acc;
+        }
+      }
+    },
+    { completed: false },
+  );
+
+  if (state.completed) {
+    throw new Error('X already completed');
+  }
+
+  const newEvent: {{properCase event}} = {{camelCase event}}({});
+
+  return [newEvent];
+}

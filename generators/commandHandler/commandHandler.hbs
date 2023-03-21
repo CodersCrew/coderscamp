@@ -1,0 +1,30 @@
+import { Inject } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+
+import { {{properCase command}}ApplicationCommand } from '@/commands/{{dashCase command}}';
+import { {{properCase event}} } from '@/module/events/{{dashCase event}}.domain-event';
+import { APPLICATION_SERVICE, ApplicationService } from '@/write/shared/application/application-service';
+import { EventStreamName } from '@/write/shared/application/event-stream-name.value-object';
+
+import { {{camelCase domainFunction}} } from '../domain/{{dashCase domainFunction}}';
+
+@CommandHandler({{properCase command}}ApplicationCommand)
+export class {{properCase command}}ApplicationCommandHandler implements ICommandHandler<{{properCase command}}ApplicationCommand> {
+  constructor(
+    @Inject(APPLICATION_SERVICE)
+    private readonly applicationService: ApplicationService,
+  ) {}
+
+  async execute(command: {{properCase command}}ApplicationCommand): Promise<void> {
+    const eventStream = EventStreamName.from('{{properCase streamCategory}}', ``);
+
+    await this.applicationService.execute<{{properCase event}}>(
+      eventStream,
+      {
+        causationId: command.id,
+        correlationId: command.metadata.correlationId,
+      },
+      {{camelCase domainFunction}}(command),
+    );
+  }
+}

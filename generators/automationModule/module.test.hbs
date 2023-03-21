@@ -1,0 +1,7 @@
+import { initAutomationTestModule } from '@/shared/test-utils';
+
+import { {{properCase module}}AutomationModule } from './{{dashCase module}}.automation-module';
+
+export async function {{properCase module}}AutomationTestModule() {
+  return initAutomationTestModule([{{properCase module}}AutomationModule]);
+}
